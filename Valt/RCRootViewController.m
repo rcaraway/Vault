@@ -18,19 +18,10 @@
 
 @implementation RCRootViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self launchPassCode];
+    [self launchPasscode];
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,7 +45,7 @@
     return UIStatusBarStyleLightContent;
 }
 
--(void)launchPassCode
+-(void)launchPasscode
 {
     if (!self.passcodeController){
         if ([[RCPasswordManager defaultManager] masterPasswordExists]){
@@ -65,6 +56,16 @@
     }
     [self addChildViewController:self.passcodeController];
     [self.view addSubview:self.passcodeController.view];
+}
+
+
+-(void)launchSingleWithPassword:(RCPassword *)password
+{
+    [self.listController removeFromParentViewController];
+    [self.listController.view removeFromSuperview];
+    self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
+    [self addChildViewController:self.singleController];
+    [self.view addSubview:self.singleController.view];
 }
 
 -(void)launchList
@@ -82,7 +83,11 @@
 
 -(void)launchSingle
 {
-    
+    [self.listController removeFromParentViewController];
+    [self.listController.view removeFromSuperview];
+    self.singleController = [[RCSingleViewController alloc] initWithNibName:nil bundle:nil];
+    [self addChildViewController:self.singleController];
+    [self.view addSubview:self.singleController.view];
 }
 
 @end

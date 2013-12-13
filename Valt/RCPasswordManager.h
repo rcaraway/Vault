@@ -7,12 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCPassword.h"
 
 @interface RCPasswordManager : NSObject
 
-@property(nonatomic, strong) NSArray * passwordTitleList;
+@property(nonatomic, strong,readonly) NSArray * passwords;
 
--(NSArray *)dataForTitle:(NSString *)title;
+-(NSArray *)allTitles;
+
+-(void)addPassword:(RCPassword *)password;
+-(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index;
+-(void)removePassword:(RCPassword *)password;
+-(void)removePasswordAtIndex:(NSInteger )index;
+-(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
+
 -(void)setMasterPassword:(NSString *)masterPassword;
 -(NSString *)masterPassword;
 -(BOOL)masterPasswordExists;

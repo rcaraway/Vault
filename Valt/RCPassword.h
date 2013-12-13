@@ -14,6 +14,8 @@
 @property(nonatomic, copy) NSString * title;
 @property(nonatomic, copy) NSString * username;
 @property(nonatomic, copy) NSString * password;
-@property(nonatomic, strong) NSArray * extraFields;
+@property(nonatomic, strong) NSMutableArray * extraFields;
+
+-(NSArray *)allFields;
 
 @end

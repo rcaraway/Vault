@@ -12,7 +12,9 @@
 
 static RCPasswordManager * manager;
 
-@implementation RCPasswordManager
+@implementation RCPasswordManager{
+    NSMutableArray * mutablePasswords;
+}
 
 +(void)initialize
 {
@@ -22,6 +24,15 @@ static RCPasswordManager * manager;
 +(RCPasswordManager *)defaultManager
 {
     return manager;
+}
+
+-(id)init
+{
+    self = super.init;
+    if (self){
+        mutablePasswords = [NSMutableArray new];
+    }
+    return self;
 }
 
 -(void)setMasterPassword:(NSString *)masterPassword
@@ -39,9 +50,41 @@ static RCPasswordManager * manager;
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] && [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY].length > 0;
 }
 
--(NSArray *)dataForTitle:(NSString *)title
+-(void)addPassword:(RCPassword *)password
 {
-    return @[];
+    [mutablePasswords addObject:password];
 }
+
+-(void)removePassword:(RCPassword *)password
+{
+    [mutablePasswords removeObject:password];
+}
+
+-(void)removePasswordAtIndex:(NSInteger)index
+{
+    [mutablePasswords removeObjectAtIndex:index];
+}
+
+-(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index
+{
+    [mutablePasswords insertObject:password atIndex:index];
+}
+
+-(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex
+{
+    RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
+    [mutablePasswords removeObjectAtIndex:passwordIndex];
+    [mutablePasswords insertObject:password atIndex:newIndex];
+}
+
+-(NSArray *)allTitles
+{
+    NSMutableArray * titles = [NSMutableArray new];
+    for (RCPassword * password in self.passwords) {
+        [titles addObject:password.title];
+    }
+    return titles;
+}
+
 
 @end

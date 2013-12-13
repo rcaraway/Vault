@@ -54,9 +54,42 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
 @synthesize state, addingCellState;
 @synthesize cellSnapshot, scrollingRate, movingTimer;
 
-- (void)scrollTable {
-    // Scroll tableview while touch point is on top or bottom part
 
+#pragma mark Class method
+
++ (JTTableViewGestureRecognizer *)gestureRecognizerWithTableView:(UITableView *)tableView delegate:(id)delegate {
+    JTTableViewGestureRecognizer *recognizer = [[JTTableViewGestureRecognizer alloc] init];
+    recognizer.delegate             = (id)delegate;
+    recognizer.tableView            = tableView;
+    recognizer.tableViewDelegate    = tableView.delegate;     // Assign the delegate before chaning the tableView's delegate
+    tableView.delegate              = recognizer;
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:recognizer action:@selector(pinchGestureRecognizer:)];
+    [tableView addGestureRecognizer:pinch];
+    pinch.delegate             = recognizer;
+    recognizer.pinchRecognizer = pinch;
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:recognizer action:@selector(panGestureRecognizer:)];
+    [tableView addGestureRecognizer:pan];
+    pan.delegate             = recognizer;
+    recognizer.panRecognizer = pan;
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:recognizer action:@selector(longPressGestureRecognizer:)];
+    [tableView addGestureRecognizer:longPress];
+    longPress.delegate              = recognizer;
+    recognizer.longPressRecognizer  = longPress;
+    
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer  alloc] initWithTarget:recognizer action:@selector(tapped:)];
+    [tableView addGestureRecognizer:tapGesture];
+    tapGesture.delegate = recognizer;
+    recognizer.tapGesture = tapGesture;
+    return recognizer;
+}
+
+
+- (void)scrollTable {
+    
+    // Scroll tableview while touch point is on top or bottom part
     CGPoint location        = CGPointZero;
     // Refresh the indexPath since it may change while we use a new offset
     location  = [self.longPressRecognizer locationInView:self.tableView];
@@ -519,9 +552,7 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
             }
         }
     }
-
-    // Check if addingIndexPath not exists, we don't want to
-    // alter the contentOffset of our scrollView
+    
     if (self.addingIndexPath && self.state == JTTableViewGestureRecognizerStateDragging) {
         self.addingRowHeight += scrollView.contentOffset.y * -1;
         [self.tableView reloadData];
@@ -561,37 +592,6 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
     return [[self class] instancesRespondToSelector:aSelector];
 }
 
-#pragma mark Class method
-
-+ (JTTableViewGestureRecognizer *)gestureRecognizerWithTableView:(UITableView *)tableView delegate:(id)delegate {
-    JTTableViewGestureRecognizer *recognizer = [[JTTableViewGestureRecognizer alloc] init];
-    recognizer.delegate             = (id)delegate;
-    recognizer.tableView            = tableView;
-    recognizer.tableViewDelegate    = tableView.delegate;     // Assign the delegate before chaning the tableView's delegate
-    tableView.delegate              = recognizer;
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:recognizer action:@selector(pinchGestureRecognizer:)];
-    [tableView addGestureRecognizer:pinch];
-    pinch.delegate             = recognizer;
-    recognizer.pinchRecognizer = pinch;
-
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:recognizer action:@selector(panGestureRecognizer:)];
-    [tableView addGestureRecognizer:pan];
-    pan.delegate             = recognizer;
-    recognizer.panRecognizer = pan;
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:recognizer action:@selector(longPressGestureRecognizer:)];
-    [tableView addGestureRecognizer:longPress];
-    longPress.delegate              = recognizer;
-    recognizer.longPressRecognizer  = longPress;
-    
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer  alloc] initWithTarget:recognizer action:@selector(tapped:)];
-    [tableView addGestureRecognizer:tapGesture];
-    tapGesture.delegate = recognizer;
-    recognizer.tapGesture = tapGesture;
-
-    return recognizer;
-}
 
 
 @end

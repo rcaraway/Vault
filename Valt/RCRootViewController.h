@@ -10,6 +10,7 @@
 @class RCPasscodeViewController;
 @class RCListViewController;
 @class RCSingleViewController;
+@class RCPassword;
 
 @interface RCRootViewController : RCViewController
 
@@ -19,6 +20,7 @@
 
 -(void)launchList;
 -(void)launchSingle;
+-(void)launchSingleWithPassword:(RCPassword *)password;
 -(void)launchPasscode;
 
 @end

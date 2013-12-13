@@ -8,6 +8,9 @@
 
 #import "RCViewController.h"
 
-@interface RCSingleViewController : RCViewController
+@class RCPassword;
+@interface RCSingleViewController : UITableViewController
 
+
+-(id)initWithPassword:(RCPassword *)password;
 @end

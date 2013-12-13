@@ -11,6 +11,7 @@
 @interface RCTableViewCell : UITableViewCell
 
 @property(nonatomic, strong) UITextField * textField;
+
 -(void)setFocused;
 -(void)removeFocus;
 -(void)setRedColored;

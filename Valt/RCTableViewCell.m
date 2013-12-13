@@ -33,12 +33,16 @@
     if (self.textField.text.length > 0){
         CGFloat width = [self.textField.text sizeWithFont:self.textField.font constrainedToSize:CGSizeMake(self.frame.size.width, self.frame.size.height)].width;
         [self.textField setFrame:CGRectMake(self.textField.frame.origin.x, self.textField.frame.origin.y, width+10, self.textField.frame.size.height)];
-        if (!separator){
-            separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-            separator.backgroundColor = [UIColor colorWithWhite:.85 alpha:1];
-            [self addSubview:separator];
+    }else{
+        if (self.textField.placeholder.length > 0){
+            CGFloat width = [self.textField.placeholder sizeWithFont:self.textField.font constrainedToSize:CGSizeMake(self.frame.size.width, self.frame.size.height)].width;
+            [self.textField setFrame:CGRectMake(self.textField.frame.origin.x, self.textField.frame.origin.y, width+10, self.textField.frame.size.height)];
         }
-
+    }
+    if (!separator){
+        separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
+        separator.backgroundColor = [UIColor colorWithWhite:.85 alpha:1];
+        [self addSubview:separator];
     }
 }
 
