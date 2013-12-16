@@ -9,7 +9,6 @@
 #import "RCSingleViewController.h"
 #import "JTTableViewGestureRecognizer.h"
 #import "JTTransformableTableViewCell.h"
-#import "UIColor+JTGestureBasedTableViewHelper.h"
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCDropDownCell.h"
@@ -17,6 +16,7 @@
 #import "UIColor+RCColors.h"
 #import "UIImage+memoIcons.h"
 #import "RCAppDelegate.h"
+#import "RCCredentialGestureManager.h"
 #import "RCRootViewController.h"
 
 #define ADDING_CELL @"Continue..."
@@ -27,16 +27,18 @@
 #define TITLE_CELL_HEIGHT 60
 
 
-@interface RCSingleViewController ()<JTTableViewGestureEditingRowDelegate, JTTableViewGestureAddingRowDelegate, JTTableViewGestureMoveRowDelegate>
+@interface RCSingleViewController ()<RCCredentialGestureManagerDelegate, UITextFieldDelegate>
 
-@property (nonatomic, strong) JTTableViewGestureRecognizer *tableViewRecognizer;
+@property (nonatomic, strong) RCCredentialGestureManager * gestureManager;
 @property(nonatomic, strong) NSMutableArray * credentials;
+@property(nonatomic, strong) NSMutableArray * textFields;
 @property(nonatomic) NSInteger addCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
 @property(nonatomic, strong) RCPassword * password;
 @property (nonatomic, strong) id grabbedObject;
 
 @end
+
 
 @implementation RCSingleViewController
 
@@ -60,23 +62,6 @@
     return self;
 }
 
--(void)publishChangesToPassword
-{
-    NSMutableArray * extraFields = [NSMutableArray new];
-    for (int i = 0; i < self.credentials.count; i++) {
-        NSString * field = self.credentials[i];
-        if (i == 0){
-            self.password.title = field;
-        }else if (i == 1){
-            self.password.username = field;
-        }else if (i == 2){
-            self.password.password = field;
-        }else{
-            [extraFields addObject:field];
-        }
-    }
-    self.password.extraFields = extraFields;
-}
 
 
 #pragma mark - View LifeCycle
@@ -85,13 +70,38 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
-    self.tableViewRecognizer = [self.tableView enableGestureTableViewWithDelegate:self];
+    self.gestureManager = [[RCCredentialGestureManager alloc] initWithTableView:self.tableView delegate:self];
     [self setupTableView];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self setAllTextFieldDelegates];
+    [self launchKeyboardIfNeeded];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)launchKeyboardIfNeeded
+{
+    if (self.credentials.count == 0 || (self.credentials.count > 0 && [self.credentials[0] isEqualToString:@""])){
+        RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [cell.textField becomeFirstResponder];
+    }
 }
 
 
@@ -123,41 +133,37 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = self.credentials.count;
-    if (count < 3){
-        count = 3;
+    if (count < 5){
+        count = 5;
+        self.addCellIndex = 4;
+    }else if (count == 6){
+        self.addCellIndex = 5;
+    }else{
+        self.addCellIndex = NSNotFound;
     }
-    if (self.addCellIndex != NSNotFound)
-        count++;
     return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == self.addCellIndex) {
-        JTTransformableTableViewCell *cell = nil;
-        if (indexPath.row == 0) {
-            cell = [self pullDownCell];
-            return cell;
-        } else {
-            cell = [self foldingCell];
-            return cell;
-        }
-    } else {
-        NSInteger adjustedRow = indexPath.row - (self.addCellIndex == NSNotFound?0:1);
-        NSString *object = [self stringForIndexPath:indexPath];
-        if (adjustedRow == 0){
-            static NSString *cellIdentifier = @"MyCell";
-            RCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-            cell.textField.text = (NSString *)object;
-            cell.textField.placeholder = @"Email or Username";
-            [cell setFocused];
-            return cell;
+    NSInteger adjustedRow = indexPath.row;;
+    NSString *object = [self stringForIndexPath:indexPath];
+    if (adjustedRow == 0){
+        static NSString *cellIdentifier = @"MyCell";
+        RCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        cell.textField.text = (NSString *)object;
+        cell.textField.placeholder = @"Title";
+        [cell setFocused];
+        return cell;
+    }else{
+        static NSString * cellId = @"DropDownCell";
+        RCDropDownCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
+        if (indexPath.row == self.addCellIndex){
+            [cell setAddMoreState];
         }else{
-            static NSString * cellId = @"DropDownCell";
-            RCDropDownCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-            [cell setTitle:object placeHolder:[self placeholderForIndexPath:indexPath]];
-            return cell;
+             [cell setTitle:object placeHolder:[self placeholderForIndexPath:indexPath]];
         }
+        return cell;
     }
 }
 
@@ -169,115 +175,122 @@
 }
 
 
-#pragma mark Adding
+#pragma mark - Gesture Manager
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsAddRowAtIndexPath:(NSIndexPath *)indexPath
+-(BOOL)gestureManagerShouldAllowEditingAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.credentials insertObject:ADDING_CELL atIndex:indexPath.row];
-    self.addCellIndex = indexPath.row;
-}
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsCommitRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.credentials replaceObjectAtIndex:indexPath.row withObject:@"Added!"];
-    JTTransformableTableViewCell *cell = (id)[gestureRecognizer.tableView cellForRowAtIndexPath:indexPath];
-    
-    if ([cell isKindOfClass:[JTTransformableTableViewCell class]]){
-        BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
-        if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 2) {
-            [self.credentials removeObjectAtIndex:indexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
-        }
-        else {
-            cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
-            cell.imageView.image = nil;
-            cell.textLabel.text = @"Just Added!";
-        }
-    }
-}
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsDiscardRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.credentials removeObjectAtIndex:indexPath.row];
-    self.addCellIndex = NSNotFound;
-}
-
--(void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer didTapRowAtIndexPath:(NSIndexPath *)path atLocation:(CGPoint)location
-{
-    if (path.row == 0){
-        [self publishChangesToPassword];
-        [[APP rootController] launchList];
-    }
-}
-
--(void)gestureRecognizerDidTapOutsideRows:(JTTableViewGestureRecognizer *)gestureRecognizer
-{
-    [self.credentials addObject:@""];
-    [self.tableView reloadData];
-}
-
-
-#pragma mark JTTableViewGestureEditingRowDelegate
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer didEnterEditingState:(JTTableViewCellEditingState)state forRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCTableViewCell *cell = (RCTableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[RCTableViewCell class]]){
-        switch (state) {
-            case JTTableViewCellEditingStateMiddle:
-                [cell removeFocus];
-                break;
-            case JTTableViewCellEditingStateRight:
-                break;
-            default:
-                [cell setRedColored];
-                break;
-        }
-    }
-}
-
-- (BOOL)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row >= 3){
+    if (indexPath.row >= 4){
         return YES;
     }
     return NO;
 }
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer commitEditingState:(JTTableViewCellEditingState)state forRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableView *tableView = gestureRecognizer.tableView;
-    
-    [tableView beginUpdates];
-    
-    if (state == JTTableViewCellEditingStateLeft) {
-        // An example to discard the cell at JTTableViewCellEditingStateLeft
-        [self.credentials removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    } else if (state == JTTableViewCellEditingStateRight) {
-        // An example to retain the cell at commiting at JTTableViewCellEditingStateRight
-    
-    } else {
-        // JTTableViewCellEditingStateMiddle shouldn't really happen in
-        // - [JTTableViewGestureDelegate gestureRecognizer:commitEditingState:forRowAtIndexPath:]
-    }
-    [tableView endUpdates];
-    
-    // Row color needs update after datasource changes, reload it.
-    [tableView performSelector:@selector(reloadVisibleRowsExceptIndexPath:) withObject:indexPath afterDelay:JTTableViewRowAnimationDuration];
+-(void)gestureManager:(RCCredentialGestureManager *)gestureManager needsNewRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.credentials addObject:@""];
 }
 
+-(void)gestureManagerDidTapOutsideRows:(RCCredentialGestureManager *)manager
+{
+    [self goBackToList];
+}
 
-#pragma mark JTTableViewGestureMoveRowDelegate
-
-- (BOOL)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+-(BOOL)gestureManagerShouldAllowNewCellAtBottom:(RCCredentialGestureManager *)gestureManager
+{
+    if ([self.tableView numberOfRowsInSection:0] <= 6){
+        return YES;
+    }
     return NO;
 }
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsCreatePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+-(void)gestureManager:(RCCredentialGestureManager *)gestureManager didMoveToDeletionState:(BOOL)deletionState atIndexPath:(NSIndexPath *)indexPath
+{
+    if (deletionState){
+        //deletionState
+    }else{
+        //no deletion state
+    }
 }
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsMoveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-}
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+-(void)gestureManager:(RCCredentialGestureManager *)gestureManager needsDeletionAtIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 
+#pragma mark - State Updating/Handling
+
+-(void)publishChangesToPassword
+{
+    NSMutableArray * extraFields = [NSMutableArray new];
+    for (int i = 0; i < self.credentials.count; i++) {
+        NSString * field = self.credentials[i];
+        if (i == 0){
+            self.password.title = field;
+        }else if (i == 1){
+            self.password.username = field;
+        }else if (i == 2){
+            self.password.password = field;
+        }else if (i == 3){
+            self.password.urlName = field;
+        }else {
+            [extraFields addObject:field];
+        }
+    }
+    self.password.extraFields = extraFields;
+}
+
+-(void)setAllTextFieldDelegates
+{
+    NSInteger count = [self.tableView numberOfRowsInSection:0];
+    self.textFields = [NSMutableArray new];
+    for (int i = 0; i < count; i++) {
+        NSIndexPath * path = [NSIndexPath indexPathForRow:i inSection:0];
+        if (i == 0){
+            RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+            [self.textFields addObject:cell.textField];
+            cell.textField.delegate = self;
+        }else{
+            RCDropDownCell * cell= (RCDropDownCell *)[self.tableView cellForRowAtIndexPath:path];
+            [self.textFields addObject:cell.textField];
+            cell.textField.delegate = self;
+        }
+    }
+}
+
+-(void)goBackToList
+{
+    [[APP rootController] launchList];
+    [self publishChangesToPassword];
+    NSLog(@"PASSWORD %@", self.password);
+}
+
+
+#pragma mark - Text Field Delegate
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSInteger index = [self.textFields indexOfObject:textField];
+    if (index <= 2){
+        [self.textFields[index+1] becomeFirstResponder];
+    }else{
+        [textField resignFirstResponder];
+    }
+    return YES;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == self.textFields[0]){
+         [textField setFrame:CGRectMake(12, 0, 320, 60)];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    NSInteger index = [self.textFields indexOfObject:textField];
+    [self.credentials replaceObjectAtIndex:index withObject:textField.text];
+}
 
 #pragma mark - Table Convenience
 
@@ -296,64 +309,19 @@
 -(NSString *)placeholderForIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
-        case 0:
+        case 1:
             return @"Email or Username";
             break;
-        case 1:
+        case 2:
             return @"Password";
             break;
-        case 2:
+        case 3:
             return @"URL";
             break;
         default:
-            return [NSString stringWithFormat:@"Notes %d", indexPath.row];
+            return [NSString stringWithFormat:@"More Notes %d", indexPath.row];
             break;
     }
-}
-
--(JTTransformableTableViewCell *)pullDownCell
-{
-    NSString *cellIdentifier = nil;
-    JTTransformableTableViewCell *cell = nil;
-    UIColor *backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
-    cellIdentifier = @"PullDownTableViewCell";
-    if (cell == nil) {
-        cell = [JTTransformableTableViewCell transformableTableViewCellWithStyle:JTTransformableTableViewCellStylePullDown
-                                                                 reuseIdentifier:cellIdentifier];
-    }
-    cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;
-    cell.tintColor = backgroundColor;
-    if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT) {
-        cell.textLabel.text = @"Release to Create Item";
-    } else {
-        cell.textLabel.text = @"Pull to Create Item";
-    }
-    cell.contentView.backgroundColor = [UIColor clearColor];
-    return cell;
-}
-
--(JTTransformableTableViewCell *)foldingCell
-{
-    NSString *cellIdentifier = nil;
-    JTTransformableTableViewCell *cell = nil;
-    UIColor *backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
-    cellIdentifier = @"UnfoldingTableViewCell";
-    if (cell == nil) {
-        cell = [JTTransformableTableViewCell transformableTableViewCellWithStyle:JTTransformableTableViewCellStyleUnfolding
-                                                                 reuseIdentifier:cellIdentifier];
-        cell.textLabel.adjustsFontSizeToFitWidth = YES;
-        cell.textLabel.textColor = [UIColor blackColor];
-    }
-    
-    cell.tintColor = backgroundColor;
-    cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;
-    if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT) {
-        cell.textLabel.text = @"Release to Create Item";
-    } else {
-        cell.textLabel.text = @"Pinch Apart to Create Item";
-    }
-    cell.contentView.backgroundColor = [UIColor clearColor];
-    return cell;
 }
 
 

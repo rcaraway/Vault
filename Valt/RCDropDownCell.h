@@ -13,5 +13,6 @@
 @property(nonatomic, strong) UITextField * textField;
 
 -(void)setTitle:(NSString *)title placeHolder:(NSString *)placeHolder;
+-(void)setAddMoreState;
 
 @end

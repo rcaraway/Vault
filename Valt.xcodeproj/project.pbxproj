@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */; };
+		D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */; };
 		D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B018576B6500D687F8 /* Foundation.framework */; };
 		D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B218576B6500D687F8 /* CoreGraphics.framework */; };
 		D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B418576B6500D687F8 /* UIKit.framework */; };
@@ -69,6 +71,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D20E9AB7185B4E4E00F56013 /* RCCredentialGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCredentialGestureManager.h; sourceTree = "<group>"; };
+		D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCredentialGestureManager.m; sourceTree = "<group>"; };
+		D20E9ABA185B9C0100F56013 /* RCListGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCListGestureManager.h; sourceTree = "<group>"; };
+		D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCListGestureManager.m; sourceTree = "<group>"; };
 		D21717AD18576B6500D687F8 /* Valt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717B018576B6500D687F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D21717B218576B6500D687F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -422,6 +428,10 @@
 				D21C000C1858F8A70017F0F9 /* RCTableViewCell.m */,
 				D21C000E1858F8B90017F0F9 /* RCDropDownCell.h */,
 				D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */,
+				D20E9AB7185B4E4E00F56013 /* RCCredentialGestureManager.h */,
+				D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */,
+				D20E9ABA185B9C0100F56013 /* RCListGestureManager.h */,
+				D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -539,12 +549,14 @@
 				D217180E1857723700D687F8 /* AnimationDelegate.m in Sources */,
 				D217181C1857727F00D687F8 /* CollapseClickCell.m in Sources */,
 				D217183E18577CB900D687F8 /* RCPasswordBuilder.m in Sources */,
+				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
 				D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */,
 				D2171804185771FB00D687F8 /* IQActionSheetPickerView.m in Sources */,
 				D21718271857746400D687F8 /* RCListViewController.m in Sources */,
 				D21718211857738D00D687F8 /* RCViewController.m in Sources */,
+				D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */,
 				D217183718577A2100D687F8 /* RCPasswordManager.m in Sources */,
 				D21718311857789E00D687F8 /* PDKeychainBindings.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,

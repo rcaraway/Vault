@@ -93,6 +93,7 @@
     self.textField = [[UITextField  alloc] initWithFrame:CGRectMake(12,0, 320, 60)];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.placeholder = @"Login Title";
+    self.textField.returnKeyType = UIReturnKeyNext;
     self.textLabel.adjustsFontSizeToFitWidth = YES;
     [self.contentView addSubview:self.textField];
 }

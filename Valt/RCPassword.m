@@ -15,6 +15,10 @@
     self = super.init;
     if (self){
         self.extraFields = [NSMutableArray new];
+        self.title = @"";
+        self.username = @"";
+        self.password = @"";
+        self.urlName = @"";
     }
     return self;
 }
@@ -31,10 +35,18 @@
     if (self.password){
         [allFields addObject:self.password];
     }
+    if (self.urlName){
+        [allFields addObject:self.urlName];
+    }
     if (self.extraFields && self.extraFields.count > 0){
         [allFields addObjectsFromArray:self.extraFields];
     }
     return allFields;
+}
+
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Passwrod %@, URL %@, Extra Fields %@", self.title, self.username, self.password, self.urlName, self.extraFields];
 }
 
 @end
