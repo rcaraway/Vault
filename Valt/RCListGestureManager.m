@@ -101,13 +101,12 @@ typedef enum {
 
 -(void)didPinch
 {
-    if (self.pinchGesture.state == UIGestureRecognizerStateEnded || [self.pinchGesture numberOfTouches] < 2) {
+    if (self.pinchGesture.state == UIGestureRecognizerStateEnded || self.pinchGesture.numberOfTouches < 2) {
         if (self.pendingPath) {
             [self determineFateOfPendingCell];
         }
         return;
-    }
-    if (self.pinchGesture.state == UIGestureRecognizerStateBegan){
+    } else if (self.pinchGesture.state == UIGestureRecognizerStateBegan){
         self.state = RCListGestureManagerStatePinching;
         lastPinchOrigin = [self upperPinchPoint];
         self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.frame.size.height, 0, self.tableView.frame.size.height, 0);
@@ -131,21 +130,19 @@ typedef enum {
 
 -(void)didPan
 {
-    NSIndexPath * indexPath = [self panGesturePath];
     if ((self.panGesture.state == UIGestureRecognizerStateBegan
          || self.panGesture.state == UIGestureRecognizerStateChanged)
         && [self.panGesture numberOfTouches] > 0) {
+         NSIndexPath * indexPath = [self panGesturePath];
         self.state = RCListGestureManagerStatePanning;
         [self translateCellAtIndexPath:indexPath];
         [self determinePanStateForIndexPath:indexPath];
     }else if (self.panGesture.state == UIGestureRecognizerStateEnded){
+        NSIndexPath * indexPath = self.pendingPath;
         self.pendingPath = nil;
-        [self determinePanStateForIndexPath:indexPath];
-        if (self.panState == RCListGestureManagerPanStateMiddle){
-            [self handleFinalStateForIndexPath:indexPath];
-            self.panState = RCListGestureManagerPanStateMiddle;
-            self.state = RCListGestureManagerStateNone;
-        }
+        [self handleFinalStateForIndexPath:indexPath];
+        self.panState = RCListGestureManagerPanStateMiddle;
+        self.state = RCListGestureManagerStateNone;
     }
 }
 
@@ -377,8 +374,8 @@ typedef enum {
         picView.transform = CGAffineTransformMakeScale(1.1, 1.1);
         picView.center = CGPointMake(self.tableView.center.x, location.y);
     }];
-    [self.tableView reloadData];
     [self.delegate gestureManager:self needsPlaceholderRowAtIndexPath:indexPath];
+    [self.tableView reloadData];
     self.pendingPath = indexPath;
     [self attachTimerToHandleScrolling];
 }
@@ -407,13 +404,12 @@ typedef enum {
     return cellImage;
 }
 
-
 -(void)handleFinalStateForIndexPath:(NSIndexPath *)indexPath
 {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
         [self.delegate gestureManager:self didFinishWithState:self.panState forIndexPath:indexPath];
-    }else if (self.panState != RCListGestureManagerPanStateMiddle){
+    }else{
         [self resetCellToCenterAtIndexPath:indexPath];
     }
 }
@@ -442,12 +438,15 @@ typedef enum {
     }
 }
 
--(NSIndexPath *)panGesturePath{
-    CGPoint location1 = [self.panGesture locationOfTouch:0 inView:self.tableView];
-    NSIndexPath *indexPath = self.pendingPath;
-    if (!indexPath) {
-        indexPath = [self.tableView indexPathForRowAtPoint:location1];
-        self.pendingPath = indexPath;
+-(NSIndexPath *)panGesturePath
+{
+    if (self.panGesture.numberOfTouches > 0){
+        CGPoint location1 = [self.panGesture locationOfTouch:0 inView:self.tableView];
+        NSIndexPath *indexPath = self.pendingPath;
+        if (!indexPath) {
+            indexPath = [self.tableView indexPathForRowAtPoint:location1];
+            self.pendingPath = indexPath;
+        }
     }
     return self.pendingPath;
 }
@@ -469,8 +468,9 @@ typedef enum {
 
 -(CGPoint)upperPinchPoint
 {
-    CGPoint location1 = [self.longPress locationOfTouch:0 inView:self.tableView];
-    CGPoint location2 = [self.longPress locationOfTouch:1 inView:self.tableView];
+    NSLog(@"NUMBER OF TOUCHES %d", self.longPress.numberOfTouches);
+    CGPoint location1 = [self.pinchGesture locationOfTouch:0 inView:self.tableView];
+    CGPoint location2 = [self.pinchGesture locationOfTouch:1 inView:self.tableView];
     CGPoint upperPoint = location1.y < location2.y ? location1 : location2;
     return upperPoint;
 }
@@ -495,7 +495,7 @@ typedef enum {
         }
     }
     if (self.pendingPath && self.state == RCListGestureManagerStateDragging){
-        self.pendingRowHeight += fabsf(self.tableView.contentOffset.y);
+        self.pendingRowHeight += self.tableView.contentOffset.y * -1;
         [self.tableView reloadData];
         [self.tableView setContentOffset:CGPointZero];
     }

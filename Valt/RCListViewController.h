@@ -8,9 +8,9 @@
 
 #import "RCViewController.h"
 
-
+@class RCPassword;
 @interface RCListViewController : UITableViewController <UISearchBarDelegate>
 
-@property(nonatomic, strong) UISearchBar * searchBar;
+-(void)removePassword:(RCPassword *)password;
 
 @end

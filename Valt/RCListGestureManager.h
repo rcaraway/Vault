@@ -20,6 +20,7 @@ typedef enum{
 
 -(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
 -(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath;
+-(void)resetCellToCenterAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCTableViewCell : UITableViewCell
+@interface RCTitleViewCell : UITableViewCell
 
 @property(nonatomic, strong) UITextField * textField;
 

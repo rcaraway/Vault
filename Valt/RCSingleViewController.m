@@ -12,7 +12,7 @@
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCDropDownCell.h"
-#import "RCTableViewCell.h"
+#import "RCTitleViewCell.h"
 #import "UIColor+RCColors.h"
 #import "UIImage+memoIcons.h"
 #import "RCAppDelegate.h"
@@ -58,6 +58,7 @@
         self.addCellIndex = NSNotFound;
         self.dummyCellIndex = NSNotFound;
         self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
+        NSLog(@"CREDENTIALS %@", self.credentials);
     }
     return self;
 }
@@ -99,7 +100,7 @@
 -(void)launchKeyboardIfNeeded
 {
     if (self.credentials.count == 0 || (self.credentials.count > 0 && [self.credentials[0] isEqualToString:@""])){
-        RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         [cell.textField becomeFirstResponder];
     }
 }
@@ -111,12 +112,11 @@
 {
     self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     self.tableView.allowsSelection = NO;
-    [self.tableView registerClass:[RCTableViewCell class] forCellReuseIdentifier:@"MyCell"];
+    [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[RCDropDownCell class] forCellReuseIdentifier:@"DropDownCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
 }
-
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -126,7 +126,8 @@
 
 #pragma mark - TableView Delegate/DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
@@ -150,7 +151,7 @@
     NSString *object = [self stringForIndexPath:indexPath];
     if (adjustedRow == 0){
         static NSString *cellIdentifier = @"MyCell";
-        RCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        RCTitleViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.textField.text = (NSString *)object;
         cell.textField.placeholder = @"Title";
         [cell setFocused];
@@ -247,7 +248,7 @@
     for (int i = 0; i < count; i++) {
         NSIndexPath * path = [NSIndexPath indexPathForRow:i inSection:0];
         if (i == 0){
-            RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+            RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:path];
             [self.textFields addObject:cell.textField];
             cell.textField.delegate = self;
         }else{
@@ -260,9 +261,22 @@
 
 -(void)goBackToList
 {
-    [[APP rootController] launchList];
-    [self publishChangesToPassword];
-    NSLog(@"PASSWORD %@", self.password);
+    [self.view endEditing:YES];
+   [self publishChangesToPassword];
+    if ([self passwordContainsNoData]){
+        [[APP rootController] returnToListAndRemovePassword:self.password];
+    }else{
+         [[APP rootController] launchList];   
+    }
+}
+
+-(BOOL)passwordContainsNoData
+{
+    for (NSString * credential in self.credentials) {
+        if (credential.length > 0)
+            return NO;
+    }
+    return YES;
 }
 
 
@@ -297,7 +311,7 @@
 -(NSString *)stringForIndexPath:(NSIndexPath *)indexPath
 {
     NSString * string;
-    NSInteger adjustedRow = indexPath.row - (self.addCellIndex == NSNotFound?0:1);
+    NSInteger adjustedRow = indexPath.row;
     if (self.credentials.count > adjustedRow){
         string = self.credentials[adjustedRow];
     }else{

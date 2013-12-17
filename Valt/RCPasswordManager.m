@@ -62,7 +62,7 @@ static RCPasswordManager * manager;
 
 -(void)removePasswordAtIndex:(NSInteger)index
 {
-    if (index && mutablePasswords.count > index){
+    if (mutablePasswords.count > index){
          [mutablePasswords removeObjectAtIndex:index];
     }
 }
@@ -77,6 +77,11 @@ static RCPasswordManager * manager;
     RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
     [mutablePasswords removeObjectAtIndex:passwordIndex];
     [mutablePasswords insertObject:password atIndex:newIndex];
+}
+
+-(NSArray *)passwords
+{
+    return [NSArray arrayWithArray:mutablePasswords];
 }
 
 -(NSArray *)allTitles

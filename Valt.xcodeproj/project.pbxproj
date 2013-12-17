@@ -55,9 +55,11 @@
 		D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00021858A25F0017F0F9 /* UILabel+RCLabels.m */; };
 		D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00051858A2CC0017F0F9 /* UITextField+RCTextFields.m */; };
 		D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00081858EA430017F0F9 /* UIColor+RCColors.m */; };
-		D21C000D1858F8A70017F0F9 /* RCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000C1858F8A70017F0F9 /* RCTableViewCell.m */; };
+		D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000C1858F8A70017F0F9 /* RCTitleViewCell.m */; };
 		D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */; };
 		D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */; };
+		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
+		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,12 +157,16 @@
 		D21C00051858A2CC0017F0F9 /* UITextField+RCTextFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+RCTextFields.m"; sourceTree = "<group>"; };
 		D21C00071858EA430017F0F9 /* UIColor+RCColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RCColors.h"; sourceTree = "<group>"; };
 		D21C00081858EA430017F0F9 /* UIColor+RCColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RCColors.m"; sourceTree = "<group>"; };
-		D21C000B1858F8A70017F0F9 /* RCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableViewCell.h; sourceTree = "<group>"; };
-		D21C000C1858F8A70017F0F9 /* RCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableViewCell.m; sourceTree = "<group>"; };
+		D21C000B1858F8A70017F0F9 /* RCTitleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTitleViewCell.h; sourceTree = "<group>"; };
+		D21C000C1858F8A70017F0F9 /* RCTitleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTitleViewCell.m; sourceTree = "<group>"; };
 		D21C000E1858F8B90017F0F9 /* RCDropDownCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDropDownCell.h; sourceTree = "<group>"; };
 		D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDropDownCell.m; sourceTree = "<group>"; };
 		D21C0012185A00D30017F0F9 /* UIImage+memoIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+memoIcons.h"; sourceTree = "<group>"; };
 		D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+memoIcons.m"; sourceTree = "<group>"; };
+		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
+		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
+		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
+		D2D87C951860C05300FD8FE9 /* RCMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +367,8 @@
 				D21718291857748800D687F8 /* RCRootViewController.m */,
 				D217182B1857750100D687F8 /* RCSingleViewController.h */,
 				D217182C1857750100D687F8 /* RCSingleViewController.m */,
+				D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */,
+				D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -424,14 +432,16 @@
 		D21C000A1858F8910017F0F9 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D21C000B1858F8A70017F0F9 /* RCTableViewCell.h */,
-				D21C000C1858F8A70017F0F9 /* RCTableViewCell.m */,
+				D21C000B1858F8A70017F0F9 /* RCTitleViewCell.h */,
+				D21C000C1858F8A70017F0F9 /* RCTitleViewCell.m */,
 				D21C000E1858F8B90017F0F9 /* RCDropDownCell.h */,
 				D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */,
 				D20E9AB7185B4E4E00F56013 /* RCCredentialGestureManager.h */,
 				D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */,
 				D20E9ABA185B9C0100F56013 /* RCListGestureManager.h */,
 				D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */,
+				D2D87C941860C05300FD8FE9 /* RCMainCell.h */,
+				D2D87C951860C05300FD8FE9 /* RCMainCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -554,6 +564,7 @@
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
 				D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */,
 				D2171804185771FB00D687F8 /* IQActionSheetPickerView.m in Sources */,
+				D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */,
 				D21718271857746400D687F8 /* RCListViewController.m in Sources */,
 				D21718211857738D00D687F8 /* RCViewController.m in Sources */,
 				D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */,
@@ -572,8 +583,9 @@
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
 				D21717F91857717600D687F8 /* NormalCircle.m in Sources */,
+				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
-				D21C000D1858F8A70017F0F9 /* RCTableViewCell.m in Sources */,
+				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,
 				D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */,
 				D21718101857723700D687F8 /* FlipView.m in Sources */,
