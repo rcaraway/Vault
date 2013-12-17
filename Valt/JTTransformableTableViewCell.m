@@ -15,36 +15,41 @@
 
 @implementation JTUnfoldingTableViewCell
 
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self setupEverything];
         
-        // Initialization code
-        CATransform3D transform = CATransform3DIdentity;
-        transform.m34 = -1/500.f;
-        [self.contentView.layer setSublayerTransform:transform];
-        
-        self.transformable1HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-        [self.transformable1HalfView.layer setAnchorPoint:CGPointMake(0.5, 0.0)];
-        [self.transformable1HalfView setClipsToBounds:YES];
-        [self.contentView addSubview:self.transformable1HalfView];
-        
-        self.transformable2HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-        [self.transformable2HalfView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
-        [self.transformable2HalfView setClipsToBounds:YES];
-        [self.contentView addSubview:self.transformable2HalfView];
-        
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        self.textLabel.autoresizingMask = UIViewAutoresizingNone;
-        self.textLabel.backgroundColor = [UIColor clearColor];
-        self.detailTextLabel.autoresizingMask = UIViewAutoresizingNone;
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];
-        
-        self.tintColor = [UIColor whiteColor];
     }
     return self;
+}
+
+-(void)setupEverything
+{
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34 = -1/500.f;
+    [self.contentView.layer setSublayerTransform:transform];
+    
+    self.transformable1HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+    [self.transformable1HalfView.layer setAnchorPoint:CGPointMake(0.5, 0.0)];
+    [self.transformable1HalfView setClipsToBounds:YES];
+    [self.contentView addSubview:self.transformable1HalfView];
+    
+    self.transformable2HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+    [self.transformable2HalfView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
+    [self.transformable2HalfView setClipsToBounds:YES];
+    [self.contentView addSubview:self.transformable2HalfView];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    self.textLabel.autoresizingMask = UIViewAutoresizingNone;
+    self.textLabel.backgroundColor = [UIColor clearColor];
+    self.detailTextLabel.autoresizingMask = UIViewAutoresizingNone;
+    self.detailTextLabel.backgroundColor = [UIColor clearColor];
+    
+    self.tintColor = [UIColor whiteColor];
 }
 
 -(void)setupTextField

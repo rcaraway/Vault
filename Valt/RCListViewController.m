@@ -18,7 +18,8 @@
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
 #import "UIImage+memoIcons.h"
-
+#import "RCListGestureManager.h"
+#import "JTTransformableTableViewCell.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -26,8 +27,9 @@
 #define COMMITING_CREATE_CELL_HEIGHT 60
 #define NORMAL_CELL_FINISHING_HEIGHT 60
 
-@interface RCListViewController ()<JTTableViewGestureEditingRowDelegate, JTTableViewGestureAddingRowDelegate, JTTableViewGestureMoveRowDelegate>
+@interface RCListViewController ()<JTTableViewGestureEditingRowDelegate, JTTableViewGestureAddingRowDelegate, JTTableViewGestureMoveRowDelegate, RCListGestureManagerDelegate>
 @property (nonatomic, strong) JTTableViewGestureRecognizer *tableViewRecognizer;
+@property(nonatomic, strong) RCListGestureManager * gestureManager;
 @property(nonatomic) BOOL addingNewPassword;
 @property(nonatomic) NSInteger dummyCellIndex;
 @property (nonatomic, strong) id grabbedObject;
@@ -56,7 +58,7 @@
     self.clearsSelectionOnViewWillAppear = YES;
     self.addingNewPassword = NO;
     self.dummyCellIndex = NSNotFound;
-    self.tableViewRecognizer = [self.tableView enableGestureTableViewWithDelegate:self];
+    self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self setupTableView];
     [self setupSearchBar];
@@ -75,7 +77,8 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     self.tableView.allowsSelection = NO;
     [self.tableView registerClass:[RCTableViewCell class] forCellReuseIdentifier:@"MyCell"];
-    [self.tableView registerClass:[RCDropDownCell class] forCellReuseIdentifier:@"DropDownCell"];
+    [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
+    [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
 }
@@ -123,7 +126,8 @@
 
 #pragma mark - TableView Delegate/DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
@@ -140,14 +144,13 @@
     if (self.addingNewPassword) {
         JTTransformableTableViewCell *cell = nil;
         if (indexPath.row == 0) {
-            cell = [self pullDownCell];
+            cell = [self pullDownCellForIndexPath:indexPath];
             return cell;
         } else {
-            cell = [self foldingCell];
+            cell = [self foldingCellForIndexPath:indexPath];
             return cell;
         }
-    } else {
-        
+    } else{
         NSString *object;
         if (self.addingNewPassword)
             object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row-1];
@@ -171,16 +174,37 @@
 
 #pragma mark UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return NORMAL_CELL_FINISHING_HEIGHT;
 }
 
 
-#pragma mark JTTableViewGestureAddingRowDelegate
+#pragma mark Gesture Management
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsAddRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)gestureManager:(RCListGestureManager *)manager needsNewRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
+    self.addingNewPassword = YES;
+}
+
+-(void)gestureManager:(RCListGestureManager *)manager needsFinishedNewRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RCPassword * password = [[RCPassword alloc] init];
+    [[RCPasswordManager defaultManager] addPassword:password atIndex:indexPath.row];
+    JTTransformableTableViewCell * cell = (JTTransformableTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isMemberOfClass:[JTTransformableTableViewCell class]]){
+        BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
+        if (isFirstCell) {
+            if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 2){
+                self.addingNewPassword = NO;
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+            }else if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT)
+            {
+                cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+    }
 }
 
 - (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsCommitRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -204,21 +228,22 @@
     }
 }
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsDiscardRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)gestureManager:(RCListGestureManager *)manager needsRemovalOfRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [[RCPasswordManager defaultManager] removePasswordAtIndex:indexPath.row];
 }
 
--(void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer didTapRowAtIndexPath:(NSIndexPath *)path atLocation:(CGPoint)location
+-(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.tableView cellForRowAtIndexPath:path] isMemberOfClass:[RCTableViewCell class]]){
-        RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+    if ([[self.tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[RCTableViewCell class]]){
+        RCTableViewCell * cell = (RCTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [cell setFocused];
-        RCPassword * password = [[RCPasswordManager defaultManager] passwords][path.row];
+        RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         [[APP rootController] launchSingleWithPassword:password];
     }
 }
 
--(void)gestureRecognizerDidTapOutsideRows:(JTTableViewGestureRecognizer *)gestureRecognizer
+-(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager
 {
     RCPassword * password = [[RCPassword alloc] init];
     [[RCPasswordManager defaultManager] addPassword:password];
@@ -226,16 +251,15 @@
 }
 
 
-#pragma mark JTTableViewGestureEditingRowDelegate
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer didEnterEditingState:(JTTableViewCellEditingState)state forRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)gestureManager:(RCListGestureManager *)manager didChangeToState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath
+{
     RCTableViewCell *cell = (RCTableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[RCTableViewCell class]]){
         switch (state) {
-            case JTTableViewCellEditingStateMiddle:
+            case RCListGestureManagerPanStateMiddle:
                 [cell removeFocus];
                 break;
-            case JTTableViewCellEditingStateRight:
+            case RCListGestureManagerPanStateRight:
                 //TODO: add browser show
                 break;
             default:
@@ -245,64 +269,49 @@
     }
 }
 
-
-// This is needed to be implemented to let our delegate choose whether the panning gesture should work
-- (BOOL)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer commitEditingState:(JTTableViewCellEditingState)state forRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableView *tableView = gestureRecognizer.tableView;
+-(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath
+{
+    UITableView *tableView = self.gestureManager.tableView;
     [tableView beginUpdates];
-    if (state == JTTableViewCellEditingStateLeft) {
+    if (state == RCListGestureManagerPanStateLeft) {
         [[RCPasswordManager defaultManager] removePasswordAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     } else if (state == JTTableViewCellEditingStateRight) {
         //TODO: web browser
     } else {
+        
     }
     [tableView endUpdates];
-    
-    // Row color needs update after datasource changes, reload it.
-    [tableView performSelector:@selector(reloadVisibleRowsExceptIndexPath:) withObject:indexPath afterDelay:JTTableViewRowAnimationDuration];
+    [self.gestureManager reloadAllRowsExceptIndexPath:indexPath];
 }
 
-
-#pragma mark JTTableViewGestureMoveRowDelegate
-
-- (BOOL)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsCreatePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)gestureManager:(RCListGestureManager *)manager needsPlaceholderRowAtIndexPath:(NSIndexPath *)indexPath
+{
     self.grabbedObject = [[RCPasswordManager defaultManager] allTitles][indexPath.row];
     self.dummyCellIndex = indexPath.row;
 }
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsMoveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+-(void)gestureManager:(RCListGestureManager *)manager needsRowMovedAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)updatedPath
 {
-    [[RCPasswordManager defaultManager] movePasswordAtIndex:sourceIndexPath.row toNewIndex:destinationIndexPath.row];
+    [[RCPasswordManager defaultManager] movePasswordAtIndex:indexPath.row toNewIndex:updatedPath.row];
 }
 
-- (void)gestureRecognizer:(JTTableViewGestureRecognizer *)gestureRecognizer needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
 }
 
 
+
 #pragma mark - Table Convenience
 
--(JTTransformableTableViewCell *)pullDownCell
+-(JTTransformableTableViewCell *)pullDownCellForIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = nil;
-    JTTransformableTableViewCell *cell = nil;
     UIColor *backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
     cellIdentifier = @"PullDownTableViewCell";
-    if (cell == nil) {
-        cell = [JTTransformableTableViewCell transformableTableViewCellWithStyle:JTTransformableTableViewCellStylePullDown
-                                                                 reuseIdentifier:cellIdentifier];
-    }
+    JTPullDownTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;
     cell.tintColor = backgroundColor;
     if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT) {
@@ -314,18 +323,14 @@
     return cell;
 }
 
--(JTTransformableTableViewCell *)foldingCell
+-(JTTransformableTableViewCell *)foldingCellForIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = nil;
-    JTTransformableTableViewCell *cell = nil;
     UIColor *backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
     cellIdentifier = @"UnfoldingTableViewCell";
-    if (cell == nil) {
-        cell = [JTTransformableTableViewCell transformableTableViewCellWithStyle:JTTransformableTableViewCellStyleUnfolding
-                                                                 reuseIdentifier:cellIdentifier];
-        cell.textLabel.adjustsFontSizeToFitWidth = YES;
-        cell.textLabel.textColor = [UIColor blackColor];
-    }
+    JTUnfoldingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    cell.textLabel.textColor = [UIColor blackColor];
     
     cell.tintColor = backgroundColor;
     cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;

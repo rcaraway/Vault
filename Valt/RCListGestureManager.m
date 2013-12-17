@@ -25,7 +25,7 @@ typedef enum {
     BOOL shouldCallReplaceIndexPath;
 }
 
-@property(nonatomic, weak) UITableView * tableView;
+
 @property(nonatomic, weak) id delegate;
 @property(nonatomic, weak) id<UITableViewDelegate> tableViewDelegate;
 
@@ -163,6 +163,14 @@ typedef enum {
 
 #pragma mark - State Handling
 
+-(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray * array = [[self.tableView indexPathsForVisibleRows] mutableCopy];
+    [array removeObject:indexPath];
+    [self.tableView reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+}
+
+
 -(void)adjustScrollDuringLongPress
 {
     [self adjustTableYOffset];
@@ -188,7 +196,7 @@ typedef enum {
         [self.tableView beginUpdates];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.pendingPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.delegate gestureManager:self needsRowMovedAtIndexPath:indexPath];
+        [self.delegate gestureManager:self needsRowMovedAtIndexPath:self.pendingPath toIndexPath:indexPath];
         self.pendingPath = indexPath;
         [self.tableView endUpdates];
     }
@@ -283,6 +291,7 @@ typedef enum {
 
 -(void)createCellFromPendingPath
 {
+    [self.delegate gestureManager:self needsFinishedNewRowAtIndexPath:self.pendingPath];
     self.pendingPath = nil;
 }
 
@@ -332,7 +341,7 @@ typedef enum {
         [self.tableView beginUpdates];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.delegate gestureManager:self needsPlaceholderRowAtIndexPath:indexPath];
+        [self.delegate gestureManager:self needsReplacePlaceholderForRowAtIndexPath:indexPath];
         [self.tableView endUpdates];
         [self reloadAllRowsExceptIndexPath:indexPath];
         self.pendingPath = nil;
@@ -486,7 +495,7 @@ typedef enum {
         }
     }
     if (self.pendingPath && self.state == RCListGestureManagerStateDragging){
-        self.pendingRowHeight = fabsf(self.tableView.contentOffset.y);
+        self.pendingRowHeight += fabsf(self.tableView.contentOffset.y);
         [self.tableView reloadData];
         [self.tableView setContentOffset:CGPointZero];
     }
@@ -539,11 +548,5 @@ typedef enum {
     return YES;
 }
 
--(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath
-{
-    NSMutableArray * array = [[self.tableView indexPathsForVisibleRows] mutableCopy];
-    [array removeObject:indexPath];
-    [self.tableView reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
-}
 
 @end

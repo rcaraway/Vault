@@ -16,8 +16,10 @@ typedef enum{
 
 @interface RCListGestureManager : NSObject <UITableViewDelegate>
 
--(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
+@property(nonatomic, weak) UITableView * tableView;
 
+-(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
+-(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -27,8 +29,10 @@ typedef enum{
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager;
 -(void)gestureManager:(RCListGestureManager *)manager needsNewRowAtIndexPath:(NSIndexPath *)indexPath;
--(void)gestureManager:(RCListGestureManager *)manager needsRowMovedAtIndexPath:(NSIndexPath *)indexPath;
+-(void)gestureManager:(RCListGestureManager *)manager needsRowMovedAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)updatedPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsPlaceholderRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)gestureManager:(RCListGestureManager *)manager needsFinishedNewRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsRemovalOfRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager didChangeToState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;

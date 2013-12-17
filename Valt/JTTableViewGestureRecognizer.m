@@ -622,7 +622,8 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
 
 #pragma mark Helper methods
 
-- (void)reloadVisibleRowsExceptIndexPath:(NSIndexPath *)indexPath {
+- (void)reloadVisibleRowsExceptIndexPath:(NSIndexPath *)indexPath
+{
     NSMutableArray *visibleRows = [[self indexPathsForVisibleRows] mutableCopy];
     [visibleRows removeObject:indexPath];
     [self reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
