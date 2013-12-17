@@ -21,10 +21,13 @@
 @property(nonatomic, strong) RCSearchViewController * searchController;
 @property(nonatomic, strong) UISearchBar * searchBar;
 
--(void)launchList;
--(void)returnToListAndRemovePassword:(RCPassword *)password;
--(void)launchSingle;
--(void)launchSingleWithPassword:(RCPassword *)password;
 -(void)launchPasscode;
+-(void)moveFromPasscodeToList;
+-(void)moveFromListToPasscode;
+-(void)returnToListAndRemovePassword:(RCPassword *)password;
+-(void)returnToListFromSingle;
+-(void)launchSingleWithPassword:(RCPassword *)password;
+-(void)moveFromListToSearch;
+-(void)moveFromSearchToList;
 
 @end

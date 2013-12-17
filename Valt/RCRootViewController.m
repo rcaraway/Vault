@@ -12,6 +12,15 @@
 #import "RCSingleViewController.h"
 #import "RCPasswordManager.h"
 #import "UIColor+RCColors.h"
+#import "RCSearchViewController.h"
+
+@interface RCRootView : UIView
+@end
+
+@implementation RCRootView
+@end
+
+
 
 @interface RCRootViewController ()
 
@@ -63,51 +72,75 @@
         }
     }
     [self addChildViewController:self.passcodeController];
-    [self.view addSubview:self.passcodeController.view];
 }
 
+-(void)moveFromPasscodeToList
+{
+    self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    [self addChildViewController:self.listController];
+    [self.passcodeController removeFromParentViewController];
+}
+
+-(void)moveFromListToPasscode
+{
+    self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
+    [self addChildViewController:self.passcodeController];
+    [self.listController removeFromParentViewController];
+}
 
 -(void)launchSingleWithPassword:(RCPassword *)password
 {
     self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
     [self addChildViewController:self.singleController];
-    [self.view addSubview:self.singleController.view];
-}
-
--(void)launchList
-{
-    [self discardPasscode];
-    [self discardSingle];
-    if (!self.listController){
-        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    }else{
-        [self.listController.tableView reloadData];
-    }
-    [self addChildViewController:self.listController];
-    [self.view addSubview:self.listController.view];
+    [self.listController removeFromParentViewController];
 }
 
 -(void)returnToListAndRemovePassword:(RCPassword *)password
 {
-    [self discardSingle];
     if (!self.listController){
         self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
     }else{
         [self.listController.tableView reloadData];
     }
     [self addChildViewController:self.listController];
-    [self.view addSubview:self.listController.view];
+    [self.singleController removeFromParentViewController];
     [self.listController removePassword:password];
 }
 
--(void)launchSingle
+-(void)moveFromListToSearch
 {
+    if (!self.searchController){
+        self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
+    }
+    [self addChildViewController:self.searchController];
     [self.listController removeFromParentViewController];
-    [self.listController.view removeFromSuperview];
-    self.singleController = [[RCSingleViewController alloc] initWithNibName:nil bundle:nil];
-    [self addChildViewController:self.singleController];
-    [self.view addSubview:self.singleController.view];
 }
+
+-(void)returnToListFromSingle
+{
+    if (!self.listController){
+        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    }
+    [self addChildViewController:self.listController];
+    [self.singleController removeFromParentViewController];
+}
+
+-(void)moveFromSearchToList
+{
+    if (!self.listController){
+        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    }
+    [self addChildViewController:self.listController];
+    [self.searchController removeFromParentViewController];
+}
+
+-(void)showSearch
+{
+    self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
+    [self addChildViewController:self.searchController];
+    [self showSearchAnimated:NO];
+}
+
 
 
 #pragma mark - Search Bar
@@ -118,11 +151,13 @@
     self.searchBar.delegate =self;
     self.searchBar.barTintColor = [UIColor cellUnselectedForeground];
     [self setSearchBarUnselected];
+    [self.view addSubview:self.searchBar];
 }
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [self setSearchBarSelected];
+    [self showSearch];
 }
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
@@ -145,6 +180,18 @@
     txfSearchField.textColor = [UIColor whiteColor];
     txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Vault" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
 }
+
+-(void)showSearchAnimated:(BOOL)animated
+{
+    [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
+    [self.view bringSubviewToFront:self.searchBar];
+}
+
+-(void)hideSearchAnimated:(BOOL)animated
+{
+    [self.searchBar setFrame:CGRectMake(0, -44, 320, 44)];
+}
+
 
 
 #pragma mark - Convenience

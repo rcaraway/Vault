@@ -56,6 +56,16 @@
     self.tableView.rowHeight = NORMAL_CELL_HEIGHT;
 }
 
+-(void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [parent.view addSubview:self.view];
+}
+
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [self.view removeFromSuperview];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (!self.searchFilter){

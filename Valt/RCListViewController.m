@@ -62,13 +62,6 @@
     [self setupTableView];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    if (!self.tableView.tableHeaderView){
-        self.tableView.tableHeaderView = [APP rootController].searchBar;
-    }
-}
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -78,6 +71,16 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [parent.view addSubview:self.view];
+}
+
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [self.view removeFromSuperview];
 }
 
 

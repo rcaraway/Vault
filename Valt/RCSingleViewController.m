@@ -58,11 +58,9 @@
         self.addCellIndex = NSNotFound;
         self.dummyCellIndex = NSNotFound;
         self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
-        NSLog(@"CREDENTIALS %@", self.credentials);
     }
     return self;
 }
-
 
 
 #pragma mark - View LifeCycle
@@ -96,6 +94,18 @@
 {
     [super didReceiveMemoryWarning];
 }
+
+-(void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [parent.view addSubview:self.view];
+}
+
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [self.view removeFromSuperview];
+}
+
+
 
 -(void)launchKeyboardIfNeeded
 {
@@ -266,7 +276,7 @@
     if ([self passwordContainsNoData]){
         [[APP rootController] returnToListAndRemovePassword:self.password];
     }else{
-         [[APP rootController] launchList];   
+         [[APP rootController] returnToListFromSingle];
     }
 }
 

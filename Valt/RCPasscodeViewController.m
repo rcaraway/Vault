@@ -57,6 +57,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [parent.view addSubview:self.view];
+}
+
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [self.view removeFromSuperview];
+}
+
 -(void)setupLockScreen
 {
     self.lockscreen = [[SPLockScreen  alloc] initWithDelegate:self];
@@ -183,7 +193,7 @@
     if (isNewUser){
         [[RCPasswordManager defaultManager] setMasterPassword:self.numberField.text];
     }
-    [[APP rootController] launchList];
+    [[APP rootController] moveFromPasscodeToList];
 }
 
 -(void)setConfirmMode
