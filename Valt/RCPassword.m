@@ -10,6 +10,11 @@
 
 @implementation RCPassword
 
++(BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+    return YES;
+}
+
 -(id)init
 {
     self = super.init;
@@ -46,7 +51,22 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Passwrod %@, URL %@, Extra Fields %@", self.title, self.username, self.password, self.urlName, self.extraFields];
+    return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Password %@, URL %@, Extra Fields %@", self.title, self.username, self.password, self.urlName, self.extraFields];
+}
+
+-(BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:[RCPassword class]]){
+        return NO;
+    }
+    RCPassword * password = object;
+    if (password == self)return YES;
+    if ([self.title isEqualToString:password.title] &&
+        [self.username isEqualToString:password.username] &&
+        [self.password isEqualToString:password.password] &&
+        [self.urlName isEqualToString:password.urlName])
+        return YES;
+    return NO;
 }
 
 @end

@@ -9,10 +9,22 @@
 #define MASTER_PASSWORD_KEY @"kMasterPasswordKey"
 
 #import "RCPasswordManager.h"
+#import "PDKeychainBindings.h"
+#import <objc/runtime.h>
+
+#define STORED_TITLE_COUNT @"STORED_TITLE_COUNT"
+#define STORED_TITLE_PREFIX @"STORED_TITLE_"
+#define STORED_PASSWORD_PREFIX @"STORED_PASSWORD_"
+#define STORED_EMAIL_PREFIX @"STORE_EMAIL_"
+#define STORED_URL_PREFIX @"STORED_URL_"
+#define STORED_NOTES1_PREFIX @"STORED_NOTES1_"
+#define STORED_NOTES2_PREFIX @"STORED_NOTES2_"
+
 
 static RCPasswordManager * manager;
 
-@implementation RCPasswordManager{
+@implementation RCPasswordManager
+{
     NSMutableArray * mutablePasswords;
 }
 
@@ -30,7 +42,10 @@ static RCPasswordManager * manager;
 {
     self = super.init;
     if (self){
-        mutablePasswords = [NSMutableArray new];
+        if ([self anyLoginsExist]){
+            [self constructPasswordsFromKeychain];
+        }else
+            mutablePasswords = [NSMutableArray new];
     }
     return self;
 }
@@ -45,6 +60,11 @@ static RCPasswordManager * manager;
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
 }
 
+-(BOOL)anyLoginsExist
+{
+    return ![[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] isEqualToString:@""] && [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue] > 0;
+}
+
 -(BOOL)masterPasswordExists
 {
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] && [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY].length > 0;
@@ -53,30 +73,42 @@ static RCPasswordManager * manager;
 -(void)addPassword:(RCPassword *)password
 {
     [mutablePasswords addObject:password];
+    [self commitPasswordToKeyChain:password];
+    [self commitTotalToKeychain];
 }
 
 -(void)removePassword:(RCPassword *)password
 {
     [mutablePasswords removeObject:password];
+    [self deletePasswordFromKeychain:password];
+    [self commitTotalToKeychain];
 }
 
 -(void)removePasswordAtIndex:(NSInteger)index
 {
     if (mutablePasswords.count > index){
-         [mutablePasswords removeObjectAtIndex:index];
+        RCPassword * password = mutablePasswords[index];
+        [mutablePasswords removeObjectAtIndex:index];
+        [self deletePasswordFromKeychain:password];
+        [self commitTotalToKeychain];
     }
 }
 
 -(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index
 {
     [mutablePasswords insertObject:password atIndex:index];
+    [self commitAllPasswordsToKeyChain];
+    [self commitTotalToKeychain];
 }
 
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex
 {
-    RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
-    [mutablePasswords removeObjectAtIndex:passwordIndex];
-    [mutablePasswords insertObject:password atIndex:newIndex];
+    if (passwordIndex != newIndex && newIndex < mutablePasswords.count){
+        RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
+        [mutablePasswords removeObjectAtIndex:passwordIndex];
+        [mutablePasswords insertObject:password atIndex:newIndex];
+        [self commitAllPasswordsToKeyChain];
+    }
 }
 
 -(NSArray *)passwords
@@ -93,5 +125,100 @@ static RCPasswordManager * manager;
     return titles;
 }
 
+
+
+#pragma mark - Keychain
+
+-(void)constructPasswordsFromKeychain
+{
+    NSInteger count = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
+    NSMutableArray * passwords = [NSMutableArray arrayWithCapacity:count];
+    for (int i = 0; i < count; i++) {
+        RCPassword * rcPassword = [[RCPassword alloc] init];
+        NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, i];
+        NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, i];
+        NSString * passwordIndex = [NSString stringWithFormat:@"%@%d", STORED_PASSWORD_PREFIX, i];
+        NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, i];
+        NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, i];
+        NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, i];
+        rcPassword.title = [[PDKeychainBindings sharedKeychainBindings] stringForKey:titleIndex];
+        rcPassword.username = [[PDKeychainBindings sharedKeychainBindings] stringForKey:nameIndex];
+        rcPassword.urlName = [[PDKeychainBindings sharedKeychainBindings] stringForKey:urlIndex];
+        rcPassword.password = [[PDKeychainBindings sharedKeychainBindings] stringForKey:passwordIndex];
+        NSString * notes1 = [[PDKeychainBindings sharedKeychainBindings] stringForKey:notes1Index];
+        NSString * notes2 = [[PDKeychainBindings sharedKeychainBindings] stringForKey:notes2Index];
+        if (notes1)[rcPassword.extraFields addObject:notes1];
+        if (notes2)[rcPassword.extraFields addObject:notes2];
+        [passwords addObject:rcPassword];
+    }
+    mutablePasswords = passwords;
+}
+
+-(void)commitAllPasswordsToKeyChain
+{
+    for (RCPassword * password in mutablePasswords) {
+        NSInteger index = [mutablePasswords indexOfObject:password];
+        NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, index];
+        NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, index];
+        NSString * passwordIndex = [NSString stringWithFormat:@"%@%d", STORED_PASSWORD_PREFIX, index];
+        NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, index];
+        NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
+        NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.title forKey:titleIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.username forKey:nameIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.password forKey:passwordIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.urlName forKey:urlIndex];
+        if (password.extraFields.count > 0){
+            [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[0] forKey:notes1Index];
+        }
+        if (password.extraFields.count > 1){
+            [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[1] forKey:notes2Index];
+        }
+    }
+}
+
+-(void)commitPasswordToKeyChain:(RCPassword *)password
+{
+    NSInteger index = [mutablePasswords indexOfObject:password];
+    NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, index];
+    NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, index];
+    NSString * passwordIndex = [NSString stringWithFormat:@"%@%d", STORED_PASSWORD_PREFIX, index];
+    NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, index];
+    NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
+    NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.title forKey:titleIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.username forKey:nameIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.password forKey:passwordIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.urlName forKey:urlIndex];
+    if (password.extraFields.count > 0){
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[0] forKey:notes1Index];
+    }
+    if (password.extraFields.count > 1){
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[1] forKey:notes2Index];
+    }
+}
+
+-(void)deletePasswordFromKeychain:(RCPassword *)password
+{
+    NSInteger index = [mutablePasswords indexOfObject:password];
+    NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, index];
+    NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, index];
+    NSString * passwordIndex = [NSString stringWithFormat:@"%@%d", STORED_PASSWORD_PREFIX, index];
+    NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, index];
+    NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
+    NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:titleIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:nameIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:passwordIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:urlIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes1Index];
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes2Index];
+}
+
+-(void)commitTotalToKeychain
+{
+    NSString * totalString = [NSString stringWithFormat:@"%d", mutablePasswords.count];
+    [[PDKeychainBindings sharedKeychainBindings] setString:totalString forKey:STORED_TITLE_COUNT];
+}
 
 @end

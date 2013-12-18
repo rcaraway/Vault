@@ -97,15 +97,17 @@
 
 -(void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [parent.view addSubview:self.view];
+    if (parent == [APP rootController]){
+        RCRootViewController * rootVC = (RCRootViewController *)parent;
+        [rootVC hideSearchAnimated:YES];
+        [parent.view insertSubview:self.view belowSubview:rootVC.searchBar];
+    }
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent
 {
     [self.view removeFromSuperview];
 }
-
-
 
 -(void)launchKeyboardIfNeeded
 {
@@ -249,6 +251,7 @@
         }
     }
     self.password.extraFields = extraFields;
+    [[RCPasswordManager defaultManager] commitPasswordToKeyChain:self.password];
 }
 
 -(void)setAllTextFieldDelegates

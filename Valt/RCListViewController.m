@@ -75,14 +75,18 @@
 
 -(void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [parent.view addSubview:self.view];
+    if (parent == [APP rootController]){
+        RCRootViewController * rootVC = (RCRootViewController *)parent;
+        [rootVC showSearchAnimated:YES];
+        [self.view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
+        [rootVC.view insertSubview:self.view belowSubview:rootVC.searchBar];
+    }
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent
 {
     [self.view removeFromSuperview];
 }
-
 
 #pragma mark - View Setup
 

@@ -30,4 +30,7 @@
 -(void)moveFromListToSearch;
 -(void)moveFromSearchToList;
 
+-(void)showSearchAnimated:(BOOL)animated;
+-(void)hideSearchAnimated:(BOOL)animated;
+
 @end

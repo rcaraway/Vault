@@ -8,6 +8,8 @@
 
 #import "RCSearchViewController.h"
 #import "RCPasswordManager.h"
+#import "RCRootViewController.h"
+#import "RCAppDelegate.h"
 #import "RCPassword.h"
 #import "RCMainCell.h"
 
@@ -42,6 +44,7 @@
     [super viewDidLoad];
     self.extraCells = [@[ABOUT_NAME, LOCK_NAME, SPREAD_VAULT] mutableCopy];
     self.allTitles = [[[RCPasswordManager defaultManager] allTitles] mutableCopy];
+    [self setupTableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,12 +61,22 @@
 
 -(void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [parent.view addSubview:self.view];
+    if (parent == [APP rootController]){
+        RCRootViewController * rootVc = (RCRootViewController *)parent;
+        [rootVc showSearchAnimated:YES];
+        [self.view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
+        [rootVc.view insertSubview:self.view belowSubview:rootVc.searchBar];
+    }
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent
 {
     [self.view removeFromSuperview];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -77,15 +90,21 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RCMainCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    if (!self.searchFilter){
-        
+    if (indexPath.row == 0){
+        cell.textLabel.text = [NSString stringWithFormat:@"Add item titled \"%@\"", [APP rootController].searchBar.text];
+    }
+    else if (!self.searchFilter){
+        cell.textLabel.text = self.extraCells[indexPath.row-1];
     }else{
-        
+        cell.textLabel.text = self.searchFilter[indexPath.row-1];
     }
     return cell;
 }
 
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
 
 
 

@@ -20,6 +20,7 @@
 -(void)removePassword:(RCPassword *)password;
 -(void)removePasswordAtIndex:(NSInteger )index;
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
+-(void)commitPasswordToKeyChain:(RCPassword *)password;
 
 -(void)setMasterPassword:(NSString *)masterPassword;
 -(NSString *)masterPassword;

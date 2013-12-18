@@ -36,6 +36,7 @@
     [super viewDidLoad];
     [self setupSearchBar];
     [self launchPasscode];
+    self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,11 +53,6 @@
 -(BOOL)prefersStatusBarHidden
 {
     return NO;
-}
-
--(UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
 }
 
 
@@ -134,22 +130,14 @@
     [self.searchController removeFromParentViewController];
 }
 
--(void)showSearch
-{
-    self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
-    [self addChildViewController:self.searchController];
-    [self showSearchAnimated:NO];
-}
-
-
 
 #pragma mark - Search Bar
 
 -(void)setupSearchBar
 {
-    self.searchBar = [[UISearchBar  alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.searchBar = [[UISearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 0)];
     self.searchBar.delegate =self;
-    self.searchBar.barTintColor = [UIColor cellUnselectedForeground];
+    self.searchBar.barTintColor = [UIColor colorWithWhite:.9 alpha:1];
     [self setSearchBarUnselected];
     [self.view addSubview:self.searchBar];
 }
@@ -157,12 +145,26 @@
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [self setSearchBarSelected];
-    [self showSearch];
+    self.searchBar.showsCancelButton = YES;
+    [self moveFromListToSearch];
 }
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self setSearchBarUnselected];
+    
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self.searchController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    self.searchBar.showsCancelButton = NO;
+    [self.view endEditing:YES];
+    [self moveFromSearchToList];
 }
 
 -(void)setSearchBarSelected
@@ -183,15 +185,37 @@
 
 -(void)showSearchAnimated:(BOOL)animated
 {
-    [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
-    [self.view bringSubviewToFront:self.searchBar];
+    if (animated){
+        [UIView animateWithDuration:.22 animations:^{
+            [self showSearch];
+        }];
+    }else{
+        [self showSearch];
+    }
 }
 
 -(void)hideSearchAnimated:(BOOL)animated
 {
-    [self.searchBar setFrame:CGRectMake(0, -44, 320, 44)];
+    if (animated){
+        [UIView animateWithDuration:.22 animations:^{
+            [self hideSearch];
+        }];
+    }else{
+        [self hideSearch];
+    }
 }
 
+-(void)showSearch
+{
+    [self.view bringSubviewToFront:self.searchBar];
+    [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
+}
+
+-(void)hideSearch
+{
+    [self.view bringSubviewToFront:self.searchBar];
+    [self.searchBar setFrame:CGRectMake(0, 20, 320, 0)];
+}
 
 
 #pragma mark - Convenience
