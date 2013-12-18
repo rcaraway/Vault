@@ -7,6 +7,8 @@
 //
 
 #import "RCTitleViewCell.h"
+#import "HTAutocompleteTextField.h"
+#import "HTAutocompleteManager.h"
 #import "UIColor+RCColors.h"
 
 @implementation RCTitleViewCell
@@ -83,9 +85,11 @@
 
 -(void)setupTextField
 {
-    self.textField = [[UITextField  alloc] initWithFrame:CGRectMake(12,0, 320, 60)];
+    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(12,0, 320, 60)];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.placeholder = @"Login Title";
+    self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
+    self.textField.autocompleteType = RCAutocompleteTypeTitle;
     self.textField.returnKeyType = UIReturnKeyNext;
     self.textLabel.adjustsFontSizeToFitWidth = YES;
     [self.contentView addSubview:self.textField];

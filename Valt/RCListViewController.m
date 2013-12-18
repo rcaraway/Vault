@@ -20,6 +20,7 @@
 #import "UIImage+memoIcons.h"
 #import "RCListGestureManager.h"
 #import "JTTransformableTableViewCell.h"
+#import "HTAutocompleteTextField.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"

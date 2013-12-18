@@ -14,6 +14,7 @@
 #import "RCDropDownCell.h"
 #import "RCTitleViewCell.h"
 #import "UIColor+RCColors.h"
+#import "HTAutocompleteTextField.h"
 #import "UIImage+memoIcons.h"
 #import "RCAppDelegate.h"
 #import "RCCredentialGestureManager.h"

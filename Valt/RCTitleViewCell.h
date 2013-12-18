@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class HTAutocompleteTextField;
 @interface RCTitleViewCell : UITableViewCell
 
-@property(nonatomic, strong) UITextField * textField;
+@property(nonatomic, strong) HTAutocompleteTextField * textField;
 
 -(void)setFocused;
 -(void)removeFocus;

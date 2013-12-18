@@ -8,6 +8,8 @@
 
 #import "RCDropDownCell.h"
 #import "UIColor+RCColors.h"
+#import "HTAutocompleteTextField.h"
+#import "HTAutocompleteManager.h"
 
 @interface RCDropDownCell ()
 {
@@ -43,7 +45,9 @@
 
 -(void)setupTextField
 {
-    self.textField = [[UITextField  alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
+    self.textField.autocompleteType = RCAutocompleteTypeUsername;
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.returnKeyType = UIReturnKeyNext;
     self.textField.textColor = [UIColor blackColor];
@@ -67,6 +71,15 @@
 -(void)setTitle:(NSString *)title placeHolder:(NSString *)placeHolder
 {
     self.textField.placeholder = placeHolder;
+    if ([placeHolder isEqualToString:@"Password"]){
+        self.textField.autocompleteType = RCAutocompleteTypePassword;
+    }else if ([placeHolder isEqualToString:@"URL"]){
+        self.textField.autocompleteType = RCAutocompleteTypeURL;
+    }else if ([placeHolder isEqualToString:@"Email or Username"]){
+        self.textField.autocompleteType = RCAutocompleteTypeUsername;
+    }else{
+        self.textField.autocompleteType = RCAutoCompleteTypeNone;
+    }
     self.textField.text = title;
 }
 
@@ -78,6 +91,7 @@
 
 -(void)prepareForReuse
 {
+    self.textField.autocompleteType = RCAutocompleteTypeUsername;
     self.textField.placeholder = @"Notes";
     self.textField.text = @"";
     self.textField.alpha = 1;

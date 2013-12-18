@@ -42,10 +42,7 @@ static RCPasswordManager * manager;
 {
     self = super.init;
     if (self){
-        if ([self anyLoginsExist]){
-            [self constructPasswordsFromKeychain];
-        }else
-            mutablePasswords = [NSMutableArray new];
+        [self grantAccessToPasswords];
     }
     return self;
 }
@@ -125,6 +122,19 @@ static RCPasswordManager * manager;
     return titles;
 }
 
+-(void)lockPasswords
+{
+    [self commitAllPasswordsToKeyChain];
+    [mutablePasswords removeAllObjects];
+}
+
+-(void)grantAccessToPasswords
+{
+    if ([self anyLoginsExist]){
+        [self constructPasswordsFromKeychain];
+    }else
+        mutablePasswords = [NSMutableArray new];
+}
 
 
 #pragma mark - Keychain

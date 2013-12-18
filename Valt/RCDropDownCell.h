@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class HTAutocompleteTextField;
 
 @interface RCDropDownCell : UITableViewCell
 
-@property(nonatomic, strong) UITextField * textField;
+@property(nonatomic, strong) HTAutocompleteTextField * textField;
 
 -(void)setTitle:(NSString *)title placeHolder:(NSString *)placeHolder;
 -(void)setAddMoreState;

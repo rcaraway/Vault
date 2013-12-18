@@ -26,6 +26,9 @@
 -(NSString *)masterPassword;
 -(BOOL)masterPasswordExists;
 
+-(void)lockPasswords;
+-(void)grantAccessToPasswords;
+
 +(RCPasswordManager *)defaultManager;
 
 @end

@@ -60,6 +60,8 @@
 		D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
+		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
+		D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +169,10 @@
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
 		D2D87C951860C05300FD8FE9 /* RCMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainCell.m; sourceTree = "<group>"; };
+		D2D87C9818620EED00FD8FE9 /* HTAutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteTextField.h; sourceTree = "<group>"; };
+		D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteTextField.m; sourceTree = "<group>"; };
+		D2D87C9B18620F0000FD8FE9 /* HTAutocompleteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteManager.h; sourceTree = "<group>"; };
+		D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +280,7 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				D2D87C9718620E1900FD8FE9 /* HTAutocompleteTextField */,
 				D217184018577F7A00D687F8 /* AutoCoding */,
 				D217182E1857782200D687F8 /* KeychainDefaults */,
 				D21718121857727300D687F8 /* CollapseClick */,
@@ -455,6 +462,17 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		D2D87C9718620E1900FD8FE9 /* HTAutocompleteTextField */ = {
+			isa = PBXGroup;
+			children = (
+				D2D87C9B18620F0000FD8FE9 /* HTAutocompleteManager.h */,
+				D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */,
+				D2D87C9818620EED00FD8FE9 /* HTAutocompleteTextField.h */,
+				D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */,
+			);
+			name = HTAutocompleteTextField;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -585,12 +603,14 @@
 				D21717F91857717600D687F8 /* NormalCircle.m in Sources */,
 				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
+				D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */,
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,
 				D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */,
 				D21718101857723700D687F8 /* FlipView.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D217181A1857727F00D687F8 /* CollapseClick.m in Sources */,
+				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717FA1857717600D687F8 /* SPLine.m in Sources */,
