@@ -23,12 +23,17 @@
 
 -(void)launchPasscode;
 -(void)moveFromPasscodeToList;
--(void)moveFromListToPasscode;
+-(void)returnToPasscode;
 -(void)returnToListAndRemovePassword:(RCPassword *)password;
 -(void)returnToListFromSingle;
 -(void)launchSingleWithPassword:(RCPassword *)password;
 -(void)moveFromListToSearch;
 -(void)moveFromSearchToList;
+-(void)moveFromSearchToSingleWithPassword:(RCPassword *)password;
+-(void)launchAbout;
+-(void)launchPurchaseScreen;
+
+-(void)launchBrowserWithPassword:(RCPassword *)password;
 
 -(void)showSearchAnimated:(BOOL)animated;
 -(void)hideSearchAnimated:(BOOL)animated;

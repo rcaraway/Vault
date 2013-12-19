@@ -58,6 +58,16 @@
 		D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000C1858F8A70017F0F9 /* RCTitleViewCell.m */; };
 		D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */; };
 		D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */; };
+		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
+		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
+		D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4039186334B100104F1C /* RCPurchaseViewController.m */; };
+		D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27F403B186341EA00104F1C /* RCStoryboard.storyboard */; };
+		D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27F403D186343BF00104F1C /* PurchaseController.xib */; };
+		D27F4040186343CB00104F1C /* AboutController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27F403F186343CB00104F1C /* AboutController.xib */; };
+		D27F404318635E6700104F1C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F404218635E6700104F1C /* MessageUI.framework */; };
+		D27F404518635E7100104F1C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F404418635E7100104F1C /* Accounts.framework */; };
+		D27F4049186383EE00104F1C /* RCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4047186383EE00104F1C /* RCWebViewController.m */; };
+		D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27F4048186383EE00104F1C /* RCWebViewController.xib */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
@@ -165,6 +175,19 @@
 		D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDropDownCell.m; sourceTree = "<group>"; };
 		D21C0012185A00D30017F0F9 /* UIImage+memoIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+memoIcons.h"; sourceTree = "<group>"; };
 		D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+memoIcons.m"; sourceTree = "<group>"; };
+		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		D27F4035186333DD00104F1C /* RCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutViewController.h; sourceTree = "<group>"; };
+		D27F4036186333DD00104F1C /* RCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutViewController.m; sourceTree = "<group>"; };
+		D27F4038186334B100104F1C /* RCPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPurchaseViewController.h; sourceTree = "<group>"; };
+		D27F4039186334B100104F1C /* RCPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPurchaseViewController.m; sourceTree = "<group>"; };
+		D27F403B186341EA00104F1C /* RCStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RCStoryboard.storyboard; sourceTree = "<group>"; };
+		D27F403D186343BF00104F1C /* PurchaseController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseController.xib; path = ../PurchaseController.xib; sourceTree = "<group>"; };
+		D27F403F186343CB00104F1C /* AboutController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutController.xib; path = ../AboutController.xib; sourceTree = "<group>"; };
+		D27F404218635E6700104F1C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		D27F404418635E7100104F1C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		D27F4046186383EE00104F1C /* RCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCWebViewController.h; sourceTree = "<group>"; };
+		D27F4047186383EE00104F1C /* RCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCWebViewController.m; sourceTree = "<group>"; };
+		D27F4048186383EE00104F1C /* RCWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCWebViewController.xib; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
@@ -180,6 +203,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D27F404518635E7100104F1C /* Accounts.framework in Frameworks */,
+				D27F404318635E6700104F1C /* MessageUI.framework in Frameworks */,
+				D27F40341863310300104F1C /* Social.framework in Frameworks */,
 				D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */,
 				D21717B718576B6500D687F8 /* CoreData.framework in Frameworks */,
 				D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */,
@@ -223,6 +249,9 @@
 		D21717AF18576B6500D687F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D27F404418635E7100104F1C /* Accounts.framework */,
+				D27F404218635E6700104F1C /* MessageUI.framework */,
+				D27F40331863310300104F1C /* Social.framework */,
 				D21717B018576B6500D687F8 /* Foundation.framework */,
 				D21717B218576B6500D687F8 /* CoreGraphics.framework */,
 				D21717B418576B6500D687F8 /* UIKit.framework */,
@@ -235,6 +264,7 @@
 		D21717B818576B6500D687F8 /* Valt */ = {
 			isa = PBXGroup;
 			children = (
+				D27F4041186343D600104F1C /* Xibs */,
 				D21CFFFF18589F880017F0F9 /* View */,
 				D217183818577B2900D687F8 /* Model */,
 				D217181E1857736500D687F8 /* ViewControllers */,
@@ -244,6 +274,7 @@
 				D21717C418576B6500D687F8 /* Valt.xcdatamodeld */,
 				D21717E518576F7200D687F8 /* Vendor */,
 				D21717B918576B6500D687F8 /* Supporting Files */,
+				D27F403B186341EA00104F1C /* RCStoryboard.storyboard */,
 			);
 			path = Valt;
 			sourceTree = "<group>";
@@ -376,6 +407,13 @@
 				D217182C1857750100D687F8 /* RCSingleViewController.m */,
 				D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */,
 				D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */,
+				D27F4035186333DD00104F1C /* RCAboutViewController.h */,
+				D27F4036186333DD00104F1C /* RCAboutViewController.m */,
+				D27F4038186334B100104F1C /* RCPurchaseViewController.h */,
+				D27F4039186334B100104F1C /* RCPurchaseViewController.m */,
+				D27F4046186383EE00104F1C /* RCWebViewController.h */,
+				D27F4047186383EE00104F1C /* RCWebViewController.m */,
+				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -460,6 +498,15 @@
 				D21C000018589F8E0017F0F9 /* View Categories */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		D27F4041186343D600104F1C /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				D27F403F186343CB00104F1C /* AboutController.xib */,
+				D27F403D186343BF00104F1C /* PurchaseController.xib */,
+			);
+			name = Xibs;
 			sourceTree = "<group>";
 		};
 		D2D87C9718620E1900FD8FE9 /* HTAutocompleteTextField */ = {
@@ -552,9 +599,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */,
+				D27F4040186343CB00104F1C /* AboutController.xib in Resources */,
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
+				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
+				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,7 +631,9 @@
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
+				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
 				D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */,
+				D27F4049186383EE00104F1C /* RCWebViewController.m in Sources */,
 				D2171804185771FB00D687F8 /* IQActionSheetPickerView.m in Sources */,
 				D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */,
 				D21718271857746400D687F8 /* RCListViewController.m in Sources */,
@@ -612,6 +665,7 @@
 				D217181A1857727F00D687F8 /* CollapseClick.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
+				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717FA1857717600D687F8 /* SPLine.m in Sources */,
 				D21717EF1857710700D687F8 /* UIColor+JTGestureBasedTableViewHelper.m in Sources */,
@@ -742,6 +796,7 @@
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -758,6 +813,7 @@
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -22,6 +22,9 @@
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
 -(void)commitPasswordToKeyChain:(RCPassword *)password;
 
+
+-(RCPassword *)passwordForTitle:(NSString *)title;
+
 -(void)setMasterPassword:(NSString *)masterPassword;
 -(NSString *)masterPassword;
 -(BOOL)masterPasswordExists;

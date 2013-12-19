@@ -244,6 +244,15 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     } else if (state == JTTableViewCellEditingStateRight) {
         //TODO: web browser
+        RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
+        if (password.hasValidURL){
+            [[APP rootController] launchBrowserWithPassword:password];
+        }else{
+            //pop up, ask for a url to go to
+            //save it
+            //then go
+        }
+        
     } else {
         
     }

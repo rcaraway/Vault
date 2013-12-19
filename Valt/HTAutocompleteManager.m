@@ -140,7 +140,6 @@ static HTAutocompleteManager *sharedManager;
                       prefixes = [self urlPrefixes];
                       postFixes = [self urlPostFixes];
                   });
-    //check if no periods and typing a prefix
     return [self autoFilledFromList:autocompleteArray prefix:prefix ignoreCase:YES];
 }
 

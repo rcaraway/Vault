@@ -136,6 +136,15 @@ static RCPasswordManager * manager;
         mutablePasswords = [NSMutableArray new];
 }
 
+-(RCPassword *)passwordForTitle:(NSString *)title
+{
+    for (RCPassword * singlePass in mutablePasswords) {
+        if ([singlePass.title isEqualToString:title]){
+            return singlePass;
+        }
+    }
+    return nil;
+}
 
 #pragma mark - Keychain
 

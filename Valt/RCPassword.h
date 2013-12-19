@@ -19,4 +19,5 @@
 
 -(NSArray *)allFields;
 
+-(BOOL)hasValidURL;
 @end

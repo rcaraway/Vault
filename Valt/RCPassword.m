@@ -69,4 +69,14 @@
     return NO;
 }
 
+-(BOOL)hasValidURL
+{
+    NSURL * url = [NSURL URLWithString:self.urlName];
+    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    if ([NSURLConnection canHandleRequest:request]){
+        return YES;
+    }
+    return NO;
+}
+
 @end

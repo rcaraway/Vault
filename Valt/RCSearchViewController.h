@@ -10,7 +10,6 @@
 
 @interface RCSearchViewController : UITableViewController
 
-@property(nonatomic, strong) UISearchBar * searchBar;
-
+-(void)filterSearchWithText:(NSString *)filterstring;
 
 @end

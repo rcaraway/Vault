@@ -13,16 +13,15 @@
 #import "RCPasswordManager.h"
 #import "UIColor+RCColors.h"
 #import "RCSearchViewController.h"
-
-@interface RCRootView : UIView
-@end
-
-@implementation RCRootView
-@end
-
-
+#import "RCAboutViewController.h"
+#import "RCPurchaseViewController.h"
+#import "RCWebViewController.h"
 
 @interface RCRootViewController ()
+
+@property(nonatomic, strong) RCAboutViewController * aboutController;
+@property(nonatomic, strong) RCPurchaseViewController * purchaseController;
+@property(nonatomic, strong) RCWebViewController * webController;
 
 @end
 
@@ -75,6 +74,17 @@
     self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
+}
+
+-(void)returnToPasscode
+{
+    UIViewController * controller;
+    if (self.childViewControllers.count > 0)
+        controller = self.childViewControllers[0];
+    self.passcodeController = [[RCPasscodeViewController alloc] initWithNewUser:NO];
+    [self addChildViewController:self.passcodeController];
+    if (controller)
+        [controller removeFromParentViewController];
 }
 
 -(void)moveFromListToPasscode
@@ -130,6 +140,34 @@
     [self.searchController removeFromParentViewController];
 }
 
+-(void)moveFromSearchToSingleWithPassword:(RCPassword *)password
+{
+    self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
+    [self addChildViewController:self.singleController];
+    [self.searchController removeFromParentViewController];
+}
+
+-(void)launchAbout
+{
+    if (!self.aboutController){
+        self.aboutController = [[RCAboutViewController alloc] init];
+    }
+    [self presentViewController:self.aboutController animated:YES completion:nil];
+}
+
+-(void)launchPurchaseScreen
+{
+    if (!self.purchaseController){
+        self.purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+    }
+    [self presentViewController:self.purchaseController animated:YES completion:nil];
+}
+
+-(void)launchBrowserWithPassword:(RCPassword *)password
+{
+    self.webController = [[RCWebViewController alloc] initWithPassword:password];
+    [self presentViewController:self.webController animated:YES completion:nil];
+}
 
 #pragma mark - Search Bar
 
@@ -157,7 +195,7 @@
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self.searchController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.searchController filterSearchWithText:searchText];
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
