@@ -58,6 +58,7 @@
 		D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000C1858F8A70017F0F9 /* RCTitleViewCell.m */; };
 		D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */; };
 		D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */; };
+		D2254E4B1863C22D003590AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2254E4A1863C22D003590AF /* StoreKit.framework */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
 		D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4039186334B100104F1C /* RCPurchaseViewController.m */; };
@@ -175,6 +176,8 @@
 		D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDropDownCell.m; sourceTree = "<group>"; };
 		D21C0012185A00D30017F0F9 /* UIImage+memoIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+memoIcons.h"; sourceTree = "<group>"; };
 		D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+memoIcons.m"; sourceTree = "<group>"; };
+		D2254E4A1863C22D003590AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D2254E4C1863C712003590AF /* Valt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Valt.entitlements; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D27F4035186333DD00104F1C /* RCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutViewController.h; sourceTree = "<group>"; };
 		D27F4036186333DD00104F1C /* RCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutViewController.m; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 				D27F404518635E7100104F1C /* Accounts.framework in Frameworks */,
 				D27F404318635E6700104F1C /* MessageUI.framework in Frameworks */,
 				D27F40341863310300104F1C /* Social.framework in Frameworks */,
+				D2254E4B1863C22D003590AF /* StoreKit.framework in Frameworks */,
 				D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */,
 				D21717B718576B6500D687F8 /* CoreData.framework in Frameworks */,
 				D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */,
@@ -249,6 +253,7 @@
 		D21717AF18576B6500D687F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2254E4A1863C22D003590AF /* StoreKit.framework */,
 				D27F404418635E7100104F1C /* Accounts.framework */,
 				D27F404218635E6700104F1C /* MessageUI.framework */,
 				D27F40331863310300104F1C /* Social.framework */,
@@ -264,6 +269,7 @@
 		D21717B818576B6500D687F8 /* Valt */ = {
 			isa = PBXGroup;
 			children = (
+				D2254E4C1863C712003590AF /* Valt.entitlements */,
 				D27F4041186343D600104F1C /* Xibs */,
 				D21CFFFF18589F880017F0F9 /* View */,
 				D217183818577B2900D687F8 /* Model */,
@@ -570,6 +576,14 @@
 				TargetAttributes = {
 					D21717AC18576B6500D687F8 = {
 						DevelopmentTeam = Q4M3BRZY64;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					D21717CC18576B6500D687F8 = {
 						TestTargetID = D21717AC18576B6500D687F8;
@@ -789,6 +803,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Valt/Valt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -806,6 +821,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Valt/Valt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
