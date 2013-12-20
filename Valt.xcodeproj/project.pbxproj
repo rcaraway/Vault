@@ -59,6 +59,14 @@
 		D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C000F1858F8B90017F0F9 /* RCDropDownCell.m */; };
 		D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */; };
 		D2254E4B1863C22D003590AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2254E4A1863C22D003590AF /* StoreKit.framework */; };
+		D2254E5818648502003590AF /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E4F18648502003590AF /* icon-error.png */; };
+		D2254E5918648502003590AF /* icon-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5018648502003590AF /* icon-error@2x.png */; };
+		D2254E5A18648502003590AF /* icon-info.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5118648502003590AF /* icon-info.png */; };
+		D2254E5B18648502003590AF /* icon-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5218648502003590AF /* icon-info@2x.png */; };
+		D2254E5C18648502003590AF /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5318648502003590AF /* icon-success.png */; };
+		D2254E5D18648502003590AF /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5418648502003590AF /* icon-success@2x.png */; };
+		D2254E5E18648502003590AF /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2254E5618648502003590AF /* TWMessageBarManager.m */; };
+		D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5718648502003590AF /* TWMessageBarManager.podspec */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
 		D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4039186334B100104F1C /* RCPurchaseViewController.m */; };
@@ -178,6 +186,15 @@
 		D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+memoIcons.m"; sourceTree = "<group>"; };
 		D2254E4A1863C22D003590AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D2254E4C1863C712003590AF /* Valt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Valt.entitlements; sourceTree = "<group>"; };
+		D2254E4F18648502003590AF /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
+		D2254E5018648502003590AF /* icon-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error@2x.png"; sourceTree = "<group>"; };
+		D2254E5118648502003590AF /* icon-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info.png"; sourceTree = "<group>"; };
+		D2254E5218648502003590AF /* icon-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info@2x.png"; sourceTree = "<group>"; };
+		D2254E5318648502003590AF /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
+		D2254E5418648502003590AF /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
+		D2254E5518648502003590AF /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
+		D2254E5618648502003590AF /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
+		D2254E5718648502003590AF /* TWMessageBarManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TWMessageBarManager.podspec; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D27F4035186333DD00104F1C /* RCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutViewController.h; sourceTree = "<group>"; };
 		D27F4036186333DD00104F1C /* RCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutViewController.m; sourceTree = "<group>"; };
@@ -317,6 +334,7 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				D2254E4D18648502003590AF /* TWMessageManager */,
 				D2D87C9718620E1900FD8FE9 /* HTAutocompleteTextField */,
 				D217184018577F7A00D687F8 /* AutoCoding */,
 				D217182E1857782200D687F8 /* KeychainDefaults */,
@@ -506,6 +524,31 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		D2254E4D18648502003590AF /* TWMessageManager */ = {
+			isa = PBXGroup;
+			children = (
+				D2254E4E18648502003590AF /* Icons */,
+				D2254E5518648502003590AF /* TWMessageBarManager.h */,
+				D2254E5618648502003590AF /* TWMessageBarManager.m */,
+				D2254E5718648502003590AF /* TWMessageBarManager.podspec */,
+			);
+			name = TWMessageManager;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		D2254E4E18648502003590AF /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				D2254E4F18648502003590AF /* icon-error.png */,
+				D2254E5018648502003590AF /* icon-error@2x.png */,
+				D2254E5118648502003590AF /* icon-info.png */,
+				D2254E5218648502003590AF /* icon-info@2x.png */,
+				D2254E5318648502003590AF /* icon-success.png */,
+				D2254E5418648502003590AF /* icon-success@2x.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
 		D27F4041186343D600104F1C /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
@@ -613,10 +656,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2254E5D18648502003590AF /* icon-success@2x.png in Resources */,
 				D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */,
+				D2254E5818648502003590AF /* icon-error.png in Resources */,
+				D2254E5C18648502003590AF /* icon-success.png in Resources */,
+				D2254E5918648502003590AF /* icon-error@2x.png in Resources */,
 				D27F4040186343CB00104F1C /* AboutController.xib in Resources */,
+				D2254E5B18648502003590AF /* icon-info@2x.png in Resources */,
+				D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */,
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,
+				D2254E5A18648502003590AF /* icon-info.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
@@ -642,6 +692,7 @@
 				D217180E1857723700D687F8 /* AnimationDelegate.m in Sources */,
 				D217181C1857727F00D687F8 /* CollapseClickCell.m in Sources */,
 				D217183E18577CB900D687F8 /* RCPasswordBuilder.m in Sources */,
+				D2254E5E18648502003590AF /* TWMessageBarManager.m in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,

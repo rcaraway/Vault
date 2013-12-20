@@ -262,7 +262,7 @@ static HTAutocompleteManager *sharedManager;
              @"Campfire" : @"https://launchpad.37signals.com/campfire/signin",
              @"Sourceforge" : @"https://sourceforge.net/account/login.php",
              @"Bank Of America": @"https://www.bankofamerica.com/",
-             @"Regions Bank" : @"https://www.regions.com/",
+             @"Regions Bank" : @"https://m.regions.com",
              @"Capital One" : @"https://www.capitalone.com/",
              @"Ally Bank" : @"http://www.ally.com/",
              @"Wells Fargo" : @"https://www.wellsfargo.com/",

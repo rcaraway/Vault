@@ -11,6 +11,10 @@
 
 @interface RCWebViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *usernameField;
+@property (strong, nonatomic) IBOutlet UIButton *passwordButton;
+
+@property (strong, nonatomic) IBOutlet UIView *credentialView;
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
