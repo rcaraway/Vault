@@ -11,6 +11,7 @@
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
 #import <Parse/Parse.h>
+#import "NSString+Encryption.h"
 
 @implementation RCAppDelegate
 

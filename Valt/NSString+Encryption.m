@@ -7,41 +7,41 @@
 //
 
 #import "NSString+Encryption.h"
-#import <CommonCrypto/CommonCryptor.h>
+#import "RNEncryptor.h"
+#import "RNDecryptor.h"
+#import "NSData+Base64.h"
 
 @implementation NSString (Encryption)
 
 
 -(NSString *)stringByEncryptingWithKey:(NSString *)key
 {
-    // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char * keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
-    bzero( keyPtr, sizeof(keyPtr) ); // fill with zeroes (for padding)
-    
-    // fetch key data
-    [key getCString: keyPtr maxLength: sizeof(keyPtr) encoding: NSUTF8StringEncoding];
-    
-    // encrypts in-place, since this is a mutable data object
-    size_t numBytesEncrypted = 0;
-    NSMutableData * stringData = [[self dataUsingEncoding:[NSString defaultCStringEncoding]] mutableCopy];
-    CCCryptorStatus result = CCCrypt( kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
-                                     keyPtr, kCCKeySizeAES256,
-                                     NULL /* initialization vector (optional) */,
-                                     [stringData mutableBytes], [stringData length], /* input */
-                                     [stringData mutableBytes], [stringData length], /* output */
-                                     &numBytesEncrypted );
-    
-    if (result == kCCSuccess){
-        NSString * final = [[NSString  alloc] initWithData:stringData encoding:[NSString defaultCStringEncoding]];
-        NSLog(@"ENCRYPTED %@", final);
-        return final;
-    }
-    return nil;
+    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSData *encryptedData = [RNEncryptor encryptData:data
+                                        withSettings:kRNCryptorAES256Settings
+                                            password:key
+                                               error:&error];
+    NSString * string = [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
+    return string;
 }
 
 -(NSString *)stringByDecryptingWithKey:(NSString *)key
 {
-    
+    NSData * encryptedData = [NSData dataFromBase64String:self];
+    NSError *error;
+    NSData *decryptedData = [RNDecryptor decryptData:encryptedData
+                                        withPassword:key
+                                               error:&error];
+    NSString * string = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
+    return string;
 }
+
+-(NSData *)base64DecodedData
+{
+    return [self dataUsingEncoding:NSDataBase64Encoding76CharacterLineLength];
+}
+
+
 
 @end

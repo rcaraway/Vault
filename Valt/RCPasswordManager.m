@@ -10,7 +10,9 @@
 
 #import "RCPasswordManager.h"
 #import "PDKeychainBindings.h"
-#import "RCCryptography.h"
+#import "NSString+Encryption.h"
+
+#define MASTER_PASSWORD_ACCESS @"AbVxHzKQHdLmBsVVJb6yk3Pq" //WARNING: DO NOT CHANGE EVER
 
 #define STORED_TITLE_COUNT @"STORED_TITLE_COUNT"
 #define STORED_TITLE_PREFIX @"STORED_TITLE_"
@@ -49,13 +51,13 @@ static RCPasswordManager * manager;
 
 -(void)setMasterPassword:(NSString *)masterPassword
 {
-    NSString * encrypted = encryptString(masterPassword);
+    NSString * encrypted = [masterPassword stringByEncryptingWithKey:MASTER_PASSWORD_ACCESS];
     [[PDKeychainBindings sharedKeychainBindings] setString:encrypted forKey:MASTER_PASSWORD_KEY];
 }
 
 -(NSString *)masterPassword
 {
-    NSString * decryptedPassword = decryptString([[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY]);
+    NSString * decryptedPassword = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] stringByDecryptingWithKey:MASTER_PASSWORD_ACCESS];
     return decryptedPassword;
 }
 

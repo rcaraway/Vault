@@ -10,4 +10,7 @@
 
 @interface NSString (Encryption)
 
+-(NSString *)stringByDecryptingWithKey:(NSString *)key;
+-(NSString *)stringByEncryptingWithKey:(NSString *)key;
+
 @end
