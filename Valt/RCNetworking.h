@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+@class PFACL;
+@class PFUser;
+
 @interface RCNetworking : NSObject
 
 -(void)signup;
@@ -17,6 +20,7 @@
 -(void)sync;
 -(BOOL)loggedIn;
 
+-(PFACL *)defaultACLForUser:(PFUser *)user;
 +(RCNetworking *)sharedNetwork;
 
 

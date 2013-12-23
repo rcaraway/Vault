@@ -19,11 +19,17 @@
 @implementation RCPassword
 
 
-
 -(PFObject *)convertedObject
 {
-    if (self.object)
+    if (self.object){
+        NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
+        if (index == NSNotFound){
+            return nil;
+        }
+        [self.object setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
         return self.object;
+    }
+    
     if ([PFUser currentUser]){
         NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
         if (index == NSNotFound){
@@ -32,10 +38,6 @@
         PFObject * pfObject = [PFObject objectWithClassName:PASSWORD_CLASS];
         NSString * ownerId = [PFUser currentUser].objectId;
         [pfObject setObject:ownerId forKey:PASSWORD_OWNER];
-        PFACL * acl = [PFACL ACLWithUser:[PFUser currentUser]];
-        [acl setWriteAccess:YES forUser:[PFUser currentUser]];
-        [acl setReadAccess:YES forUser:[PFUser currentUser]];
-        [pfObject setACL:acl];
         [pfObject setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
         [pfObject setObject:self.title forKey:PASSWORD_TITLE];
         [pfObject setObject:self.username forKey:PASSWORD_USERNAME];

@@ -7,8 +7,21 @@
 //
 
 #import "RCCryptography.h"
+#import <CommonCrypto/CommonHMAC.h>
 
-RCPassword *  encryptPassword(RCPassword * password)
+NSString * encryptString(NSString * string)
+{
+    size_t bytesNeeded =0;
+    
+    return string;
+}
+
+NSString * decryptString(NSString * string)
+{
+    return string;
+}
+
+RCPassword * encryptPassword(RCPassword * password)
 {
     return password;
 }
@@ -18,15 +31,6 @@ RCPassword * decryptPassword(RCPassword * password)
     return password;
 }
 
-NSString * encryptString(NSString * string)
-{
-    return string;
-}
-
-NSString * decryptString(NSString * string)
-{
-    return string;
-}
 
 @implementation RCCryptography
 

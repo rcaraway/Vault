@@ -52,6 +52,8 @@
 		D217183B18577B3900D687F8 /* RCPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = D217183A18577B3900D687F8 /* RCPassword.m */; };
 		D217183E18577CB900D687F8 /* RCPasswordBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = D217183D18577CB900D687F8 /* RCPasswordBuilder.m */; };
 		D217184318577F9100D687F8 /* AutoCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = D217184218577F9100D687F8 /* AutoCoding.m */; };
+		D21B80461868CA2900AA818D /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21B80451868CA2900AA818D /* Parse.framework */; };
+		D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = D21B80481868DE0100AA818D /* NSString+Encryption.m */; };
 		D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00021858A25F0017F0F9 /* UILabel+RCLabels.m */; };
 		D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00051858A2CC0017F0F9 /* UITextField+RCTextFields.m */; };
 		D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D21C00081858EA430017F0F9 /* UIColor+RCColors.m */; };
@@ -183,6 +185,9 @@
 		D217183D18577CB900D687F8 /* RCPasswordBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPasswordBuilder.m; sourceTree = "<group>"; };
 		D217184118577F9100D687F8 /* AutoCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCoding.h; sourceTree = "<group>"; };
 		D217184218577F9100D687F8 /* AutoCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCoding.m; sourceTree = "<group>"; };
+		D21B80451868CA2900AA818D /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		D21B80471868DE0100AA818D /* NSString+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Encryption.h"; sourceTree = "<group>"; };
+		D21B80481868DE0100AA818D /* NSString+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Encryption.m"; sourceTree = "<group>"; };
 		D21C00011858A25F0017F0F9 /* UILabel+RCLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+RCLabels.h"; sourceTree = "<group>"; };
 		D21C00021858A25F0017F0F9 /* UILabel+RCLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+RCLabels.m"; sourceTree = "<group>"; };
 		D21C00041858A2CC0017F0F9 /* UITextField+RCTextFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+RCTextFields.h"; sourceTree = "<group>"; };
@@ -254,6 +259,7 @@
 				D27F40571868791400104F1C /* libz.1.1.3.dylib in Frameworks */,
 				D27F40581868791400104F1C /* MobileCoreServices.framework in Frameworks */,
 				D27F40591868791400104F1C /* Security.framework in Frameworks */,
+				D21B80461868CA2900AA818D /* Parse.framework in Frameworks */,
 				D27F405A1868791400104F1C /* SystemConfiguration.framework in Frameworks */,
 				D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */,
 				D2254E4B1863C22D003590AF /* StoreKit.framework in Frameworks */,
@@ -303,6 +309,8 @@
 		D21717AF18576B6500D687F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D21B80451868CA2900AA818D /* Parse.framework */,
+				D27F404B1868787E00104F1C /* Parse.framework */,
 				D27F404D1868791400104F1C /* AudioToolbox.framework */,
 				D27F404E1868791400104F1C /* CFNetwork.framework */,
 				D27F404F1868791400104F1C /* CoreLocation.framework */,
@@ -310,7 +318,6 @@
 				D27F40511868791400104F1C /* MobileCoreServices.framework */,
 				D27F40521868791400104F1C /* Security.framework */,
 				D27F40531868791400104F1C /* SystemConfiguration.framework */,
-				D27F404B1868787E00104F1C /* Parse.framework */,
 				D2254E4A1863C22D003590AF /* StoreKit.framework */,
 				D27F404418635E7100104F1C /* Accounts.framework */,
 				D27F404218635E6700104F1C /* MessageUI.framework */,
@@ -516,6 +523,8 @@
 		D217183F18577F0D00D687F8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D21B80471868DE0100AA818D /* NSString+Encryption.h */,
+				D21B80481868DE0100AA818D /* NSString+Encryption.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -769,6 +778,7 @@
 				D21717EE1857710700D687F8 /* JTTransformableTableViewCell.m in Sources */,
 				D21717FC1857717600D687F8 /* SPLockScreen.m in Sources */,
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
+				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,
 				D21718111857723700D687F8 /* GenericAnimationView.m in Sources */,
 				D2171801185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m in Sources */,
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
@@ -917,6 +927,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/robbor911/Documents/Vault,
+					/Users/robbor911/Documents/Work/codespace/Valt,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
@@ -938,6 +949,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/robbor911/Documents/Vault,
+					/Users/robbor911/Documents/Work/codespace/Valt,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";

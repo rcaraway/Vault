@@ -10,12 +10,10 @@
 
 @class RCPassword;
 
-
 RCPassword *  encryptPassword(RCPassword * password);
 RCPassword * decryptPassword(RCPassword * password);
 NSString * encryptString(NSString * string);
 NSString * decryptString(NSString * string);
-
 
 @interface RCCryptography : NSObject
 @end

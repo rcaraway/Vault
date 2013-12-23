@@ -8,6 +8,8 @@
 
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
+#import "RCNetworking.h"
+#import "RCPasswordManager.h"
 #import <Parse/Parse.h>
 
 @implementation RCAppDelegate
@@ -16,6 +18,10 @@
 {
     [Parse setApplicationId:@"HlDWnYtllU4xd5cYbDgyXMFbx1fNzetYwii4WLqB"
                   clientKey:@"JWR7JvgVZETnVcoj27teczJRY0DuF49QTXZl09VG"];
+    [RCPasswordManager defaultManager];
+    if ([PFUser currentUser]){
+        [[RCNetworking sharedNetwork] defaultACLForUser:[PFUser currentUser]];
+    }
     return YES;
 }
 
