@@ -20,5 +20,6 @@ typedef enum {
 @interface HTAutocompleteManager : NSObject <HTAutocompleteDataSource>
 
 + (HTAutocompleteManager *)sharedManager;
+-(NSDictionary *)titleUrlPairs;
 
 @end

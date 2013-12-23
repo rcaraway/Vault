@@ -19,6 +19,7 @@
 #import "RCAppDelegate.h"
 #import "RCCredentialGestureManager.h"
 #import "RCRootViewController.h"
+#import "HTAutocompleteManager.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -299,12 +300,46 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSInteger index = [self.textFields indexOfObject:textField];
+     HTAutocompleteTextField * acTextfield = (HTAutocompleteTextField *)textField;
     if (index <= 2){
+        if (index == 0){
+            [self attemptToAutofillURLBasedOnTitleForTextField:acTextfield];
+        }
         [self.textFields[index+1] becomeFirstResponder];
     }else{
+        if (index == 3){
+            [self appendURLSchemeIfNeededForTextField:acTextfield];
+        }
         [textField resignFirstResponder];
     }
     return YES;
+}
+
+-(void)attemptToAutofillURLBasedOnTitleForTextField:(HTAutocompleteTextField *)acTextField
+{
+    NSString * typedText = [acTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString * actext = [acTextField.autocompleteLabel.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString * finalText;
+    if (actext.length >0){
+        finalText = [NSString stringWithFormat:@"%@%@", typedText, actext];
+    }else{
+        finalText = typedText;
+    }
+    NSString * urlValue = [[[HTAutocompleteManager sharedManager] titleUrlPairs] objectForKey:finalText];
+    if (urlValue && self.textFields.count > 3){
+        [self.textFields[3] setText:urlValue];
+    }
+}
+
+- (void)appendURLSchemeIfNeededForTextField:(HTAutocompleteTextField *)textField
+{
+    NSString* urlString = textField.text;
+    NSURL* url = [NSURL URLWithString:self.password.urlName];
+    if(!url.scheme)
+    {
+        NSString* modifiedURLString = [NSString stringWithFormat:@"http://%@", urlString];
+        self.password.urlName = modifiedURLString;
+    }
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField

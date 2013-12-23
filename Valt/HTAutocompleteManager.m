@@ -19,10 +19,13 @@ static HTAutocompleteManager *sharedManager;
     NSMutableArray * urlList;
 }
 
++(void)initialize
+{
+    sharedManager = [[HTAutocompleteManager alloc] init];
+}
+
 + (HTAutocompleteManager *)sharedManager
 {
-	static dispatch_once_t done;
-	dispatch_once(&done, ^{ sharedManager = [[HTAutocompleteManager alloc] init]; });
 	return sharedManager;
 }
 
