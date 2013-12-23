@@ -7,12 +7,56 @@
 //
 
 #import "RCPassword.h"
+#import "RCPasswordManager.h"
+#import <Parse/Parse.h>
+
+@interface RCPassword ()
+
+@property(nonatomic, strong) PFObject * object;
+
+@end
 
 @implementation RCPassword
 
-+(BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+
+
+-(PFObject *)convertedObject
 {
-    return YES;
+    if (self.object)
+        return self.object;
+    if ([PFUser currentUser]){
+        NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
+        if (index == NSNotFound){
+            return nil;
+        }
+        PFObject * pfObject = [PFObject objectWithClassName:PASSWORD_CLASS];
+        NSString * ownerId = [PFUser currentUser].objectId;
+        [pfObject setObject:ownerId forKey:PASSWORD_OWNER];
+        PFACL * acl = [PFACL ACLWithUser:[PFUser currentUser]];
+        [acl setWriteAccess:YES forUser:[PFUser currentUser]];
+        [acl setReadAccess:YES forUser:[PFUser currentUser]];
+        [pfObject setACL:acl];
+        [pfObject setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
+        [pfObject setObject:self.title forKey:PASSWORD_TITLE];
+        [pfObject setObject:self.username forKey:PASSWORD_USERNAME];
+        [pfObject setObject:self.password forKey:PASSWORD_PASSWORD];
+        [pfObject setObject:self.urlName forKey:PASSWORD_URLNAME];
+        [pfObject setObject:self.extraFields forKey:PASSWORD_EXTRA_FRIELDS];
+        return pfObject;
+    }
+    return nil;
+}
+
++(RCPassword *)passwordFromPFObject:(PFObject *)object
+{
+    RCPassword * password = [[RCPassword alloc] init];
+    password.title = [object objectForKey:PASSWORD_TITLE];
+    password.password = [object objectForKey:PASSWORD_PASSWORD];
+    password.urlName = [object objectForKey:PASSWORD_URLNAME];
+    password.username = [object objectForKey:PASSWORD_USERNAME];
+    password.extraFields = [object objectForKey:PASSWORD_EXTRA_FRIELDS];
+    password.object = object;
+    return password;
 }
 
 -(id)init

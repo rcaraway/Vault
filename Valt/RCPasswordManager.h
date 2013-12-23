@@ -12,6 +12,7 @@
 @interface RCPasswordManager : NSObject
 
 @property(nonatomic, strong,readonly) NSArray * passwords;
+@property(nonatomic, copy) NSString * accountEmail;
 
 -(NSArray *)allTitles;
 
@@ -27,6 +28,7 @@
 
 -(void)setMasterPassword:(NSString *)masterPassword;
 -(NSString *)masterPassword;
+
 -(BOOL)masterPasswordExists;
 
 -(void)lockPasswords;
