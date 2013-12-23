@@ -104,8 +104,14 @@ static RCPasswordManager * manager;
         RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
         [mutablePasswords removeObjectAtIndex:passwordIndex];
         [mutablePasswords insertObject:password atIndex:newIndex];
-        [self commitAllPasswordsToKeyChain];
     }
+}
+
+-(void)saveAllToKeychain
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+           [self commitAllPasswordsToKeyChain];
+    });
 }
 
 -(NSArray *)passwords
@@ -168,6 +174,7 @@ static RCPasswordManager * manager;
         NSString * notes2 = [[PDKeychainBindings sharedKeychainBindings] stringForKey:notes2Index];
         if (notes1)[rcPassword.extraFields addObject:notes1];
         if (notes2)[rcPassword.extraFields addObject:notes2];
+        NSLog(@"INDEX %d TITLE %@, NAME %@, PASSWORD %@, URL %@", i, rcPassword.title, rcPassword.username, rcPassword.password, rcPassword.urlName);
         [passwords addObject:rcPassword];
     }
     mutablePasswords = passwords;
@@ -183,6 +190,7 @@ static RCPasswordManager * manager;
         NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, index];
         NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
         NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
+        NSLog(@"INDEX %d TITLE %@, NAME %@, PASSWORD %@, URL %@", index, password.title, password.username, password.password, password.urlName);
         [[PDKeychainBindings sharedKeychainBindings] setString:password.title forKey:titleIndex];
         [[PDKeychainBindings sharedKeychainBindings] setString:password.username forKey:nameIndex];
         [[PDKeychainBindings sharedKeychainBindings] setString:password.password forKey:passwordIndex];

@@ -320,7 +320,6 @@ typedef enum {
                          snapShotView.frame = CGRectOffset(snapShotView.bounds, rect.origin.x, rect.origin.y);
                      } completion:^(BOOL finished) {
                          [snapShotView removeFromSuperview];
-                         [self reshowAtIndexPath:indexPath];
                      }];
     [self performSelector:@selector(reshowAtIndexPath:) withObject:indexPath afterDelay:.24];
 }

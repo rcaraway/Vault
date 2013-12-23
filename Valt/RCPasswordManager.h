@@ -21,7 +21,7 @@
 -(void)removePasswordAtIndex:(NSInteger )index;
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
 -(void)commitPasswordToKeyChain:(RCPassword *)password;
-
+-(void)saveAllToKeychain;
 
 -(RCPassword *)passwordForTitle:(NSString *)title;
 
