@@ -7,7 +7,6 @@
 //
 
 #import "RCPasscodeViewController.h"
-#import "SPLockScreen.h"
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
 #import "RCPasswordManager.h"
@@ -15,7 +14,7 @@
 #import "MLAlertView.h"
 
 
-@interface RCPasscodeViewController () <LockScreenDelegate, UITextFieldDelegate, MLAlertViewDelegate>{
+@interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate>{
     BOOL isNewUser;
     NSString * confirmString;
 }
@@ -27,14 +26,8 @@
 
 @implementation RCPasscodeViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+
+#pragma mark - Initialization
 
 -(id)initWithNewUser:(BOOL)newUser
 {
@@ -44,6 +37,9 @@
     }
     return self;
 }
+
+
+#pragma mark - View LifeCycle
 
 - (void)viewDidLoad
 {
@@ -58,13 +54,26 @@
     if (![[RCNetworking sharedNetwork] loggedIn]){
         [self setupLoginButton];
     }
+    [self addNotifications];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self removeNotifications];
 }
+
+
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+#pragma mark - VC Transitions
 
 -(void)willMoveToParentViewController:(UIViewController *)parent
 {
@@ -76,11 +85,34 @@
     [self.view removeFromSuperview];
 }
 
--(void)setupLockScreen
+#pragma mark - NSNotifications
+
+-(void)addNotifications
 {
-    self.lockscreen = [[SPLockScreen  alloc] initWithDelegate:self];
-    [self.view addSubview:self.lockscreen];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogIn:) name:networkingDidFailToLogin object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogIn:) name:networkingDidLogin object:nil];
 }
+
+-(void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidLogin object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToLogin object:nil];
+}
+
+-(void)didFailToLogIn:(NSNotification *)notification
+{
+    NSString * message = notification.object;
+    [self.alertView showFailWithTitle:[message capitalizedString]];
+}
+
+-(void)didLogIn:(NSNotification *)notification
+{
+    [self.alertView dismissWithSuccessTitle:@"Login Successful"];
+}
+
+
+
+#pragma mark - View Setup
 
 -(void)setupNumberField
 {
@@ -106,28 +138,12 @@
 {
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setFrame:CGRectMake(0, CGRectGetMaxY(self.numberField.frame), 320, 44)];
-    [self.loginButton setTitle:@"Sync with your other devices" forState:UIControlStateNormal];
+    [self.loginButton setTitle:@"Premium User? Log in here." forState:UIControlStateNormal];
     [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
     [self.loginButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [self.view addSubview:self.loginButton];
 }
 
--(void)didTapLogin
-{
-    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login To Sync" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
-    [self.alertView show];
-    
-}
-
--(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    [self.numberField becomeFirstResponder];
-}
-
--(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
-{
-    [self.numberField becomeFirstResponder];
-}
 
 -(void)setupConfirmField
 {
@@ -147,10 +163,6 @@
     [self.view addSubview:self.confirmField];
 }
 
--(BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
 
 -(void)setupLabel
 {
@@ -178,6 +190,23 @@
     [self.doneButton addTarget:self action:@selector(didTapButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.doneButton];
 }
+
+
+#pragma mark - Alert View Delegate
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.numberField becomeFirstResponder];
+}
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
+{
+    [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
+    [alertView loadWithText:@"Logging in"];
+    [self.view.window endEditing:YES];
+}
+
+#pragma mark - State Handling
 
 -(void)showDoneButton
 {
@@ -250,6 +279,15 @@
     }];
 }
 
+#pragma mark - Event Handling
+
+-(void)didTapLogin
+{
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login To Sync" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
+    [self.alertView show];
+    [self.numberField resignFirstResponder];
+}
+
 -(void)didFailConfirmation
 {
     self.enterPassword.backgroundColor = [UIColor redColor];
@@ -277,6 +315,8 @@
         self.enterPassword.text = @"Enter password";
     }];
 }
+
+#pragma mark - TextField Delegate
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {

@@ -13,6 +13,10 @@
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 static UIFont * standardFont;
+static UIColor * standardColor;
+static UIColor * loadingColor;
+static UIColor * failureColor;
+static UIColor * successColor;
 
 @interface MLAlertView () <UITextFieldDelegate>
 @property (nonatomic, strong) UIDynamicAnimator *animator;
@@ -23,8 +27,14 @@ static UIFont * standardFont;
 @property(nonatomic, copy) NSString * cancelTitle;
 @property(nonatomic, copy) NSString * message;
 @property(nonatomic, copy) NSString * title;
+@property(nonatomic, strong) UILabel * titleLabel;
+@property(nonatomic, strong) UITextView *messageView;
+@property(nonatomic, strong) UIButton * cancelButton;
 @property(nonatomic, strong) NSArray * otherButtonTitles;
+@property(nonatomic, strong) NSMutableArray * otherButtons;
 @property(nonatomic, strong) UIView * buttonView;
+@property(nonatomic, strong) UIActivityIndicatorView * loader;
+@property(nonatomic, strong) UIView * titleBack;
 
 @end
 
@@ -33,11 +43,16 @@ static UIFont * standardFont;
 +(void)initialize
 {
     standardFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
+    standardColor = [UIColor colorWithRed:0.063 green:0.486 blue:0.965 alpha:1.000];
+    loadingColor = [UIColor purpleColor];
+    successColor = [UIColor greenColor];
+    failureColor = [UIColor redColor];
 }
 
 #pragma mark -
 
-- (UIImage *)imageWithColor:(UIColor *)color {
+- (UIImage *)imageWithColor:(UIColor *)color
+{
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -53,7 +68,8 @@ static UIFont * standardFont;
 
 #pragma mark - Actions
 
-- (void)show {
+- (void)show
+{
     self.alpha = 0.0;
     CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
     self.transform = scale;
@@ -65,12 +81,17 @@ static UIFont * standardFont;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:.14 animations:^{
            self.transform = CGAffineTransformIdentity;
+        }completion:^(BOOL finished) {
+            if (self.loginTextField){
+                [self.loginTextField becomeFirstResponder];
+            }
         }];
     }];
 }
 
 - (void)dismiss
 {
+    [self endEditing:YES];
     UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:[[UIApplication sharedApplication] windows][0]];
     CGPoint squareCenterPoint = CGPointMake(CGRectGetMaxX(self.frame), CGRectGetMinY(self.frame));
     UIOffset attachmentPoint = UIOffsetMake(CGRectGetMinX(self.frame), CGRectGetMaxY(self.frame));
@@ -86,23 +107,87 @@ static UIFont * standardFont;
     [self performSelector:@selector(removeFromSuperview) withObject:self afterDelay:0.7];
 }
 
+-(void)loadWithText:(NSString *)text
+{
+    if (!self.loader){
+        [self setupLoader];
+    }
+    [UIView animateWithDuration:.3 animations:^{
+        self.loader.alpha = 1;
+        self.messageView.alpha = 0;
+        self.title = self.titleLabel.text;
+        self.buttonView.alpha = 0;
+        self.loginTextField.alpha = 0;
+        self.passwordTextField.alpha = 0;
+        self.titleLabel.text=text;
+        [self.titleBack setBackgroundColor:loadingColor];
+        [self.loader startAnimating];
+    }];
+}
+
+-(void)setupLoader
+{
+    self.loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.loader setColor:[UIColor purpleColor]];
+    [self.loader setCenter:CGPointMake(CGRectGetWidth(self.frame)/2.0, CGRectGetHeight(self.frame)/2.0)];
+    [self.loader setAlpha:0];
+    [self addSubview:self.loader];
+}
+
+-(void)dismissWithSuccessTitle:(NSString *)title
+{
+    [UIView animateWithDuration:.3 animations:^{
+        [self.titleBack setBackgroundColor:successColor];
+        self.titleLabel.text = title;
+        self.loader.alpha = 0;
+        [self.loader stopAnimating];
+    }];
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:.6];
+}
+
+-(void)showFailWithTitle:(NSString *)title
+{
+    [UIView animateWithDuration:.3 animations:^{
+        self.loader.alpha = 0;
+        [self.loader stopAnimating];
+        [self.titleBack setBackgroundColor:failureColor];
+        self.loginTextField.alpha = 1;
+        self.passwordTextField.alpha = 1;
+        self.buttonView.alpha = 1;
+        self.titleLabel.text = title;
+    }];
+    [self performSelector:@selector(showNormal) withObject:nil afterDelay:1];
+}
+
+-(void)showNormal
+{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.titleLabel.text = self.title;
+        [self.titleBack setBackgroundColor:standardColor];
+    } completion:nil];
+    
+}
+
 - (void)alertButtonWasTapped:(UIButton *)button {
   
   if(self.delegate!=nil)
   {
-    [self.delegate alertView:self clickedButtonAtIndex:button.tag];
-    
+      if (self.passwordTextField){
+          [self.delegate alertView:self clickedButtonAtIndex:button.tag withEmail:self.loginTextField.text password:self.passwordTextField.text];
+      }else{
+           [self.delegate alertView:self clickedButtonAtIndex:button.tag];
+      }
   } else if (self.buttonDidTappedBlock!=nil){
     self.buttonDidTappedBlock(self, button.tag);
   }
 }
 
-#pragma mark - initializers
 
+#pragma mark - initializers
 
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles
 {
-return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
+    return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
 }
 
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles usingBlockWhenTapButton:(MLAlertTapButtonBlock)tapButtonBlock
@@ -140,6 +225,7 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
             [self setupCancelButton];
         }
         NSInteger count = [_otherButtonTitles count];
+        self.otherButtons = [NSMutableArray arrayWithCapacity:count];
         for (int i=0; i<count; i++) {
             [self setupButtonTitleAtIndex:i forCount:count];
         }
@@ -174,6 +260,7 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
             [self setupCancelButton];
         }
         NSInteger count = [_otherButtonTitles count];
+        self.otherButtons = [NSMutableArray arrayWithCapacity:count];
         for (int i=0; i<count; i++) {
             [self setupButtonTitleAtIndex:i forCount:count];
         }
@@ -215,8 +302,8 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
 {
     self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(0, 80, 280, 40)];
     self.passwordTextField.delegate = self;
-//    self.passwordTextField.keyboardType = UIKeyboardTypeTwitter;
-    self.passwordTextField.placeholder = @"Password";
+    self.passwordTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.passwordTextField.placeholder = @"Master Password";
     self.passwordTextField.secureTextEntry = YES;
     self.passwordTextField.returnKeyType = UIReturnKeyDone;
     [self addSubview:self.passwordTextField];
@@ -241,47 +328,46 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
 
 -(void)setupTitleLabel
 {
-    UIView *topPart = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-    topPart.backgroundColor = [UIColor colorWithRed:0.063 green:0.486 blue:0.965 alpha:1.000];
-    [self addSubview:topPart];
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-    titleLabel.text = self.title;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.font = [UIFont boldSystemFontOfSize:19];
-    [topPart addSubview:titleLabel];
+    self.titleBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    _titleBack.backgroundColor = standardColor;
+    [self addSubview:_titleBack];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    _titleLabel.text = self.title;
+    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    _titleLabel.font = [UIFont boldSystemFontOfSize:19];
+    [_titleBack addSubview:_titleLabel];
 }
 
 -(void)setupMessageViewWithBoundingRect:(CGRect)boundingRect
 {
-    UITextView *messageView = [[UITextView alloc] init];
+    self.messageView = [[UITextView alloc] init];
     CGFloat newLineHeight = boundingRect.size.height + 16.0;
-    messageView.frame = CGRectMake(0, 40, 280, newLineHeight);
-    messageView.text = self.message;
-    messageView.font = standardFont;
-    messageView.editable = NO;
-    messageView.dataDetectorTypes = UIDataDetectorTypeAll;
-    messageView.userInteractionEnabled = NO;
-    messageView.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:messageView];
-
+    _messageView.frame = CGRectMake(0, 40, 280, newLineHeight);
+    _messageView.text = self.message;
+    _messageView.font = standardFont;
+    _messageView.editable = NO;
+    _messageView.dataDetectorTypes = UIDataDetectorTypeAll;
+    _messageView.userInteractionEnabled = NO;
+    _messageView.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_messageView];
 }
 
 -(void)setupCancelButton
 {
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     if ([self.otherButtonTitles count] == 1) {
-        cancelButton.frame = CGRectMake(0, 0, 141, 40);
+        _cancelButton.frame = CGRectMake(0, 0, 141, 40);
     }
-    else cancelButton.frame = CGRectMake(0, CGRectGetHeight(self.buttonView.frame)-40, 280, 40);
-    [cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor colorWithRed:0.769 green:0.000 blue:0.071 alpha:1.000] forState:UIControlStateHighlighted];
-    [cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.933 green:0.737 blue:0.745 alpha:1.000]] forState:UIControlStateHighlighted];
-    cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.tag = 0;
-    [self.buttonView addSubview:cancelButton];
+    else _cancelButton.frame = CGRectMake(0, CGRectGetHeight(self.buttonView.frame)-40, 280, 40);
+    [_cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
+    [_cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_cancelButton setTitleColor:[UIColor colorWithRed:0.769 green:0.000 blue:0.071 alpha:1.000] forState:UIControlStateHighlighted];
+    [_cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.933 green:0.737 blue:0.745 alpha:1.000]] forState:UIControlStateHighlighted];
+    _cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [_cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    _cancelButton.tag = 0;
+    [self.buttonView addSubview:_cancelButton];
 }
 
 -(void)setupButtonTitleAtIndex:(NSInteger)index forCount:(NSInteger) count
@@ -319,8 +405,8 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
     [otherTitleButton setTitleColor:[UIColor colorWithRed:0.071 green:0.431 blue:0.965 alpha:1.000] forState:UIControlStateHighlighted];
     [otherTitleButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.878 green:0.933 blue:0.992 alpha:1.000]] forState:UIControlStateHighlighted];
     otherTitleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [self.otherButtons addObject:otherTitleButton];
     [self.buttonView addSubview:otherTitleButton];
-
 }
 
 -(void)addHorizontalMotionEffect

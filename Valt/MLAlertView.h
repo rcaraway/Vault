@@ -34,8 +34,10 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 -(instancetype)initWithTitle:(NSString *)title textFields:(BOOL)textFields delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle;
 
 
-- (void)show;
-
-- (void)dismiss;
+-(void)show;
+-(void)dismiss;
+-(void)loadWithText:(NSString *)text;
+-(void)dismissWithSuccessTitle:(NSString *)title;
+-(void)showFailWithTitle:(NSString *)title;
 
 @end

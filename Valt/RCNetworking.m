@@ -73,16 +73,14 @@ static RCNetworking *sharedNetwork;
     return secure;
 }
 
--(void)login
+-(void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
-    NSString * email = [[RCPasswordManager defaultManager] accountEmail];
-    NSString * masterPassword = [[RCPasswordManager defaultManager] masterPassword];
-    if (email && masterPassword){
-        [PFUser logInWithUsernameInBackground:email password:masterPassword block:^(PFUser *user, NSError *error) {
+    if (email && password){
+        [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser *user, NSError *error) {
             if (!error){
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:nil];
             }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:error.userInfo[@"error"]];
             }
         }];
     }
