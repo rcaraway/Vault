@@ -7,16 +7,33 @@
 //
 
 #import "MLAlertView.h"
+#import "HTAutocompleteManager.h"
+#import "HTAutocompleteTextField.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
-@interface MLAlertView ()
+static UIFont * standardFont;
+
+@interface MLAlertView () <UITextFieldDelegate>
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
 @property (nonatomic, strong) UIGravityBehavior *gravityBehavior;
+@property(nonatomic, strong) HTAutocompleteTextField * loginTextField;
+@property(nonatomic, strong) UITextField * passwordTextField;
+@property(nonatomic, copy) NSString * cancelTitle;
+@property(nonatomic, copy) NSString * message;
+@property(nonatomic, copy) NSString * title;
+@property(nonatomic, strong) NSArray * otherButtonTitles;
+@property(nonatomic, strong) UIView * buttonView;
+
 @end
 
 @implementation MLAlertView
+
++(void)initialize
+{
+    standardFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
+}
 
 #pragma mark -
 
@@ -38,31 +55,33 @@
 
 - (void)show {
     self.alpha = 0.0;
-    CGAffineTransform scale = CGAffineTransformMakeScale(5, 5);
+    CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
     self.transform = scale;
     [[[UIApplication sharedApplication] windows][0] addSubview:self];
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.14  animations:^{
         self.alpha = 1.0;
-        self.transform = CGAffineTransformIdentity;
+        CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
+        self.transform = scale;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.14 animations:^{
+           self.transform = CGAffineTransformIdentity;
+        }];
     }];
 }
 
-- (void)dismiss {
-    
+- (void)dismiss
+{
     UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:[[UIApplication sharedApplication] windows][0]];
-    
     CGPoint squareCenterPoint = CGPointMake(CGRectGetMaxX(self.frame), CGRectGetMinY(self.frame));
     UIOffset attachmentPoint = UIOffsetMake(CGRectGetMinX(self.frame), CGRectGetMaxY(self.frame));
     UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self offsetFromCenter:attachmentPoint attachedToAnchor:squareCenterPoint];
     [animator addBehavior:attachmentBehavior];
     self.attachmentBehavior = attachmentBehavior;
-    
     UIGravityBehavior *gravityBeahvior = [[UIGravityBehavior alloc] initWithItems:@[self]];
     gravityBeahvior.magnitude = 4;
     gravityBeahvior.angle = DEGREES_TO_RADIANS(100);
     [animator addBehavior:gravityBeahvior];
     self.gravityBehavior = gravityBeahvior;
-    
     self.animator = animator;
     [self performSelector:@selector(removeFromSuperview) withObject:self afterDelay:0.7];
 }
@@ -95,145 +114,241 @@ return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:
   return self;
 }
 
+-(instancetype)initWithTitle:(NSString *)title textFields:(BOOL)textFields delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle
+{
+    self = super.init;
+    if (self){
+        _delegate = delegate;
+        self.title = title;
+        self.cancelTitle = cancelButtonTitle;
+        if (confirmButtonTitle)
+            self.otherButtonTitles = @[confirmButtonTitle];
+        CGFloat currentWidth = 280;
+        CGFloat extraHeight = [self detmineExtraHeight];
+        CGRect boundingRect = CGRectMake(0, 0, currentWidth, 80);
+        CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        self.frame = CGRectMake(20, (screenHeight-height)/2-80, 280, height);
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.masksToBounds = YES;
+        self.layer.cornerRadius = 13;
+        [self setupTitleLabel];
+        [self setupLoginField];
+        [self setupPasswordField];
+        [self setupButtonViewWithYOrigin:height-extraHeight height:extraHeight];
+        if (self.cancelTitle) {
+            [self setupCancelButton];
+        }
+        NSInteger count = [_otherButtonTitles count];
+        for (int i=0; i<count; i++) {
+            [self setupButtonTitleAtIndex:i forCount:count];
+        }
+        [self addHorizontalMotionEffect];
+
+    }
+    return self;
+}
+
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles {
     self = [super init];
     if (self) {
         _delegate = delegate;
-        UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-        
+        self.title = title;
+        self.message = message;
+        self.cancelTitle = cancelButtonTitle;
+        self.otherButtonTitles = otherButtonTitles;
         CGFloat currentWidth = 280;
-        CGFloat extraHeight = 0;
-        if ((cancelButtonTitle && [otherButtonTitles count] <= 1) || ([otherButtonTitles count] < 2 && !cancelButtonTitle)) {
-            //Cancel button and 1 other button, or 1/2 other buttons and no cancel button
-            extraHeight = 40;
-        }
-        else if (cancelButtonTitle && [otherButtonTitles count] > 1) {
-            extraHeight = 40 + [otherButtonTitles count]*40;
-        }
-        else {
-            NSLog(@"failed both");
-        }
+        CGFloat extraHeight = [self detmineExtraHeight];
         CGSize maximumSize = CGSizeMake(currentWidth, CGFLOAT_MAX);
-        CGRect boundingRect = [message boundingRectWithSize:maximumSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{ NSFontAttributeName : font} context:nil];
+        CGRect boundingRect = [message boundingRectWithSize:maximumSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{ NSFontAttributeName : standardFont} context:nil];
         CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
-
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-
         self.frame = CGRectMake(20, (screenHeight-height)/2, 280, height);
         self.backgroundColor = [UIColor whiteColor];
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 13;
-        
-        //Title View
-        UIView *topPart = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-        topPart.backgroundColor = [UIColor colorWithRed:0.063 green:0.486 blue:0.965 alpha:1.000];
-        [self addSubview:topPart];
-        
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-        titleLabel.text = title;
-        titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.font = [UIFont boldSystemFontOfSize:19];
-        [topPart addSubview:titleLabel];
-        
-        
-        //Message view
-        UITextView *messageView = [[UITextView alloc] init];
-        CGFloat newLineHeight = boundingRect.size.height + 16.0;
-        messageView.frame = CGRectMake(0, 40, 280, newLineHeight);
-        messageView.text = message;
-        messageView.font = font;
-        messageView.editable = NO;
-        messageView.dataDetectorTypes = UIDataDetectorTypeAll;
-        messageView.userInteractionEnabled = NO;
-        messageView.textAlignment = NSTextAlignmentCenter;
-        [self addSubview:messageView];
-        
-        //buttons
-        UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(0, height-extraHeight, 280, extraHeight)];
-        
-        CALayer *horizontalBorder = [CALayer layer];
-        horizontalBorder.frame = CGRectMake(0.0f, 0.0f, buttonView.frame.size.width, 0.5f);
-        horizontalBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
-        [buttonView.layer addSublayer:horizontalBorder];
-        
-        if ((cancelButtonTitle && [otherButtonTitles count] == 1) || ([otherButtonTitles count] <= 2 && !cancelButtonTitle)) {
-            CALayer *centerBorder = [CALayer layer];
-            centerBorder.frame = CGRectMake(buttonView.frame.size.width/2+0.5, 0.0f, 0.5f, buttonView.frame.size.height);
-            centerBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
-            [buttonView.layer addSublayer:centerBorder];
+        [self setupTitleLabel];
+        [self setupMessageViewWithBoundingRect:boundingRect];
+        [self setupButtonViewWithYOrigin:height-extraHeight height:extraHeight];
+        if (self.cancelTitle) {
+            [self setupCancelButton];
         }
-        [self addSubview:buttonView];
-        
-        if (cancelButtonTitle) {
-            UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            if ([otherButtonTitles count] == 1) {
-                cancelButton.frame = CGRectMake(0, 0, 141, 40);
-            }
-            else cancelButton.frame = CGRectMake(0, CGRectGetHeight(buttonView.frame)-40, 280, 40);
-            
-            [cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
-            [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [cancelButton setTitleColor:[UIColor colorWithRed:0.769 green:0.000 blue:0.071 alpha:1.000] forState:UIControlStateHighlighted];
-            [cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.933 green:0.737 blue:0.745 alpha:1.000]] forState:UIControlStateHighlighted];
-            cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-            [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-            cancelButton.tag = 0;
-            [buttonView addSubview:cancelButton];
+        NSInteger count = [_otherButtonTitles count];
+        for (int i=0; i<count; i++) {
+            [self setupButtonTitleAtIndex:i forCount:count];
         }
-        
-        for (int i=0; i<[otherButtonTitles count]; i++) {
-            UIButton *otherTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            if ([otherButtonTitles count] == 1 && !cancelButtonTitle) {
-                //1 other button and no cancel button
-                otherTitleButton.frame = CGRectMake(0, 0, 280, 40);
-                otherTitleButton.tag = 0;
-            }
-            else if (([otherButtonTitles count] == 2 && !cancelButtonTitle) || ([otherButtonTitles count] == 1 && cancelButtonTitle)) {
-                // 2 other buttons, no cancel or 1 other button and cancel
-                otherTitleButton.tag = i+1;
-                otherTitleButton.frame = CGRectMake(140, 0, 142, 40);
-            }
-            else if ([otherButtonTitles count] >= 2) {
-            
-                if (cancelButtonTitle) {
-                    otherTitleButton.frame = CGRectMake(0, (i*40)+0.5, 280, 40);
-                    otherTitleButton.tag = i+1;
-                }
-                else {
-                    otherTitleButton.frame = CGRectMake(0, i*40, 280, 40);
-                    otherTitleButton.tag = i;
-                }
-                CALayer *horizontalBorder = [CALayer layer];
-                horizontalBorder.frame = CGRectMake(0.0f, otherTitleButton.frame.origin.y+39.5, buttonView.frame.size.width, 0.5f);
-                horizontalBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
-                [buttonView.layer addSublayer:horizontalBorder];
-            }
-            [otherTitleButton addTarget:self action:@selector(alertButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [otherTitleButton setTitle:otherButtonTitles[i] forState:UIControlStateNormal];
-            [otherTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [otherTitleButton setTitleColor:[UIColor colorWithRed:0.071 green:0.431 blue:0.965 alpha:1.000] forState:UIControlStateHighlighted];
-            [otherTitleButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.878 green:0.933 blue:0.992 alpha:1.000]] forState:UIControlStateHighlighted];
-            otherTitleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-            [buttonView addSubview:otherTitleButton];
-        }
-        
-        
-        UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        horizontalMotionEffect.minimumRelativeValue = @(-20);
-        horizontalMotionEffect.maximumRelativeValue = @(20);
-        
-        UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        verticalMotionEffect.minimumRelativeValue = @(-20);
-        verticalMotionEffect.maximumRelativeValue = @(20);
-        
-        UIMotionEffectGroup *group = [UIMotionEffectGroup new];
-        group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
-        [self addMotionEffect:group];
-        
+        [self addHorizontalMotionEffect];
     }
     return self;
+}
+
+#pragma mark - TextField Delegate
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.loginTextField){
+        [self.passwordTextField becomeFirstResponder];
+    }else{
+        if (self.delegate){
+            [self.delegate alertView:self clickedButtonAtIndex:1 withEmail:self.loginTextField.text password:self.passwordTextField.text];
+        }
+    }
+    return YES;
+}
+
+#pragma mark - View Setup
+
+-(void)setupLoginField
+{
+    self.loginTextField = [[HTAutocompleteTextField  alloc] initWithFrame:CGRectMake(0, 40, 280, 40)];
+    self.loginTextField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
+    self.loginTextField.backgroundColor = self.backgroundColor;
+    self.loginTextField.font = standardFont;
+    self.loginTextField.delegate = self;
+    self.loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.loginTextField.placeholder = @"Email";
+    self.loginTextField.returnKeyType = UIReturnKeyNext;
+    [self addSubview:self.loginTextField];
+}
+
+-(void)setupPasswordField
+{
+    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(0, 80, 280, 40)];
+    self.passwordTextField.delegate = self;
+//    self.passwordTextField.keyboardType = UIKeyboardTypeTwitter;
+    self.passwordTextField.placeholder = @"Password";
+    self.passwordTextField.secureTextEntry = YES;
+    self.passwordTextField.returnKeyType = UIReturnKeyDone;
+    [self addSubview:self.passwordTextField];
+}
+
+-(void)setupButtonViewWithYOrigin:(CGFloat)yOrigin height:(CGFloat)height
+{
+    self.buttonView = [[UIView alloc] initWithFrame:CGRectMake(0, yOrigin, 280, height)];
+    CALayer *horizontalBorder = [CALayer layer];
+    horizontalBorder.frame = CGRectMake(0.0f, 0.0f, self.buttonView.frame.size.width, 0.5f);
+    horizontalBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
+    [self.buttonView.layer addSublayer:horizontalBorder];
+    
+    if ((self.cancelTitle && [self.otherButtonTitles count] == 1) || ([self.otherButtonTitles count] <= 2 && !self.cancelTitle)) {
+        CALayer *centerBorder = [CALayer layer];
+        centerBorder.frame = CGRectMake(self.buttonView.frame.size.width/2+0.5, 0.0f, 0.5f, self.buttonView.frame.size.height);
+        centerBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
+        [self.buttonView.layer addSublayer:centerBorder];
+    }
+    [self addSubview:self.buttonView];
+}
+
+-(void)setupTitleLabel
+{
+    UIView *topPart = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    topPart.backgroundColor = [UIColor colorWithRed:0.063 green:0.486 blue:0.965 alpha:1.000];
+    [self addSubview:topPart];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    titleLabel.text = self.title;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.font = [UIFont boldSystemFontOfSize:19];
+    [topPart addSubview:titleLabel];
+}
+
+-(void)setupMessageViewWithBoundingRect:(CGRect)boundingRect
+{
+    UITextView *messageView = [[UITextView alloc] init];
+    CGFloat newLineHeight = boundingRect.size.height + 16.0;
+    messageView.frame = CGRectMake(0, 40, 280, newLineHeight);
+    messageView.text = self.message;
+    messageView.font = standardFont;
+    messageView.editable = NO;
+    messageView.dataDetectorTypes = UIDataDetectorTypeAll;
+    messageView.userInteractionEnabled = NO;
+    messageView.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:messageView];
+
+}
+
+-(void)setupCancelButton
+{
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    if ([self.otherButtonTitles count] == 1) {
+        cancelButton.frame = CGRectMake(0, 0, 141, 40);
+    }
+    else cancelButton.frame = CGRectMake(0, CGRectGetHeight(self.buttonView.frame)-40, 280, 40);
+    [cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor colorWithRed:0.769 green:0.000 blue:0.071 alpha:1.000] forState:UIControlStateHighlighted];
+    [cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.933 green:0.737 blue:0.745 alpha:1.000]] forState:UIControlStateHighlighted];
+    cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.tag = 0;
+    [self.buttonView addSubview:cancelButton];
+}
+
+-(void)setupButtonTitleAtIndex:(NSInteger)index forCount:(NSInteger) count
+{
+    UIButton *otherTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    if (count == 1 && !self.cancelTitle) {
+        //1 other button and no cancel button
+        otherTitleButton.frame = CGRectMake(0, 0, 280, 40);
+        otherTitleButton.tag = 0;
+    }
+    else if ((count == 2 && !self.cancelTitle) || (count == 1 && self.cancelTitle)) {
+        // 2 other buttons, no cancel or 1 other button and cancel
+        otherTitleButton.tag = index+1;
+        otherTitleButton.frame = CGRectMake(140, 0, 142, 40);
+    }
+    else if (count >= 2) {
+        
+        if (self.cancelTitle) {
+            otherTitleButton.frame = CGRectMake(0, (index*40)+0.5, 280, 40);
+            otherTitleButton.tag = index+1;
+        }
+        else {
+            otherTitleButton.frame = CGRectMake(0, index*40, 280, 40);
+            otherTitleButton.tag = index;
+        }
+        CALayer *horizontalBorder = [CALayer layer];
+        horizontalBorder.frame = CGRectMake(0.0f, otherTitleButton.frame.origin.y+39.5, self.buttonView.frame.size.width, 0.5f);
+        horizontalBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
+        [self.buttonView.layer addSublayer:horizontalBorder];
+    }
+    [otherTitleButton addTarget:self action:@selector(alertButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [otherTitleButton setTitle:_otherButtonTitles[index] forState:UIControlStateNormal];
+    [otherTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [otherTitleButton setTitleColor:[UIColor colorWithRed:0.071 green:0.431 blue:0.965 alpha:1.000] forState:UIControlStateHighlighted];
+    [otherTitleButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.878 green:0.933 blue:0.992 alpha:1.000]] forState:UIControlStateHighlighted];
+    otherTitleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [self.buttonView addSubview:otherTitleButton];
+
+}
+
+-(void)addHorizontalMotionEffect
+{
+    UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    horizontalMotionEffect.minimumRelativeValue = @(-20);
+    horizontalMotionEffect.maximumRelativeValue = @(20);
+    UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    verticalMotionEffect.minimumRelativeValue = @(-20);
+    verticalMotionEffect.maximumRelativeValue = @(20);
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    [self addMotionEffect:group];
+}
+
+#pragma mark - Convenience
+
+
+-(CGFloat)detmineExtraHeight
+{
+    CGFloat extraHeight = 0;
+    if ((_cancelTitle && [_otherButtonTitles count] <= 1) || ([_otherButtonTitles count] < 2 && !_cancelTitle)) {
+        extraHeight = 40;
+    }
+    else if (_cancelTitle && [_otherButtonTitles count] > 1) {
+        extraHeight = 40 + [_otherButtonTitles count]*40;
+    }
+    return extraHeight;
 }
 
 @end

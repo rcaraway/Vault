@@ -11,11 +11,16 @@
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
 #import "RCPasswordManager.h"
+#import "RCNetworking.h"
+#import "MLAlertView.h"
 
-@interface RCPasscodeViewController () <LockScreenDelegate, UITextFieldDelegate>{
+
+@interface RCPasscodeViewController () <LockScreenDelegate, UITextFieldDelegate, MLAlertViewDelegate>{
     BOOL isNewUser;
     NSString * confirmString;
 }
+
+@property(nonatomic, strong) MLAlertView * alertView;
 
 @end
 
@@ -45,9 +50,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:.05 alpha:1];
     [self setupLabel];
+//    [[RCPasswordManager defaultManager] clearAllPasswordData];
     [self setupNumberField];
     if (isNewUser){
         [self setupConfirmField];
+    }
+    if (![[RCNetworking sharedNetwork] loggedIn]){
+        [self setupLoginButton];
     }
 }
 
@@ -91,6 +100,33 @@
     self.numberField.secureTextEntry = YES;
     [self.numberField becomeFirstResponder];
     [self.view addSubview:self.numberField];
+}
+
+-(void)setupLoginButton
+{
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.loginButton setFrame:CGRectMake(0, CGRectGetMaxY(self.numberField.frame), 320, 44)];
+    [self.loginButton setTitle:@"Sync with your other devices" forState:UIControlStateNormal];
+    [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
+    [self.loginButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.view addSubview:self.loginButton];
+}
+
+-(void)didTapLogin
+{
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login To Sync" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
+    [self.alertView show];
+    
+}
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.numberField becomeFirstResponder];
+}
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
+{
+    [self.numberField becomeFirstResponder];
 }
 
 -(void)setupConfirmField
@@ -189,11 +225,13 @@
 
 -(void)didEnterCorrectData
 {
-    //Animate then launchlist
     if (isNewUser){
         [[RCPasswordManager defaultManager] setMasterPassword:self.numberField.text];
     }
-    [[APP rootController] moveFromPasscodeToList];
+    self.enterPassword.text = @"Decrypting Data";
+    [[RCPasswordManager defaultManager] grantPasswordAccess:^{
+       [[APP rootController] moveFromPasscodeToList];
+    }];
 }
 
 -(void)setConfirmMode

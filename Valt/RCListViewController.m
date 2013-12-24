@@ -66,6 +66,22 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.tableView.alpha = 0.0;
+        CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
+        self.tableView.transform = scale;
+        [UIView animateWithDuration:0.2  animations:^{
+            self.tableView.alpha = 1.0;
+            CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
+            self.tableView.transform = scale;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:.2 animations:^{
+                self.tableView.transform = CGAffineTransformIdentity;
+            }];
+        }];
+        
+    });
     [self.tableView reloadData];
 }
 
@@ -96,6 +112,7 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     self.tableView.allowsSelection = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.alpha = 0;
     [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];

@@ -18,6 +18,7 @@
 @property(nonatomic, strong) UITextField * confirmField;
 @property(nonatomic, strong) UILabel * enterPassword;
 @property(nonatomic, strong) UIButton * doneButton;
+@property(nonatomic, strong) UIButton * loginButton;
 
 -(id)initWithNewUser:(BOOL)newUser;
 

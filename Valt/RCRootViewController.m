@@ -81,6 +81,7 @@
     UIViewController * controller;
     if (self.childViewControllers.count > 0)
         controller = self.childViewControllers[0];
+    [[RCPasswordManager defaultManager] lockPasswords];
     self.passcodeController = [[RCPasscodeViewController alloc] initWithNewUser:NO];
     [self addChildViewController:self.passcodeController];
     if (controller)
@@ -89,6 +90,7 @@
 
 -(void)moveFromListToPasscode
 {
+    [[RCPasswordManager defaultManager] lockPasswords];
     self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];

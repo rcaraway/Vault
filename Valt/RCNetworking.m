@@ -9,7 +9,7 @@
 #import "RCNetworking.h"
 #import <Parse/Parse.h>
 #import "RCPasswordManager.h"
-#import "RCCryptography.h"
+#import "NSString+Encryption.h"
 
 #define PASSWORDS_KEY @"PASSWORDS_KEY"
 
@@ -124,8 +124,8 @@ static RCNetworking *sharedNetwork;
         NSMutableArray * array = [NSMutableArray new];
         for (PFObject * object in pfObjects) {
             RCPassword * password = [RCPassword passwordFromPFObject:object];
-            RCPassword * decrypted = decryptPassword(password);
-            [array addObject:decrypted];
+            [password decrypt];
+            [array addObject:password];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(array);
@@ -138,8 +138,8 @@ static RCNetworking *sharedNetwork;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray * array = [NSMutableArray new];
         for (RCPassword *password in rcPasswords) {
-            RCPassword * encryped = encryptPassword(password);
-            PFObject * object =[encryped convertedObject];
+            [password encrypt];
+            PFObject * object =[password convertedObject];
             [array addObject:object];
         }
         dispatch_async(dispatch_get_main_queue(), ^{

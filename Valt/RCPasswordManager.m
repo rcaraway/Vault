@@ -44,7 +44,6 @@ static RCPasswordManager * manager;
 {
     self = super.init;
     if (self){
-        [self grantAccessToPasswords];
     }
     return self;
 }
@@ -58,7 +57,7 @@ static RCPasswordManager * manager;
 -(NSString *)masterPassword
 {
     NSString * decryptedPassword = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] stringByDecryptingWithKey:MASTER_PASSWORD_ACCESS];
-    return decryptedPassword;
+    return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
 }
 
 -(BOOL)anyLoginsExist
@@ -74,15 +73,19 @@ static RCPasswordManager * manager;
 -(void)addPassword:(RCPassword *)password
 {
     [mutablePasswords addObject:password];
-    [self commitPasswordToKeyChain:password];
-    [self commitTotalToKeychain];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self commitPasswordToKeyChain:password];
+        [self commitTotalToKeychain];
+    });
 }
 
 -(void)removePassword:(RCPassword *)password
 {
     [mutablePasswords removeObject:password];
-    [self deletePasswordFromKeychain:password];
-    [self commitTotalToKeychain];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self deletePasswordFromKeychain:password];
+        [self commitTotalToKeychain];
+    });
 }
 
 -(void)removePasswordAtIndex:(NSInteger)index
@@ -90,16 +93,20 @@ static RCPasswordManager * manager;
     if (mutablePasswords.count > index){
         RCPassword * password = mutablePasswords[index];
         [mutablePasswords removeObjectAtIndex:index];
-        [self deletePasswordFromKeychain:password];
-        [self commitTotalToKeychain];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self deletePasswordFromKeychain:password];
+            [self commitTotalToKeychain];
+        });
     }
 }
 
 -(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index
 {
     [mutablePasswords insertObject:password atIndex:index];
-    [self commitAllPasswordsToKeyChain];
-    [self commitTotalToKeychain];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self commitAllPasswordsToKeyChain];
+        [self commitTotalToKeychain];
+    });
 }
 
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex
@@ -134,16 +141,23 @@ static RCPasswordManager * manager;
 
 -(void)lockPasswords
 {
-    [self commitAllPasswordsToKeyChain];
-    [mutablePasswords removeAllObjects];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self commitAllPasswordsToKeyChain];
+        [mutablePasswords removeAllObjects];
+    });
 }
 
--(void)grantAccessToPasswords
+-(void)grantPasswordAccess:(void(^)())completion
 {
-    if ([self anyLoginsExist]){
-        [self constructPasswordsFromKeychain];
-    }else
-        mutablePasswords = [NSMutableArray new];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        if ([self anyLoginsExist]){
+            [self constructPasswordsFromKeychain];
+        }else
+            mutablePasswords = [NSMutableArray new];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
+    });
 }
 
 -(RCPassword *)passwordForTitle:(NSString *)title
@@ -160,6 +174,7 @@ static RCPasswordManager * manager;
 
 -(void)constructPasswordsFromKeychain
 {
+    NSDate * date = [NSDate date];
     NSInteger count = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
     NSMutableArray * passwords = [NSMutableArray arrayWithCapacity:count];
     for (int i = 0; i < count; i++) {
@@ -178,11 +193,12 @@ static RCPasswordManager * manager;
         NSString * notes2 = [[PDKeychainBindings sharedKeychainBindings] stringForKey:notes2Index];
         if (notes1)[rcPassword.extraFields addObject:notes1];
         if (notes2)[rcPassword.extraFields addObject:notes2];
-        RCPassword * password = decryptPassword(rcPassword);
+        [rcPassword decrypt];
         NSLog(@"INDEX %d TITLE %@, NAME %@, PASSWORD %@, URL %@", i, rcPassword.title, rcPassword.username, rcPassword.password, rcPassword.urlName);
-        [passwords addObject:password];
+        [passwords addObject:rcPassword];
     }
     mutablePasswords = passwords;
+    NSLog(@"TIME SINCE START %f", -[date timeIntervalSinceNow]);
 }
 
 -(void)commitAllPasswordsToKeyChain
@@ -196,16 +212,16 @@ static RCPasswordManager * manager;
         NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
         NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
         NSLog(@"INDEX %d TITLE %@, NAME %@, PASSWORD %@, URL %@", index, password.title, password.username, password.password, password.urlName);
-        RCPassword * encrypted = encryptPassword(password);
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.title forKey:titleIndex];
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.username forKey:nameIndex];
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.password forKey:passwordIndex];
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.urlName forKey:urlIndex];
+        [password encrypt];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.title forKey:titleIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.username forKey:nameIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.password forKey:passwordIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.urlName forKey:urlIndex];
         if (password.extraFields.count > 0){
-            [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.extraFields[0] forKey:notes1Index];
+            [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[0] forKey:notes1Index];
         }
         if (password.extraFields.count > 1){
-            [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.extraFields[1] forKey:notes2Index];
+            [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[1] forKey:notes2Index];
         }
     }
 }
@@ -219,16 +235,16 @@ static RCPasswordManager * manager;
     NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, index];
     NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, index];
     NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, index];
-    RCPassword * encrypted = encryptPassword(password);
-    [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.title forKey:titleIndex];
-    [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.username forKey:nameIndex];
-    [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.password forKey:passwordIndex];
-    [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.urlName forKey:urlIndex];
+    [password encrypt];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.title forKey:titleIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.username forKey:nameIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.password forKey:passwordIndex];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password.urlName forKey:urlIndex];
     if (password.extraFields.count > 0){
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.extraFields[0] forKey:notes1Index];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[0] forKey:notes1Index];
     }
     if (password.extraFields.count > 1){
-        [[PDKeychainBindings sharedKeychainBindings] setString:encrypted.extraFields[1] forKey:notes2Index];
+        [[PDKeychainBindings sharedKeychainBindings] setString:password.extraFields[1] forKey:notes2Index];
     }
 }
 
@@ -247,6 +263,26 @@ static RCPasswordManager * manager;
     [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:urlIndex];
     [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes1Index];
     [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes2Index];
+}
+
+-(void)clearAllPasswordData
+{
+    NSInteger count = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
+    for (int i = 0; i < count; i++) {
+        NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, i];
+        NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, i];
+        NSString * passwordIndex = [NSString stringWithFormat:@"%@%d", STORED_PASSWORD_PREFIX, i];
+        NSString * urlIndex = [NSString stringWithFormat:@"%@%d", STORED_URL_PREFIX, i];
+        NSString * notes1Index = [NSString stringWithFormat:@"%@%d", STORED_NOTES1_PREFIX, i];
+        NSString * notes2Index= [NSString stringWithFormat:@"%@%d", STORED_NOTES2_PREFIX, i];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:titleIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:nameIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:passwordIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:urlIndex];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes1Index];
+        [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes2Index];
+    }
+    [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:STORED_TITLE_COUNT];
 }
 
 -(void)commitTotalToKeychain

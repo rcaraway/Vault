@@ -29,6 +29,8 @@
 @property(nonatomic, strong) NSMutableArray * extraFields;
 
 
+-(void)encrypt;
+-(void)decrypt;
 
 -(NSArray *)allFields;
 

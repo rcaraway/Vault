@@ -9,6 +9,8 @@
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import <Parse/Parse.h>
+#import "NSString+Encryption.h"
+#import <objc/runtime.h>
 
 @interface RCPassword ()
 
@@ -17,6 +19,7 @@
 @end
 
 @implementation RCPassword
+
 
 
 -(PFObject *)convertedObject
@@ -93,6 +96,30 @@
         [allFields addObjectsFromArray:self.extraFields];
     }
     return allFields;
+}
+
+-(void)encrypt
+{
+    self.username = [self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    self.password = [self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    if (self.extraFields.count > 0){
+        self.extraFields[0] = [self.extraFields[0] stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        if (self.extraFields.count > 1){
+            self.extraFields[1] = [self.extraFields[1] stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        }
+    }
+}
+
+-(void)decrypt
+{
+    self.username = [self.username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    self.password = [self.password stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    if (self.extraFields.count > 0){
+        self.extraFields[0] = [self.extraFields[0] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        if (self.extraFields.count > 1){
+            self.extraFields[1] = [self.extraFields[1] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        }
+    }
 }
 
 -(NSString *)description
