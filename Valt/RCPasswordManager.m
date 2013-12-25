@@ -203,7 +203,8 @@ static RCPasswordManager * manager;
 
 -(void)commitAllPasswordsToKeyChain
 {
-    for (RCPassword * password in mutablePasswords) {
+    NSMutableArray * mutableCopy = [mutablePasswords mutableCopy];
+    for (RCPassword * password in mutableCopy) {
         NSInteger index = [mutablePasswords indexOfObject:password];
         NSString * titleIndex = [NSString stringWithFormat:@"%@%d", STORED_TITLE_PREFIX, index];
         NSString * nameIndex = [NSString stringWithFormat:@"%@%d", STORED_EMAIL_PREFIX, index];

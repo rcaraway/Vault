@@ -21,6 +21,7 @@
 #import "RCListGestureManager.h"
 #import "JTTransformableTableViewCell.h"
 #import "HTAutocompleteTextField.h"
+#import "RCNetworking.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -61,6 +62,7 @@
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self setupTableView];
+    [self setupSyncButtonIfNeeded];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -76,13 +78,16 @@
             CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
             self.tableView.transform = scale;
         } completion:^(BOOL finished) {
+            [self showSyncButton];
             [UIView animateWithDuration:.2 animations:^{
                 self.tableView.transform = CGAffineTransformIdentity;
+            }completion:^(BOOL finished) {
             }];
         }];
         
     });
     [self.tableView reloadData];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,10 +125,40 @@
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
 }
 
+
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
 }
+
+#pragma mark - Sync Button
+
+-(void)setupSyncButtonIfNeeded
+{
+    if (![[RCNetworking sharedNetwork] loggedIn]){
+        self.syncButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.syncButton setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height, 320, 50)];
+        [self.syncButton addTarget:self action:@selector(didTapSync) forControlEvents:UIControlEventTouchUpInside];
+        [self.syncButton setBackgroundColor:[UIColor whiteColor]];
+        [self.syncButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [self.syncButton setTitle:@"Sync Data to Cloud" forState:UIControlStateNormal];
+        [[APP rootController].view addSubview:self.syncButton];
+    }
+}
+
+-(void)showSyncButton
+{
+    [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self.syncButton setFrame:CGRectMake(0, [APP rootController].view.frame.size.height-50, 320, 50)];
+    } completion:nil];
+}
+
+-(void)didTapSync
+{
+    [[APP rootController] launchPurchaseScreen];
+}
+
 
 
 #pragma mark - TableView Delegate/DataSource
@@ -260,7 +295,6 @@
         [[RCPasswordManager defaultManager] removePasswordAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     } else if (state == JTTableViewCellEditingStateRight) {
-        //TODO: web browser
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         if (password.hasValidURL){
             [[APP rootController] launchBrowserWithPassword:password];

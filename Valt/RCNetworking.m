@@ -44,23 +44,27 @@ static RCNetworking *sharedNetwork;
 
 #pragma mark - Main Methods
 
--(void)signup
+-(void)signupWithEmail:(NSString *)email password:(NSString *)password
 {
-    NSString * email = [[RCPasswordManager defaultManager] accountEmail];
-    NSString * masterPassword = [[RCPasswordManager defaultManager] masterPassword];
-    if (email && masterPassword){
-        PFUser * user = [PFUser user];
-        [user setEmail:email];
-        [user setPassword:masterPassword];
-        [user setUsername:email];
-        [user setACL:[self defaultACLForUser:user]];
-        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (!error){
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:nil];
-            }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:nil];
-            }
-        }];
+    if ([password isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
+        if (email.length >= 5 && password.length >=1){
+            PFUser * user = [PFUser user];
+            [user setEmail:email];
+            [user setPassword:password];
+            [user setUsername:email];
+            [user setACL:[self defaultACLForUser:user]];
+            [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (!error){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:nil];
+                }else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:error.userInfo[@"error"]];
+                }
+            }];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:@"Fill out fields"];
+        }
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:@"Incorrect Password"];
     }
 }
 
@@ -75,7 +79,7 @@ static RCNetworking *sharedNetwork;
 
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
-    if (email && password){
+    if (email.length >= 5 && password.length >=1){
         [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser *user, NSError *error) {
             if (!error){
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:nil];
@@ -83,6 +87,8 @@ static RCNetworking *sharedNetwork;
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:error.userInfo[@"error"]];
             }
         }];
+    }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:@"Fill out fields"];
     }
 }
 

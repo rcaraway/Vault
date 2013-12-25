@@ -13,7 +13,7 @@
 
 @interface RCNetworking : NSObject
 
--(void)signup;
+-(void)signupWithEmail:(NSString *)email password:(NSString *)password;
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password;
 
 -(void)fetchFromServer;

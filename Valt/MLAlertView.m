@@ -156,7 +156,7 @@ static UIColor * successColor;
         self.buttonView.alpha = 1;
         self.titleLabel.text = title;
     }];
-    [self performSelector:@selector(showNormal) withObject:nil afterDelay:1];
+    [self performSelector:@selector(showNormal) withObject:nil afterDelay:2];
 }
 
 -(void)showNormal

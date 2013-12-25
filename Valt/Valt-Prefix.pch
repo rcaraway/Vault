@@ -12,6 +12,10 @@
 
 #define APP (RCAppDelegate *)[[UIApplication sharedApplication] delegate]
 
+#define NEW_USER_MODE 0 //Clears login/keychain data, acts like new user
+#define PAID_USER_MODE 0 //Acts like paid user always
+#define EXPIRED_USER_MODE 0 //Paid user thats data just expired;
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>

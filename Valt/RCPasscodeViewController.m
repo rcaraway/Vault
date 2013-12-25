@@ -283,7 +283,7 @@
 
 -(void)didTapLogin
 {
-    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login To Sync" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Premium Login" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
     [self.alertView show];
     [self.numberField resignFirstResponder];
 }

@@ -11,6 +11,8 @@
 @class RCPassword;
 @interface RCListViewController : UITableViewController <UISearchBarDelegate>
 
+@property(nonatomic, strong) UIButton * syncButton;
 -(void)removePassword:(RCPassword *)password;
+
 
 @end
