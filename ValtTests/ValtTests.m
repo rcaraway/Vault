@@ -70,25 +70,42 @@
     [[RCPasswordManager defaultManager] clearAllPasswordData];
     for (RCPassword * password in self.passwords) {
         [[RCPasswordManager defaultManager] addPassword:password];
+        XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:password], @"Contained passwords not exact");
     }
-    
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Adding Several didn't all work");
 }
 
 #pragma mark - addPassword:atIndex
 
 -(void)testAddAtIndexZero
 {
-    
+    [[RCPasswordManager defaultManager] addPassword:self.passwords[2] atIndex:0];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][0] isEqual:self.passwords[2]], @"Passwords wereren't equal after lock and regrant");
 }
 
 -(void)testAddAtMaxIndex
 {
-    
+    NSInteger maxIndex = [[RCPasswordManager defaultManager] passwords].count;
+    [[RCPasswordManager defaultManager]  addPassword:self.passwords[4] atIndex:maxIndex];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][maxIndex] isEqual:self.passwords[4]], @"Adding at max index failed");
 }
 
 -(void)testAddSeveralAtSameIndex
 {
-    
+    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+    for (RCPassword * password in self.passwords) {
+        [[RCPasswordManager defaultManager] addPassword:password atIndex:2];
+    }
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count+currentCount, @"Didn't add them all");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didn't add them all correctly");
 }
 
 
@@ -96,17 +113,34 @@
 
 -(void)testAddAFewPasswords
 {
-    
+    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+    NSArray * subArray = [self.passwords subarrayWithRange:NSMakeRange(0, 2)];
+    [[RCPasswordManager defaultManager] addPasswords:subArray];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+subArray.count, @"Didn't add them all");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:subArray[1]], @"Didnt add them all");
 }
 
 -(void)testAddManyPasswords
 {
+    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+self.passwords.count, @"Didn't add them all");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didnt add them all");
     
 }
 
 -(void)testAddingOver200Passwords
 {
-    
+    NSMutableArray * allpasswords = [NSMutableArray arrayWithCapacity:200];
+    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+    for (int i = 0; i < 40; i++) {
+        NSMutableArray * passwords = [self generatedPasswordsWithPostfix:[NSString stringWithFormat:@"MANY%d", i]];
+        [allpasswords addObjectsFromArray:passwords];
+    }
+    [[RCPasswordManager defaultManager] addPasswords:allpasswords];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
 }
 
 
@@ -114,90 +148,135 @@
 
 -(void)testReplaceAllPasswordsWith1
 {
-    
+    RCPassword * password = self.passwords[2];
+    [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:@[password]];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 1, @"Didn't remove all passwords");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:password], @"Didn't contain right password");
 }
 
 -(void)testReplaceAllPasswordsWithAFew
 {
-    
+    NSArray * subarray = [self.passwords subarrayWithRange:NSMakeRange(0, 3)];
+    [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:subarray];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 3, @"Didn't remove all passwords");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:subarray[0]], @"Didn't contain right password");
 }
 
 -(void)testReplaceAllPasswordsWithMany
 {
-    
+    [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Didn't remove all passwords");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[3]], @"Didn't contain right password");
 }
 
 #pragma mark - Remove Password
 
 -(void)testRemoveSinglePassword
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPassword:self.passwords[0]];
+    [[RCPasswordManager defaultManager] removePassword:self.passwords[0]];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 0, @"Removal didn't work");
 }
 
 -(void)testRemoveAllPasswordsOneAtATime
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    NSArray * array = [NSArray arrayWithArray:[[RCPasswordManager defaultManager] passwords]];
+    for (RCPassword * password in array) {
+        [[RCPasswordManager defaultManager] removePassword:password];
+    }
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 0, @"Removal didn't work");
 }
 
--(void)testGracefulFailureOfRemovingInvalidPassword
+-(void)testRemovingInvalidPassword
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPassword:self.passwords[0]];
+    [[RCPasswordManager defaultManager] removePassword:self.passwords[1]];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 1, @"Invalid removal didn't work");
+
 }
 
 #pragma mark - Remove Password At Index
 
 -(void)testRemoveIndexZero
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPassword:self.passwords[0]];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:0];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 0, @"Index Removal didn't work");
 }
 
 -(void)testRemoveLastIndex
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:self.passwords.count-1];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count-1, @"Index Removal didn't work");
 }
 
 -(void)testRemoveSeveralAtSameIndex
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:1];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:1];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:1];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count-3, @"Index Removal didn't work");
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][1] == self.passwords[4], @"DIdnt remove correct Passwords");
 }
 
 -(void)testRemovingInvalidIndex
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] removePasswordAtIndex:self.passwords.count];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Invalid Index Removal didn't work");
 }
 
 #pragma mark - Move Password at index to index
 
 -(void)testMoveIndexZeroToLast
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] movePasswordAtIndex:0 toNewIndex:self.passwords.count-1];
+    [[RCPasswordManager defaultManager]lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][0] == self.passwords[self.passwords.count-1], @"Exchange didn't work right");
 }
 
 -(void)testMoveIndexLastToZero
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] movePasswordAtIndex:self.passwords.count-1 toNewIndex:0];
+    [[RCPasswordManager defaultManager]lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][0] == self.passwords[self.passwords.count-1], @"Exchange didn't work right");
 }
 
 -(void)testRandomSwap
 {
-    
-}
-
--(void)testSeveralRandomSwaps
-{
-    
-}
-
-#pragma mark - Password Saving
-
--(void)testMultipleSavesToKeychain
-{
-    
-}
-
--(void)testRandomMutationSaves
-{
-    
+    NSInteger firstIndex = rand()%self.passwords.count;
+    NSInteger secondIndex = rand()%self.passwords.count;
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] movePasswordAtIndex:firstIndex toNewIndex:secondIndex];
+    [[RCPasswordManager defaultManager]lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][secondIndex] == self.passwords[firstIndex], @"Exchange didn't work right");
 }
 
 #pragma mark - Convenience

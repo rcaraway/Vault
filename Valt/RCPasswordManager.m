@@ -87,6 +87,17 @@ static RCPasswordManager * manager;
     });
 }
 
+-(void)addPasswords:(NSArray *)passwords
+{
+    [mutablePasswords addObjectsFromArray:passwords];
+}
+
+-(void)replaceAllPasswordsWithPasswords:(NSArray *)passwords
+{
+    [mutablePasswords removeAllObjects];
+    [mutablePasswords addObjectsFromArray:passwords];
+}
+
 -(void)removePassword:(RCPassword *)password
 {
     [mutablePasswords removeObject:password];
@@ -110,7 +121,10 @@ static RCPasswordManager * manager;
 
 -(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index
 {
-    [mutablePasswords insertObject:password atIndex:index];
+    if (index == mutablePasswords.count)
+        [mutablePasswords addObject:password];
+    else
+        [mutablePasswords insertObject:password atIndex:index];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self commitAllPasswordsToKeyChain];
         [self commitTotalToKeychain];
@@ -307,6 +321,9 @@ static RCPasswordManager * manager;
         [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:notes2Index];
     }
     [[PDKeychainBindings sharedKeychainBindings] setString:@"" forKey:STORED_TITLE_COUNT];
+    if (mutablePasswords){
+        [mutablePasswords removeAllObjects];
+    }
 }
 
 -(void)commitTotalToKeychain
