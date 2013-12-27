@@ -16,6 +16,7 @@
 -(void)signupWithEmail:(NSString *)email password:(NSString *)password;
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password;
 
+-(void)mergeFromServer;
 -(void)fetchFromServer;
 -(void)sync;
 -(BOOL)loggedIn;

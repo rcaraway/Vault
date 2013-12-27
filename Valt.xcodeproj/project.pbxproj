@@ -69,6 +69,8 @@
 		D2254E5D18648502003590AF /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5418648502003590AF /* icon-success@2x.png */; };
 		D2254E5E18648502003590AF /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2254E5618648502003590AF /* TWMessageBarManager.m */; };
 		D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5718648502003590AF /* TWMessageBarManager.podspec */; };
+		D227A9EF186CB5A800361DEB /* RCNetworkingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */; };
+		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
@@ -219,6 +221,8 @@
 		D2254E5518648502003590AF /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
 		D2254E5618648502003590AF /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
 		D2254E5718648502003590AF /* TWMessageBarManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TWMessageBarManager.podspec; sourceTree = "<group>"; };
+		D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkingTests.m; sourceTree = "<group>"; };
+		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -389,7 +393,9 @@
 		D21717D518576B6500D687F8 /* ValtTests */ = {
 			isa = PBXGroup;
 			children = (
+				D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */,
 				D21717DB18576B6500D687F8 /* ValtTests.m */,
+				D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */,
 				D21717D618576B6500D687F8 /* Supporting Files */,
 			);
 			path = ValtTests;
@@ -875,7 +881,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D227A9EF186CB5A800361DEB /* RCNetworkingTests.m in Sources */,
 				D21717DC18576B6500D687F8 /* ValtTests.m in Sources */,
+				D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

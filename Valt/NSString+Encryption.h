@@ -13,4 +13,7 @@
 -(NSString *)stringByDecryptingWithKey:(NSString *)key;
 -(NSString *)stringByEncryptingWithKey:(NSString *)key;
 
+
++(NSString *)randomString;
+
 @end

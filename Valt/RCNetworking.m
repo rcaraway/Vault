@@ -52,9 +52,9 @@ static RCNetworking *sharedNetwork;
             [user setEmail:email];
             [user setPassword:password];
             [user setUsername:email];
-            [user setACL:[self defaultACLForUser:user]];
             [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error){
+                    [user setACL:[self defaultACLForUser:user]];
                     [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:nil];
                 }else{
                     [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:error.userInfo[@"error"]];

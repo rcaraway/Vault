@@ -68,7 +68,7 @@
 {
     self = super.init;
     if (self){
-        self.extraFields = [NSMutableArray new];
+        self.extraFields = NSMutableArray.new;
         self.title = @"";
         self.username = @"";
         self.password = @"";

@@ -28,6 +28,7 @@ static RCPasswordManager * manager;
 @implementation RCPasswordManager
 {
     NSMutableArray * mutablePasswords;
+    NSString * randomKey;
 }
 
 +(void)initialize
@@ -56,8 +57,15 @@ static RCPasswordManager * manager;
 
 -(NSString *)masterPassword
 {
+#ifdef TESTING_MODE
+    if (!randomKey){
+        randomKey = [NSString randomString];
+    }
+    return randomKey;
+#else
     NSString * decryptedPassword = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] stringByDecryptingWithKey:MASTER_PASSWORD_ACCESS];
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
+#endif
 }
 
 -(BOOL)anyLoginsExist
@@ -127,7 +135,9 @@ static RCPasswordManager * manager;
 
 -(NSArray *)passwords
 {
-    return [NSArray arrayWithArray:mutablePasswords];
+    if (mutablePasswords)
+        return [NSArray arrayWithArray:mutablePasswords];
+    return nil;
 }
 
 -(NSArray *)allTitles
@@ -139,21 +149,34 @@ static RCPasswordManager * manager;
     return titles;
 }
 
--(void)lockPasswords
+-(void)lockPasswordsCompletion:(void(^)())completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self commitAllPasswordsToKeyChain];
-        [mutablePasswords removeAllObjects];
+        [self lockPasswords];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
     });
+}
+
+-(void)lockPasswords
+{
+    [self commitAllPasswordsToKeyChain];
+    mutablePasswords = nil;
+}
+
+-(void)grantPasswordAccess
+{
+    if ([self anyLoginsExist]){
+        [self constructPasswordsFromKeychain];
+    }else
+        mutablePasswords = [NSMutableArray new];
 }
 
 -(void)grantPasswordAccess:(void(^)())completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        if ([self anyLoginsExist]){
-            [self constructPasswordsFromKeychain];
-        }else
-            mutablePasswords = [NSMutableArray new];
+        [self grantPasswordAccess];
         dispatch_async(dispatch_get_main_queue(), ^{
             completion();
         });

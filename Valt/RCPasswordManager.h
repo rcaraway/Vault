@@ -19,6 +19,8 @@
 -(void)clearAllPasswordData;
 -(void)addPassword:(RCPassword *)password;
 -(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index;
+-(void)addPasswords:(NSArray *)passwords;
+-(void)replaceAllPasswordsWithPasswords:(NSArray *)passwords;
 -(void)removePassword:(RCPassword *)password;
 -(void)removePasswordAtIndex:(NSInteger )index;
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
@@ -33,7 +35,8 @@
 -(BOOL)masterPasswordExists;
 
 -(void)lockPasswords;
--(void)grantPasswordAccess:(void(^)())completion;
+-(void)grantPasswordAccess:(void(^)())completion; //asynchronous
+-(void)grantPasswordAccess;
 
 +(RCPasswordManager *)defaultManager;
 
