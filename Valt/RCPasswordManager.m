@@ -29,6 +29,8 @@ static RCPasswordManager * manager;
 {
     NSMutableArray * mutablePasswords;
     NSString * randomKey;
+    dispatch_queue_t keyChainQueue;
+    BOOL cancelQueue;
 }
 
 +(void)initialize
@@ -55,6 +57,8 @@ static RCPasswordManager * manager;
     [[PDKeychainBindings sharedKeychainBindings] setString:encrypted forKey:MASTER_PASSWORD_KEY];
 }
 
+
+
 -(NSString *)masterPassword
 {
 #ifdef TESTING_MODE
@@ -64,6 +68,7 @@ static RCPasswordManager * manager;
     return randomKey;
 #else
     NSString * decryptedPassword = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] stringByDecryptingWithKey:MASTER_PASSWORD_ACCESS];
+    //decrypt
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
 #endif
 }
@@ -82,7 +87,7 @@ static RCPasswordManager * manager;
 {
     [mutablePasswords addObject:password];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self commitPasswordToKeyChain:password];
+        [self commitPasswordToKeyChain:password]; //correct, should just add to end, +1 to total
         [self commitTotalToKeychain];
     });
 }
@@ -90,17 +95,27 @@ static RCPasswordManager * manager;
 -(void)addPasswords:(NSArray *)passwords
 {
     [mutablePasswords addObjectsFromArray:passwords];
+    //should just committ all new to end, +passwords.count to total
 }
 
 -(void)replaceAllPasswordsWithPasswords:(NSArray *)passwords
 {
     [mutablePasswords removeAllObjects];
     [mutablePasswords addObjectsFromArray:passwords];
+    //check if each item is changed.
+    //if not, don't rewrite.  If so, rewrite.
+    //if no longer exists delete,
+    //if new items, add them
+    //recommiting total to passwords.count
 }
 
 -(void)removePassword:(RCPassword *)password
 {
     [mutablePasswords removeObject:password];
+    //if exists
+    //remove password
+    //all password that are indexed after it need their index = index - 1;
+    //new total = total -1;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self deletePasswordFromKeychain:password];
         [self commitTotalToKeychain];
