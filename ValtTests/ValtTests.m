@@ -140,19 +140,19 @@
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didnt add them all");
 }
 
-//-(void)testAddingOver200Passwords
-//{
-//    NSMutableArray * allpasswords = [NSMutableArray arrayWithCapacity:200];
-//    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
-//    for (int i = 0; i < 40; i++) {
-//        NSMutableArray * passwords = [self generatedPasswordsWithPostfix:[NSString stringWithFormat:@"MANY%d", i]];
-//        [allpasswords addObjectsFromArray:passwords];
-//    }
-//    [[RCPasswordManager defaultManager] addPasswords:allpasswords];
-//    [[RCPasswordManager defaultManager] lockPasswords];
-//    [[RCPasswordManager defaultManager] grantPasswordAccess];
-//    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
-//}
+-(void)testAddingOver200Passwords
+{
+    NSMutableArray * allpasswords = [NSMutableArray arrayWithCapacity:200];
+    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+    for (int i = 0; i < 40; i++) {
+        NSMutableArray * passwords = [self generatedPasswordsWithPostfix:[NSString stringWithFormat:@"MANY%d", i]];
+        [allpasswords addObjectsFromArray:passwords];
+    }
+    [[RCPasswordManager defaultManager] addPasswords:allpasswords];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
+}
 
 
 #pragma mark - Replacing Passwords
@@ -253,35 +253,23 @@
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Invalid Index Removal didn't work");
 }
 
-#pragma mark - Replace Passwords
-
--(void)testReplacingCurrentWithPasswords
-{
-    NSArray * otherPasswords = [self generatedPasswordsWithPostfix:@"OTHERS"];
-    [[RCPasswordManager defaultManager] clearAllPasswordData];
-    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
-    [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:otherPasswords];
-    [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
-    
-}
-
--(void)testReplacingNoPasswordsWithPasswords
-{
-    
-}
-
--(void)testReplacingPasswordsWithNoPasswords
-{
-    
-}
-
-
 #pragma mark - Update Password
 
 -(void)testUpdatingPassword
 {
-    
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    RCPassword * password = self.passwords[0];
+    [[RCPasswordManager defaultManager] addPassword:password];
+    password.urlName = @"ReplaceURLName.com";
+    password.password = @"NewPassword1";
+    password.username = @"New Username";
+    [[RCPasswordManager defaultManager] updatePassword:password];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 1 , @"Updating messed with count");
+    XCTAssertTrue([[[[RCPasswordManager defaultManager] passwords][0] username] isEqualToString:@"New Username"], @"Username not updated");
+    XCTAssertTrue([[[[RCPasswordManager defaultManager] passwords][0] password] isEqualToString:@"NewPassword1"], @"Password not updated");
+    XCTAssertTrue([[[[RCPasswordManager defaultManager] passwords][0] urlName] isEqualToString:@"ReplaceURLName.com"], @"URL not updated");
 }
 
 
