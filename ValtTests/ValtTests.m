@@ -255,8 +255,34 @@
 
 #pragma mark - Replace Passwords
 
+-(void)testReplacingCurrentWithPasswords
+{
+    NSArray * otherPasswords = [self generatedPasswordsWithPostfix:@"OTHERS"];
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:otherPasswords];
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    
+}
+
+-(void)testReplacingNoPasswordsWithPasswords
+{
+    
+}
+
+-(void)testReplacingPasswordsWithNoPasswords
+{
+    
+}
+
+
 #pragma mark - Update Password
 
+-(void)testUpdatingPassword
+{
+    
+}
 
 
 #pragma mark - Move Password at index to index
