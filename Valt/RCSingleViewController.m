@@ -253,7 +253,7 @@
         }
     }
     self.password.extraFields = extraFields;
-    [[RCPasswordManager defaultManager] commitPasswordToKeyChain:self.password];
+    [[RCPasswordManager defaultManager] updatePassword:self.password];
 }
 
 -(void)setAllTextFieldDelegates

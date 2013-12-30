@@ -317,7 +317,6 @@
     NSIndexPath * path = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:password] inSection:0];
     [[RCPasswordManager defaultManager] removePasswordAtIndex:path.row];
     [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
-    [[RCPasswordManager defaultManager] saveAllToKeychain];
 }
 
 -(void)gestureManager:(RCListGestureManager *)manager needsPlaceholderRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,7 +334,6 @@
 {
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
-    [[RCPasswordManager defaultManager] saveAllToKeychain];
 }
 
 

@@ -100,12 +100,24 @@
 {
     NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
     for (RCPassword * password in self.passwords) {
-        [[RCPasswordManager defaultManager] addPassword:password atIndex:2];
+        [[RCPasswordManager defaultManager] addPassword:password atIndex:0];
     }
     [[RCPasswordManager defaultManager] lockPasswords];
     [[RCPasswordManager defaultManager] grantPasswordAccess];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count+currentCount, @"Didn't add them all");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didn't add them all correctly");
+}
+
+-(void)testAddFalseIndex
+{
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    for (RCPassword * password in self.passwords) {
+        [[RCPasswordManager defaultManager] addPassword:password atIndex:2];
+    }
+    [[RCPasswordManager defaultManager] lockPasswords];
+    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 0, @"Didn't add them all");
+    XCTAssertFalse([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didn't add them all correctly");
 }
 
 
@@ -126,22 +138,21 @@
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+self.passwords.count, @"Didn't add them all");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didnt add them all");
-    
 }
 
--(void)testAddingOver200Passwords
-{
-    NSMutableArray * allpasswords = [NSMutableArray arrayWithCapacity:200];
-    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
-    for (int i = 0; i < 40; i++) {
-        NSMutableArray * passwords = [self generatedPasswordsWithPostfix:[NSString stringWithFormat:@"MANY%d", i]];
-        [allpasswords addObjectsFromArray:passwords];
-    }
-    [[RCPasswordManager defaultManager] addPasswords:allpasswords];
-    [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
-    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
-}
+//-(void)testAddingOver200Passwords
+//{
+//    NSMutableArray * allpasswords = [NSMutableArray arrayWithCapacity:200];
+//    NSInteger currentCount = [[RCPasswordManager defaultManager] passwords].count;
+//    for (int i = 0; i < 40; i++) {
+//        NSMutableArray * passwords = [self generatedPasswordsWithPostfix:[NSString stringWithFormat:@"MANY%d", i]];
+//        [allpasswords addObjectsFromArray:passwords];
+//    }
+//    [[RCPasswordManager defaultManager] addPasswords:allpasswords];
+//    [[RCPasswordManager defaultManager] lockPasswords];
+//    [[RCPasswordManager defaultManager] grantPasswordAccess];
+//    XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
+//}
 
 
 #pragma mark - Replacing Passwords
@@ -242,6 +253,12 @@
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Invalid Index Removal didn't work");
 }
 
+#pragma mark - Replace Passwords
+
+#pragma mark - Update Password
+
+
+
 #pragma mark - Move Password at index to index
 
 -(void)testMoveIndexZeroToLast
@@ -249,10 +266,10 @@
     [[RCPasswordManager defaultManager] clearAllPasswordData];
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
     [[RCPasswordManager defaultManager] movePasswordAtIndex:0 toNewIndex:self.passwords.count-1];
-    [[RCPasswordManager defaultManager]lockPasswords];
+    [[RCPasswordManager defaultManager] lockPasswords];
     [[RCPasswordManager defaultManager] grantPasswordAccess];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
-    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][0] == self.passwords[self.passwords.count-1], @"Exchange didn't work right");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][self.passwords.count-1] isEqual:self.passwords[0]], @"Exchange didn't work right");
 }
 
 -(void)testMoveIndexLastToZero
@@ -263,7 +280,7 @@
     [[RCPasswordManager defaultManager]lockPasswords];
     [[RCPasswordManager defaultManager] grantPasswordAccess];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
-    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][0] == self.passwords[self.passwords.count-1], @"Exchange didn't work right");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][0] isEqual:self.passwords[self.passwords.count-1]], @"Exchange didn't work right");
 }
 
 -(void)testRandomSwap
@@ -276,7 +293,7 @@
     [[RCPasswordManager defaultManager]lockPasswords];
     [[RCPasswordManager defaultManager] grantPasswordAccess];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
-    XCTAssertTrue([[RCPasswordManager defaultManager] passwords][secondIndex] == self.passwords[firstIndex], @"Exchange didn't work right");
+    XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][secondIndex] isEqual:self.passwords[firstIndex]], @"Exchange didn't work right");
 }
 
 #pragma mark - Convenience
