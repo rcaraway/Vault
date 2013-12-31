@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
+#import "NSString+Encryption.h"
 
 #define DEMO_ACCOUNT_USERNAME @"demo@demoaccount.ct"
 #define DEMO_ACCOUNT_PASSWORD @"112989"
@@ -16,6 +17,7 @@
 @interface RCNetworkingTests : XCTestCase
 
 @property(nonatomic) BOOL shouldStop;
+@property(nonatomic, strong) NSMutableArray * passwords;
 
 @end
 
@@ -24,19 +26,21 @@
 - (void)setUp
 {
     [super setUp];
+    self.passwords = [self generatedPasswords];
     [self addNotifications];
 }
 
 - (void)tearDown
 {
     [super tearDown];
+    self.passwords = nil;
     [self removeNotifications];
 }
 
 
 #pragma mark - Log in
 
--(void)testLogin
+-(void)testALogin
 {
     self.shouldStop = NO;
     NSDate * untilDate;
@@ -50,6 +54,9 @@
 
 -(void)testSync
 {
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
+    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+    NSLog(@"PASSWORD COUNT %d", self.passwords.count);
     self.shouldStop = NO;
     NSDate * untilDate;
     [[RCNetworking sharedNetwork] sync];
@@ -135,5 +142,26 @@
 {
     XCTAssertTrue(NO, @"Failed Merge");
 }
+
+
+#pragma mark - Convenience
+
+-(NSMutableArray *)generatedPasswords
+{
+    NSString * postFix = [NSString randomString];
+    NSInteger count = rand() % 8;
+    NSMutableArray * array = [NSMutableArray new];
+    for (int i = 0; i < count; i++) {
+        RCPassword * password = [[RCPassword  alloc] init];
+        password.title= [NSString stringWithFormat:@"Title%@%d", postFix, i];
+        password.username = [NSString stringWithFormat:@"username%@%d", postFix, i];
+        password.password = [NSString stringWithFormat:@"password%@%d", postFix, i];
+        password.urlName = [NSString stringWithFormat:@"http://www.urlname%@%d.com", postFix, i];
+        password.extraFields = [@[[NSString stringWithFormat:@"extraField%@%d", postFix, i]] mutableCopy];
+        [array addObject:password];
+    }
+    return array;
+}
+
 
 @end

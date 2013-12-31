@@ -90,38 +90,43 @@ static RCNetworking *sharedNetwork;
             }
         }];
     }else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:@"Fill out fields"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:@"Fill out fields"];
     }
 }
 
 -(void)fetchFromServer
 {
-    PFQuery * query = [PFQuery queryWithClassName:PASSWORD_CLASS];
-    [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
-    query.limit = 100000;
-    [query orderByAscending:PASSWORD_INDEX];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error){
-            [self pfObjectsToRCPasswords:objects completion:^(NSArray *passwords) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFetchCredentials object:passwords];
-            }];
-        }else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToFetchCredentials object:nil];
-        }
-    }];
+    if ([self loggedIn]){
+        PFQuery * query = [PFQuery queryWithClassName:PASSWORD_CLASS];
+        [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
+        query.limit = 100000;
+        [query orderByAscending:PASSWORD_INDEX];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error){
+                [self pfObjectsToRCPasswords:objects completion:^(NSArray *passwords) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFetchCredentials object:passwords];
+                }];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToFetchCredentials object:nil];
+            }
+        }];
+    }
 }
 
 -(void)sync
 {
-    [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
-        [PFObject saveAllInBackground:objects block:^(BOOL succeeded, NSError *error) {
-            if (!error){
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
-            }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSync object:nil];
-            }
+    if ([self loggedIn]){
+        [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
+            [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
+            [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (!error){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
+                }else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSync object:nil];
+                }
+            }];
         }];
-    }];
+    }
 }
 
 -(void)pfObjectsToRCPasswords:(NSArray*)pfObjects completion:(void (^)(NSArray * passwords))completion
