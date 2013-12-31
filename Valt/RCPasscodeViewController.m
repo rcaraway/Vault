@@ -258,9 +258,7 @@
         [[RCPasswordManager defaultManager] setMasterPassword:self.numberField.text];
     }
     self.enterPassword.text = @"Decrypting Data";
-    [[RCPasswordManager defaultManager] grantPasswordAccess:^{
-       [[APP rootController] moveFromPasscodeToList];
-    }];
+   //TODO: rewrite to use attemptToAccessPasswords
 }
 
 -(void)setConfirmMode

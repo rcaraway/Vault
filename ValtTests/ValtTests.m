@@ -21,9 +21,8 @@
 {
     [super setUp];
     self.passwords = [self generatedPasswordsWithPostfix:@"START"];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
 }
-
 
 - (void)tearDown
 {
@@ -41,7 +40,7 @@
 -(void)testReGrantAccess
 {
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertNotNil([[RCPasswordManager defaultManager] passwords], @"Passwords didn't exist");
 }
 
@@ -73,7 +72,7 @@
         XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:password], @"Contained passwords not exact");
     }
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Adding Several didn't all work");
 }
 
@@ -83,7 +82,7 @@
 {
     [[RCPasswordManager defaultManager] addPassword:self.passwords[2] atIndex:0];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][0] isEqual:self.passwords[2]], @"Passwords wereren't equal after lock and regrant");
 }
 
@@ -92,7 +91,7 @@
     NSInteger maxIndex = [[RCPasswordManager defaultManager] passwords].count;
     [[RCPasswordManager defaultManager]  addPassword:self.passwords[4] atIndex:maxIndex];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][maxIndex] isEqual:self.passwords[4]], @"Adding at max index failed");
 }
 
@@ -103,7 +102,7 @@
         [[RCPasswordManager defaultManager] addPassword:password atIndex:0];
     }
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count+currentCount, @"Didn't add them all");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didn't add them all correctly");
 }
@@ -115,7 +114,7 @@
         [[RCPasswordManager defaultManager] addPassword:password atIndex:2];
     }
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 0, @"Didn't add them all");
     XCTAssertFalse([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[4]], @"Didn't add them all correctly");
 }
@@ -150,7 +149,7 @@
     }
     [[RCPasswordManager defaultManager] addPasswords:allpasswords];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == currentCount+allpasswords.count, @"Not all passwords added");
 }
 
@@ -162,7 +161,7 @@
     RCPassword * password = self.passwords[2];
     [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:@[password]];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 1, @"Didn't remove all passwords");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:password], @"Didn't contain right password");
 }
@@ -172,7 +171,7 @@
     NSArray * subarray = [self.passwords subarrayWithRange:NSMakeRange(0, 3)];
     [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:subarray];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 3, @"Didn't remove all passwords");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:subarray[0]], @"Didn't contain right password");
 }
@@ -181,7 +180,7 @@
 {
     [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:self.passwords];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Didn't remove all passwords");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords] containsObject:self.passwords[3]], @"Didn't contain right password");
 }
@@ -265,7 +264,7 @@
     password.username = @"New Username";
     [[RCPasswordManager defaultManager] updatePassword:password];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == 1 , @"Updating messed with count");
     XCTAssertTrue([[[[RCPasswordManager defaultManager] passwords][0] username] isEqualToString:@"New Username"], @"Username not updated");
     XCTAssertTrue([[[[RCPasswordManager defaultManager] passwords][0] password] isEqualToString:@"NewPassword1"], @"Password not updated");
@@ -281,7 +280,7 @@
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
     [[RCPasswordManager defaultManager] movePasswordAtIndex:0 toNewIndex:self.passwords.count-1];
     [[RCPasswordManager defaultManager] lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][self.passwords.count-1] isEqual:self.passwords[0]], @"Exchange didn't work right");
 }
@@ -292,7 +291,7 @@
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
     [[RCPasswordManager defaultManager] movePasswordAtIndex:self.passwords.count-1 toNewIndex:0];
     [[RCPasswordManager defaultManager]lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][0] isEqual:self.passwords[self.passwords.count-1]], @"Exchange didn't work right");
 }
@@ -305,7 +304,7 @@
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
     [[RCPasswordManager defaultManager] movePasswordAtIndex:firstIndex toNewIndex:secondIndex];
     [[RCPasswordManager defaultManager]lockPasswords];
-    [[RCPasswordManager defaultManager] grantPasswordAccess];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
     XCTAssertTrue([[RCPasswordManager defaultManager] passwords].count == self.passwords.count, @"Exchange didn't work right");
     XCTAssertTrue([[[RCPasswordManager defaultManager] passwords][secondIndex] isEqual:self.passwords[firstIndex]], @"Exchange didn't work right");
 }
