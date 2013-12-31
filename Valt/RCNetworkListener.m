@@ -11,6 +11,8 @@
 #import "RCPasswordManager.h"
 #import "NSIndexPath+VaultPaths.h"
 
+//TODO: needs status view
+
 static RCNetworkListener * sharedQueue;
 
 @implementation RCNetworkListener
@@ -56,6 +58,9 @@ static RCNetworkListener * sharedQueue;
     
 }
 
+
+#pragma mark - LifeCycle handling
+
 -(void)didBecomeActive
 {
     if ([[RCNetworking sharedNetwork] loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
@@ -63,20 +68,72 @@ static RCNetworkListener * sharedQueue;
     }
 }
 
--(void)didLogin
+#pragma mark - Progress Handling
+
+-(void)didBeginLoggingIn
 {
     
 }
 
--(void)didFetch
+-(void)didBeginSyncing
 {
     
+}
+
+-(void)didBeginFetching
+{
+    
+}
+
+
+
+
+#pragma mark - Success Handling
+
+-(void)didLogin
+{
+    //fetch data
+}
+
+-(void)didFetch
+{
+    //replace if normal
+    //merge if local passwords created THEN logged in
 }
 
 -(void)didSync
 {
     
 }
+
+-(void)didGrantAccess
+{
+    
+}
+
+-(void)didFailToGrantAccess
+{
+    
+}
+
+-(void)didLock
+{
+    
+}
+
+-(void)didDenyAccess
+{
+    
+}
+
+#pragma mark - Failure Handling
+
+-(void)didFailToGrantAccess
+{
+    
+}
+
+
 
 
 

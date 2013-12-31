@@ -315,7 +315,6 @@ static RCPasswordManager * manager;
     return nil;
 }
 
-
 -(RCPassword *)passwordForTitle:(NSString *)title
 {
     if (_accessGranted){
@@ -341,7 +340,6 @@ static RCPasswordManager * manager;
         });
     });
 }
-
 
 -(void)lockPasswords
 {

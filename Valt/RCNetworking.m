@@ -94,7 +94,7 @@ static RCNetworking *sharedNetwork;
 
 -(void)fetchFromServer
 {
-    if ([self loggedIn]){
+    if ([self loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
         PFQuery * query = [PFQuery queryWithClassName:PASSWORD_CLASS];
         [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
         query.limit = 100000;
@@ -113,7 +113,7 @@ static RCNetworking *sharedNetwork;
 
 -(void)sync
 {
-    if ([self loggedIn]){
+    if ([self loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
         [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
             [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
             [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
