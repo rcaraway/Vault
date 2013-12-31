@@ -18,7 +18,9 @@ NSString * const networkingDidSignup = @"networkingDidSignup";
 NSString * const networkingDidLogin = @"networkingDidLogin";
 NSString * const networkingDidFetchCredentials = @"networkingDidFetchCredentials";
 NSString * const networkingDidSync = @"networkingDidSync";
+NSString * const networkingDidMergeCredentials = @"networkingDidMergeCredentials";
 
+NSString * const networkingDidFailMergeCredentials = @"networkingDidFailMergeCredentials";
 NSString * const networkingDidFailToSignup = @"networkingDidFailToSignup";
 NSString * const networkingDidFailToLogin = @"networkingDidFailToLogin";
 NSString * const networkingDidFailToFetchCredentials = @"networkingDidFailToFetchCredentials";
@@ -114,7 +116,7 @@ static RCNetworking *sharedNetwork;
     [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
         [PFObject saveAllInBackground:objects block:^(BOOL succeeded, NSError *error) {
             if (!error){
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
             }else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSync object:nil];
             }
