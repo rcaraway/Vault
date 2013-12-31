@@ -27,10 +27,17 @@
 
 @end
 
+extern NSString * const networkingDidBeginLoggingIn;
+extern NSString * const networkingDidBeginSigningUp;
+extern NSString * const networkingDidBeginFetching;
+extern NSString * const networkingDidBeginDecrypting;
+extern NSString * const networkingDidBeginSyncing;
+
 extern NSString * const networkingDidSignup;
 extern NSString * const networkingDidLogin;
 extern NSString * const networkingDidFetchCredentials;
 extern NSString * const networkingDidSync;
+extern NSString * const networkingDidDecrypt;
 
 extern NSString * const networkingDidFailToSignup;
 extern NSString * const networkingDidFailToLogin;

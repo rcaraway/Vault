@@ -12,6 +12,7 @@
 #import "RCPasswordManager.h"
 #import <Parse/Parse.h>
 #import "NSString+Encryption.h"
+#import "RCNetworkListener.h"
 
 @implementation RCAppDelegate
 
@@ -19,6 +20,7 @@
 {
     [Parse setApplicationId:@"HlDWnYtllU4xd5cYbDgyXMFbx1fNzetYwii4WLqB"
                   clientKey:@"JWR7JvgVZETnVcoj27teczJRY0DuF49QTXZl09VG"];
+    [RCNetworkListener beginListening];
     [RCPasswordManager defaultManager];
     if ([PFUser currentUser]){
         [[RCNetworking sharedNetwork] defaultACLForUser:[PFUser currentUser]];
@@ -28,6 +30,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[RCPasswordManager defaultManager] clearAllPasswordData];
     self.rootController = [[RCRootViewController  alloc] initWithNibName:nil bundle:nil];
     self.window = [[UIWindow  alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:self.rootController];
@@ -59,7 +62,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    
+    [RCNetworkListener stopListening];
 }
 
 @end

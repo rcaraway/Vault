@@ -11,6 +11,7 @@
 		D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */; };
 		D211105C187334790029D21D /* RCNetworkListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105B187334790029D21D /* RCNetworkListener.m */; };
 		D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */; };
+		D21110631873762D0029D21D /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D21110621873762D0029D21D /* KGStatusBar.m */; };
 		D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B018576B6500D687F8 /* Foundation.framework */; };
 		D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B218576B6500D687F8 /* CoreGraphics.framework */; };
 		D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B418576B6500D687F8 /* UIKit.framework */; };
@@ -126,6 +127,8 @@
 		D211105B187334790029D21D /* RCNetworkListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkListener.m; sourceTree = "<group>"; };
 		D211105D1873383C0029D21D /* NSIndexPath+VaultPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+VaultPaths.h"; sourceTree = "<group>"; };
 		D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+VaultPaths.m"; sourceTree = "<group>"; };
+		D21110611873762D0029D21D /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
+		D21110621873762D0029D21D /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
 		D21717AD18576B6500D687F8 /* Valt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717B018576B6500D687F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D21717B218576B6500D687F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -330,6 +333,15 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
+		D2111060187376050029D21D /* KGStatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				D21110611873762D0029D21D /* KGStatusBar.h */,
+				D21110621873762D0029D21D /* KGStatusBar.m */,
+			);
+			name = KGStatusBar;
+			sourceTree = "<group>";
+		};
 		D21717A418576B6500D687F8 = {
 			isa = PBXGroup;
 			children = (
@@ -427,6 +439,7 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				D2111060187376050029D21D /* KGStatusBar */,
 				D27F407E1868F56500104F1C /* Base64 */,
 				D27F40671868ECC200104F1C /* RNCryptor */,
 				D27F405B18687FFC00104F1C /* MLAlertView */,
@@ -860,6 +873,7 @@
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
 				D21717EE1857710700D687F8 /* JTTransformableTableViewCell.m in Sources */,
 				D21717FC1857717600D687F8 /* SPLockScreen.m in Sources */,
+				D21110631873762D0029D21D /* KGStatusBar.m in Sources */,
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
 				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,
 				D21718111857723700D687F8 /* GenericAnimationView.m in Sources */,

@@ -14,15 +14,23 @@
 #define PASSWORDS_KEY @"PASSWORDS_KEY"
 
 
+NSString * const networkingDidBeginLoggingIn = @"networkingDidBeginLoggingIn";
+NSString * const networkingDidBeginSigningUp = @"networkingDidBeginSigningUp";
+NSString * const networkingDidBeginFetching = @"networkingDidBeginFetching";
+NSString * const networkingDidBeginSyncing = @"networkingDidBeginSyncing";
+NSString * const networkingDidBeginDecrypting = @"networkingDidBeginDecrypting";
+
 NSString * const networkingDidSignup = @"networkingDidSignup";
 NSString * const networkingDidLogin = @"networkingDidLogin";
 NSString * const networkingDidFetchCredentials = @"networkingDidFetchCredentials";
 NSString * const networkingDidSync = @"networkingDidSync";
+NSString * const networkingDidDecrypt = @"networkingDidDecrypt";
 
 NSString * const networkingDidFailToSignup = @"networkingDidFailToSignup";
 NSString * const networkingDidFailToLogin = @"networkingDidFailToLogin";
 NSString * const networkingDidFailToFetchCredentials = @"networkingDidFailToFetchCredentials";
 NSString * const networkingDidFailToSync = @"networkingDidFailToSync";
+
 
 static RCNetworking *sharedNetwork;
 
@@ -52,6 +60,7 @@ static RCNetworking *sharedNetwork;
             [user setEmail:email];
             [user setPassword:password];
             [user setUsername:email];
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginSigningUp object:nil];
             [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error){
                     [user setACL:[self defaultACLForUser:user]];
@@ -80,6 +89,7 @@ static RCNetworking *sharedNetwork;
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
     if (email.length >= 5 && password.length >=1){
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginLoggingIn object:nil];
         [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser *user, NSError *error) {
             if (!error){
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:nil];
@@ -99,6 +109,7 @@ static RCNetworking *sharedNetwork;
         [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
         query.limit = 100000;
         [query orderByAscending:PASSWORD_INDEX];
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginFetching object:nil];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error){
                 [self pfObjectsToRCPasswords:objects completion:^(NSArray *passwords) {
@@ -114,6 +125,7 @@ static RCNetworking *sharedNetwork;
 -(void)sync
 {
     if ([self loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginSyncing object:nil];
         [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
             [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
             [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -129,6 +141,7 @@ static RCNetworking *sharedNetwork;
 
 -(void)pfObjectsToRCPasswords:(NSArray*)pfObjects completion:(void (^)(NSArray * passwords))completion
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginDecrypting object:nil];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray * array = [NSMutableArray new];
         for (PFObject * object in pfObjects) {
@@ -137,6 +150,7 @@ static RCNetworking *sharedNetwork;
             [array addObject:password];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidDecrypt object:nil];
             completion(array);
         });
     });

@@ -29,6 +29,8 @@ NSString * const passwordManagerDidLock = @"passwordManagerDidLock";
 NSString * const passwordManagerDidCreateMasterPassword = @"passwordManagerDidCreateMasterPassword";
 NSString * const passwordManagerDidChangeMasterPassword = @"passwordManagerDidChangeMasterPassword";
 NSString * const passwordManagerDidFailToChangeMasterPassword = @"passwordManagerDidFailToChangeMasterPassword";
+NSString * const passwordManagerDidUpdatePasswords = @"passwordManagerDidUpdatePasswords";
+
 
 static RCPasswordManager * manager;
 
@@ -40,6 +42,7 @@ static RCPasswordManager * manager;
     BOOL cancelQueue;
     BOOL allowOverridePassword;
 }
+
 
 #pragma mark - Class Methods
 
@@ -76,6 +79,11 @@ static RCPasswordManager * manager;
     }else{
         [self didDenyAccess:@"Access Denied"];
     }
+}
+
+-(void)removeMasterPassword
+{
+    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:MASTER_PASSWORD_KEY];
 }
 
 -(NSString *)masterPassword
@@ -148,6 +156,7 @@ static RCPasswordManager * manager;
             [self addNewPasswordToKeychain:password]; //correct, should just add to end, +1 to total
             [self commitTotalToKeychain];
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
     }
 }
 
@@ -163,6 +172,7 @@ static RCPasswordManager * manager;
             [self addNewPasswordsToKeychain:passwords];
             [self commitTotalToKeychain];
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -180,6 +190,7 @@ static RCPasswordManager * manager;
             [self replaceKeychainPasswordsWith:passwords];
             [self commitTotalToKeychain];
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -205,6 +216,7 @@ static RCPasswordManager * manager;
             }
             [self commitTotalToKeychain];
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
     
@@ -228,6 +240,7 @@ static RCPasswordManager * manager;
                 [self decrementKeychainValuesStartingAtIndex:index];
             }
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -245,6 +258,7 @@ static RCPasswordManager * manager;
                 [self addNewPasswordToKeychain:password];
                 [self commitTotalToKeychain];
             });
+            [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
         }
         else if (index < mutablePasswords.count && index >= 0){
@@ -259,6 +273,7 @@ static RCPasswordManager * manager;
                 [self addNewPasswordToKeychain:password atIndex:index];
                 [self commitTotalToKeychain];
             });
+            [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
         }
     }
@@ -289,6 +304,7 @@ static RCPasswordManager * manager;
         dispatch_async(keyChainQueue, ^{
             [self updatePasswordInKeychain:password];
         });
+        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -688,6 +704,7 @@ static RCPasswordManager * manager;
         [self deleteKeychainPasswordAtIndex:i];
     }
     [[PDKeychainBindings sharedKeychainBindings] setString:@"0" forKey:STORED_TITLE_COUNT];
+    [self removeMasterPassword];
     if (mutablePasswords){
         [mutablePasswords removeAllObjects];
     }

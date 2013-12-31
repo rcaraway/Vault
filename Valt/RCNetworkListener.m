@@ -9,9 +9,17 @@
 #import "RCNetworkListener.h"
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
+#import "KGStatusBar.h"
 #import "NSIndexPath+VaultPaths.h"
 
-//TODO: needs status view
+
+
+@interface RCNetworkListener ()
+
+@property (nonatomic) BOOL shouldMerge;
+
+@end
+
 
 static RCNetworkListener * sharedQueue;
 
@@ -35,11 +43,22 @@ static RCNetworkListener * sharedQueue;
     sharedQueue = nil;
 }
 
++(void)setLoginAfterUse
+{
+    if (sharedQueue){
+        sharedQueue.shouldMerge = YES;
+    }
+}
+
 #pragma mark - Initialization
 
 -(id)init
 {
-    return super.init;
+    self = super.init;
+    if (self){
+        self.shouldMerge = NO;
+    }
+    return self;
 }
 
 
@@ -47,15 +66,21 @@ static RCNetworkListener * sharedQueue;
 
 -(void)addNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginLoggingIn) name:networkingDidBeginLoggingIn object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSyncing) name:networkingDidBeginSyncing object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginFetching) name:networkingDidBeginFetching object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginDecrypting) name:networkingDidBeginDecrypting object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetch) name:networkingDidFetchCredentials object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetch:) name:networkingDidFetchCredentials object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSync) name:networkingDidSync object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdatePasswords) name:passwordManagerDidUpdatePasswords object:nil];
 }
 
 -(void)removeNotifications
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -63,57 +88,73 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didBecomeActive
 {
+    [[RCNetworking sharedNetwork] fetchFromServer];
+}
+
+-(void)didEnterBackground
+{
     if ([[RCNetworking sharedNetwork] loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
-        
+        [[RCNetworking sharedNetwork] sync];
     }
 }
+
 
 #pragma mark - Progress Handling
 
 -(void)didBeginLoggingIn
 {
-    
+    if ([[RCPasswordManager defaultManager] accessGranted]) {
+        [KGStatusBar showWithStatus:@"Logging In..."];
+    }
 }
 
 -(void)didBeginSyncing
 {
-    
+    [KGStatusBar showWithStatus:@"Saving..."];
 }
 
 -(void)didBeginFetching
 {
-    
+    [KGStatusBar showWithStatus:@"Syncing..."];
 }
 
-
+-(void)didBeginDecrypting
+{
+    [KGStatusBar showWithStatus:@"Decrypting..."];
+}
 
 
 #pragma mark - Success Handling
 
--(void)didLogin
+-(void)didUpdatePasswords
 {
-    //fetch data
+    [[RCNetworking sharedNetwork] sync];
 }
 
--(void)didFetch
+-(void)didLogin
 {
-    //replace if normal
-    //merge if local passwords created THEN logged in
+    [[RCNetworking sharedNetwork] fetchFromServer];
+}
+
+-(void)didFetch:(NSNotification *)notification
+{
+    NSArray * passwords = notification.object;
+    if (self.shouldMerge){
+        [[RCPasswordManager defaultManager] addPasswords:passwords];
+        self.shouldMerge = NO;
+    }else{
+        [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:passwords];
+    }
 }
 
 -(void)didSync
 {
-    
+    [KGStatusBar showSuccessWithStatus:@"Saved to Cloud."];
 }
 
 -(void)didGrantAccess
 {
-    
-}
-
--(void)didFailToGrantAccess
-{
-    
+    [[RCNetworking sharedNetwork] fetchFromServer];
 }
 
 -(void)didLock
@@ -123,16 +164,16 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didDenyAccess
 {
-    
+    [KGStatusBar showErrorWithStatus:@"Access Denied"];
 }
+
 
 #pragma mark - Failure Handling
 
 -(void)didFailToGrantAccess
 {
-    
+    [KGStatusBar showErrorWithStatus:@"Incorrect Password."];
 }
-
 
 
 

@@ -47,4 +47,5 @@ extern NSString * const passwordManagerAccessFailedToGrant;
 extern NSString * const passwordManagerAccessDenied;
 extern NSString * const passwordManagerDidLock;
 extern NSString * const passwordManagerDidFailToChangeMasterPassword;
+extern NSString * const passwordManagerDidUpdatePasswords;
 

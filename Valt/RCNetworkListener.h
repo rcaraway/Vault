@@ -17,6 +17,7 @@
 
 +(void)beginListening;
 +(void)stopListening;
++(void)setLoginAfterUse;
 +(BOOL)isListening;
 
 @end

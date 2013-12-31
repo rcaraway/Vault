@@ -46,7 +46,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:.05 alpha:1];
     [self setupLabel];
-//    [[RCPasswordManager defaultManager] clearAllPasswordData];
     [self setupNumberField];
     if (isNewUser){
         [self setupConfirmField];
@@ -91,12 +90,18 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogIn:) name:networkingDidFailToLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogIn:) name:networkingDidLogin object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSucceedEnteringPassword) name:passwordManagerAccessGranted object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToLogin object:nil];
+}
+
+-(void)didSucceedEnteringPassword
+{
+    [[APP rootController] moveFromPasscodeToList];
 }
 
 -(void)didFailToLogIn:(NSNotification *)notification
@@ -331,9 +336,7 @@
                     self.confirmField.alpha = .5;
                 } completion:nil];
             }else{
-                if ([fullString isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
-                    [self didEnterCorrectData];
-                }
+                [[RCPasswordManager defaultManager] attemptToUnlockWithCodeInBackground:fullString];
             }
         }else{
             [UIView animateWithDuration:.23 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
