@@ -52,16 +52,15 @@
     XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Didn't log in");
 }
 
--(void)testSync
+-(void)testASync
 {
     [[RCPasswordManager defaultManager] clearAllPasswordData];
     [[RCPasswordManager defaultManager] addPasswords:self.passwords];
-    NSLog(@"PASSWORD COUNT %d", self.passwords.count);
     self.shouldStop = NO;
     NSDate * untilDate;
     [[RCNetworking sharedNetwork] sync];
     while (!self.shouldStop) {
-        untilDate = [NSDate dateWithTimeIntervalSinceNow:1.0];
+        untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
         [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
     }
     XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Not logged in");
@@ -73,16 +72,12 @@
     NSDate * untilDate;
     [[RCNetworking sharedNetwork] fetchFromServer];
     while (!self.shouldStop) {
-        untilDate = [NSDate dateWithTimeIntervalSinceNow:1.0];
+       untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
         [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
     }
     XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Didn't log in");
 }
 
--(void)testMerge
-{
-
-}
 
 
 #pragma mark - Responses

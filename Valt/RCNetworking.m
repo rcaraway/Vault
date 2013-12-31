@@ -18,9 +18,7 @@ NSString * const networkingDidSignup = @"networkingDidSignup";
 NSString * const networkingDidLogin = @"networkingDidLogin";
 NSString * const networkingDidFetchCredentials = @"networkingDidFetchCredentials";
 NSString * const networkingDidSync = @"networkingDidSync";
-NSString * const networkingDidMergeCredentials = @"networkingDidMergeCredentials";
 
-NSString * const networkingDidFailMergeCredentials = @"networkingDidFailMergeCredentials";
 NSString * const networkingDidFailToSignup = @"networkingDidFailToSignup";
 NSString * const networkingDidFailToLogin = @"networkingDidFailToLogin";
 NSString * const networkingDidFailToFetchCredentials = @"networkingDidFailToFetchCredentials";

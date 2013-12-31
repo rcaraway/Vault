@@ -91,6 +91,8 @@ static RCPasswordManager * manager;
     return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY] && [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY].length > 0;
 }
 
+
+
 -(void)addPassword:(RCPassword *)password
 {
     if (password){

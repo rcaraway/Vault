@@ -13,6 +13,7 @@
 
 @property(nonatomic, strong,readonly) NSArray * passwords;
 @property(nonatomic, copy) NSString * accountEmail;
+@property (nonatomic) BOOL accessGranted;
 
 -(NSArray *)allTitles;
 
