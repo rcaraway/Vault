@@ -5,24 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "prefix=${PROJECT_DIR}/${GCC_PREFIX_HEADER}&#10;&#10;sed -i -e &apos;s/\/\/#define\ TESTING_MODE/#define\ TESTING_MODE/&apos; $prefix&#10;sed -i -e &apos;s/\/*#define\ TESTING_MODE/#define\ TESTING_MODE/&apos; $prefix">
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "prefix=${PROJECT_DIR}/${GCC_PREFIX_HEADER}&#10;&#10;sed -i -e &apos;s/\/\/#define\ TESTING_MODE/#define\ TESTING_MODE/&apos; $prefix&#10;sed -i -e &apos;s/\/*#define\ TESTING_MODE/#define\ TESTING_MODE/&apos; $prefix">
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
    </BuildAction>
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -44,9 +26,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D21717CC18576B6500D687F8"
-            BuildableName = "ValtTests.xctest"
-            BlueprintName = "ValtTests"
+            BlueprintIdentifier = "D21717AC18576B6500D687F8"
+            BuildableName = "Valt.app"
+            BlueprintName = "Valt"
             ReferencedContainer = "container:Valt.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -60,6 +42,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D21717AC18576B6500D687F8"
+            BuildableName = "Valt.app"
+            BlueprintName = "Valt"
+            ReferencedContainer = "container:Valt.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
