@@ -33,7 +33,7 @@ static RCNetworkListener * sharedQueue;
     return (sharedQueue != nil);
 }
 
-+(void)beginNetworking
++(void)beginListening
 {
     sharedQueue = [[RCNetworkListener alloc] init];
 }
