@@ -7,15 +7,13 @@
 //
 
 #import "RCViewController.h"
-@class SPLockScreen;
 
 
 @interface RCPasscodeViewController : RCViewController
 
-@property(nonatomic, strong) SPLockScreen * lockscreen;
 @property(nonatomic, strong) UIImageView * imageView;
-@property(nonatomic, strong) UITextField * numberField;
-@property(nonatomic, strong) UITextField * confirmField;
+@property(nonatomic, strong) UITextField * passwordField;
+
 @property(nonatomic, strong) UILabel * enterPassword;
 @property(nonatomic, strong) UIButton * doneButton;
 @property(nonatomic, strong) UIButton * loginButton;
