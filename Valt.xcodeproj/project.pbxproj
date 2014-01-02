@@ -72,8 +72,7 @@
 		D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5718648502003590AF /* TWMessageBarManager.podspec */; };
 		D227A9EF186CB5A800361DEB /* RCNetworkingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */; };
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
-		D22F0D5F18747EC300DCA8AF /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D22F0D5E18747EC300DCA8AF /* Parse.framework */; };
-		D22F0D6018747EC300DCA8AF /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D22F0D5E18747EC300DCA8AF /* Parse.framework */; };
+		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
@@ -228,7 +227,7 @@
 		D2254E5718648502003590AF /* TWMessageBarManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TWMessageBarManager.podspec; sourceTree = "<group>"; };
 		D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkingTests.m; sourceTree = "<group>"; };
 		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
-		D22F0D5E18747EC300DCA8AF /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Valt/Parse.framework; sourceTree = "<group>"; };
+		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -293,7 +292,7 @@
 				D27F40571868791400104F1C /* libz.1.1.3.dylib in Frameworks */,
 				D27F40581868791400104F1C /* MobileCoreServices.framework in Frameworks */,
 				D27F40591868791400104F1C /* Security.framework in Frameworks */,
-				D22F0D5F18747EC300DCA8AF /* Parse.framework in Frameworks */,
+				D24B84A71875C68900C37272 /* Parse.framework in Frameworks */,
 				D27F405A1868791400104F1C /* SystemConfiguration.framework in Frameworks */,
 				D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */,
 				D2254E4B1863C22D003590AF /* StoreKit.framework in Frameworks */,
@@ -314,7 +313,6 @@
 				D21717D218576B6500D687F8 /* CoreData.framework in Frameworks */,
 				D21717D118576B6500D687F8 /* UIKit.framework in Frameworks */,
 				D21717D018576B6500D687F8 /* Foundation.framework in Frameworks */,
-				D22F0D6018747EC300DCA8AF /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +361,7 @@
 		D21717AF18576B6500D687F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D22F0D5E18747EC300DCA8AF /* Parse.framework */,
+				D24B84A61875C68900C37272 /* Parse.framework */,
 				D27F404D1868791400104F1C /* AudioToolbox.framework */,
 				D27F404E1868791400104F1C /* CFNetwork.framework */,
 				D27F404F1868791400104F1C /* CoreLocation.framework */,
