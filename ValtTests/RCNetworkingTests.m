@@ -54,34 +54,38 @@
 
 -(void)testASync
 {
-    [[RCPasswordManager defaultManager] clearAllPasswordData];
-    [[RCPasswordManager defaultManager] addPasswords:self.passwords];
-    self.shouldStop = NO;
-    NSDate * untilDate;
-    [[RCNetworking sharedNetwork] sync];
-    while (!self.shouldStop) {
-        untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
-        [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
+    if ([[RCNetworking sharedNetwork] loggedIn]){
+        [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
+        [[RCPasswordManager defaultManager] clearAllPasswordData];
+        [[RCPasswordManager defaultManager] addPasswords:self.passwords];
+        self.shouldStop = NO;
+        NSDate * untilDate;
+        [[RCNetworking sharedNetwork] sync];
+        while (!self.shouldStop) {
+            untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
+            [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
+        }
+        XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Not logged in");
     }
-    XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Not logged in");
 }
 
 -(void)testFetch
 {
-    self.shouldStop = NO;
-    NSDate * untilDate;
-    [[RCNetworking sharedNetwork] fetchFromServer];
-    while (!self.shouldStop) {
-       untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
-        [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
+    if ([[RCNetworking sharedNetwork] loggedIn]){
+        [[RCPasswordManager defaultManager] attemptToUnlockWithCode:[[RCPasswordManager defaultManager] masterPassword]];
+        self.shouldStop = NO;
+        NSDate * untilDate;
+        [[RCNetworking sharedNetwork] fetchFromServer];
+        while (!self.shouldStop) {
+            untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
+            [[NSRunLoop currentRunLoop] runUntilDate:untilDate];
+        }
+        XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Didn't log in");
     }
-    XCTAssertTrue([[RCNetworking sharedNetwork] loggedIn], @"Didn't log in");
 }
 
 
-
 #pragma mark - Responses
-
 
 -(void)addNotifications
 {
@@ -105,6 +109,7 @@
 
 -(void)didFailLogin
 {
+    self.shouldStop = YES;
     XCTAssertTrue(NO, @"Failed Login");
 }
 
@@ -115,6 +120,7 @@
 
 -(void)didFailSync
 {
+    self.shouldStop = YES;
     XCTAssertTrue(NO, @"Failed Sync");
 }
 
@@ -125,6 +131,7 @@
 
 -(void)didFailFetch
 {
+    self.shouldStop = YES;
     XCTAssertTrue(NO, @"Failed Fetch");
 }
 
@@ -135,6 +142,7 @@
 
 -(void)didFailMerge
 {
+    self.shouldStop = YES;
     XCTAssertTrue(NO, @"Failed Merge");
 }
 

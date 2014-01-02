@@ -1024,9 +1024,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/robbor911/Documents/Vault,
-					/Users/robbor911/Documents/Work/codespace/Valt,
-					/Users/robbor911/Documents/Vault/Valt,
+					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
@@ -1047,9 +1045,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/robbor911/Documents/Vault,
-					/Users/robbor911/Documents/Work/codespace/Valt,
-					/Users/robbor911/Documents/Vault/Valt,
+					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
@@ -1155,9 +1151,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/robbor911/Documents/Vault,
-					/Users/robbor911/Documents/Work/codespace/Valt,
-					/Users/robbor911/Documents/Vault/Valt,
+					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
