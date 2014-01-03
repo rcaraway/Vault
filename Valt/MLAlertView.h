@@ -16,6 +16,7 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 
 - (void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password;
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text;
 
 @end
 
@@ -33,7 +34,9 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 
 -(instancetype)initWithTitle:(NSString *)title textFields:(BOOL)textFields delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle;
 
+-(instancetype)initWithTextfieldWithPlaceholder:(NSString *)placeholder title:(NSString *)title delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle;
 
+-(void)clearText;
 -(void)show;
 -(void)dismiss;
 -(void)loadWithText:(NSString *)text;

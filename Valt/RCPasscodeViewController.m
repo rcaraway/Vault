@@ -45,7 +45,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:.05 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithWhite:.87 alpha:1];
     [self setupLabel];
     [self setupNumberField];
     if (![[RCNetworking sharedNetwork] loggedIn]){
@@ -180,9 +180,22 @@
 
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
-    [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
-    [alertView loadWithText:@"Logging in"];
-    [self.view.window endEditing:YES];
+    if (buttonIndex ==1){
+        [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
+        [alertView loadWithText:@"Logging in"];
+        [self.view.window endEditing:YES];
+    }
+}
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text
+{
+    if ([confirmString isEqualToString:text]){
+        [[RCPasswordManager defaultManager] setMasterPassword:text];
+        [[APP rootController] moveFromPasscodeToList];
+    }else{
+        [self.alertView showFailWithTitle:@"Passwords don't match"];
+        [self.alertView clearText];
+    }
 }
 
 #pragma mark - State Handling
@@ -215,7 +228,7 @@
 -(void)didTapButton
 {
     if (isNewUser && !confirmString){
-        [self setConfirmMode];
+
     }else{
         if (confirmString && [confirmString isEqualToString:self.passwordField.text]){
             [self didEnterCorrectData];
@@ -298,7 +311,11 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (isNewUser && textField.text.length > 0){
-        
+        confirmString = textField.text;
+        self.alertView = [[MLAlertView  alloc] initWithTextfieldWithPlaceholder:@"Retype Password" title:@"Confirm Password" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Confirm"];
+        [self.alertView show];
+    }else{
+        [[RCPasswordManager defaultManager] attemptToUnlockWithCodeInBackground:textField.text];
     }
     return YES;
 }

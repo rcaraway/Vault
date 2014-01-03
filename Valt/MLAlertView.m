@@ -171,14 +171,21 @@ static UIColor * successColor;
   {
       if (self.passwordTextField){
           [self.delegate alertView:self clickedButtonAtIndex:button.tag withEmail:self.loginTextField.text password:self.passwordTextField.text];
+      }else if (self.loginTextField){
+          [self.delegate alertView:self clickedButtonAtIndex:button.tag withText:self.loginTextField.text];
       }else{
-           [self.delegate alertView:self clickedButtonAtIndex:button.tag];
+         [self.delegate alertView:self clickedButtonAtIndex:button.tag];
       }
   } else if (self.buttonDidTappedBlock!=nil){
     self.buttonDidTappedBlock(self, button.tag);
   }
 }
 
+-(void)clearText
+{
+    self.loginTextField.text = @"";
+    self.passwordTextField.text = @"";
+}
 
 #pragma mark - initializers
 
@@ -266,12 +273,52 @@ static UIColor * successColor;
     return self;
 }
 
+-(instancetype)initWithTextfieldWithPlaceholder:(NSString *)placeholder title:(NSString *)title delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle
+{
+    self = super.init;
+    if (self){
+        _delegate = delegate;
+        self.title = title;
+        self.cancelTitle = cancelButtonTitle;
+        if (confirmButtonTitle)
+            self.otherButtonTitles = @[confirmButtonTitle];
+        CGFloat currentWidth = 280;
+        CGFloat extraHeight = [self detmineExtraHeight];
+        CGRect boundingRect = CGRectMake(0, 0, currentWidth, 40);
+        CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        self.frame = CGRectMake(20, (screenHeight-height)/2-40, 280, height);
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.masksToBounds = YES;
+        self.layer.cornerRadius = 13;
+        [self setupTitleLabel];
+        [self setupLoginField];
+        self.passwordTextField = nil;
+        self.loginTextField.placeholder = placeholder;
+        [self setupButtonViewWithYOrigin:height-extraHeight height:extraHeight];
+        if (self.cancelTitle) {
+            [self setupCancelButton];
+        }
+        NSInteger count = [_otherButtonTitles count];
+        self.otherButtons = [NSMutableArray arrayWithCapacity:count];
+        for (int i=0; i<count; i++) {
+            [self setupButtonTitleAtIndex:i forCount:count];
+        }
+        [self addHorizontalMotionEffect];
+    }
+    return self;
+}
+
 #pragma mark - TextField Delegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.loginTextField){
-        [self.passwordTextField becomeFirstResponder];
+        if (self.passwordTextField){
+             [self.passwordTextField becomeFirstResponder];
+        }else if (self.delegate){
+            [self.delegate alertView:self clickedButtonAtIndex:1 withText:self.loginTextField.text];
+        }
     }else{
         if (self.delegate){
             [self.delegate alertView:self clickedButtonAtIndex:1 withEmail:self.loginTextField.text password:self.passwordTextField.text];

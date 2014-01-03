@@ -385,7 +385,6 @@ static RCPasswordManager * manager;
 -(void)constructPasswordsFromKeychain
 {
     if (_accessGranted){
-        NSDate * date = [NSDate date];
         NSInteger count = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
         NSMutableArray * passwords = [NSMutableArray arrayWithCapacity:count];
         for (int i = 0; i < count; i++) {
@@ -408,7 +407,6 @@ static RCPasswordManager * manager;
             [passwords addObject:rcPassword];
         }
         mutablePasswords = passwords;
-        NSLog(@"TIME SINCE START %f", -[date timeIntervalSinceNow]);
     }
 }
 
