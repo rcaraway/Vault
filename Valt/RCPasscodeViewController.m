@@ -190,6 +190,7 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text
 {
     if ([confirmString isEqualToString:text]){
+        [self.alertView dismiss];
         [[RCPasswordManager defaultManager] setMasterPassword:text];
         [[APP rootController] moveFromPasscodeToList];
     }else{

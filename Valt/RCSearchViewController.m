@@ -14,6 +14,7 @@
 #import "RCMainCell.h"
 #import <Social/Social.h>
 
+
 @interface RCSearchViewController ()
 
 @property(nonatomic, strong) SLComposeViewController * tweetController;
@@ -25,11 +26,10 @@
 
 #define NORMAL_CELL_HEIGHT 60
 #define ABOUT_NAME @"About"
-#define ADD_CELL_PREFIX @"Add "
-#define EMPTY_ADD_CELL @"Add \"\""
-#define LOCK_NAME @"Lock your Vault"
+#define FEEDBACK @"Contact Support"
+#define LOCK_NAME @"Lock your Valt"
 #define SYNC_TO_ICLOUD @"Sync to iCloud"
-#define SPREAD_VAULT @"Tweet about Vault"
+#define SPREAD_VALT @"Tweet about Valt"
 
 @implementation RCSearchViewController
 
@@ -48,10 +48,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.extraCells = [@[SYNC_TO_ICLOUD, LOCK_NAME, ABOUT_NAME] mutableCopy];
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-        self.extraCells = [@[SYNC_TO_ICLOUD, LOCK_NAME, SPREAD_VAULT,ABOUT_NAME] mutableCopy];
-    }else{
-        self.extraCells = [@[SYNC_TO_ICLOUD, LOCK_NAME, ABOUT_NAME] mutableCopy];
+        [self.extraCells insertObject:SPREAD_VALT atIndex:2];
+    }
+    if ([[APP rootController] canSendFeedback]){
+        [self.extraCells insertObject:FEEDBACK atIndex:2];
     }
     self.allTitles = [[[RCPasswordManager defaultManager] allTitles] mutableCopy];
     [self setupTableView];
@@ -123,9 +125,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * text = [self textForIndexPath:indexPath];
-    if (indexPath == 0){
+    if (indexPath.row == 0){
         RCPassword * password = [[RCPassword alloc] init];
         password.title = text;
+        [[[APP rootController] searchBar] resignFirstResponder];
+        [[RCPasswordManager defaultManager] addPassword:password];
         [[APP rootController] moveFromSearchToSingleWithPassword:password];
     }else{
         if ([self.extraCells containsObject:text]){
@@ -133,11 +137,13 @@
                 [[APP rootController] launchAbout];
             }else if ([text isEqualToString:SYNC_TO_ICLOUD]){
                 [[APP rootController] launchPurchaseScreen];
-            }else if ([text isEqualToString:SPREAD_VAULT]){
+            }else if ([text isEqualToString:SPREAD_VALT]){
                 [self launchTweetMessenger];
             }else if ([text isEqualToString:LOCK_NAME]){
                 [[[APP rootController] searchBar] setShowsCancelButton:NO];
                 [[APP rootController] returnToPasscode];
+            }else if ([text isEqualToString:FEEDBACK]){
+                [[APP rootController] launchFeedback];
             }
         }else{
             RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];

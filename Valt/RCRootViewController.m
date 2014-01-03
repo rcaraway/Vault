@@ -16,9 +16,11 @@
 #import "RCAboutViewController.h"
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface RCRootViewController ()
+@interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
+@property(nonatomic, strong) MFMailComposeViewController * mailController;
 @property(nonatomic, strong) RCAboutViewController * aboutController;
 @property(nonatomic, strong) RCPurchaseViewController * purchaseController;
 @property(nonatomic, strong) RCWebViewController * webController;
@@ -171,6 +173,7 @@
     [self presentViewController:self.webController animated:YES completion:nil];
 }
 
+
 #pragma mark - Search Bar
 
 -(void)setupSearchBar
@@ -212,7 +215,7 @@
     UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
     txfSearchField.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:120.0/255.0 blue:216.0/255.0 alpha:1];
     txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Vault" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
+    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
 }
 
 -(void)setSearchBarUnselected
@@ -220,7 +223,7 @@
     UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
     txfSearchField.backgroundColor = [UIColor colorWithRed:175.0/255.0 green:112.0/255.0 blue:165.0/255.0 alpha:1];
     txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Vault" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
+    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
 }
 
 -(void)showSearchAnimated:(BOOL)animated
@@ -257,6 +260,29 @@
     [self.searchBar setFrame:CGRectMake(0, 20, 320, 0)];
 }
 
+
+#pragma mark - Feedback
+
+-(void)launchFeedback
+{
+    if ([MFMailComposeViewController canSendMail]) {
+        self.mailController = [[MFMailComposeViewController alloc] init];
+        [self.mailController setSubject:@"Valt Feedback"];
+        [self.mailController setToRecipients:@[@"rob@getvalt.com"]];
+        self.mailController.mailComposeDelegate = self;
+        [self presentViewController:self.mailController animated:YES completion:nil];
+    }
+}
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(BOOL)canSendFeedback
+{
+    return [MFMailComposeViewController canSendMail];
+}
 
 #pragma mark - Convenience
 

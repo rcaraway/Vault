@@ -30,6 +30,9 @@
 
 
 @interface RCSingleViewController ()<RCCredentialGestureManagerDelegate, UITextFieldDelegate>
+{
+    BOOL cameFromSearch;
+}
 
 @property (nonatomic, strong) RCCredentialGestureManager * gestureManager;
 @property(nonatomic, strong) NSMutableArray * credentials;
@@ -100,6 +103,9 @@
 -(void)willMoveToParentViewController:(UIViewController *)parent
 {
     if (parent == [APP rootController]){
+        if ([[APP rootController].childViewControllers containsObject:[[APP rootController] searchController]]){
+            cameFromSearch = YES;
+        }
         RCRootViewController * rootVC = (RCRootViewController *)parent;
         [rootVC hideSearchAnimated:YES];
         [parent.view insertSubview:self.view belowSubview:rootVC.searchBar];
@@ -168,7 +174,6 @@
         RCTitleViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.textField.text = (NSString *)object;
         cell.textField.placeholder = @"Title";
-        [cell setFocused];
         return cell;
     }else{
         static NSString * cellId = @"DropDownCell";
@@ -278,7 +283,7 @@
 {
     [self.view endEditing:YES];
    [self publishChangesToPassword];
-    if ([self passwordContainsNoData]){
+    if ([self passwordContainsNoData] && !cameFromSearch){
         [[APP rootController] returnToListAndRemovePassword:self.password];
     }else{
          [[APP rootController] returnToListFromSingle];
@@ -328,6 +333,7 @@
     NSString * urlValue = [[[HTAutocompleteManager sharedManager] titleUrlPairs] objectForKey:finalText];
     if (urlValue && self.textFields.count > 3){
         [self.textFields[3] setText:urlValue];
+        self.credentials[3] = urlValue;
     }
 }
 
@@ -352,7 +358,9 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     NSInteger index = [self.textFields indexOfObject:textField];
-    [self.credentials replaceObjectAtIndex:index withObject:textField.text];
+    if (index >= 0 && index < self.credentials.count){
+         [self.credentials replaceObjectAtIndex:index withObject:textField.text];
+    }
 }
 
 #pragma mark - Table Convenience

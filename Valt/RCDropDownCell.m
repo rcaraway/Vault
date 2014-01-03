@@ -50,6 +50,8 @@
     self.textField.autocompleteType = RCAutocompleteTypeUsername;
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.returnKeyType = UIReturnKeyNext;
+    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.textColor = [UIColor blackColor];
     self.textField.adjustsFontSizeToFitWidth = YES;
     [self.contentView addSubview:self.textField];

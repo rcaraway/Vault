@@ -32,6 +32,9 @@
 -(void)moveFromSearchToSingleWithPassword:(RCPassword *)password;
 -(void)launchAbout;
 -(void)launchPurchaseScreen;
+-(void)launchFeedback;
+
+-(BOOL)canSendFeedback;
 
 -(void)launchBrowserWithPassword:(RCPassword *)password;
 

@@ -81,6 +81,8 @@ static UIColor * successColor;
         }completion:^(BOOL finished) {
             if (self.loginTextField){
                 [self.loginTextField becomeFirstResponder];
+            }else if (self.passwordTextField){
+                [self.passwordTextField becomeFirstResponder];
             }
         }];
     }];
@@ -144,15 +146,13 @@ static UIColor * successColor;
 
 -(void)showFailWithTitle:(NSString *)title
 {
-    [UIView animateWithDuration:.3 animations:^{
-        self.loader.alpha = 0;
-        [self.loader stopAnimating];
-        [self.titleBack setBackgroundColor:failureColor];
-        self.loginTextField.alpha = 1;
-        self.passwordTextField.alpha = 1;
-        self.buttonView.alpha = 1;
-        self.titleLabel.text = title;
-    }];
+    self.loader.alpha = 0;
+    [self.loader stopAnimating];
+    [self.titleBack setBackgroundColor:failureColor];
+    self.loginTextField.alpha = 1;
+    self.passwordTextField.alpha = 1;
+    self.buttonView.alpha = 1;
+    self.titleLabel.text = title;
     [self performSelector:@selector(showNormal) withObject:nil afterDelay:2];
 }
 
@@ -169,10 +169,10 @@ static UIColor * successColor;
   
   if(self.delegate!=nil)
   {
-      if (self.passwordTextField){
+      if (self.passwordTextField && self.loginTextField){
           [self.delegate alertView:self clickedButtonAtIndex:button.tag withEmail:self.loginTextField.text password:self.passwordTextField.text];
-      }else if (self.loginTextField){
-          [self.delegate alertView:self clickedButtonAtIndex:button.tag withText:self.loginTextField.text];
+      }else if (self.passwordTextField){
+          [self.delegate alertView:self clickedButtonAtIndex:button.tag withText:self.passwordTextField.text];
       }else{
          [self.delegate alertView:self clickedButtonAtIndex:button.tag];
       }
@@ -292,9 +292,9 @@ static UIColor * successColor;
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 13;
         [self setupTitleLabel];
-        [self setupLoginField];
-        self.passwordTextField = nil;
-        self.loginTextField.placeholder = placeholder;
+        [self setupPasswordField];
+        self.loginTextField = nil;
+        self.passwordTextField.placeholder = placeholder;
         [self setupButtonViewWithYOrigin:height-extraHeight height:extraHeight];
         if (self.cancelTitle) {
             [self setupCancelButton];
@@ -316,11 +316,11 @@ static UIColor * successColor;
     if (textField == self.loginTextField){
         if (self.passwordTextField){
              [self.passwordTextField becomeFirstResponder];
-        }else if (self.delegate){
-            [self.delegate alertView:self clickedButtonAtIndex:1 withText:self.loginTextField.text];
         }
     }else{
-        if (self.delegate){
+        if (!self.loginTextField && self.delegate){
+            [self.delegate alertView:self clickedButtonAtIndex:1 withText:self.passwordTextField.text];
+        }else if (self.delegate){
             [self.delegate alertView:self clickedButtonAtIndex:1 withEmail:self.loginTextField.text password:self.passwordTextField.text];
         }
     }
@@ -344,9 +344,10 @@ static UIColor * successColor;
 
 -(void)setupPasswordField
 {
-    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(0, 80, 280, 40)];
+    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(0, (self.loginTextField!=nil ? 80:40), 280, 40)];
     self.passwordTextField.delegate = self;
-    self.passwordTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.passwordTextField.placeholder = @"Master Password";
     self.passwordTextField.secureTextEntry = YES;
     self.passwordTextField.returnKeyType = UIReturnKeyDone;

@@ -239,6 +239,8 @@
             RCPassword * password = [[RCPassword alloc] init];
             [[RCPasswordManager defaultManager] addPassword:password atIndex:indexPath.row];
             self.addingCellIndex = NSNotFound;
+            NSLog(@"PASSWORDS %@", [[RCPasswordManager defaultManager] passwords]);
+            NSLog(@"ALL TITLE %@", [[RCPasswordManager defaultManager] allTitles]);
             cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [[APP rootController] launchSingleWithPassword:password];

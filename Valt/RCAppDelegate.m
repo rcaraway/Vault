@@ -22,7 +22,7 @@
                   clientKey:@"JWR7JvgVZETnVcoj27teczJRY0DuF49QTXZl09VG"];
     [RCNetworkListener beginListening];
     [RCPasswordManager defaultManager];
-    if ([PFUser currentUser]){
+    if ([[RCNetworking sharedNetwork] loggedIn]){
         [[RCNetworking sharedNetwork] defaultACLForUser:[PFUser currentUser]];
     }
     return YES;
@@ -30,7 +30,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[RCPasswordManager defaultManager] clearAllPasswordData];
     self.rootController = [[RCRootViewController  alloc] initWithNibName:nil bundle:nil];
     self.window = [[UIWindow  alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:self.rootController];

@@ -11,9 +11,9 @@
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 
-@interface RCAboutViewController () <MFMailComposeViewControllerDelegate>
+#define RATE_APP_LINK @"itms-apps://itunes.apple.com/app/id791566527?at=10l6dK"
 
-@property(nonatomic, strong) MFMailComposeViewController * mailController;
+@interface RCAboutViewController ()
 
 @end
 
@@ -39,22 +39,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.descriptionView.text = @"Rob built an app that he would actually use. \n\n\n"
-    @"1. Simplicity is King: No feature bloat.  Everything you need and nothing else.\n\n"
-    @"2. Theatrical Design: Password management is boring.  Vault isn't.\n\n"
-    @"3. Fair Pricing: 1 year's payment is less than a full meal. Pay only if you need it.\n\n"
-    @"4. Legitimate Security: The standard for storing sensitivate data is Apple's Keychain.  Vault uses it.";
+    self.descriptionView.text = @"Valt is built to save you time and energy. \n\n\n"
+    @"1. Simple: No feature bloat. Only what you need.\n\n"
+    @"2. Fun: Password management is boring.  Valt is not.\n\n"
+    @"3. Pay as needed: No massive fees. You choose to continue paying.\n\n"
+    @"4. Legitimate Security: Valt uses best practices for safely storing your passwords.\n\n"
+    @"Valt is NOT:\n\n"
+    @"Robust: If you need advanced features, try 1Password.\n\n"
+    @"Collaberative: Valt is meant for personal use.\n\n"
+    @"And ALWAYS REMEMBER: No password software is uncrackable. Valt simply makes it much harder to crack.";
     self.descriptionView.editable = NO;
     [self.followRobButton addTarget:self action:@selector(followRobOnTwitter) forControlEvents:UIControlEventTouchUpInside];
-    [self.feedbackButton addTarget:self action:@selector(launchMailController) forControlEvents:UIControlEventTouchUpInside];
     [self.doneButton setTarget:self];
+    [self.feedbackButton setTitle:@"Rate Valt" forState:UIControlStateNormal];
+    [self.feedbackButton addTarget:self action:@selector(rateValt) forControlEvents:UIControlEventTouchUpInside];
     [self.doneButton setAction:@selector(doneTapped)];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)doneTapped
@@ -62,6 +66,12 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+-(void)rateValt
+{
+    NSString * url = RATE_APP_LINK;
+    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
+}
 
 #pragma mark - Twitter Follow
 
@@ -92,24 +102,6 @@
             
         }
     }];
-}
-
-#pragma mark - Email
-
--(void)launchMailController
-{
-    if ([MFMailComposeViewController canSendMail]) {
-        self.mailController = [[MFMailComposeViewController alloc] init];
-        [self.mailController setSubject:@"Vault Feedback"];
-        [self.mailController setToRecipients:@[@"rob@getvault.me"]];
-        self.mailController.mailComposeDelegate = self;
-        [self presentViewController:self.mailController animated:YES completion:nil];
-    }
-}
-
--(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

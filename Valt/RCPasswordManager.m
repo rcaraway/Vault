@@ -76,6 +76,8 @@ static RCPasswordManager * manager;
     NSString * mPw = [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
     if (!mPw || mPw.length == 0 || allowOverridePassword){
          [[PDKeychainBindings sharedKeychainBindings] setString:masterPassword forKey:MASTER_PASSWORD_KEY];
+        if (!allowOverridePassword)
+            [self grantPasswordAccess];
     }else{
         [self didDenyAccess:@"Access Denied"];
     }
@@ -118,10 +120,12 @@ static RCPasswordManager * manager;
         if ([password isEqualToString:mPw]){
             [self grantPasswordAccess];
             dispatch_async(dispatch_get_main_queue(), ^{
+                _accessGranted = YES;
                 [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerAccessGranted object:nil];
             });
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
+                _accessGranted = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerAccessFailedToGrant object:nil];
             });
         }
@@ -324,7 +328,11 @@ static RCPasswordManager * manager;
     if (_accessGranted){
         NSMutableArray * titles = [NSMutableArray new];
         for (RCPassword * password in self.passwords) {
-            [titles addObject:password.title];
+            if (password.title)
+                [titles addObject:password.title];
+            else{
+                [titles addObject:@""];
+            }
         }
         return titles;
     }

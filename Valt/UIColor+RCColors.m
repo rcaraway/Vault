@@ -27,7 +27,7 @@
 
 +(UIColor *)dropDownColor
 {
-    return [UIColor colorWithWhite:.55 alpha:1];
+    return [UIColor colorWithWhite:.85 alpha:1];
 }
 
 @end
