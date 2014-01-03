@@ -12,6 +12,7 @@
 #import "NSString+Encryption.h"
 
 #define PASSWORDS_KEY @"PASSWORDS_KEY"
+#define EXPIRATION_KEY @"ExpirationDate"
 
 
 NSString * const networkingDidBeginLoggingIn = @"networkingDidBeginLoggingIn";
@@ -25,17 +26,23 @@ NSString * const networkingDidLogin = @"networkingDidLogin";
 NSString * const networkingDidFetchCredentials = @"networkingDidFetchCredentials";
 NSString * const networkingDidSync = @"networkingDidSync";
 NSString * const networkingDidDecrypt = @"networkingDidDecrypt";
+NSString * const networkingDidGoPremium = @"networkingDidGoPremium";
 
 NSString * const networkingDidFailToSignup = @"networkingDidFailToSignup";
 NSString * const networkingDidFailToLogin = @"networkingDidFailToLogin";
 NSString * const networkingDidFailToFetchCredentials = @"networkingDidFailToFetchCredentials";
 NSString * const networkingDidFailToSync = @"networkingDidFailToSync";
+NSString * const networkingDidFailToGoPremium = @"networkingDidFailToGoPremium";
+NSString * const networkingDidDenyFetch = @"networkingDidDenyFetch";
+NSString * const networkingDidDenySync = @"networkingDidDenySync";
 
 
 static RCNetworking *sharedNetwork;
 
 @implementation RCNetworking
-
+{
+    NSDate * beginDate;
+}
 
 #pragma mark - Class Methods
 
@@ -104,7 +111,7 @@ static RCNetworking *sharedNetwork;
 
 -(void)fetchFromServer
 {
-    if ([self loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
+    if ([self premiumState] == RCPremiumStateCurrent && [[RCPasswordManager defaultManager] accessGranted]){
         PFQuery * query = [PFQuery queryWithClassName:PASSWORD_CLASS];
         [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
         query.limit = 100000;
@@ -119,12 +126,14 @@ static RCNetworking *sharedNetwork;
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToFetchCredentials object:nil];
             }
         }];
+    }else if ([self premiumState] == RCPremiumStateNone || [self premiumState] == RCPremiumStateExpired){
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidDenyFetch object:nil];
     }
 }
 
 -(void)sync
 {
-    if ([self loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
+    if ([self premiumState] == RCPremiumStateCurrent && [[RCPasswordManager defaultManager] accessGranted]){
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginSyncing object:nil];
         [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
             [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
@@ -136,8 +145,49 @@ static RCNetworking *sharedNetwork;
                 }
             }];
         }];
+    }else if ([self premiumState] == RCPremiumStateNone || [self premiumState] == RCPremiumStateExpired)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidDenySync object:nil];
     }
 }
+
+-(void)extendPremiumToDate:(NSDate *)date
+{
+    if ([self loggedIn]){
+        [[PFUser currentUser] setObject:date forKey:EXPIRATION_KEY];
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error){
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidGoPremium object:nil];
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToGoPremium object:nil];
+            }
+        }];
+    }
+}
+
+-(RCPremiumState)premiumState
+{
+#ifdef TESTING_MODE
+    return RCPremiumStateCurrent;
+#else
+    if ([self loggedIn]){
+        if (!beginDate){
+            beginDate = [NSDate date];
+        }
+        NSDate * date = [[PFUser currentUser]objectForKey:EXPIRATION_KEY];
+        if (date){
+            if ([date compare:beginDate] == NSOrderedAscending){
+                return RCPremiumStateExpired;
+            }else{
+                return RCPremiumStateCurrent;
+            }
+        }
+    }
+    return RCPremiumStateNone;
+#endif
+}
+
+#pragma mark - Convenience
 
 -(void)pfObjectsToRCPasswords:(NSArray*)pfObjects completion:(void (^)(NSArray * passwords))completion
 {

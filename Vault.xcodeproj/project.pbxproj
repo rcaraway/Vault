@@ -74,6 +74,7 @@
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
+		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
 		D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4039186334B100104F1C /* RCPurchaseViewController.m */; };
@@ -128,22 +129,22 @@
 		D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+VaultPaths.m"; sourceTree = "<group>"; };
 		D21110611873762D0029D21D /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
 		D21110621873762D0029D21D /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
-		D21717AD18576B6500D687F8 /* Valt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D21717AD18576B6500D687F8 /* Vault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717B018576B6500D687F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D21717B218576B6500D687F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D21717B418576B6500D687F8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D21717B618576B6500D687F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		D21717BA18576B6500D687F8 /* Valt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Valt-Info.plist"; sourceTree = "<group>"; };
+		D21717BA18576B6500D687F8 /* Vault-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Vault-Info.plist"; sourceTree = "<group>"; };
 		D21717BC18576B6500D687F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D21717BE18576B6500D687F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D21717C018576B6500D687F8 /* Valt-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Valt-Prefix.pch"; sourceTree = "<group>"; };
+		D21717C018576B6500D687F8 /* Vault-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Vault-Prefix.pch"; sourceTree = "<group>"; };
 		D21717C118576B6500D687F8 /* RCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCAppDelegate.h; sourceTree = "<group>"; };
 		D21717C218576B6500D687F8 /* RCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCAppDelegate.m; sourceTree = "<group>"; };
 		D21717C518576B6500D687F8 /* Valt.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Valt.xcdatamodel; sourceTree = "<group>"; };
 		D21717C718576B6500D687F8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D21717CD18576B6500D687F8 /* ValtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ValtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D21717CD18576B6500D687F8 /* VaultTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717CE18576B6500D687F8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		D21717D718576B6500D687F8 /* ValtTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ValtTests-Info.plist"; sourceTree = "<group>"; };
+		D21717D718576B6500D687F8 /* VaultTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VaultTests-Info.plist"; sourceTree = "<group>"; };
 		D21717D918576B6500D687F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D21717DB18576B6500D687F8 /* ValtTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValtTests.m; sourceTree = "<group>"; };
 		D21717E71857710700D687F8 /* JTTableViewGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTTableViewGestureRecognizer.h; sourceTree = "<group>"; };
@@ -230,6 +231,8 @@
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
+		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
+		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D27F4035186333DD00104F1C /* RCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutViewController.h; sourceTree = "<group>"; };
 		D27F4036186333DD00104F1C /* RCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutViewController.m; sourceTree = "<group>"; };
@@ -326,6 +329,8 @@
 				D27F4060186887A900104F1C /* RCNetworking.m */,
 				D211105A187334790029D21D /* RCNetworkListener.h */,
 				D211105B187334790029D21D /* RCNetworkListener.m */,
+				D2699CF21877186100759C69 /* RCInAppPurchaser.h */,
+				D2699CF31877186100759C69 /* RCInAppPurchaser.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -352,8 +357,8 @@
 		D21717AE18576B6500D687F8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D21717AD18576B6500D687F8 /* Valt.app */,
-				D21717CD18576B6500D687F8 /* ValtTests.xctest */,
+				D21717AD18576B6500D687F8 /* Vault.app */,
+				D21717CD18576B6500D687F8 /* VaultTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -404,10 +409,10 @@
 		D21717B918576B6500D687F8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D21717BA18576B6500D687F8 /* Valt-Info.plist */,
+				D21717BA18576B6500D687F8 /* Vault-Info.plist */,
 				D21717BB18576B6500D687F8 /* InfoPlist.strings */,
 				D21717BE18576B6500D687F8 /* main.m */,
-				D21717C018576B6500D687F8 /* Valt-Prefix.pch */,
+				D21717C018576B6500D687F8 /* Vault-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -426,7 +431,7 @@
 		D21717D618576B6500D687F8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D21717D718576B6500D687F8 /* ValtTests-Info.plist */,
+				D21717D718576B6500D687F8 /* VaultTests-Info.plist */,
 				D21717D818576B6500D687F8 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -722,9 +727,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D21717AC18576B6500D687F8 /* Valt */ = {
+		D21717AC18576B6500D687F8 /* Vault */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Valt" */;
+			buildConfigurationList = D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Vault" */;
 			buildPhases = (
 				D21717A918576B6500D687F8 /* Sources */,
 				D21717AA18576B6500D687F8 /* Frameworks */,
@@ -734,14 +739,14 @@
 			);
 			dependencies = (
 			);
-			name = Valt;
+			name = Vault;
 			productName = Valt;
-			productReference = D21717AD18576B6500D687F8 /* Valt.app */;
+			productReference = D21717AD18576B6500D687F8 /* Vault.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D21717CC18576B6500D687F8 /* ValtTests */ = {
+		D21717CC18576B6500D687F8 /* VaultTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D21717E218576B6500D687F8 /* Build configuration list for PBXNativeTarget "ValtTests" */;
+			buildConfigurationList = D21717E218576B6500D687F8 /* Build configuration list for PBXNativeTarget "VaultTests" */;
 			buildPhases = (
 				D21717C918576B6500D687F8 /* Sources */,
 				D21717CA18576B6500D687F8 /* Frameworks */,
@@ -752,9 +757,9 @@
 			dependencies = (
 				D21717D418576B6500D687F8 /* PBXTargetDependency */,
 			);
-			name = ValtTests;
+			name = VaultTests;
 			productName = ValtTests;
-			productReference = D21717CD18576B6500D687F8 /* ValtTests.xctest */;
+			productReference = D21717CD18576B6500D687F8 /* VaultTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -768,8 +773,11 @@
 				ORGANIZATIONNAME = "Rob Caraway";
 				TargetAttributes = {
 					D21717AC18576B6500D687F8 = {
-						DevelopmentTeam = Q4M3BRZY64;
+						DevelopmentTeam = J546F75L53;
 						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
@@ -783,7 +791,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D21717A818576B6500D687F8 /* Build configuration list for PBXProject "Valt" */;
+			buildConfigurationList = D21717A818576B6500D687F8 /* Build configuration list for PBXProject "Vault" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -795,8 +803,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D21717AC18576B6500D687F8 /* Valt */,
-				D21717CC18576B6500D687F8 /* ValtTests */,
+				D21717AC18576B6500D687F8 /* Vault */,
+				D21717CC18576B6500D687F8 /* VaultTests */,
 			);
 		};
 /* End PBXProject section */
@@ -865,6 +873,7 @@
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
 				D217180F1857723700D687F8 /* AnimationFrame.m in Sources */,
 				D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */,
+				D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */,
 				D217181B1857727F00D687F8 /* CollapseClickArrow.m in Sources */,
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
 				D21717EE1857710700D687F8 /* JTTransformableTableViewCell.m in Sources */,
@@ -916,7 +925,7 @@
 /* Begin PBXTargetDependency section */
 		D21717D418576B6500D687F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D21717AC18576B6500D687F8 /* Valt */;
+			target = D21717AC18576B6500D687F8 /* Vault */;
 			targetProxy = D21717D318576B6500D687F8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1027,9 +1036,9 @@
 					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
-				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Valt/Vault-Prefix.pch";
+				INFOPLIST_FILE = "Valt/Vault-Info.plist";
+				PRODUCT_NAME = Vault;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1048,9 +1057,9 @@
 					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
-				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Valt/Vault-Prefix.pch";
+				INFOPLIST_FILE = "Valt/Vault-Info.plist";
+				PRODUCT_NAME = Vault;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1074,8 +1083,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "ValtTests/ValtTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "ValtTests/VaultTests-Info.plist";
+				PRODUCT_NAME = VaultTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1094,8 +1103,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
-				INFOPLIST_FILE = "ValtTests/ValtTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "ValtTests/VaultTests-Info.plist";
+				PRODUCT_NAME = VaultTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1154,9 +1163,9 @@
 					"$(SRCROOT)/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
-				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Valt/Vault-Prefix.pch";
+				INFOPLIST_FILE = "Valt/Vault-Info.plist";
+				PRODUCT_NAME = Vault;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1180,8 +1189,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "ValtTests/ValtTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "ValtTests/VaultTests-Info.plist";
+				PRODUCT_NAME = VaultTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1190,7 +1199,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D21717A818576B6500D687F8 /* Build configuration list for PBXProject "Valt" */ = {
+		D21717A818576B6500D687F8 /* Build configuration list for PBXProject "Vault" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D21717DD18576B6500D687F8 /* Debug */,
@@ -1200,7 +1209,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Valt" */ = {
+		D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Vault" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D21717E018576B6500D687F8 /* Debug */,
@@ -1210,7 +1219,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D21717E218576B6500D687F8 /* Build configuration list for PBXNativeTarget "ValtTests" */ = {
+		D21717E218576B6500D687F8 /* Build configuration list for PBXNativeTarget "VaultTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D21717E318576B6500D687F8 /* Debug */,
