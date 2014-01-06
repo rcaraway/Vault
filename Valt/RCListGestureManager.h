@@ -27,7 +27,7 @@ typedef enum{
 
 @protocol RCListGestureManagerDelegate <NSObject>
 
--(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location;
 -(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager;
 -(void)gestureManager:(RCListGestureManager *)manager needsNewRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsRowMovedAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)updatedPath;

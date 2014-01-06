@@ -9,10 +9,12 @@
 #import "RCPurchaseViewController.h"
 #import "MLAlertView.h"
 #import "RCNetworking.h"
+#import "RCInAppPurchaser.h"
 
 @interface RCPurchaseViewController () <MLAlertViewDelegate>
 
 @property(nonatomic, strong) MLAlertView * alertView;
+@property(nonatomic) BOOL wantsFullYear;
 
 @end
 
@@ -29,6 +31,17 @@
     [self.yearlyButton addTarget:self action:@selector(didTapYearlyPurchase) forControlEvents:UIControlEventTouchUpInside];
     [self.restorePurchaseButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
     [self addNotifications];
+    [[RCInAppPurchaser sharePurchaser] loadProducts];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ([[RCNetworking sharedNetwork] loggedIn]){
+        self.restorePurchaseButton.alpha = 0;
+    }else{
+        self.restorePurchaseButton.alpha = 1;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,19 +58,54 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)didTapMonthlyPurchase
-{
-    [self showSignup];
-}
-
 -(void)didTapLogin
 {
-    
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login" textFields:YES delegate:self cancelButtonTitle:nil confirmButtonTitle:@"Create Account"];
+    [self.alertView show];
+}
+
+-(void)didTapMonthlyPurchase
+{
+    self.wantsFullYear = NO;
+    if ([[RCNetworking sharedNetwork] loggedIn]){
+        if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
+            MLAlertView * alert = [[MLAlertView alloc] initWithTitle:@"You've already paid" message:@"Your current subscription is active." cancelButtonTitle:nil otherButtonTitles:@[@"OK"]];
+            [alert show];
+        }else{
+            [self payForYear];
+        }
+    }else{
+        [self showSignup];
+    }
 }
 
 -(void)didTapYearlyPurchase
 {
-    [self showSignup];
+    self.wantsFullYear = YES;
+    if ([[RCNetworking sharedNetwork] loggedIn]){
+        if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
+            MLAlertView * alert = [[MLAlertView alloc] initWithTitle:@"You've already paid" message:@"Your current subscription is active." cancelButtonTitle:nil otherButtonTitles:@[@"OK"]];
+            [alert show];
+        }else{
+            [self payForYear];
+        }
+    }else{
+         [self showSignup];
+    }
+}
+
+-(void)payForYear
+{
+    if ([[RCInAppPurchaser sharePurchaser] canMakePurchases] && [[RCInAppPurchaser sharePurchaser] productsExist]){
+        [[RCInAppPurchaser sharePurchaser] purchaseYear];
+    }
+}
+
+-(void)payForMonth
+{
+    if ([[RCInAppPurchaser sharePurchaser] canMakePurchases] && [[RCInAppPurchaser sharePurchaser] productsExist]){
+        [[RCInAppPurchaser sharePurchaser] purchaseMonth];
+    }
 }
 
 #pragma mark - NSNotifications
@@ -70,7 +118,8 @@
 
 -(void)removeNotifications
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidSignup object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToSignup object:nil];
 }
 
 -(void)didSignup
@@ -97,8 +146,13 @@
     
 }
 
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text
+{
+}
+
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
+    
     [[RCNetworking sharedNetwork] signupWithEmail:email password:password];
 }
 

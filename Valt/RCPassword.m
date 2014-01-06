@@ -46,7 +46,7 @@
         [pfObject setObject:self.username forKey:PASSWORD_USERNAME];
         [pfObject setObject:self.password forKey:PASSWORD_PASSWORD];
         [pfObject setObject:self.urlName forKey:PASSWORD_URLNAME];
-        [pfObject setObject:self.extraFields forKey:PASSWORD_EXTRA_FRIELDS];
+        [pfObject setObject:self.notes forKey:PASSWORD_EXTRA_FRIELD];
         return pfObject;
     }
     return nil;
@@ -59,7 +59,7 @@
     password.password = [object objectForKey:PASSWORD_PASSWORD];
     password.urlName = [object objectForKey:PASSWORD_URLNAME];
     password.username = [object objectForKey:PASSWORD_USERNAME];
-    password.extraFields = [object objectForKey:PASSWORD_EXTRA_FRIELDS];
+    password.notes = [object objectForKey:PASSWORD_EXTRA_FRIELD];
     password.object = object;
     return password;
 }
@@ -68,7 +68,7 @@
 {
     self = super.init;
     if (self){
-        self.extraFields = NSMutableArray.new;
+        self.notes = @"";
         self.title = @"";
         self.username = @"";
         self.password = @"";
@@ -92,8 +92,8 @@
     if (self.urlName){
         [allFields addObject:self.urlName];
     }
-    if (self.extraFields && self.extraFields.count > 0){
-        [allFields addObjectsFromArray:self.extraFields];
+    if (self.notes){
+        [allFields addObject:self.notes];
     }
     return allFields;
 }
@@ -102,29 +102,19 @@
 {
     self.username = [self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     self.password = [self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-    if (self.extraFields.count > 0){
-        self.extraFields[0] = [self.extraFields[0] stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-        if (self.extraFields.count > 1){
-            self.extraFields[1] = [self.extraFields[1] stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-        }
-    }
+    self.notes = [self.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
 }
 
 -(void)decrypt
 {
     self.username = [self.username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     self.password = [self.password stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-    if (self.extraFields.count > 0){
-        self.extraFields[0] = [self.extraFields[0] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-        if (self.extraFields.count > 1){
-            self.extraFields[1] = [self.extraFields[1] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
-        }
-    }
+    self.notes = [self.notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
 }
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Password %@, URL %@, Extra Fields %@", self.title, self.username, self.password, self.urlName, self.extraFields];
+    return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Password %@, URL %@, Notes %@", self.title, self.username, self.password, self.urlName, self.notes];
 }
 
 -(BOOL)isEqual:(id)object

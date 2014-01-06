@@ -16,7 +16,7 @@
 #define PASSWORD_USERNAME @"PASSWORD_USERNAME"
 #define PASSWORD_URLNAME @"PASSWORD_URLNAME"
 #define PASSWORD_PASSWORD @"PASSWORD_PASSWORD"
-#define PASSWORD_EXTRA_FRIELDS @"PASSWORD_EXTRA_FRIELDS"
+#define PASSWORD_EXTRA_FRIELD @"PASSWORD_EXTRA_FRIELD"
 
 @class PFObject;
 
@@ -26,7 +26,7 @@
 @property(nonatomic, copy) NSString * username;
 @property(nonatomic, copy) NSString * password;
 @property(nonatomic, strong) NSString * urlName;
-@property(nonatomic, strong) NSMutableArray * extraFields;
+@property(nonatomic, strong) NSString * notes;
 
 
 -(void)encrypt;

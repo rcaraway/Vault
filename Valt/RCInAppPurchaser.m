@@ -10,8 +10,8 @@
 #import <StoreKit/StoreKit.h>
 #import "RCNetworking.h"
 
-#define YEARLY_ID @"com.Shway.Vault.year699"
-#define MONTHLY_ID @"com.Shway.Vault.month199"
+#define YEARLY_ID @"year699"
+#define MONTHLY_ID @"month199"
 #define LOCAL_EXPIRATION @"localExpiration"
 
 NSString * purchaserDidFail = @"purchaserDidFail";
@@ -84,6 +84,7 @@ static RCInAppPurchaser * sharedPurchaser;
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
     NSArray * products = response.products;
+    NSLog(@"PRODUCTS %@", products);
     [self setProducts:products];
 }
 

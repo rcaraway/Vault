@@ -242,7 +242,6 @@
 
 -(void)publishChangesToPassword
 {
-    NSMutableArray * extraFields = [NSMutableArray new];
     for (int i = 0; i < self.credentials.count; i++) {
         NSString * field = self.credentials[i];
         if (i == 0){
@@ -254,10 +253,9 @@
         }else if (i == 3){
             self.password.urlName = field;
         }else {
-            [extraFields addObject:field];
+            self.password.notes = field;
         }
     }
-    self.password.extraFields = extraFields;
     [[RCPasswordManager defaultManager] updatePassword:self.password];
 }
 

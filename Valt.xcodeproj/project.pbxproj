@@ -34,8 +34,6 @@
 		D21717FA1857717600D687F8 /* SPLine.m in Sources */ = {isa = PBXBuildFile; fileRef = D21717F41857717600D687F8 /* SPLine.m */; };
 		D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D21717F61857717600D687F8 /* SPLockOverlay.m */; };
 		D21717FC1857717600D687F8 /* SPLockScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = D21717F81857717600D687F8 /* SPLockScreen.m */; };
-		D2171801185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = D2171800185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m */; };
-		D2171804185771FB00D687F8 /* IQActionSheetPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2171803185771FB00D687F8 /* IQActionSheetPickerView.m */; };
 		D217180E1857723700D687F8 /* AnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D21718071857723700D687F8 /* AnimationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D217180F1857723700D687F8 /* AnimationFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = D21718091857723700D687F8 /* AnimationFrame.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D21718101857723700D687F8 /* FlipView.m in Sources */ = {isa = PBXBuildFile; fileRef = D217180B1857723700D687F8 /* FlipView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -106,6 +104,7 @@
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
 		D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */; };
+		D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E91E0F187AFC90004D3558 /* LBActionSheet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,11 +160,6 @@
 		D21717F61857717600D687F8 /* SPLockOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLockOverlay.m; sourceTree = "<group>"; };
 		D21717F71857717600D687F8 /* SPLockScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLockScreen.h; sourceTree = "<group>"; };
 		D21717F81857717600D687F8 /* SPLockScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLockScreen.m; sourceTree = "<group>"; };
-		D21717FE185771CD00D687F8 /* SHActionSheetBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHActionSheetBlocks.h; sourceTree = "<group>"; };
-		D21717FF185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+SHActionSheetBlocks.h"; sourceTree = "<group>"; };
-		D2171800185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+SHActionSheetBlocks.m"; sourceTree = "<group>"; };
-		D2171802185771FB00D687F8 /* IQActionSheetPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQActionSheetPickerView.h; sourceTree = "<group>"; };
-		D2171803185771FB00D687F8 /* IQActionSheetPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQActionSheetPickerView.m; sourceTree = "<group>"; };
 		D21718061857723700D687F8 /* AnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationDelegate.h; sourceTree = "<group>"; };
 		D21718071857723700D687F8 /* AnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationDelegate.m; sourceTree = "<group>"; };
 		D21718081857723700D687F8 /* AnimationFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationFrame.h; sourceTree = "<group>"; };
@@ -282,6 +276,8 @@
 		D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteTextField.m; sourceTree = "<group>"; };
 		D2D87C9B18620F0000FD8FE9 /* HTAutocompleteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteManager.h; sourceTree = "<group>"; };
 		D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteManager.m; sourceTree = "<group>"; };
+		D2E91E0E187AFC90004D3558 /* LBActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActionSheet.h; sourceTree = "<group>"; };
+		D2E91E0F187AFC90004D3558 /* LBActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBActionSheet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -488,11 +484,8 @@
 		D21717FD185771C300D687F8 /* CustomSheet */ = {
 			isa = PBXGroup;
 			children = (
-				D2171802185771FB00D687F8 /* IQActionSheetPickerView.h */,
-				D2171803185771FB00D687F8 /* IQActionSheetPickerView.m */,
-				D21717FE185771CD00D687F8 /* SHActionSheetBlocks.h */,
-				D21717FF185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.h */,
-				D2171800185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m */,
+				D2E91E0E187AFC90004D3558 /* LBActionSheet.h */,
+				D2E91E0F187AFC90004D3558 /* LBActionSheet.m */,
 			);
 			name = CustomSheet;
 			sourceTree = "<group>";
@@ -858,7 +851,6 @@
 				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
 				D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */,
 				D27F4049186383EE00104F1C /* RCWebViewController.m in Sources */,
-				D2171804185771FB00D687F8 /* IQActionSheetPickerView.m in Sources */,
 				D27F405E1868805D00104F1C /* MLAlertView.m in Sources */,
 				D27F40781868ED3F00104F1C /* RNCryptorEngine.m in Sources */,
 				D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */,
@@ -882,12 +874,12 @@
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
 				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,
 				D21718111857723700D687F8 /* GenericAnimationView.m in Sources */,
-				D2171801185771CD00D687F8 /* UIActionSheet+SHActionSheetBlocks.m in Sources */,
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
 				D21717F91857717600D687F8 /* NormalCircle.m in Sources */,
 				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
+				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
 				D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */,
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,

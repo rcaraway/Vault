@@ -13,6 +13,7 @@
 
 @property(nonatomic, strong) HTAutocompleteTextField * textField;
 
+
 -(void)setFocused;
 -(void)removeFocus;
 -(void)setRedColored;

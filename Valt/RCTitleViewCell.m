@@ -91,6 +91,7 @@
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
     self.textField.autocompleteType = RCAutocompleteTypeTitle;
     self.textField.returnKeyType = UIReturnKeyNext;
+    self.textField.enabled = NO;
     self.textLabel.adjustsFontSizeToFitWidth = YES;
     [self.contentView addSubview:self.textField];
 }

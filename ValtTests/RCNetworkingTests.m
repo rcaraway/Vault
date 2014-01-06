@@ -160,7 +160,7 @@
         password.username = [NSString stringWithFormat:@"username%@%d", postFix, i];
         password.password = [NSString stringWithFormat:@"password%@%d", postFix, i];
         password.urlName = [NSString stringWithFormat:@"http://www.urlname%@%d.com", postFix, i];
-        password.extraFields = [@[[NSString stringWithFormat:@"extraField%@%d", postFix, i]] mutableCopy];
+        password.notes = [NSString stringWithFormat:@"extraField%@%d", postFix, i];
         [array addObject:password];
     }
     return array;

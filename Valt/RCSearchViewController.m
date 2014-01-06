@@ -10,6 +10,7 @@
 #import "RCPasswordManager.h"
 #import "RCRootViewController.h"
 #import "RCAppDelegate.h"
+#import "RCNetworking.h"
 #import "RCPassword.h"
 #import "RCMainCell.h"
 #import <Social/Social.h>
@@ -136,7 +137,11 @@
             if ([text isEqualToString:ABOUT_NAME]){
                 [[APP rootController] launchAbout];
             }else if ([text isEqualToString:SYNC_TO_ICLOUD]){
-                [[APP rootController] launchPurchaseScreen];
+                if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
+                    [[RCNetworking sharedNetwork] fetchFromServer];
+                }else{
+                    [[APP rootController] launchPurchaseScreen];
+                }
             }else if ([text isEqualToString:SPREAD_VALT]){
                 [self launchTweetMessenger];
             }else if ([text isEqualToString:LOCK_NAME]){
@@ -158,7 +163,7 @@
 -(void)launchTweetMessenger
 {
     self.tweetController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-    [self.tweetController setInitialText:@"Securely login anywhere on the fly! @getVault"];
+    [self.tweetController setInitialText:@"Found a great password keeper for iPhone. @getValt"];
     [[APP rootController] presentViewController:self.tweetController animated:YES completion:nil];
 }
 

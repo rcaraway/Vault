@@ -22,6 +22,8 @@
 #import "JTTransformableTableViewCell.h"
 #import "HTAutocompleteTextField.h"
 #import "RCNetworking.h"
+#import "LBActionSheet.h"
+
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -29,16 +31,21 @@
 #define COMMITING_CREATE_CELL_HEIGHT 60
 #define NORMAL_CELL_FINISHING_HEIGHT 60
 
-@interface RCListViewController ()<RCListGestureManagerDelegate>
+@interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate>
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
 @property(nonatomic) NSInteger addingCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
 @property (nonatomic, strong) id grabbedObject;
 @property(nonatomic, strong) UIView * fakeCellView;
+@property(nonatomic, strong) LBActionSheet * actionSheet;
+@property(nonatomic, strong) NSIndexPath * deletionPath;
 
 @end
 
 @implementation RCListViewController
+{
+    dispatch_once_t onceToken;
+}
 
 #pragma mark - Initialization
 
@@ -68,24 +75,10 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        self.tableView.alpha = 0.0;
-        CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
-        self.tableView.transform = scale;
-        [UIView animateWithDuration:0.2  animations:^{
-            self.tableView.alpha = 1.0;
-            CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
-            self.tableView.transform = scale;
-        } completion:^(BOOL finished) {
-            [self showSyncButton];
-            [UIView animateWithDuration:.2 animations:^{
-                self.tableView.transform = CGAffineTransformIdentity;
-            }completion:^(BOOL finished) {
-            }];
-        }];
-        
-    });
+    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
+        //TODO:Launch Alert View for renewing
+    }
+    [self showTableAnimated];
     [self.tableView reloadData];
 
 }
@@ -253,11 +246,11 @@
     self.addingCellIndex = NSNotFound;
 }
 
--(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location
 {
     if ([[self.tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[RCTitleViewCell class]]){
         RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [cell setFocused];
+        
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         [[APP rootController] launchSingleWithPassword:password];
     }
@@ -294,8 +287,9 @@
     UITableView *tableView = self.gestureManager.tableView;
     [tableView beginUpdates];
     if (state == RCListGestureManagerPanStateLeft) {
-        [[RCPasswordManager defaultManager] removePasswordAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        self.actionSheet = [[LBActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Entry" otherButtonTitles:nil];
+        self.deletionPath = indexPath;
+        [self.actionSheet showInView:self.view];
     } else if (state == JTTableViewCellEditingStateRight) {
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         if (password.hasValidURL){
@@ -339,8 +333,44 @@
 }
 
 
+#pragma mark - Action Sheet
+
+-(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
+        [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    self.deletionPath = nil;
+}
+
+-(void)actionSheetCancel:(LBActionSheet *)actionSheet
+{
+    self.deletionPath = nil;
+}
 
 #pragma mark - Table Convenience
+
+
+-(void)showTableAnimated
+{
+    dispatch_once(&onceToken, ^{
+        self.tableView.alpha = 0.0;
+        CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
+        self.tableView.transform = scale;
+        [UIView animateWithDuration:0.2  animations:^{
+            self.tableView.alpha = 1.0;
+            CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
+            self.tableView.transform = scale;
+        } completion:^(BOOL finished) {
+            [self showSyncButton];
+            [UIView animateWithDuration:.2 animations:^{
+                self.tableView.transform = CGAffineTransformIdentity;
+            }completion:^(BOOL finished) {
+            }];
+        }];
+    });
+}
 
 -(JTTransformableTableViewCell *)pullDownCellForIndexPath:(NSIndexPath *)indexPath
 {

@@ -20,6 +20,7 @@ NSString * const networkingDidBeginSigningUp = @"networkingDidBeginSigningUp";
 NSString * const networkingDidBeginFetching = @"networkingDidBeginFetching";
 NSString * const networkingDidBeginSyncing = @"networkingDidBeginSyncing";
 NSString * const networkingDidBeginDecrypting = @"networkingDidBeginDecrypting";
+NSString * const networkingDidBeginGettingURLForTitle = @"networkingDidBeginGettingURLForTitle";
 
 NSString * const networkingDidSignup = @"networkingDidSignup";
 NSString * const networkingDidLogin = @"networkingDidLogin";
@@ -27,6 +28,7 @@ NSString * const networkingDidFetchCredentials = @"networkingDidFetchCredentials
 NSString * const networkingDidSync = @"networkingDidSync";
 NSString * const networkingDidDecrypt = @"networkingDidDecrypt";
 NSString * const networkingDidGoPremium = @"networkingDidGoPremium";
+NSString * const networkingDidGetURLForTitle = @"networkingDidGetURLForTitle";
 
 NSString * const networkingDidFailToSignup = @"networkingDidFailToSignup";
 NSString * const networkingDidFailToLogin = @"networkingDidFailToLogin";
@@ -35,6 +37,7 @@ NSString * const networkingDidFailToSync = @"networkingDidFailToSync";
 NSString * const networkingDidFailToGoPremium = @"networkingDidFailToGoPremium";
 NSString * const networkingDidDenyFetch = @"networkingDidDenyFetch";
 NSString * const networkingDidDenySync = @"networkingDidDenySync";
+NSString * const networkingDidFailToGetURL = @"networkingDidFailToGetURL";
 
 
 static RCNetworking *sharedNetwork;
@@ -163,6 +166,18 @@ static RCNetworking *sharedNetwork;
             }
         }];
     }
+}
+
+-(void)getUrlForTitle:(NSString *)title
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginGettingURLForTitle object:nil];
+    [PFCloud callFunctionInBackground:@"getURL" withParameters:@{@"URLTitle": title} block:^(id object, NSError *error) {
+        if (!error){
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidGetURLForTitle object:nil];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToGetURL object:nil];
+        }
+    }];
 }
 
 -(RCPremiumState)premiumState
