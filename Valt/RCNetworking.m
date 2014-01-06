@@ -52,6 +52,7 @@ static RCNetworking *sharedNetwork;
 +(void)initialize
 {
     sharedNetwork = [[RCNetworking alloc] init];
+    [PFUser logOut];
 }
 
 +(RCNetworking *)sharedNetwork

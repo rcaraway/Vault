@@ -14,12 +14,12 @@
 
 #define MASTER_PASSWORD_ACCESS @"AbVxHzKQHdLmBsVVJb6yk3Pq" //WARNING: DO NOT CHANGE EVER
 
-#define STORED_TITLE_COUNT @"STORED_TITLE_COUNT"
-#define STORED_TITLE_PREFIX @"STORED_TITLE_"
-#define STORED_PASSWORD_PREFIX @"STORED_PASSWORD_"
-#define STORED_EMAIL_PREFIX @"STORE_EMAIL_"
-#define STORED_URL_PREFIX @"STORED_URL_"
-#define STORED_NOTES_PREFIX @"STORED_NOTES_"
+#define STORED_TITLE_COUNT "STORED_TITLE_COUNT"
+#define STORED_TITLE_PREFIX "STORED_TITLE_"
+#define STORED_PASSWORD_PREFIX "STORED_PASSWORD_"
+#define STORED_EMAIL_PREFIX "STORE_EMAIL_"
+#define STORED_URL_PREFIX "STORED_URL_"
+#define STORED_NOTES_PREFIX "STORED_NOTES_"
 
 
 NSString * const passwordManagerAccessGranted = @"passwordManagerAccessGranted";
@@ -31,8 +31,74 @@ NSString * const passwordManagerDidChangeMasterPassword = @"passwordManagerDidCh
 NSString * const passwordManagerDidFailToChangeMasterPassword = @"passwordManagerDidFailToChangeMasterPassword";
 NSString * const passwordManagerDidUpdatePasswords = @"passwordManagerDidUpdatePasswords";
 
-
 static RCPasswordManager * manager;
+
+
+#pragma mark - C functions
+
+typedef struct {
+    char * titleKey;
+    char * passwordKey;
+    char * emailKey;
+    char * urlKey;
+    char * notesKey;
+} KeychainKeySet;
+
+static inline __attribute__ ((always_inline)) char* concat(char *s1, char *s2)
+{
+    char *result = malloc(strlen(s1)+strlen(s2)+1);
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
+}
+
+static inline __attribute__ ((always_inline)) char * titleKey(char * index)
+{
+    return concat(STORED_TITLE_PREFIX, index);
+}
+
+static inline __attribute__ ((always_inline)) char * emailKey(char * index)
+{
+    return concat(STORED_EMAIL_PREFIX, index);
+}
+
+static inline __attribute__ ((always_inline)) char * passwordKey(char * index)
+{
+    return concat(STORED_PASSWORD_PREFIX, index);
+}
+
+static inline __attribute__ ((always_inline)) char * urlKey(char * index)
+{
+    return concat(STORED_URL_PREFIX, index);
+}
+
+static inline __attribute__ ((always_inline)) char * notesKey(char * index)
+{
+    return concat(STORED_NOTES_PREFIX, index);
+}
+
+static inline __attribute__ ((always_inline)) KeychainKeySet keyChainKeys(int index)
+{
+    KeychainKeySet keychainSet;
+    char charIndex[5];
+    sprintf(charIndex, "%d", index);
+    keychainSet.titleKey = titleKey(charIndex);
+    keychainSet.emailKey = emailKey(charIndex);
+    keychainSet.passwordKey = passwordKey(charIndex);
+    keychainSet.urlKey = urlKey(charIndex);
+    keychainSet.notesKey = notesKey(charIndex);
+    return keychainSet;
+}
+
+
+
+
+
+
+
+
+
+
 
 @implementation RCPasswordManager
 {

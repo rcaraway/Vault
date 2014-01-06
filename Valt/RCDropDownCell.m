@@ -77,8 +77,10 @@
         self.textField.autocompleteType = RCAutocompleteTypePassword;
     }else if ([placeHolder isEqualToString:@"URL"]){
         self.textField.autocompleteType = RCAutocompleteTypeURL;
+        self.textField.keyboardType = UIKeyboardTypeURL;
     }else if ([placeHolder isEqualToString:@"Email or Username"]){
         self.textField.autocompleteType = RCAutocompleteTypeUsername;
+        self.textField.keyboardType = UIKeyboardTypeEmailAddress;
     }else{
         self.textField.autocompleteType = RCAutoCompleteTypeNone;
     }
@@ -97,6 +99,7 @@
     self.textField.placeholder = @"Notes";
     self.textField.text = @"";
     self.textField.alpha = 1;
+    self.textField.keyboardType = UIKeyboardTypeDefault;
     self.label.alpha = 0;
     [self layoutSubviews];
 }

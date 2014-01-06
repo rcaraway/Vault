@@ -13,7 +13,7 @@
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCDropDownCell.h"
-#import "RCTitleViewCell.h"
+#import "RCMainCell.h"
 #import "UIColor+RCColors.h"
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
@@ -111,7 +111,7 @@
     self.tableView.allowsSelection = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.alpha = 0;
-    [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
+    [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -192,12 +192,10 @@
         else
             object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];
         static NSString *cellIdentifier = @"MyCell";
-        RCTitleViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.textField.text = (NSString *)object;
+        RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = (NSString *)object;
         if (indexPath.row == self.dummyCellIndex){
-            cell.textField.text = @"";
-            cell.textLabel.text = @"";
-            cell.textField.placeholder = @"";
+                cell.textLabel.text = @"";
         }
         return cell;
     }
@@ -248,9 +246,7 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location
 {
-    if ([[self.tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[RCTitleViewCell class]]){
-        RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        
+    if ([[self.tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[RCMainCell class]]){
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         [[APP rootController] launchSingleWithPassword:password];
     }
@@ -266,8 +262,8 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager didChangeToState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath
 {
-    RCTitleViewCell *cell = (RCTitleViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[RCTitleViewCell class]]){
+    RCMainCell *cell = (RCMainCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[RCMainCell class]]){
         switch (state) {
             case RCListGestureManagerPanStateMiddle:
                 [cell removeFocus];

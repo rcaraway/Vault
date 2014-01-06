@@ -179,7 +179,9 @@ static HTAutocompleteManager *sharedManager;
     NSArray * passwords = [[RCPasswordManager defaultManager] passwords];
     NSMutableArray * usernames = [NSMutableArray arrayWithCapacity:passwords.count];
     for (RCPassword * password in passwords) {
-        [usernames addObject:password.username];
+        if (password.username){
+             [usernames addObject:password.username];   
+        }
     }
     return [NSArray arrayWithArray:usernames];
 }

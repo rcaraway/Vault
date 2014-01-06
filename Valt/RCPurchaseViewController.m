@@ -10,6 +10,8 @@
 #import "MLAlertView.h"
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
+#import "HTAutocompleteTextField.h"
+#import "RCPasswordManager.h"
 
 @interface RCPurchaseViewController () <MLAlertViewDelegate>
 
@@ -114,17 +116,52 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSignup) name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailSignup:) name:networkingDidFailToSignup object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSigningUp) name:networkingDidBeginSigningUp object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToPurchase) name:purchaserDidFail object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayMonthly object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayYearly object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToSignup object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidBeginSigningUp object:nil];
+}
+
+-(void)didBeginPurchasing
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+-(void)didSucceedPurchasingProduct
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)didFailToPurchase
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Failed to Purchase" message:@"Could not complete purchase at this time." cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [self.alertView showFailWithTitle:@"Failed To Purchase"];
+    [self.alertView show];
+}
+
+-(void)didBeginSigningUp
+{
+    [self.alertView loadWithText:@"Signing up..."];
 }
 
 -(void)didSignup
 {
-    
+    [self.alertView dismiss];
+    if (self.wantsFullYear){
+        [self payForYear];
+    }else{
+        [self payForMonth];
+    }
+    self.restorePurchaseButton.alpha = 0;
 }
 
 -(void)didFailSignup:(NSNotification *)notification
@@ -137,7 +174,8 @@
 
 -(void)showSignup
 {
-    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Signup for Premium" textFields:YES delegate:self cancelButtonTitle:nil confirmButtonTitle:@"Create Account"];
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Signup for Premium" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Signup"];
+    self.alertView.passwordTextField.placeholder = @"Your Master Password";
     [self.alertView show];
 }
 
@@ -152,8 +190,30 @@
 
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
-    
-    [[RCNetworking sharedNetwork] signupWithEmail:email password:password];
+    if ([self isValidEmail]){
+        if ([self isValidPassword]){
+             [[RCNetworking sharedNetwork] signupWithEmail:email password:password];
+        }else{
+            [self.alertView showFailWithTitle:@"Invalid Master Password"];
+        }
+    }else{
+        [self.alertView showFailWithTitle:@"Invalid Email"];
+    }
+}
+
+-(BOOL)isValidEmail
+{
+    BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:self.alertView.loginTextField.text];
+}
+
+-(BOOL)isValidPassword
+{
+    return [self.alertView.passwordTextField.text isEqualToString:[[RCPasswordManager defaultManager] masterPassword]];
 }
 
 @end

@@ -1,4 +1,4 @@
-//
+ //
 //  RCInAppPurchaser.m
 //  Vault
 //
@@ -78,13 +78,16 @@ static RCInAppPurchaser * sharedPurchaser;
     [self.request start];
 }
 
+-(BOOL)productsExist
+{
+    return self.monthlyProduct != nil && self.yearlyProduct != nil;
+}
 
 #pragma mark - Product Delegate
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
     NSArray * products = response.products;
-    NSLog(@"PRODUCTS %@", products);
     [self setProducts:products];
 }
 
@@ -107,6 +110,7 @@ static RCInAppPurchaser * sharedPurchaser;
                 [self restoreTransaction:transaction];
                 break;
             default:
+                [[NSNotificationCenter defaultCenter] postNotificationName:purchaserDidBeginUpgrading object:nil];
                 break;
         }
     }
@@ -248,8 +252,8 @@ static RCInAppPurchaser * sharedPurchaser;
     }
     else
     {
-        // send out a notification for the failed transaction
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:purchaserDidFail object:nil];
+        
     }
 }
 
