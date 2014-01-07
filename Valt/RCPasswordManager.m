@@ -29,7 +29,6 @@ NSString * const passwordManagerDidLock = @"passwordManagerDidLock";
 NSString * const passwordManagerDidCreateMasterPassword = @"passwordManagerDidCreateMasterPassword";
 NSString * const passwordManagerDidChangeMasterPassword = @"passwordManagerDidChangeMasterPassword";
 NSString * const passwordManagerDidFailToChangeMasterPassword = @"passwordManagerDidFailToChangeMasterPassword";
-NSString * const passwordManagerDidUpdatePasswords = @"passwordManagerDidUpdatePasswords";
 
 static RCPasswordManager * manager;
 
@@ -282,9 +281,8 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [mutablePasswords addObject:password];
         dispatch_async(keyChainQueue, ^{
             [self addNewPasswordToKeychain:password]; //correct, should just add to end, +1 to total
-            [self commitTotalToKeychain];
+            setKeychainTotal((int)mutablePasswords.count);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
     }
 }
 
@@ -294,13 +292,12 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [mutablePasswords addObjectsFromArray:passwords];
 #ifdef TESTING_MODE
         [self addNewPasswordsToKeychain:passwords];
-        [self commitTotalToKeychain];
+        setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
             [self addNewPasswordsToKeychain:passwords];
-            [self commitTotalToKeychain];
+            setKeychainTotal((int)mutablePasswords.count);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -312,13 +309,12 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [mutablePasswords addObjectsFromArray:passwords];
 #ifdef TESTING_MODE
         [self replaceKeychainPasswordsWith:passwords];
-        [self commitTotalToKeychain];
+        setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
             [self replaceKeychainPasswordsWith:passwords];
-            [self commitTotalToKeychain];
+           setKeychainTotal((int)mutablePasswords.count);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -330,21 +326,20 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [mutablePasswords removeObject:password];
 #ifdef TESTING_MODE
         if (index == mutablePasswords.count)
-            [self deleteKeychainPasswordAtIndex:index];
-        else{
+            deleteKeychainPassword((int)index);
+        else if (index != NSNotFound){
             [self decrementKeychainValuesStartingAtIndex:index];
         }
-        [self commitTotalToKeychain];
+        setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
             if (index == mutablePasswords.count)
                 deleteKeychainPassword((int)index);
-            else{
+            else if (index != NSNotFound){
                 [self decrementKeychainValuesStartingAtIndex:index];
             }
-            [self commitTotalToKeychain];
+            setKeychainTotal((int)mutablePasswords.count);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
     
@@ -356,10 +351,11 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [mutablePasswords removeObjectAtIndex:index];
 #ifdef TESTING_MODE
         if (index == mutablePasswords.count)
-            [self deleteKeychainPasswordAtIndex:index];
+                deleteKeychainPassword((int)index);
         else{
             [self decrementKeychainValuesStartingAtIndex:index];
         }
+        setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
             if (index == mutablePasswords.count)
@@ -367,8 +363,8 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
             else{
                 [self decrementKeychainValuesStartingAtIndex:index];
             }
+            setKeychainTotal((int)mutablePasswords.count);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -380,28 +376,26 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
             [mutablePasswords addObject:password];
 #ifdef TESTING_MODE
             [self addNewPasswordToKeychain:password];
-            [self commitTotalToKeychain];
+            setKeychainTotal((int)mutablePasswords.count);
 #else
             dispatch_async(keyChainQueue, ^{
                 [self addNewPasswordToKeychain:password];
-                [self commitTotalToKeychain];
+                setKeychainTotal((int)mutablePasswords.count);
             });
-            [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
         }
         else if (index < mutablePasswords.count && index >= 0){
             [mutablePasswords insertObject:password atIndex:index];
 #ifdef TESTING_MODE
             [self incrementKeychainValuesStartingAtIndex:index];
-            [self addNewPasswordToKeychain:password atIndex:index];
-            [self commitTotalToKeychain];
+            setKeychainPassword(password, (int)index);
+            setKeychainTotal((int)mutablePasswords.count);
 #else
             dispatch_async(keyChainQueue, ^{
                 [self incrementKeychainValuesStartingAtIndex:index];
                 setKeychainPassword(password, (int)index);
-                [self commitTotalToKeychain];
+                setKeychainTotal((int)mutablePasswords.count);
             });
-            [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
         }
     }
@@ -427,12 +421,11 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 {
     if (password && _accessGranted){
 #ifdef TESTING_MODE
-        [self updatePasswordInKeychain:password];
+        updateKeychain(password, (int)([mutablePasswords indexOfObject:password]));
 #else
         dispatch_async(keyChainQueue, ^{
             updateKeychain(password, (int)[mutablePasswords indexOfObject:password]);
         });
-        [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerDidUpdatePasswords object:nil];
 #endif
     }
 }
@@ -581,9 +574,9 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     if (_accessGranted){
         NSInteger startIndex = index+1;
         NSInteger keychainCount = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
-        for (int i = (int)startIndex; i < keychainCount; i++) {
+        for (int i = startIndex; i < keychainCount; i++) {
             RCPassword * password = keychainPassword(i);
-            setKeychainPassword(password, i-1);
+            setKeychainPassword(password, (int)i-1);
         }
     }
 }
@@ -598,13 +591,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     [self removeMasterPassword];
     if (mutablePasswords){
         [mutablePasswords removeAllObjects];
-    }
-}
-
--(void)commitTotalToKeychain
-{
-    if (_accessGranted){
-        setKeychainTotal((int)mutablePasswords.count);
     }
 }
 

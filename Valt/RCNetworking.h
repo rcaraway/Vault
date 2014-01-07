@@ -45,6 +45,7 @@ extern NSString * const networkingDidBeginFetching;
 extern NSString * const networkingDidBeginDecrypting;
 extern NSString * const networkingDidBeginSyncing;
 extern NSString * const networkingDidBeginGettingURLForTitle;
+extern NSString * const networkingDidBeginExtendingPremium;
 
 extern NSString * const networkingDidGoPremium;
 extern NSString * const networkingDidSignup;

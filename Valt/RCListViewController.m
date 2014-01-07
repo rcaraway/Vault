@@ -22,6 +22,7 @@
 #import "JTTransformableTableViewCell.h"
 #import "HTAutocompleteTextField.h"
 #import "RCNetworking.h"
+#import "RCInAppPurchaser.h"
 #import "LBActionSheet.h"
 
 
@@ -69,6 +70,7 @@
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self setupTableView];
+    [self addNotifications];
     [self setupSyncButtonIfNeeded];
 }
 
@@ -85,6 +87,9 @@
 
 - (void)didReceiveMemoryWarning
 {
+    if (self.isViewLoaded && !self.view.window){
+        [self removeNotifications];
+    }
     [super didReceiveMemoryWarning];
 }
 
@@ -103,6 +108,29 @@
     [self.view removeFromSuperview];
 }
 
+
+#pragma mark - NSNotifications
+
+-(void)addNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPurchaseSubscription) name:purchaserDidPayMonthly object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPurchaseSubscription) name:purchaserDidPayYearly object:nil];
+}
+
+-(void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayYearly object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayMonthly object:nil];
+}
+
+-(void)didPurchaseSubscription
+{
+    self.syncButton.alpha =0;
+    [self.syncButton removeFromSuperview];
+    self.syncButton = nil;
+}
+
+
 #pragma mark - View Setup
 
 -(void)setupTableView
@@ -117,8 +145,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
 }
-
-
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -324,6 +350,9 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dummyCellIndex != indexPath.row){
+        [[RCNetworking sharedNetwork] sync];
+    }
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
 }
@@ -336,6 +365,7 @@
     if (buttonIndex == 0){
         [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [[RCNetworking sharedNetwork] sync];
     }
     self.deletionPath = nil;
 }

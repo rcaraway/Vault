@@ -117,6 +117,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSignup) name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailSignup:) name:networkingDidFailToSignup object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSigningUp) name:networkingDidBeginSigningUp object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogin) name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToPurchase) name:purchaserDidFail object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayMonthly object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayYearly object:nil];
@@ -127,6 +129,24 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidBeginSigningUp object:nil];
+}
+
+-(void)didBeginLoggingIn
+{
+    [self.alertView loadWithText:@"Logging in..."];
+}
+
+-(void)didLogin
+{
+    [self.alertView dismiss];
+    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
+         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)didFailToLogin
+{
+    [self.alertView showFailWithTitle:@"Login Failed"];
 }
 
 -(void)didBeginPurchasing
@@ -190,9 +210,23 @@
 
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
+    if (![alertView.titleLabel.text isEqualToString:@"Login"]){
+        [self signupWithEmail:email password:password];
+    }else{
+        [self loginWithEmail:email password:password];
+    }
+}
+
+-(void)loginWithEmail:(NSString *)email password:(NSString *)password
+{
+    [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
+}
+
+-(void)signupWithEmail:(NSString *)email password:(NSString *)password
+{
     if ([self isValidEmail]){
         if ([self isValidPassword]){
-             [[RCNetworking sharedNetwork] signupWithEmail:email password:password];
+            [[RCNetworking sharedNetwork] signupWithEmail:email password:password];
         }else{
             [self.alertView showFailWithTitle:@"Invalid Master Password"];
         }

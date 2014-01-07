@@ -11,6 +11,9 @@
 #import "RCPasswordManager.h"
 #import "KGStatusBar.h"
 #import "NSIndexPath+VaultPaths.h"
+#import "RCRootViewController.h"
+#import "RCAppDelegate.h"
+#import "RCListViewController.h"
 
 
 
@@ -57,6 +60,7 @@ static RCNetworkListener * sharedQueue;
     self = super.init;
     if (self){
         self.shouldMerge = NO;
+        [self addNotifications];
     }
     return self;
 }
@@ -66,6 +70,8 @@ static RCNetworkListener * sharedQueue;
 
 -(void)addNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginExtendingPremium) name:networkingDidBeginExtendingPremium object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGoPremium) name:networkingDidGoPremium object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginLoggingIn) name:networkingDidBeginLoggingIn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSyncing) name:networkingDidBeginSyncing object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginFetching) name:networkingDidBeginFetching object:nil];
@@ -73,9 +79,10 @@ static RCNetworkListener * sharedQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetch:) name:networkingDidFetchCredentials object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSync) name:networkingDidSync object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDecrypt) name:networkingDidDecrypt object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdatePasswords) name:passwordManagerDidUpdatePasswords object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGrantPasswordAccess) name:passwordManagerAccessGranted object:nil];
 }
 
 -(void)removeNotifications
@@ -94,12 +101,26 @@ static RCNetworkListener * sharedQueue;
 -(void)didEnterBackground
 {
     if ([[RCNetworking sharedNetwork] loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
-        [[RCNetworking sharedNetwork] sync];
+//        [[RCNetworking sharedNetwork] sync];
     }
 }
 
+-(void)didGrantPasswordAccess
+{
+    [[RCNetworking sharedNetwork] fetchFromServer];
+}
 
 #pragma mark - Progress Handling
+
+-(void)didBeginExtendingPremium
+{
+    [KGStatusBar showWithStatus:@"Saving Subscription..."];
+}
+
+-(void)didGoPremium
+{
+    [[RCNetworking sharedNetwork] sync];
+}
 
 -(void)didBeginLoggingIn
 {
@@ -123,6 +144,10 @@ static RCNetworkListener * sharedQueue;
     [KGStatusBar showWithStatus:@"Decrypting..."];
 }
 
+-(void)didDecrypt
+{
+    [KGStatusBar showSuccessWithStatus:@"Synced."];
+}
 
 #pragma mark - Success Handling
 
@@ -145,6 +170,7 @@ static RCNetworkListener * sharedQueue;
     }else{
         [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:passwords];
     }
+    [[[[APP rootController] listController] tableView] reloadData];
 }
 
 -(void)didSync

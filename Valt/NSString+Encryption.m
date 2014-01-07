@@ -23,6 +23,7 @@
                                             password:key
                                                error:&error];
     NSString * string = [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
+    NSLog(@"ENCRYPTED STRING %@", string);
     return string;
 }
 
@@ -34,6 +35,7 @@
                                         withPassword:key
                                                error:&error];
     NSString * string = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
+    NSLog(@"DECRYPTED STRING %@", string);
     return string;
 }
 

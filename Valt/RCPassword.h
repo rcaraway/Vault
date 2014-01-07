@@ -20,7 +20,7 @@
 
 @class PFObject;
 
-@interface RCPassword : NSObject
+@interface RCPassword : NSObject <NSCopying, NSCoding>
 
 @property(nonatomic, copy) NSString * title;
 @property(nonatomic, copy) NSString * username;

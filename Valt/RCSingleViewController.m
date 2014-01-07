@@ -20,6 +20,7 @@
 #import "RCCredentialGestureManager.h"
 #import "RCRootViewController.h"
 #import "HTAutocompleteManager.h"
+#import "RCNetworking.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -32,6 +33,7 @@
 @interface RCSingleViewController ()<RCCredentialGestureManagerDelegate, UITextFieldDelegate>
 {
     BOOL cameFromSearch;
+    BOOL dataChanged;
 }
 
 @property (nonatomic, strong) RCCredentialGestureManager * gestureManager;
@@ -46,7 +48,6 @@
 
 
 @implementation RCSingleViewController
-
 
 #pragma mark - Initialization
 
@@ -257,6 +258,21 @@
         }
     }
     [[RCPasswordManager defaultManager] updatePassword:self.password];
+    if (dataChanged && ![self textfieldsEmpty]){
+        [[RCNetworking sharedNetwork] sync];
+    }
+}
+
+-(BOOL)textfieldsEmpty
+{
+    BOOL empty = YES;
+    for (UITextField * tf in self.textFields) {
+        if (tf.text.length > 0){
+            empty = NO;
+            break;
+        }
+    }
+    return empty;
 }
 
 -(void)setAllTextFieldDelegates
@@ -344,6 +360,12 @@
         NSString* modifiedURLString = [NSString stringWithFormat:@"http://%@", urlString];
         self.password.urlName = modifiedURLString;
     }
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    dataChanged = YES;
+    return YES;
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField

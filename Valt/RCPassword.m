@@ -14,8 +14,6 @@
 
 @interface RCPassword ()
 
-@property(nonatomic, strong) PFObject * object;
-
 @end
 
 @implementation RCPassword
@@ -24,15 +22,6 @@
 
 -(PFObject *)convertedObject
 {
-    if (self.object){
-        NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
-        if (index == NSNotFound){
-            return nil;
-        }
-        [self.object setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
-        return self.object;
-    }
-    
     if ([PFUser currentUser]){
         NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
         if (index == NSNotFound){
@@ -43,10 +32,10 @@
         [pfObject setObject:ownerId forKey:PASSWORD_OWNER];
         [pfObject setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
         [pfObject setObject:self.title forKey:PASSWORD_TITLE];
-        [pfObject setObject:self.username forKey:PASSWORD_USERNAME];
-        [pfObject setObject:self.password forKey:PASSWORD_PASSWORD];
+        [pfObject setObject:[self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_USERNAME];
+        [pfObject setObject:[self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_PASSWORD];
         [pfObject setObject:self.urlName forKey:PASSWORD_URLNAME];
-        [pfObject setObject:self.notes forKey:PASSWORD_EXTRA_FRIELD];
+        [pfObject setObject:[self.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_EXTRA_FRIELD];
         return pfObject;
     }
     return nil;
@@ -56,11 +45,10 @@
 {
     RCPassword * password = [[RCPassword alloc] init];
     password.title = [object objectForKey:PASSWORD_TITLE];
-    password.password = [object objectForKey:PASSWORD_PASSWORD];
+    password.password = [[object objectForKey:PASSWORD_PASSWORD] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     password.urlName = [object objectForKey:PASSWORD_URLNAME];
-    password.username = [object objectForKey:PASSWORD_USERNAME];
-    password.notes = [object objectForKey:PASSWORD_EXTRA_FRIELD];
-    password.object = object;
+    password.username = [[object objectForKey:PASSWORD_USERNAME] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    password.notes = [[object objectForKey:PASSWORD_EXTRA_FRIELD] stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     return password;
 }
 
@@ -110,6 +98,24 @@
     self.username = [self.username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     self.password = [self.password stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
     self.notes = [self.notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+}
+
+-(RCPassword * )encryptedCopy
+{
+    RCPassword * password = [self copy];
+    password.username = [password.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    password.password = [password.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    password.notes = [password.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    return password;
+}
+
+-(RCPassword *)decryptedCopy
+{
+    RCPassword * password = [self copy];
+    password.username = [password.username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    password.password = [password.password stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    password.notes = [password.notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+    return password;
 }
 
 -(NSString *)description

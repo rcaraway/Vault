@@ -21,6 +21,7 @@ NSString * const networkingDidBeginFetching = @"networkingDidBeginFetching";
 NSString * const networkingDidBeginSyncing = @"networkingDidBeginSyncing";
 NSString * const networkingDidBeginDecrypting = @"networkingDidBeginDecrypting";
 NSString * const networkingDidBeginGettingURLForTitle = @"networkingDidBeginGettingURLForTitle";
+NSString * const networkingDidBeginExtendingPremium = @"networkingDidBeginExtendingPremium";
 
 NSString * const networkingDidSignup = @"networkingDidSignup";
 NSString * const networkingDidLogin = @"networkingDidLogin";
@@ -52,7 +53,6 @@ static RCNetworking *sharedNetwork;
 +(void)initialize
 {
     sharedNetwork = [[RCNetworking alloc] init];
-    [PFUser logOut];
 }
 
 +(RCNetworking *)sharedNetwork
@@ -158,6 +158,7 @@ static RCNetworking *sharedNetwork;
 -(void)extendPremiumToDate:(NSDate *)date
 {
     if ([self loggedIn]){
+        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginExtendingPremium object:nil];
         [[PFUser currentUser] setObject:date forKey:EXPIRATION_KEY];
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error){
@@ -212,7 +213,6 @@ static RCNetworking *sharedNetwork;
         NSMutableArray * array = [NSMutableArray new];
         for (PFObject * object in pfObjects) {
             RCPassword * password = [RCPassword passwordFromPFObject:object];
-            [password decrypt];
             [array addObject:password];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -227,7 +227,6 @@ static RCNetworking *sharedNetwork;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray * array = [NSMutableArray new];
         for (RCPassword *password in rcPasswords) {
-            [password encrypt];
             PFObject * object =[password convertedObject];
             [array addObject:object];
         }
