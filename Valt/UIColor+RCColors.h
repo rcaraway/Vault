@@ -14,5 +14,7 @@
 +(UIColor *)cellSelectedForeground;
 +(UIColor *)listBackground;
 +(UIColor *)dropDownColor;
++(UIColor *)passcodeBackground;
++(UIColor *)passcodeForeground;
 
 @end

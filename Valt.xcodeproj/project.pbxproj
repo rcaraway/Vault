@@ -72,6 +72,9 @@
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
+		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
+		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
+		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
 		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
 		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
@@ -225,6 +228,11 @@
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
+		D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+QuartzEffects.h"; sourceTree = "<group>"; };
+		D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+QuartzEffects.m"; sourceTree = "<group>"; };
+		D2660B6D1884959000E1B964 /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
+		D2660B6F1884964300E1B964 /* RCValtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCValtView.h; sourceTree = "<group>"; };
+		D2660B701884964300E1B964 /* RCValtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCValtView.m; sourceTree = "<group>"; };
 		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
 		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -405,6 +413,7 @@
 		D21717B918576B6500D687F8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D2660B6C1884957D00E1B964 /* Images */,
 				D21717BA18576B6500D687F8 /* Valt-Info.plist */,
 				D21717BB18576B6500D687F8 /* InfoPlist.strings */,
 				D21717BE18576B6500D687F8 /* main.m */,
@@ -592,6 +601,8 @@
 		D21C000018589F8E0017F0F9 /* View Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */,
+				D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */,
 				D21C0012185A00D30017F0F9 /* UIImage+memoIcons.h */,
 				D21C0013185A00D30017F0F9 /* UIImage+memoIcons.m */,
 				D21C00011858A25F0017F0F9 /* UILabel+RCLabels.h */,
@@ -628,6 +639,8 @@
 				D21C000018589F8E0017F0F9 /* View Categories */,
 				D24CD6DD186A343A00A47F1B /* RCSyncView.h */,
 				D24CD6DE186A343A00A47F1B /* RCSyncView.m */,
+				D2660B6F1884964300E1B964 /* RCValtView.h */,
+				D2660B701884964300E1B964 /* RCValtView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -655,6 +668,14 @@
 				D2254E5418648502003590AF /* icon-success@2x.png */,
 			);
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		D2660B6C1884957D00E1B964 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				D2660B6D1884959000E1B964 /* vault.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		D27F4041186343D600104F1C /* Xibs */ = {
@@ -820,6 +841,7 @@
 				D2254E5A18648502003590AF /* icon-info.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
+				D2660B6E1884959000E1B964 /* vault.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,10 +888,12 @@
 				D217180F1857723700D687F8 /* AnimationFrame.m in Sources */,
 				D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */,
 				D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */,
+				D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */,
 				D217181B1857727F00D687F8 /* CollapseClickArrow.m in Sources */,
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
 				D21717EE1857710700D687F8 /* JTTransformableTableViewCell.m in Sources */,
 				D21717FC1857717600D687F8 /* SPLockScreen.m in Sources */,
+				D2660B711884964300E1B964 /* RCValtView.m in Sources */,
 				D21110631873762D0029D21D /* KGStatusBar.m in Sources */,
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
 				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,

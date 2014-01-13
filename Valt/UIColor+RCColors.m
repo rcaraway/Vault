@@ -30,4 +30,14 @@
     return [UIColor colorWithWhite:.85 alpha:1];
 }
 
++(UIColor *)passcodeBackground
+{
+    return [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1];
+}
+
++(UIColor *)passcodeForeground
+{
+    return [UIColor colorWithRed:96.0/255.0 green:96.0/255.0 blue:96.0/255.0 alpha:1];
+}
+
 @end

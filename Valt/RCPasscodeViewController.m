@@ -12,7 +12,9 @@
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
 #import "MLAlertView.h"
-
+#import "UIColor+RCColors.h"
+#import "UIView+QuartzEffects.h"
+#import "RCValtView.h"
 
 @interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate>
 {
@@ -20,6 +22,7 @@
     NSString * confirmString;
 }
 
+@property(nonatomic, strong) UIView * fieldBackView;
 @property(nonatomic, strong) MLAlertView * alertView;
 
 @end
@@ -45,12 +48,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:.87 alpha:1];
-    [self setupLabel];
+    self.view.backgroundColor = [UIColor passcodeBackground];
+    [self setupFieldBackView];
+    [self setupValtView];
     [self setupNumberField];
-    if (![[RCNetworking sharedNetwork] loggedIn]){
+//    if (![[RCNetworking sharedNetwork] loggedIn]){
         [self setupLoginButton];
-    }
+//    }
     [self addNotifications];
 }
 
@@ -60,11 +64,14 @@
     [self removeNotifications];
 }
 
-
--(BOOL)prefersStatusBarHidden
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    return YES;
+    UIView * view = [[touches anyObject] view];
+    if (view == self.valtView){
+        [self.valtView shake];
+    }
 }
+
 
 #pragma mark - VC Transitions
 
@@ -95,7 +102,12 @@
 
 -(void)didSucceedEnteringPassword
 {
-    [[APP rootController] moveFromPasscodeToList];
+    self.fieldBackView.alpha = 0;
+    [self.passwordField resignFirstResponder];
+    self.loginButton.alpha = 0;
+    [self.valtView openCompletion:^{
+        [[APP rootController] moveFromPasscodeToList];
+    }];
 }
 
 -(void)didFailToLogIn:(NSNotification *)notification
@@ -113,62 +125,52 @@
 
 #pragma mark - View Setup
 
+-(void)setupValtView
+{
+    self.valtView = [[RCValtView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2.0-55, CGRectGetMinY(self.fieldBackView.frame)/2.0-(98/2.0), 110, 98)];
+    [self.view addSubview:self.valtView];
+}
+
+-(void)setupFieldBackView
+{
+    self.fieldBackView = [[UIView alloc] initWithFrame:CGRectMake(11, self.view.frame.size.height-216-17-50, self.view.frame.size.width-22, 50)];
+    [self.fieldBackView setBackgroundColor:[UIColor passcodeForeground]];
+    [self.fieldBackView setCornerRadius:5];
+    [self.view addSubview:self.fieldBackView];
+}
+
 -(void)setupNumberField
 {
-    self.passwordField = [[UITextField  alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height/3.0, self.view.frame.size.width, self.view.frame.size.height/8.0)];
+    self.passwordField = [[UITextField  alloc] initWithFrame:CGRectMake(12, 4, self.view.frame.size.width-33, 44)];
     self.passwordField.delegate = self;
-    [self.passwordField setBackgroundColor:[UIColor colorWithWhite:.2 alpha:1]];
+    [self.passwordField setBackgroundColor:[UIColor passcodeForeground]];
+    [self.passwordField setCornerRadius:5];
     if (isNewUser)
         self.passwordField.placeholder = @"New Master Password";
     else
         self.passwordField.placeholder = @"Master Password";
     self.passwordField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
-    [self.passwordField setFont:[UIFont systemFontOfSize:20]];
-    self.passwordField.keyboardAppearance = UIKeyboardAppearanceLight;
+    [self.passwordField setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:20]];
+    self.passwordField.keyboardAppearance = UIKeyboardAppearanceDark;
     self.passwordField.returnKeyType = UIReturnKeyDone;
-    [self.passwordField setTextAlignment:NSTextAlignmentCenter];
     [self.passwordField setTextColor:[UIColor whiteColor]];
     self.passwordField.secureTextEntry = YES;
     [self.passwordField becomeFirstResponder];
-    [self.view addSubview:self.passwordField];
+    [self.fieldBackView addSubview:self.passwordField];
 }
 
 -(void)setupLoginButton
 {
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.loginButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame), 320, 44)];
+    [self.loginButton setFrame:CGRectMake(self.view.frame.size.width/2.0, CGRectGetMinY(self.fieldBackView.frame)-9-26, self.view.frame.size.width/2.0-11, 44)];
     [self.loginButton setTitle:@"Premium User? Log in here." forState:UIControlStateNormal];
+    self.loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
+    [self.loginButton.titleLabel setTextAlignment:NSTextAlignmentRight];
     [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
-    [self.loginButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.loginButton setTitleColor:[UIColor passcodeForeground] forState:UIControlStateNormal];
     [self.view addSubview:self.loginButton];
 }
 
--(void)setupLabel
-{
-    self.enterPassword = [[UILabel  alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height/3.0-20, self.view.frame.size.width, 20)];
-    self.enterPassword.numberOfLines = 1;
-    self.enterPassword.backgroundColor = [UIColor colorWithWhite:.2 alpha:1];
-    self.enterPassword.textColor = [UIColor whiteColor];
-    if (isNewUser){
-        self.enterPassword.text = @"Enter new password";
-    }else{
-        self.enterPassword.text = @"Enter password";
-    }
-    [self.enterPassword setFont:[UIFont systemFontOfSize:13]];
-    [self.view addSubview:self.enterPassword];
-}
-
--(void)setupDoneButton
-{
-    self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.doneButton setFrame:CGRectMake(self.passwordField.frame.origin.x, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, 0)];
-    [self.doneButton setBackgroundColor:[UIColor blueColor]];
-    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.doneButton.alpha = 0;
-    [self.doneButton addTarget:self action:@selector(didTapButton) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.doneButton];
-}
 
 
 #pragma mark - Alert View Delegate
@@ -201,31 +203,6 @@
 
 #pragma mark - State Handling
 
--(void)showDoneButton
-{
-    [self.doneButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, 0)];
-    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.doneButton.alpha = 1;
-        [self.doneButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, self.passwordField.frame.size.height+4)];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.2 delay:.12 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            [self.doneButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, self.passwordField.frame.size.height)];
-        } completion:nil];
-    }];
-}
-
--(void)hideDoneButton
-{
-    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.doneButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, self.passwordField.frame.size.height+4)];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.2 delay:.08 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.doneButton.alpha = 0;
-            [self.doneButton setFrame:CGRectMake(0, CGRectGetMaxY(self.passwordField.frame)+2, self.passwordField.frame.size.width, 0)];
-        } completion:nil];
-    }];
-}
-
 -(void)didTapButton
 {
     if (isNewUser && !confirmString){
@@ -250,7 +227,6 @@
     if (isNewUser){
         [[RCPasswordManager defaultManager] setMasterPassword:self.passwordField.text];
     }
-    self.enterPassword.text = @"Decrypting Data";
    //TODO: rewrite to use attemptToAccessPasswords
 }
 
@@ -270,30 +246,16 @@
 
 -(void)didFailConfirmation
 {
-    self.enterPassword.backgroundColor = [UIColor redColor];
-    self.enterPassword.text = @"Did not match previous password";
     self.passwordField.placeholder = @"New Master Password";
     self.passwordField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
     self.passwordField.text = @"";
-    [UIView animateWithDuration:1 animations:^{
-        self.enterPassword.backgroundColor = [UIColor clearColor];
-    }completion:^(BOOL finished) {
-        self.enterPassword.text = @"Enter new password";
-    }];
 }
 
 -(void)didEnterIncorrectPassword
 {
-    self.enterPassword.backgroundColor = [UIColor redColor];
-    self.enterPassword.text = @"Incorrect Password";
     self.passwordField.placeholder = @"Master Password";
     self.passwordField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
     self.passwordField.text = @"";
-    [UIView animateWithDuration:1 animations:^{
-        self.enterPassword.backgroundColor = [UIColor clearColor];
-    }completion:^(BOOL finished) {
-        self.enterPassword.text = @"Enter password";
-    }];
 }
 
 #pragma mark - TextField Delegate

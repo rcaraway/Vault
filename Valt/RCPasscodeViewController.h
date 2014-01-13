@@ -8,14 +8,12 @@
 
 #import "RCViewController.h"
 
+@class RCValtView;
 
 @interface RCPasscodeViewController : RCViewController
 
-@property(nonatomic, strong) UIImageView * imageView;
+@property(nonatomic, strong) RCValtView * valtView;
 @property(nonatomic, strong) UITextField * passwordField;
-
-@property(nonatomic, strong) UILabel * enterPassword;
-@property(nonatomic, strong) UIButton * doneButton;
 @property(nonatomic, strong) UIButton * loginButton;
 
 -(id)initWithNewUser:(BOOL)newUser;
