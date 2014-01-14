@@ -14,6 +14,7 @@
 #import "RCPassword.h"
 #import "RCMainCell.h"
 #import <Social/Social.h>
+#import "RCSearchBar.h"
 
 
 @interface RCSearchViewController ()

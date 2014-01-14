@@ -39,8 +39,8 @@ static UIColor * successColor;
 
 +(void)initialize
 {
-    standardFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-    standardColor = [UIColor colorWithRed:0.063 green:0.486 blue:0.965 alpha:1.000];
+    standardFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:19];
+    standardColor = [UIColor colorWithRed:237.0/255.0 green:237.0/255.0 blue:239.0/255.0 alpha:1.000];
     loadingColor = [UIColor purpleColor];
     successColor = [UIColor greenColor];
     failureColor = [UIColor redColor];
@@ -65,22 +65,21 @@ static UIColor * successColor;
 - (void)show
 {
     self.alpha = 0.0;
-    CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
-    self.transform = scale;
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y-300, self.frame.size.width, self.frame.size.height);
+    if (self.loginTextField){
+        [self.loginTextField becomeFirstResponder];
+    }else if (self.passwordTextField){
+        [self.passwordTextField becomeFirstResponder];
+    }
     [[[UIApplication sharedApplication] windows][0] addSubview:self];
-    [UIView animateWithDuration:0.14  animations:^{
+    [UIView animateWithDuration:0.2  animations:^{
         self.alpha = 1.0;
-        CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
-        self.transform = scale;
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y+310, self.frame.size.width, self.frame.size.height);
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:.14 animations:^{
-           self.transform = CGAffineTransformIdentity;
+            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y-10, self.frame.size.width, self.frame.size.height);
         }completion:^(BOOL finished) {
-            if (self.loginTextField){
-                [self.loginTextField becomeFirstResponder];
-            }else if (self.passwordTextField){
-                [self.passwordTextField becomeFirstResponder];
-            }
+            
         }];
     }];
 }
@@ -212,12 +211,12 @@ static UIColor * successColor;
         CGFloat currentWidth = 280;
         CGFloat extraHeight = [self detmineExtraHeight];
         CGRect boundingRect = CGRectMake(0, 0, currentWidth, 80);
-        CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
+        CGFloat height = boundingRect.size.height + 16.0+44+extraHeight;
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
         self.frame = CGRectMake(20, (screenHeight-height)/2-80, 280, height);
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = standardColor;
         self.layer.masksToBounds = YES;
-        self.layer.cornerRadius = 13;
+        self.layer.cornerRadius = 8;
         [self setupTitleLabel];
         [self setupLoginField];
         [self setupPasswordField];
@@ -248,12 +247,12 @@ static UIColor * successColor;
         CGFloat extraHeight = [self detmineExtraHeight];
         CGSize maximumSize = CGSizeMake(currentWidth, CGFLOAT_MAX);
         CGRect boundingRect = [message boundingRectWithSize:maximumSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{ NSFontAttributeName : standardFont} context:nil];
-        CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
+        CGFloat height = boundingRect.size.height + 16.0+44+extraHeight;
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
         self.frame = CGRectMake(20, (screenHeight-height)/2, 280, height);
         self.backgroundColor = [UIColor whiteColor];
         self.layer.masksToBounds = YES;
-        self.layer.cornerRadius = 13;
+        self.layer.cornerRadius = 8;
         [self setupTitleLabel];
         [self setupMessageViewWithBoundingRect:boundingRect];
         [self setupButtonViewWithYOrigin:height-extraHeight height:extraHeight];
@@ -281,13 +280,13 @@ static UIColor * successColor;
             self.otherButtonTitles = @[confirmButtonTitle];
         CGFloat currentWidth = 280;
         CGFloat extraHeight = [self detmineExtraHeight];
-        CGRect boundingRect = CGRectMake(0, 0, currentWidth, 40);
-        CGFloat height = boundingRect.size.height + 16.0+40+extraHeight;
+        CGRect boundingRect = CGRectMake(0, 0, currentWidth, 44);
+        CGFloat height = boundingRect.size.height + 16.0+44+extraHeight;
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-        self.frame = CGRectMake(20, (screenHeight-height)/2-40, 280, height);
+        self.frame = CGRectMake(20, (screenHeight-height)/2-44, 280, height);
         self.backgroundColor = [UIColor whiteColor];
         self.layer.masksToBounds = YES;
-        self.layer.cornerRadius = 13;
+        self.layer.cornerRadius = 8;
         [self setupTitleLabel];
         [self setupPasswordField];
         self.loginTextField.autocompleteType = RCAutocompleteTypeUsername;
@@ -329,24 +328,27 @@ static UIColor * successColor;
 
 -(void)setupLoginField
 {
-    self.loginTextField = [[HTAutocompleteTextField  alloc] initWithFrame:CGRectMake(0, 40, 280, 40)];
+    self.loginTextField = [[HTAutocompleteTextField  alloc] initWithFrame:CGRectMake(22, 44, 280-44, 44)];
     self.loginTextField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
     self.loginTextField.backgroundColor = self.backgroundColor;
     self.loginTextField.font = standardFont;
     self.loginTextField.delegate = self;
     self.loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
     self.loginTextField.placeholder = @"Email";
+    self.loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.loginTextField.returnKeyType = UIReturnKeyNext;
     [self addSubview:self.loginTextField];
 }
 
 -(void)setupPasswordField
 {
-    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(0, (self.loginTextField!=nil ? 80:40), 280, 40)];
+    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(22, (self.loginTextField!=nil ? 88:44), 280-44, 44)];
     self.passwordTextField.delegate = self;
     self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.passwordTextField.placeholder = @"Master Password";
+    self.passwordTextField.font = standardFont;
     self.passwordTextField.secureTextEntry = YES;
     self.passwordTextField.returnKeyType = UIReturnKeyDone;
     [self addSubview:self.passwordTextField];
@@ -371,12 +373,12 @@ static UIColor * successColor;
 
 -(void)setupTitleLabel
 {
-    self.titleBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    self.titleBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 44)];
     _titleBack.backgroundColor = standardColor;
     [self addSubview:_titleBack];
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)];
     _titleLabel.text = self.title;
-    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.textColor = [UIColor colorWithWhite:.37 alpha:1];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont boldSystemFontOfSize:19];
     [_titleBack addSubview:_titleLabel];
@@ -386,7 +388,7 @@ static UIColor * successColor;
 {
     self.messageView = [[UITextView alloc] init];
     CGFloat newLineHeight = boundingRect.size.height + 16.0;
-    _messageView.frame = CGRectMake(0, 40, 280, newLineHeight);
+    _messageView.frame = CGRectMake(0, 44, 280, newLineHeight);
     _messageView.text = self.message;
     _messageView.font = standardFont;
     _messageView.editable = NO;
@@ -400,17 +402,24 @@ static UIColor * successColor;
 {
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     if ([self.otherButtonTitles count] == 1) {
-        _cancelButton.frame = CGRectMake(0, 0, 141, 40);
+        _cancelButton.frame = CGRectMake(0, 0, 141, 44);
     }
-    else _cancelButton.frame = CGRectMake(0, CGRectGetHeight(self.buttonView.frame)-40, 280, 40);
+    else _cancelButton.frame = CGRectMake(0, CGRectGetHeight(self.buttonView.frame)-44, 280, 44);
     [_cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
-    [_cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_cancelButton setTitleColor:[UIColor colorWithWhite:.37 alpha:1] forState:UIControlStateNormal];
     [_cancelButton setTitleColor:[UIColor colorWithRed:0.769 green:0.000 blue:0.071 alpha:1.000] forState:UIControlStateHighlighted];
-    [_cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.933 green:0.737 blue:0.745 alpha:1.000]] forState:UIControlStateHighlighted];
+    [_cancelButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:217.0/255.0 green:202.0/255.0 blue:202.0/255.0 alpha:1.000]] forState:UIControlStateHighlighted];
     _cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [_cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    [_cancelButton addTarget:self action:@selector(didCancel) forControlEvents:UIControlEventTouchUpInside];
     _cancelButton.tag = 0;
+    [self.cancelButton setBackgroundColor:[UIColor colorWithRed:249.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.000]];
     [self.buttonView addSubview:_cancelButton];
+}
+
+-(void)didCancel
+{
+    [self.delegate alertViewTappedCancel:self];
+    [self dismiss];
 }
 
 -(void)setupButtonTitleAtIndex:(NSInteger)index forCount:(NSInteger) count
@@ -419,34 +428,35 @@ static UIColor * successColor;
     
     if (count == 1 && !self.cancelTitle) {
         //1 other button and no cancel button
-        otherTitleButton.frame = CGRectMake(0, 0, 280, 40);
+        otherTitleButton.frame = CGRectMake(0, 0, 280, 44);
         otherTitleButton.tag = 0;
     }
     else if ((count == 2 && !self.cancelTitle) || (count == 1 && self.cancelTitle)) {
         // 2 other buttons, no cancel or 1 other button and cancel
         otherTitleButton.tag = index+1;
-        otherTitleButton.frame = CGRectMake(140, 0, 142, 40);
+        otherTitleButton.frame = CGRectMake(140, 0, 142, 44);
     }
     else if (count >= 2) {
         
         if (self.cancelTitle) {
-            otherTitleButton.frame = CGRectMake(0, (index*40)+0.5, 280, 40);
+            otherTitleButton.frame = CGRectMake(0, (index*44)+0.5, 280, 44);
             otherTitleButton.tag = index+1;
         }
         else {
-            otherTitleButton.frame = CGRectMake(0, index*40, 280, 40);
+            otherTitleButton.frame = CGRectMake(0, index*44, 280, 44);
             otherTitleButton.tag = index;
         }
         CALayer *horizontalBorder = [CALayer layer];
-        horizontalBorder.frame = CGRectMake(0.0f, otherTitleButton.frame.origin.y+39.5, self.buttonView.frame.size.width, 0.5f);
-        horizontalBorder.backgroundColor = [UIColor colorWithRed:0.824 green:0.827 blue:0.831 alpha:1.000].CGColor;
+        horizontalBorder.frame = CGRectMake(0.0f, 0, 1, otherTitleButton.frame.size.height);
+        horizontalBorder.backgroundColor = standardColor.CGColor;
         [self.buttonView.layer addSublayer:horizontalBorder];
     }
     [otherTitleButton addTarget:self action:@selector(alertButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [otherTitleButton setTitle:_otherButtonTitles[index] forState:UIControlStateNormal];
-    [otherTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [otherTitleButton setTitleColor:[UIColor colorWithWhite:.37 alpha:1] forState:UIControlStateNormal];
     [otherTitleButton setTitleColor:[UIColor colorWithRed:0.071 green:0.431 blue:0.965 alpha:1.000] forState:UIControlStateHighlighted];
-    [otherTitleButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.878 green:0.933 blue:0.992 alpha:1.000]] forState:UIControlStateHighlighted];
+    [otherTitleButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:205.0/255.0 green:202.0/255.0 blue:217.0/255.0 alpha:1.000]] forState:UIControlStateHighlighted];
+    [otherTitleButton setBackgroundColor:[UIColor colorWithRed:249.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.000]];
     otherTitleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [self.otherButtons addObject:otherTitleButton];
     [self.buttonView addSubview:otherTitleButton];
@@ -472,10 +482,10 @@ static UIColor * successColor;
 {
     CGFloat extraHeight = 0;
     if ((_cancelTitle && [_otherButtonTitles count] <= 1) || ([_otherButtonTitles count] < 2 && !_cancelTitle)) {
-        extraHeight = 40;
+        extraHeight = 44;
     }
     else if (_cancelTitle && [_otherButtonTitles count] > 1) {
-        extraHeight = 40 + [_otherButtonTitles count]*40;
+        extraHeight = 44 + [_otherButtonTitles count]*44;
     }
     return extraHeight;
 }

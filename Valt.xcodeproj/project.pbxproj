@@ -104,6 +104,8 @@
 		D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */; };
 		D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
+		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
+		D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
@@ -279,6 +281,10 @@
 		D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		D2B5EF971885E533002A50A3 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
+		D2B5EF981885E533002A50A3 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
+		D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCloseView.h; sourceTree = "<group>"; };
+		D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCloseView.m; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
@@ -646,6 +652,10 @@
 				D24CD6DE186A343A00A47F1B /* RCSyncView.m */,
 				D2660B6F1884964300E1B964 /* RCValtView.h */,
 				D2660B701884964300E1B964 /* RCValtView.m */,
+				D2B5EF971885E533002A50A3 /* RCSearchBar.h */,
+				D2B5EF981885E533002A50A3 /* RCSearchBar.m */,
+				D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */,
+				D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -906,6 +916,7 @@
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
+				D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */,
 				D21717F91857717600D687F8 /* NormalCircle.m in Sources */,
 				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
 				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
@@ -918,6 +929,7 @@
 				D27F4061186887A900104F1C /* RCNetworking.m in Sources */,
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
+				D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */,
 				D21718101857723700D687F8 /* FlipView.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */,

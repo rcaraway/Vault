@@ -18,6 +18,7 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 - (void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password;
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text;
+-(void)alertViewTappedCancel:(MLAlertView *)alertView;
 
 @end
 

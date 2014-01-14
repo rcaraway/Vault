@@ -12,14 +12,17 @@
 @class RCSingleViewController;
 @class RCPassword;
 @class RCSearchViewController;
+@class RCSearchBar;
+@class RCCloseView;
 
-@interface RCRootViewController : RCViewController <UISearchBarDelegate>
+@interface RCRootViewController : RCViewController 
 
 @property(nonatomic, strong) RCPasscodeViewController * passcodeController;
 @property(nonatomic, strong) RCListViewController * listController;
 @property(nonatomic, strong) RCSingleViewController * singleController;
 @property(nonatomic, strong) RCSearchViewController * searchController;
-@property(nonatomic, strong) UISearchBar * searchBar;
+@property(nonatomic, strong) RCSearchBar * searchBar;
+@property(nonatomic, strong) RCCloseView * closeView;
 
 -(void)launchPasscode;
 -(void)moveFromPasscodeToList;

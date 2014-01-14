@@ -10,7 +10,10 @@
 
 @interface RCMainCell : UITableViewCell
 
+@property(nonatomic, strong) UILabel * customLabel;
+
 -(void)setFocused;
+-(void)setGreenColored;
 -(void)removeFocus;
 -(void)setRedColored;
 

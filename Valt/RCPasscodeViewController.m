@@ -15,6 +15,7 @@
 #import "UIColor+RCColors.h"
 #import "UIView+QuartzEffects.h"
 #import "RCValtView.h"
+#import "HTAutocompleteTextField.h"
 
 @interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate>
 {
@@ -189,6 +190,11 @@
 
 #pragma mark - Alert View Delegate
 
+-(void)alertViewTappedCancel:(MLAlertView *)alertView
+{
+    [self.passwordField becomeFirstResponder];
+}
+
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.passwordField becomeFirstResponder];
@@ -254,8 +260,9 @@
 -(void)didTapLogin
 {
     self.alertView = [[MLAlertView  alloc] initWithTitle:@"Premium Login" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
+    self.alertView.loginTextField.keyboardAppearance = UIKeyboardAppearanceDark;
+    self.alertView.passwordTextField.keyboardAppearance = UIKeyboardAppearanceDark;
     [self.alertView show];
-    [self.passwordField resignFirstResponder];
 }
 
 -(void)didFailConfirmation

@@ -7,6 +7,9 @@
 //
 
 #import "KGStatusBar.h"
+#import "RCRootViewController.h"
+#import "RCAppDelegate.h"
+#import "RCPasscodeViewController.h"
 
 @interface KGStatusBar ()
     @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
@@ -32,7 +35,7 @@
 }
 
 + (void)showWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor blackColor] textColor:[UIColor colorWithRed:191.0/255.0 green:191.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor whiteColor] textColor:[UIColor blackColor]];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
@@ -55,32 +58,34 @@
     return self;
 }
 
-- (void)showWithStatus:(NSString *)status barColor:(UIColor*)barColor textColor:(UIColor*)textColor{
-    if(!self.superview)
-        [self.overlayWindow addSubview:self];
-    [self.overlayWindow setHidden:NO];
-    [self.topBar setHidden:NO];
-    self.topBar.backgroundColor = barColor;
-    NSString *labelText = status;
-    CGRect labelRect = CGRectZero;
-    CGFloat stringWidth = 0;
-    CGFloat stringHeight = 0;
-    if(labelText) {
-        CGSize stringSize = [labelText sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height)];
-        stringWidth = stringSize.width;
-        stringHeight = stringSize.height;
-        
-        labelRect = CGRectMake((self.topBar.frame.size.width / 2) - (stringWidth / 2), 0, stringWidth, stringHeight);
+- (void)showWithStatus:(NSString *)status barColor:(UIColor*)barColor textColor:(UIColor*)textColor
+{
+    if (![[[[APP rootController] view] subviews] containsObject:[[APP rootController] passcodeController].view]){
+        if(!self.superview)
+            [self.overlayWindow addSubview:self];
+        [self.overlayWindow setHidden:NO];
+        [self.topBar setHidden:NO];
+        self.topBar.backgroundColor = barColor;
+        NSString *labelText = status;
+        CGRect labelRect = CGRectZero;
+        CGFloat stringWidth = 0;
+        CGFloat stringHeight = 0;
+        if(labelText) {
+            CGSize stringSize = [labelText sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height)];
+            stringWidth = stringSize.width;
+            stringHeight = stringSize.height;
+            labelRect = CGRectMake((self.topBar.frame.size.width / 2) - (stringWidth / 2), 0, stringWidth, stringHeight);
+        }
+        self.stringLabel.frame = labelRect;
+        self.stringLabel.alpha = 0.0;
+        self.stringLabel.hidden = NO;
+        self.stringLabel.text = labelText;
+        self.stringLabel.textColor = textColor;
+        [UIView animateWithDuration:0.4 animations:^{
+            self.stringLabel.alpha = 1.0;
+        }];
+        [self setNeedsDisplay];
     }
-    self.stringLabel.frame = labelRect;
-    self.stringLabel.alpha = 0.0;
-    self.stringLabel.hidden = NO;
-    self.stringLabel.text = labelText;
-    self.stringLabel.textColor = textColor;
-    [UIView animateWithDuration:0.4 animations:^{
-        self.stringLabel.alpha = 1.0;
-    }];
-    [self setNeedsDisplay];
 }
 
 - (void) dismiss
@@ -139,8 +144,6 @@
 #endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont boldSystemFontOfSize:14.0];
-		stringLabel.shadowColor = [UIColor blackColor];
-		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
         stringLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     }

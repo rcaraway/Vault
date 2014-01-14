@@ -18,8 +18,10 @@
 #import "RCWebViewController.h"
 #import <MessageUI/MessageUI.h>
 #import "RCSegueManager.h"
+#import "RCSearchBar.h"
+#import "RCCloseView.h"
 
-@interface RCRootViewController () <MFMailComposeViewControllerDelegate>
+@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
 
 @property(nonatomic, strong) MFMailComposeViewController * mailController;
 @property(nonatomic, strong) RCAboutViewController * aboutController;
@@ -37,6 +39,7 @@
 {
     [super viewDidLoad];
     [self setupSearchBar];
+    [self setupCloseView];
     [self launchPasscode];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
 }
@@ -44,7 +47,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(BOOL)shouldAutorotate
@@ -54,6 +56,9 @@
 
 -(BOOL)prefersStatusBarHidden
 {
+    if ([self.view.subviews containsObject:self.passcodeController.view]){
+        return YES;
+    }
     return NO;
 }
 
@@ -176,36 +181,41 @@
 }
 
 
+#pragma mark - Close View
+
+-(void)setupCloseView
+{
+    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 20, 50, 40)];
+    [self.view addSubview:self.closeView];
+}
+
 #pragma mark - Search Bar
 
 -(void)setupSearchBar
 {
-    self.searchBar = [[UISearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 0)];
+    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 0)];
     self.searchBar.delegate =self;
-    self.searchBar.barTintColor = [UIColor colorWithWhite:.9 alpha:1];
-    [self setSearchBarUnselected];
     [self.view addSubview:self.searchBar];
 }
 
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+-(void)searchBarDidBeginEditing:(RCSearchBar *)searchBar
 {
     [self setSearchBarSelected];
     self.searchBar.showsCancelButton = YES;
     [self moveFromListToSearch];
 }
 
--(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+-(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
 {
-    [self setSearchBarUnselected];
-    
+ [self setSearchBarUnselected];
 }
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+-(void)searchBar:(RCSearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [self.searchController filterSearchWithText:searchText];
 }
 
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+-(void)searchBarCancelTapped:(RCSearchBar *)searchBar
 {
     self.searchBar.showsCancelButton = NO;
     [self.view endEditing:YES];
@@ -215,7 +225,6 @@
 -(void)setSearchBarSelected
 {
     UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
-    txfSearchField.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:120.0/255.0 blue:216.0/255.0 alpha:1];
     txfSearchField.textColor = [UIColor whiteColor];
     txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
 }
@@ -223,9 +232,8 @@
 -(void)setSearchBarUnselected
 {
     UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
-    txfSearchField.backgroundColor = [UIColor colorWithRed:175.0/255.0 green:112.0/255.0 blue:165.0/255.0 alpha:1];
     txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
+    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
 -(void)showSearchAnimated:(BOOL)animated
@@ -254,6 +262,7 @@
 {
     if ([self.view.subviews containsObject:self.passcodeController.view]){
         [self.view insertSubview:self.searchBar belowSubview:self.passcodeController.view];
+        [self.view insertSubview:self.closeView belowSubview:self.passcodeController.view];
     }else{
          [self.view bringSubviewToFront:self.searchBar];   
     }

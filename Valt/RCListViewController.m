@@ -67,7 +67,7 @@
     self.addingCellIndex = NSNotFound;
     self.dummyCellIndex = NSNotFound;
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
-    self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    self.view.backgroundColor = [UIColor listBackground];
     [self setupTableView];
     [self addNotifications];
     [self setupSyncButtonIfNeeded];
@@ -208,9 +208,9 @@
             object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.textLabel.text = (NSString *)object;
+        cell.customLabel.text = (NSString *)object;
         if (indexPath.row == self.dummyCellIndex){
-                cell.textLabel.text = @"";
+                cell.customLabel.text = @"";
         }
         return cell;
     }
@@ -284,7 +284,7 @@
                 [cell removeFocus];
                 break;
             case RCListGestureManagerPanStateRight:
-                //TODO: add browser show
+                [cell setGreenColored];
                 break;
             default:
                 [cell setRedColored];

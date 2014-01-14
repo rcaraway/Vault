@@ -22,7 +22,7 @@
 
 +(UIColor *)listBackground
 {
-    return [UIColor colorWithWhite:.9 alpha:1];
+    return [UIColor colorWithRed:227.0/255.0 green:229.0/255.0 blue:234.0/255.0 alpha:1];
 }
 
 +(UIColor *)dropDownColor
@@ -39,5 +39,7 @@
 {
     return [UIColor colorWithRed:96.0/255.0 green:96.0/255.0 blue:96.0/255.0 alpha:1];
 }
+
+
 
 @end
