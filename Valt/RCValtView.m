@@ -12,6 +12,9 @@
 #define degreesToRadians(x)(x * M_PI / 180)
 
 @implementation RCValtView
+{
+    void (^aBlock)(void);
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -19,13 +22,14 @@
     if (self) {
         self.image = [UIImage imageNamed:@"vault"];
         self.userInteractionEnabled = YES;
+        self.layer.anchorPoint = CGPointMake(.5, .646);
     }
     return self;
 }
 
 -(void)shake
 {
-     self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor redColor]];
+    self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor redColor]];
     [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.transform =CGAffineTransformMakeRotation(degreesToRadians(10));
     } completion:^(BOOL finished) {
@@ -45,21 +49,32 @@
 
 -(void)openCompletion:(void(^)())completion
 {
-    [UIView animateWithDuration:.14 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.transform =CGAffineTransformMakeRotation(degreesToRadians(-10));
+    aBlock = completion;
+    [UIView animateWithDuration:.2 animations:^{
+        self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
+        self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
-            self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(165));
-        } completion:^(BOOL finished) {
-            completion();
-        }];
+        CABasicAnimation* rotationAnimation;
+        rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+        rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 * 1 * .6];
+        rotationAnimation.duration = .6;
+        rotationAnimation.cumulative = YES;
+        rotationAnimation.additive = YES;
+        rotationAnimation.repeatCount = 1.0;
+        rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [rotationAnimation setDelegate:self];
+        [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     }];
 }
 
 -(void)lockCompletion:(void(^)())completion
 {
-    
+
+}
+
+-(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    aBlock();
 }
 
 

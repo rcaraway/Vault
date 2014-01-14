@@ -25,7 +25,6 @@
 #import "RCInAppPurchaser.h"
 #import "LBActionSheet.h"
 
-
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
@@ -91,16 +90,6 @@
         [self removeNotifications];
     }
     [super didReceiveMemoryWarning];
-}
-
--(void)willMoveToParentViewController:(UIViewController *)parent
-{
-    if (parent == [APP rootController]){
-        RCRootViewController * rootVC = (RCRootViewController *)parent;
-        [rootVC showSearchAnimated:YES];
-        [self.view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
-        [rootVC.view insertSubview:self.view belowSubview:rootVC.searchBar];
-    }
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent

@@ -17,6 +17,7 @@
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import <MessageUI/MessageUI.h>
+#import "RCSegueManager.h"
 
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
@@ -76,6 +77,7 @@
     self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
+    [RCSegueManager transitionFromPasscodeToList];
 }
 
 -(void)returnToPasscode
@@ -250,7 +252,11 @@
 
 -(void)showSearch
 {
-    [self.view bringSubviewToFront:self.searchBar];
+    if ([self.view.subviews containsObject:self.passcodeController.view]){
+        [self.view insertSubview:self.searchBar belowSubview:self.passcodeController.view];
+    }else{
+         [self.view bringSubviewToFront:self.searchBar];   
+    }
     [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
 }
 

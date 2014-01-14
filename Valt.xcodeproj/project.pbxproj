@@ -12,6 +12,7 @@
 		D211105C187334790029D21D /* RCNetworkListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105B187334790029D21D /* RCNetworkListener.m */; };
 		D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */; };
 		D21110631873762D0029D21D /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D21110621873762D0029D21D /* KGStatusBar.m */; };
+		D212BEC91885802500483964 /* RCSegueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D212BEC81885802500483964 /* RCSegueManager.m */; };
 		D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B018576B6500D687F8 /* Foundation.framework */; };
 		D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B218576B6500D687F8 /* CoreGraphics.framework */; };
 		D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B418576B6500D687F8 /* UIKit.framework */; };
@@ -131,6 +132,8 @@
 		D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+VaultPaths.m"; sourceTree = "<group>"; };
 		D21110611873762D0029D21D /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
 		D21110621873762D0029D21D /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
+		D212BEC71885802500483964 /* RCSegueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegueManager.h; sourceTree = "<group>"; };
+		D212BEC81885802500483964 /* RCSegueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegueManager.m; sourceTree = "<group>"; };
 		D21717AD18576B6500D687F8 /* Valt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717B018576B6500D687F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D21717B218576B6500D687F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -574,6 +577,8 @@
 				D217183618577A2100D687F8 /* RCPasswordManager.m */,
 				D217183918577B3900D687F8 /* RCPassword.h */,
 				D217183A18577B3900D687F8 /* RCPassword.m */,
+				D212BEC71885802500483964 /* RCSegueManager.h */,
+				D212BEC81885802500483964 /* RCSegueManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -908,6 +913,7 @@
 				D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */,
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,
+				D212BEC91885802500483964 /* RCSegueManager.m in Sources */,
 				D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */,
 				D27F4061186887A900104F1C /* RCNetworking.m in Sources */,
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,

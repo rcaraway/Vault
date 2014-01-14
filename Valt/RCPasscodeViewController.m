@@ -80,10 +80,7 @@
     [parent.view addSubview:self.view];
 }
 
--(void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [self.view removeFromSuperview];
-}
+
 
 #pragma mark - NSNotifications
 
@@ -92,6 +89,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogIn:) name:networkingDidFailToLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogIn:) name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSucceedEnteringPassword) name:passwordManagerAccessGranted object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDenyAccess) name:passwordManagerAccessFailedToGrant object:nil];
 }
 
 -(void)removeNotifications
@@ -119,6 +117,22 @@
 -(void)didLogIn:(NSNotification *)notification
 {
     [self.alertView dismissWithSuccessTitle:@"Login Successful"];
+}
+
+-(void)didDenyAccess
+{
+    [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x+20, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+            } completion:^(BOOL finished) {
+            }];
+        }];
+    }];
 }
 
 
