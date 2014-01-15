@@ -12,6 +12,7 @@
 
 @interface RCPasscodeViewController : RCViewController
 
+@property(nonatomic, strong) UIView * fieldBackView;
 @property(nonatomic, strong) RCValtView * valtView;
 @property(nonatomic, strong) UITextField * passwordField;
 @property(nonatomic, strong) UIButton * loginButton;

@@ -36,7 +36,7 @@
 
 -(void)setupSearchBack
 {
-    self.searchBack = [[UIView alloc] initWithFrame:CGRectMake(60, 10, self.frame.size.width-70, 28)];
+    self.searchBack = [[UIView alloc] initWithFrame:CGRectMake(40, 10, self.frame.size.width-50, 28)];
     [self.searchBack setCornerRadius:5];
     [self.searchBack setBackgroundColor:[UIColor colorWithRed:177.0/255.0 green:90.0/255.0 blue:250.0/255.0 alpha:1]];
     [self addSubview:self.searchBack];
@@ -111,7 +111,7 @@
 {
     [UIView animateWithDuration:.3 animations:^{
         self.cancelButton.alpha = 0;
-        [self.searchBack setFrame:CGRectMake(60, self.searchBack.frame.origin.y, self.searchBack.frame.size.width, self.searchBack.frame.size.height)];
+        [self.searchBack setFrame:CGRectMake(40, self.searchBack.frame.origin.y, self.searchBack.frame.size.width, self.searchBack.frame.size.height)];
     }];
 }
 

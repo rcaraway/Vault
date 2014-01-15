@@ -13,6 +13,8 @@
 
 @implementation RCValtView
 {
+    CABasicAnimation * open;
+    CABasicAnimation * close;
     void (^aBlock)(void);
 }
 
@@ -50,31 +52,54 @@
 -(void)openCompletion:(void(^)())completion
 {
     aBlock = completion;
-    [UIView animateWithDuration:.2 animations:^{
+    [UIView animateWithDuration:.12 animations:^{
         self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
         self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
     } completion:^(BOOL finished) {
         CABasicAnimation* rotationAnimation;
         rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-        rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 * 1 * .6];
-        rotationAnimation.duration = .6;
+        rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0];
+        rotationAnimation.duration = .5;
         rotationAnimation.cumulative = YES;
         rotationAnimation.additive = YES;
         rotationAnimation.repeatCount = 1.0;
         rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [rotationAnimation setDelegate:self];
+        open = rotationAnimation;
         [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     }];
 }
 
 -(void)lockCompletion:(void(^)())completion
 {
+    aBlock = nil;
+    [UIView animateWithDuration:.5 animations:^{
+        self.image = [UIImage imageNamed:@"vault"];
+    } completion:^(BOOL finished) {
+    }];
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: -M_PI * 2.0];
+    rotationAnimation.duration = .5;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.additive = YES;
+    rotationAnimation.repeatCount = 1.0;
+    rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    [rotationAnimation setDelegate:self];
+    close = rotationAnimation;
+    [self.layer addAnimation:rotationAnimation forKey:@"lockAnimation"];
 
 }
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    aBlock();
+    if (aBlock){
+       aBlock();
+    }else{
+        [UIView animateWithDuration:.08 animations:^{
+            self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(10));
+        }];
+    }
 }
 
 

@@ -23,5 +23,6 @@
 -(void)closeViewDidBegin:(RCCloseView *)closeView;
 -(void)closeView:(RCCloseView *)closeView didChangeXOrigin:(CGFloat)xOrigin;
 -(void)closeView:(RCCloseView *)closeView didFinishWithClosing:(BOOL)closing atOrigin:(CGFloat)xOrigin;
+-(void)closeViewDidTap:(RCCloseView *)closeView;
 
 @end

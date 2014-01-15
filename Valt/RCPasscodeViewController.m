@@ -23,7 +23,7 @@
     NSString * confirmString;
 }
 
-@property(nonatomic, strong) UIView * fieldBackView;
+
 @property(nonatomic, strong) MLAlertView * alertView;
 
 @end

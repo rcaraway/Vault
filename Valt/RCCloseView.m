@@ -16,6 +16,7 @@
 }
 
 @property(nonatomic, strong) UIPanGestureRecognizer * panGesture;
+@property(nonatomic, strong) UITapGestureRecognizer * tapGesture;
 
 @end
 
@@ -29,6 +30,7 @@
         self.backgroundColor = [UIColor passcodeBackground];
         [self addCornerMask];
         [self setupPanGesture];
+        [self setupTapGesture];
     }
     return self;
 }
@@ -48,6 +50,21 @@
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan)];
     self.panGesture.delegate =self;
     [self addGestureRecognizer:self.panGesture];
+}
+
+-(void)setupTapGesture
+{
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap)];
+    self.tapGesture.delegate = self;
+    [self addGestureRecognizer:self.tapGesture];
+}
+
+
+-(void)didTap
+{
+    if ([self delegateCanRespond:@selector(closeViewDidTap:)]){
+        [self.delegate closeViewDidTap:self];
+    }
 }
 
 -(void)didPan

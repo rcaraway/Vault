@@ -126,6 +126,9 @@
 
 -(void)moveFromListToSearch
 {
+    [UIView animateWithDuration:.3 animations:^{
+        [self.closeView setFrame:CGRectMake(0 -self.closeView.frame.size.width, self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
+    }];
     if (!self.searchController){
         self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
     }
@@ -144,6 +147,9 @@
 
 -(void)moveFromSearchToList
 {
+    [UIView animateWithDuration:.3 animations:^{
+        [self.closeView setFrame:CGRectMake(0, self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
+    }];
     if (!self.listController){
         self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
     }
@@ -185,7 +191,7 @@
 
 -(void)setupCloseView
 {
-    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 20, 50, 40)];
+    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 30, 28, 28)];
     self.closeView.delegate = [RCSegueManager sharedManager];
     [self.view addSubview:self.closeView];
 }

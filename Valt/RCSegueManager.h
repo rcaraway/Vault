@@ -14,6 +14,9 @@
 -(void)transitionFromPasscodeToList;
 -(void)transitionBackToPasscode;
 
+-(void)transitionFromSearchToList;
+-(void)transitionFromListToSearch;
+
 +(RCSegueManager *)sharedManager;
 
 

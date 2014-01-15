@@ -12,6 +12,8 @@
 #import "RCRootViewController.h"
 #import "RCAppDelegate.h"
 #import "RCCloseView.h"
+#import "RCValtView.h"
+#import "RCSearchViewController.h"
 #import "RCNetworking.h"
 
 @interface RCSegueManager () <RCCloseViewDelegate>
@@ -45,13 +47,34 @@ static RCSegueManager * sharedManager;
 -(void)transitionBackToPasscode
 {
     [self closePasscodeCompletion:^{
+        [[[[APP rootController]passcodeController] passwordField] setText:@""];
         [UIView animateWithDuration:.23 animations:^{
-            [[[[APP rootController]passcodeController] passwordField] setAlpha:1];
+            [[[[APP rootController]passcodeController] fieldBackView] setAlpha:1];
             [[[[APP rootController]passcodeController] passwordField] becomeFirstResponder];
             if (![[RCNetworking sharedNetwork] loggedIn]){
                 [[[[APP rootController]passcodeController] loginButton] setAlpha:1];
             }
+            [[[[APP rootController] passcodeController] valtView] lockCompletion:^{
+            }];
         }];
+    }];
+}
+
+-(void)transitionFromSearchToList
+{
+    UIView * searchView = [[[APP rootController] searchController] view];
+    UIView * listView = [[[APP rootController] listController]view];
+    [UIView transitionFromView:searchView toView:listView duration:.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+        [searchView removeFromSuperview];
+    }];
+}
+
+-(void)transitionFromListToSearch
+{
+    UIView * searchView = [[[APP rootController] searchController] view];
+    UIView * listView = [[[APP rootController] listController]view];
+    [UIView transitionFromView:searchView toView:listView duration:.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+        [searchView removeFromSuperview];
     }];
 }
 
@@ -78,6 +101,10 @@ static RCSegueManager * sharedManager;
     
 }
 
+-(void)closeViewDidTap:(RCCloseView *)closeView
+{
+    [self showPasscodeHint];
+}
 
 #pragma mark - Class Convenience
 
@@ -94,7 +121,6 @@ static RCSegueManager * sharedManager;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat finalValue = xOrigin/screenWidth;
     CGFloat angle = (M_PI/2.0) - asinhf(finalValue);
-    NSLog(@"XORIGIN %f ACTUAL LOCATION %f", xOrigin, screenWidth/xOrigin);
     return angle;
 }
 
@@ -107,6 +133,25 @@ static RCSegueManager * sharedManager;
     _3Dt.m34 = 0.001f*divider;
     _3Dt.m14 = -0.0014f*divider;
     return _3Dt;
+}
+
+
+-(void)showPasscodeHint
+{
+    UIView * view = [[APP rootController] passcodeController].view;
+    [UIView animateWithDuration:.2 animations:^{
+        CATransform3D transform = [self tranformForXOrigin:20];
+        view.layer.transform = transform;
+    }completion:^(BOOL finished) {
+        [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+            CATransform3D _3Dt = CATransform3DIdentity;
+            _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
+            _3Dt.m34 = 0.001f;
+            _3Dt.m14 = -0.0015f;
+            view.layer.transform =_3Dt;
+        } completion:^(BOOL finished){
+        }];
+    }];
 }
 
 -(void)openPasscodeFromOrigin:(CGFloat)xOrigin
@@ -155,6 +200,7 @@ static RCSegueManager * sharedManager;
         if (finished) {
             view.layer.anchorPoint=CGPointMake(.5, .5);
             view.center = CGPointMake(view.center.x + view.bounds.size.width/2.0f, view.center.y);
+            [[[APP rootController] closeView] setFrame:CGRectMake(0, 30, 28, 28)];
             completion();
         }
     }];
