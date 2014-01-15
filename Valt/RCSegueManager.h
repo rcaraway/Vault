@@ -11,8 +11,10 @@
 @interface RCSegueManager : NSObject
 
 
-+(void)transitionFromPasscodeToList;
+-(void)transitionFromPasscodeToList;
+-(void)transitionBackToPasscode;
 
++(RCSegueManager *)sharedManager;
 
 
 @end

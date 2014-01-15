@@ -12,7 +12,7 @@
 
 @interface RCSearchBar : UIView <UITextFieldDelegate>
 
-@property(nonatomic, strong) id<RCSearchBarDelegate> delegate;
+@property(nonatomic, weak) id<RCSearchBarDelegate> delegate;
 @property(nonatomic, strong) UIView * searchBack;
 @property(nonatomic, copy, readonly) NSString * text;
 @property(nonatomic, strong) UITextField * searchField;

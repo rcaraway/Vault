@@ -82,7 +82,7 @@
     self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
-    [RCSegueManager transitionFromPasscodeToList];
+    [[RCSegueManager sharedManager] transitionFromPasscodeToList];
 }
 
 -(void)returnToPasscode
@@ -186,6 +186,7 @@
 -(void)setupCloseView
 {
     self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 20, 50, 40)];
+    self.closeView.delegate = [RCSegueManager sharedManager];
     [self.view addSubview:self.closeView];
 }
 
