@@ -342,7 +342,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         });
 #endif
     }
-    
 }
 
 -(void)removePasswordAtIndex:(NSInteger)index

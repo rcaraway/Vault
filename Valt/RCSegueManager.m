@@ -92,20 +92,20 @@ static RCSegueManager * sharedManager;
 -(CGFloat)adjustedAngleForX:(CGFloat)xOrigin
 {
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat sinValue = xOrigin * sinf(3.141/2.0);
-    CGFloat finalValue = screenWidth/sinValue;
-    return finalValue;
+    CGFloat finalValue = xOrigin/screenWidth;
+    CGFloat angle = (M_PI/2.0) - asinhf(finalValue);
+    NSLog(@"XORIGIN %f ACTUAL LOCATION %f", xOrigin, screenWidth/xOrigin);
+    return angle;
 }
 
 -(CATransform3D)tranformForXOrigin:(CGFloat)xOrigin
 {
-    CGFloat divider =  1 - xOrigin / [UIScreen mainScreen].bounds.size.width;
     CATransform3D _3Dt = CATransform3DIdentity;
+    CGFloat divider =  1 - xOrigin/[UIScreen mainScreen].bounds.size.width;
     CGFloat rotateValue =3.141f*divider/2.0f;
     _3Dt =CATransform3DMakeRotation(rotateValue,0.0f,-1.0f,0.0f);
-      NSLog(@"ORIGIN %f ADJUSTED ANGLE %f", xOrigin, [self adjustedAngleForX:xOrigin]);
     _3Dt.m34 = 0.001f*divider;
-    _3Dt.m14 = -0.0015f*divider;
+    _3Dt.m14 = -0.0014f*divider;
     return _3Dt;
 }
 
