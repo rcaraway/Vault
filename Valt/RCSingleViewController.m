@@ -41,7 +41,7 @@
 @property(nonatomic, strong) NSMutableArray * textFields;
 @property(nonatomic) NSInteger addCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
-@property(nonatomic, strong) RCPassword * password;
+
 @property (nonatomic, strong) id grabbedObject;
 
 @end

@@ -11,6 +11,7 @@
 @class RCPassword;
 @interface RCSingleViewController : UITableViewController
 
+@property(nonatomic, strong) RCPassword * password;
 
 -(id)initWithPassword:(RCPassword *)password;
 @end

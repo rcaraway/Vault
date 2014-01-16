@@ -39,3 +39,6 @@ typedef enum{
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;
 
 @end
+
+extern NSString * const listGestureManagerDidTapBelowRows;
+extern NSString * const listGestureManagerDidTapRow;

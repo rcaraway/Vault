@@ -12,7 +12,7 @@
 		D211105C187334790029D21D /* RCNetworkListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105B187334790029D21D /* RCNetworkListener.m */; };
 		D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */; };
 		D21110631873762D0029D21D /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D21110621873762D0029D21D /* KGStatusBar.m */; };
-		D212BEC91885802500483964 /* RCSegueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D212BEC81885802500483964 /* RCSegueManager.m */; };
+		D212BEC91885802500483964 /* RCPasscodeSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D212BEC81885802500483964 /* RCPasscodeSegue.m */; };
 		D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B018576B6500D687F8 /* Foundation.framework */; };
 		D21717B318576B6500D687F8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B218576B6500D687F8 /* CoreGraphics.framework */; };
 		D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21717B418576B6500D687F8 /* UIKit.framework */; };
@@ -106,6 +106,9 @@
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
 		D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */; };
+		D2CEE437188829FF0094F321 /* RCSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CEE436188829FF0094F321 /* RCSegue.m */; };
+		D2CEE43A18883C900094F321 /* RCPasswordSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CEE43918883C900094F321 /* RCPasswordSegue.m */; };
+		D2CEE43D18883DAD0094F321 /* RCSearchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CEE43C18883DAD0094F321 /* RCSearchSegue.m */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
@@ -134,8 +137,8 @@
 		D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+VaultPaths.m"; sourceTree = "<group>"; };
 		D21110611873762D0029D21D /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
 		D21110621873762D0029D21D /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
-		D212BEC71885802500483964 /* RCSegueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegueManager.h; sourceTree = "<group>"; };
-		D212BEC81885802500483964 /* RCSegueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegueManager.m; sourceTree = "<group>"; };
+		D212BEC71885802500483964 /* RCPasscodeSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPasscodeSegue.h; sourceTree = "<group>"; };
+		D212BEC81885802500483964 /* RCPasscodeSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPasscodeSegue.m; sourceTree = "<group>"; };
 		D21717AD18576B6500D687F8 /* Valt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D21717B018576B6500D687F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D21717B218576B6500D687F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -285,6 +288,12 @@
 		D2B5EF981885E533002A50A3 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
 		D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCloseView.h; sourceTree = "<group>"; };
 		D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCloseView.m; sourceTree = "<group>"; };
+		D2CEE435188829FF0094F321 /* RCSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegue.h; sourceTree = "<group>"; };
+		D2CEE436188829FF0094F321 /* RCSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegue.m; sourceTree = "<group>"; };
+		D2CEE43818883C900094F321 /* RCPasswordSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPasswordSegue.h; sourceTree = "<group>"; };
+		D2CEE43918883C900094F321 /* RCPasswordSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPasswordSegue.m; sourceTree = "<group>"; };
+		D2CEE43B18883DAD0094F321 /* RCSearchSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchSegue.h; sourceTree = "<group>"; };
+		D2CEE43C18883DAD0094F321 /* RCSearchSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchSegue.m; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
@@ -403,6 +412,7 @@
 		D21717B818576B6500D687F8 /* Valt */ = {
 			isa = PBXGroup;
 			children = (
+				D2CEE434188823AA0094F321 /* Segues */,
 				D2254E4C1863C712003590AF /* Valt.entitlements */,
 				D27F4041186343D600104F1C /* Xibs */,
 				D21CFFFF18589F880017F0F9 /* View */,
@@ -583,8 +593,6 @@
 				D217183618577A2100D687F8 /* RCPasswordManager.m */,
 				D217183918577B3900D687F8 /* RCPassword.h */,
 				D217183A18577B3900D687F8 /* RCPassword.m */,
-				D212BEC71885802500483964 /* RCSegueManager.h */,
-				D212BEC81885802500483964 /* RCSegueManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -740,6 +748,21 @@
 				D27F40801868F57300104F1C /* NSData+Base64.m */,
 			);
 			name = Base64;
+			sourceTree = "<group>";
+		};
+		D2CEE434188823AA0094F321 /* Segues */ = {
+			isa = PBXGroup;
+			children = (
+				D212BEC71885802500483964 /* RCPasscodeSegue.h */,
+				D212BEC81885802500483964 /* RCPasscodeSegue.m */,
+				D2CEE435188829FF0094F321 /* RCSegue.h */,
+				D2CEE436188829FF0094F321 /* RCSegue.m */,
+				D2CEE43818883C900094F321 /* RCPasswordSegue.h */,
+				D2CEE43918883C900094F321 /* RCPasswordSegue.m */,
+				D2CEE43B18883DAD0094F321 /* RCSearchSegue.h */,
+				D2CEE43C18883DAD0094F321 /* RCSearchSegue.m */,
+			);
+			name = Segues;
 			sourceTree = "<group>";
 		};
 		D2D87C9718620E1900FD8FE9 /* HTAutocompleteTextField */ = {
@@ -922,14 +945,16 @@
 				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
 				D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */,
+				D2CEE43D18883DAD0094F321 /* RCSearchSegue.m in Sources */,
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,
-				D212BEC91885802500483964 /* RCSegueManager.m in Sources */,
+				D212BEC91885802500483964 /* RCPasscodeSegue.m in Sources */,
 				D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */,
 				D27F4061186887A900104F1C /* RCNetworking.m in Sources */,
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */,
+				D2CEE437188829FF0094F321 /* RCSegue.m in Sources */,
 				D21718101857723700D687F8 /* FlipView.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */,
@@ -940,6 +965,7 @@
 				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717FA1857717600D687F8 /* SPLine.m in Sources */,
+				D2CEE43A18883C900094F321 /* RCPasswordSegue.m in Sources */,
 				D21717EF1857710700D687F8 /* UIColor+JTGestureBasedTableViewHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

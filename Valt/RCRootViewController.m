@@ -17,7 +17,7 @@
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import <MessageUI/MessageUI.h>
-#import "RCSegueManager.h"
+#import "RCPasscodeSegue.h"
 #import "RCSearchBar.h"
 #import "RCCloseView.h"
 
@@ -27,6 +27,7 @@
 @property(nonatomic, strong) RCAboutViewController * aboutController;
 @property(nonatomic, strong) RCPurchaseViewController * purchaseController;
 @property(nonatomic, strong) RCWebViewController * webController;
+
 
 @end
 
@@ -38,6 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.passcodeSegue = [[RCPasscodeSegue alloc] initWithRootController:self];
+    [self setupViewControllers];
     [self setupSearchBar];
     [self setupCloseView];
     [self launchPasscode];
@@ -63,6 +66,12 @@
 }
 
 
+-(void)setupViewControllers
+{
+    self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    self.searchController = [[RCSearchViewController  alloc] initWithNibName:nil bundle:nil];
+}
+
 #pragma mark - VC Transitions
 
 -(void)launchPasscode
@@ -77,25 +86,7 @@
     [self addChildViewController:self.passcodeController];
 }
 
--(void)moveFromPasscodeToList
-{
-    self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    [self addChildViewController:self.listController];
-    [self.passcodeController removeFromParentViewController];
-    [[RCSegueManager sharedManager] transitionFromPasscodeToList];
-}
 
--(void)returnToPasscode
-{
-    UIViewController * controller;
-    if (self.childViewControllers.count > 0)
-        controller = self.childViewControllers[0];
-    [[RCPasswordManager defaultManager] lockPasswords];
-    self.passcodeController = [[RCPasscodeViewController alloc] initWithNewUser:NO];
-    [self addChildViewController:self.passcodeController];
-    if (controller)
-        [controller removeFromParentViewController];
-}
 
 -(void)moveFromListToPasscode
 {
@@ -192,7 +183,7 @@
 -(void)setupCloseView
 {
     self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 30, 28, 28)];
-    self.closeView.delegate = [RCSegueManager sharedManager];
+    self.closeView.delegate = self.passcodeSegue;
     [self.view addSubview:self.closeView];
 }
 

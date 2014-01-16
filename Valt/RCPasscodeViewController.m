@@ -104,9 +104,7 @@
     self.fieldBackView.alpha = 0;
     [self.passwordField resignFirstResponder];
     self.loginButton.alpha = 0;
-    [self.valtView openCompletion:^{
-        [[APP rootController] moveFromPasscodeToList];
-    }];
+    [self.valtView open];
 }
 
 -(void)didFailToLogIn:(NSNotification *)notification
@@ -214,7 +212,7 @@
     if ([confirmString isEqualToString:text]){
         [self.alertView dismiss];
         [[RCPasswordManager defaultManager] setMasterPassword:text];
-        [[APP rootController] moveFromPasscodeToList];
+        [self didSucceedEnteringPassword];
     }else{
         [self.alertView showFailWithTitle:@"Passwords don't match"];
         [self.alertView clearText];

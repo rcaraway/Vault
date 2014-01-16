@@ -11,7 +11,10 @@
 @interface RCValtView : UIImageView
 
 -(void)shake;
--(void)openCompletion:(void(^)())completion;
--(void)lockCompletion:(void(^)())completion;
+-(void)open;
+-(void)lock;
 
 @end
+
+extern NSString * const valtViewDidOpen;
+extern NSString * const valtViewDidLock;

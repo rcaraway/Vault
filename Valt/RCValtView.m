@@ -9,13 +9,15 @@
 #import "RCValtView.h"
 #import "UIImage+memoIcons.h"
 
+NSString * const valtViewDidOpen = @"valtViewDidOpen";
+NSString * const valtViewDidLock = @"valtViewDidLock";
+
 #define degreesToRadians(x)(x * M_PI / 180)
 
 @implementation RCValtView
 {
     CABasicAnimation * open;
     CABasicAnimation * close;
-    void (^aBlock)(void);
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -49,9 +51,8 @@
     }];
 }
 
--(void)openCompletion:(void(^)())completion
+-(void)open
 {
-    aBlock = completion;
     [UIView animateWithDuration:.12 animations:^{
         self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
         self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
@@ -66,13 +67,13 @@
         rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [rotationAnimation setDelegate:self];
         open = rotationAnimation;
+        close = nil;
         [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     }];
 }
 
--(void)lockCompletion:(void(^)())completion
+-(void)lock
 {
-    aBlock = nil;
     [UIView animateWithDuration:.5 animations:^{
         self.image = [UIImage imageNamed:@"vault"];
     } completion:^(BOOL finished) {
@@ -87,17 +88,20 @@
     rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     [rotationAnimation setDelegate:self];
     close = rotationAnimation;
+    open = nil;
     [self.layer addAnimation:rotationAnimation forKey:@"lockAnimation"];
 
 }
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    if (aBlock){
-       aBlock();
+    if (open){
+        [[NSNotificationCenter defaultCenter] postNotificationName:valtViewDidOpen object:nil];
     }else{
         [UIView animateWithDuration:.08 animations:^{
             self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(10));
+        } completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:valtViewDidLock object:nil];
         }];
     }
 }

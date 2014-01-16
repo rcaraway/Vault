@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rob Caraway. All rights reserved.
 //
 
-#import "RCSegueManager.h"
+#import "RCPasscodeSegue.h"
 #import "RCPasscodeViewController.h"
 #import "RCListViewController.h"
 #import "RCRootViewController.h"
@@ -15,28 +15,44 @@
 #import "RCValtView.h"
 #import "RCSearchViewController.h"
 #import "RCNetworking.h"
+#import "RCPasswordManager.h"
 
-@interface RCSegueManager () <RCCloseViewDelegate>
+@interface RCPasscodeSegue () <RCCloseViewDelegate>
 
 @end
 
-static RCSegueManager * sharedManager;
 
-@implementation RCSegueManager
+@implementation RCPasscodeSegue
 
 
-+(void)initialize
+#pragma mark - Life Cycle
+
+-(id)initWithRootController:(RCRootViewController *)root
 {
-    sharedManager= [[RCSegueManager alloc] init];
+    self = [super initWithRootController:root];
+    if (self){
+        [self addNotifications];
+    }
+    return self;
 }
 
-+(RCSegueManager *)sharedManager
+-(void)dealloc
 {
-    return sharedManager;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void)transitionFromPasscodeToList
+-(void)addNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(segueToList) name:valtViewDidOpen object:nil];
+}
+
+
+#pragma mark - Segues
+
+-(void)segueToList
+{
+    [self.rootVC addChildViewController:self.rootVC.listController];
+    [self.rootVC.passcodeController removeFromParentViewController];
     [[APP rootController] showSearchAnimated:NO];
     [[[APP rootController] listController].view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
     [[APP rootController].view insertSubview:[[APP rootController] listController].view belowSubview:[[APP rootController] passcodeController].view];
@@ -44,7 +60,32 @@ static RCSegueManager * sharedManager;
     }];
 }
 
--(void)transitionBackToPasscode
+-(void)returnToPasscodeFromList
+{
+    [self.rootVC addChildViewController:self.rootVC.passcodeController];
+    [self.rootVC.listController removeFromParentViewController];
+    [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
+    }];
+    [self transitionBackToPasscodeCompletion:^{
+        [self.rootVC.listController.view removeFromSuperview];
+    }];
+}
+
+-(void)returnToPasscodeFromSearch
+{
+    [self.rootVC addChildViewController:self.rootVC.passcodeController];
+    [self.rootVC.searchController removeFromParentViewController];
+    [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
+    }];
+    [self transitionBackToPasscodeCompletion:^{
+        [self.rootVC.searchController.view removeFromSuperview];
+    }];
+}
+
+
+#pragma mark - Transition
+
+-(void)transitionBackToPasscodeCompletion:(void(^)())completion
 {
     [self closePasscodeCompletion:^{
         [[[[APP rootController]passcodeController] passwordField] setText:@""];
@@ -54,8 +95,9 @@ static RCSegueManager * sharedManager;
             if (![[RCNetworking sharedNetwork] loggedIn]){
                 [[[[APP rootController]passcodeController] loginButton] setAlpha:1];
             }
-            [[[[APP rootController] passcodeController] valtView] lockCompletion:^{
-            }];
+            [[[[APP rootController] passcodeController] valtView] lock];
+            if (completion)
+                completion();
         }];
     }];
 }
@@ -83,7 +125,7 @@ static RCSegueManager * sharedManager;
 -(void)closeView:(RCCloseView *)closeView didFinishWithClosing:(BOOL)closing atOrigin:(CGFloat)xOrigin
 {
     if (closing){
-        [self transitionBackToPasscode];
+        [self returnToPasscodeFromList];
     }else{
         [self openPasscodeFromOrigin:xOrigin];
     }
@@ -106,7 +148,7 @@ static RCSegueManager * sharedManager;
     [self showPasscodeHint];
 }
 
-#pragma mark - Class Convenience
+#pragma mark - Convenience
 
 -(CGFloat)adjustedOriginFromX:(CGFloat)xOrigin
 {

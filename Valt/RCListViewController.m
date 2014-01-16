@@ -92,11 +92,6 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [self.view removeFromSuperview];
-}
-
 
 #pragma mark - NSNotifications
 

@@ -15,7 +15,7 @@
 #import "RCMainCell.h"
 #import <Social/Social.h>
 #import "RCSearchBar.h"
-
+#import "RCPasscodeSegue.h"
 
 @interface RCSearchViewController ()
 
@@ -147,7 +147,7 @@
                 [self launchTweetMessenger];
             }else if ([text isEqualToString:LOCK_NAME]){
                 [[[APP rootController] searchBar] setShowsCancelButton:NO];
-                [[APP rootController] returnToPasscode];
+                [[[APP rootController] passcodeSegue] returnToPasscodeFromSearch];
             }else if ([text isEqualToString:FEEDBACK]){
                 [[APP rootController] launchFeedback];
             }
