@@ -21,6 +21,7 @@
 #import "RCRootViewController.h"
 #import "HTAutocompleteManager.h"
 #import "RCNetworking.h"
+#import "RCRootViewController+passwordSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -32,7 +33,7 @@
 
 @interface RCSingleViewController ()<RCCredentialGestureManagerDelegate, UITextFieldDelegate>
 {
-    BOOL cameFromSearch;
+
     BOOL dataChanged;
 }
 
@@ -74,7 +75,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.4];
+    self.tableView.backgroundColor = [UIColor clearColor];
     self.gestureManager = [[RCCredentialGestureManager alloc] initWithTableView:self.tableView delegate:self];
     [self setupTableView];
 }
@@ -101,22 +103,6 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)willMoveToParentViewController:(UIViewController *)parent
-{
-    if (parent == [APP rootController]){
-        if ([[APP rootController].childViewControllers containsObject:[[APP rootController] searchController]]){
-            cameFromSearch = YES;
-        }
-        RCRootViewController * rootVC = (RCRootViewController *)parent;
-        [rootVC hideSearchAnimated:YES];
-        [parent.view insertSubview:self.view belowSubview:rootVC.searchBar];
-    }
-}
-
--(void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [self.view removeFromSuperview];
-}
 
 -(void)launchKeyboardIfNeeded
 {
@@ -154,6 +140,9 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.isTransitioning){
+        return 1;
+    }
     NSInteger count = self.credentials.count;
     if (count < 5){
         count = 5;
@@ -168,7 +157,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger adjustedRow = indexPath.row;;
+    NSInteger adjustedRow = indexPath.row;
     NSString *object = [self stringForIndexPath:indexPath];
     if (adjustedRow == 0){
         static NSString *cellIdentifier = @"MyCell";
@@ -287,8 +276,10 @@
             cell.textField.delegate = self;
         }else{
             RCDropDownCell * cell= (RCDropDownCell *)[self.tableView cellForRowAtIndexPath:path];
-            [self.textFields addObject:cell.textField];
-            cell.textField.delegate = self;
+            if (cell){
+                [self.textFields addObject:cell.textField];
+                cell.textField.delegate = self;
+            }
         }
     }
 }
@@ -297,10 +288,10 @@
 {
     [self.view endEditing:YES];
    [self publishChangesToPassword];
-    if ([self passwordContainsNoData] && !cameFromSearch){
-        [[APP rootController] returnToListAndRemovePassword:self.password];
+    if ([self passwordContainsNoData] && !self.mayDeleteCell){
+        [[APP rootController] segueSingleToListWithRemovedPassword];
     }else{
-         [[APP rootController] returnToListFromSingle];
+        [[APP rootController] segueSingleToList];
     }
 }
 

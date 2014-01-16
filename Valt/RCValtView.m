@@ -9,15 +9,13 @@
 #import "RCValtView.h"
 #import "UIImage+memoIcons.h"
 
-NSString * const valtViewDidOpen = @"valtViewDidOpen";
-NSString * const valtViewDidLock = @"valtViewDidLock";
-
 #define degreesToRadians(x)(x * M_PI / 180)
 
 @implementation RCValtView
 {
     CABasicAnimation * open;
     CABasicAnimation * close;
+    void (^doneBlock)();
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -51,7 +49,7 @@ NSString * const valtViewDidLock = @"valtViewDidLock";
     }];
 }
 
--(void)open
+-(void)openWithCompletionBlock:(void(^)())completion
 {
     [UIView animateWithDuration:.12 animations:^{
         self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
@@ -68,11 +66,12 @@ NSString * const valtViewDidLock = @"valtViewDidLock";
         [rotationAnimation setDelegate:self];
         open = rotationAnimation;
         close = nil;
+        doneBlock = completion;
         [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     }];
 }
 
--(void)lock
+-(void)lockWithCompletionBlock:(void(^)())completion
 {
     [UIView animateWithDuration:.5 animations:^{
         self.image = [UIImage imageNamed:@"vault"];
@@ -89,6 +88,7 @@ NSString * const valtViewDidLock = @"valtViewDidLock";
     [rotationAnimation setDelegate:self];
     close = rotationAnimation;
     open = nil;
+    doneBlock = completion;
     [self.layer addAnimation:rotationAnimation forKey:@"lockAnimation"];
 
 }
@@ -96,12 +96,12 @@ NSString * const valtViewDidLock = @"valtViewDidLock";
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     if (open){
-        [[NSNotificationCenter defaultCenter] postNotificationName:valtViewDidOpen object:nil];
+        doneBlock();
     }else{
         [UIView animateWithDuration:.08 animations:^{
             self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(10));
         } completion:^(BOOL finished) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:valtViewDidLock object:nil];
+            doneBlock();
         }];
     }
 }

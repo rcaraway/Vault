@@ -17,11 +17,11 @@
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import <MessageUI/MessageUI.h>
-#import "RCPasscodeSegue.h"
 #import "RCSearchBar.h"
+#import "RCRootViewController+passcodeSegues.h"
 #import "RCCloseView.h"
 
-@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
+@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate, RCCloseViewDelegate>
 
 @property(nonatomic, strong) MFMailComposeViewController * mailController;
 @property(nonatomic, strong) RCAboutViewController * aboutController;
@@ -39,7 +39,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.passcodeSegue = [[RCPasscodeSegue alloc] initWithRootController:self];
     [self setupViewControllers];
     [self setupSearchBar];
     [self setupCloseView];
@@ -84,16 +83,6 @@
         }
     }
     [self addChildViewController:self.passcodeController];
-}
-
-
-
--(void)moveFromListToPasscode
-{
-    [[RCPasswordManager defaultManager] lockPasswords];
-    self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
-    [self addChildViewController:self.passcodeController];
-    [self.listController removeFromParentViewController];
 }
 
 -(void)launchSingleWithPassword:(RCPassword *)password
@@ -183,9 +172,10 @@
 -(void)setupCloseView
 {
     self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 30, 28, 28)];
-    self.closeView.delegate = self.passcodeSegue;
+    self.closeView.delegate = self;
     [self.view addSubview:self.closeView];
 }
+
 
 #pragma mark - Search Bar
 

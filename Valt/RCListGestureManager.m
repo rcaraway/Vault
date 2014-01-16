@@ -8,8 +8,6 @@
 
 #import "RCListGestureManager.h"
 
-NSString * const listGestureManagerDidTapBelowRows = @"listGestureManagerDidTapBelowRows";
-NSString * const listGestureManagerDidTapRow = @"listGestureManagerDidTapRow";
 
 typedef enum {
     RCListGestureManagerStateNone,
@@ -127,11 +125,10 @@ typedef enum {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
     if (indexPath){
         [self.delegate gestureManager:self didTapRowAtIndexPath:indexPath atLocation:location];
-        [[NSNotificationCenter defaultCenter] postNotificationName:listGestureManagerDidTapRow object:indexPath userInfo:@{@"location": [NSValue valueWithCGPoint:location]}];
     }
     else{
-        [self.delegate gestureManagerDidTapBelowCells:self];
-        [[NSNotificationCenter defaultCenter] postNotificationName:listGestureManagerDidTapBelowRows object:nil userInfo:@{@"location": [NSValue valueWithCGPoint:location]}];
+        [self.delegate gestureManagerDidTapBelowCells:self atLocation:location];
+     ;
     }
 }
 

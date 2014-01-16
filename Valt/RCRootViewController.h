@@ -14,7 +14,7 @@
 @class RCSearchViewController;
 @class RCSearchBar;
 @class RCCloseView;
-@class RCPasscodeSegue;
+
 
 @interface RCRootViewController : RCViewController 
 
@@ -25,18 +25,16 @@
 @property(nonatomic, strong) RCSearchBar * searchBar;
 
 @property(nonatomic, strong) RCCloseView * closeView;
-@property(nonatomic, strong) RCPasscodeSegue * passcodeSegue;
 
 -(void)launchPasscode;
--(void)returnToListAndRemovePassword:(RCPassword *)password;
--(void)returnToListFromSingle;
--(void)launchSingleWithPassword:(RCPassword *)password;
--(void)moveFromListToSearch;
--(void)moveFromSearchToList;
--(void)moveFromSearchToSingleWithPassword:(RCPassword *)password;
 -(void)launchAbout;
 -(void)launchPurchaseScreen;
 -(void)launchFeedback;
+
+
+-(void)moveFromListToSearch;
+-(void)moveFromSearchToList;
+-(void)moveFromSearchToSingleWithPassword:(RCPassword *)password;
 
 -(BOOL)canSendFeedback;
 

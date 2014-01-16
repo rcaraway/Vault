@@ -12,6 +12,8 @@
 @interface RCSingleViewController : UITableViewController
 
 @property(nonatomic, strong) RCPassword * password;
+@property (nonatomic) BOOL mayDeleteCell;
+@property(nonatomic) BOOL isTransitioning;
 
 -(id)initWithPassword:(RCPassword *)password;
 @end

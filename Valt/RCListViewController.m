@@ -24,6 +24,7 @@
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
 #import "LBActionSheet.h"
+#import "RCRootViewController+passwordSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -33,12 +34,13 @@
 
 @interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate>
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
+
 @property(nonatomic) NSInteger addingCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
-@property (nonatomic, strong) id grabbedObject;
-@property(nonatomic, strong) UIView * fakeCellView;
-@property(nonatomic, strong) LBActionSheet * actionSheet;
 @property(nonatomic, strong) NSIndexPath * deletionPath;
+
+@property (nonatomic, strong) id grabbedObject;
+@property(nonatomic, strong) LBActionSheet * actionSheet;
 
 @end
 
@@ -173,7 +175,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.addingCellIndex != NSNotFound){
+    if (self.addingCellIndex != NSNotFound || self.viewPath){
         return [[RCPasswordManager defaultManager] allTitles].count+1;
     }
     return [[RCPasswordManager defaultManager] allTitles].count;
@@ -190,7 +192,14 @@
             cell = [self foldingCellForIndexPath:indexPath];
             return cell;
         }
-    } else{
+        
+    } if ([indexPath isEqual:self.viewPath]){
+        static NSString *cellIdentifier = @"MyCell";
+        RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        cell.customLabel.text = @"";
+        return cell;
+    }
+    else{
         NSString *object;
         if (self.addingCellIndex != NSNotFound){
             if (indexPath.row < self.addingCellIndex){
@@ -216,6 +225,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([indexPath isEqual:self.viewPath]){
+        return 200;
+    }
     return NORMAL_CELL_FINISHING_HEIGHT;
 }
 
@@ -240,11 +252,9 @@
             RCPassword * password = [[RCPassword alloc] init];
             [[RCPasswordManager defaultManager] addPassword:password atIndex:indexPath.row];
             self.addingCellIndex = NSNotFound;
-            NSLog(@"PASSWORDS %@", [[RCPasswordManager defaultManager] passwords]);
-            NSLog(@"ALL TITLE %@", [[RCPasswordManager defaultManager] allTitles]);
             cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [[APP rootController] launchSingleWithPassword:password];
+            [[APP rootController] segueToSingleWithNewPasswordAtIndexPath:indexPath];
         }
     }
 }
@@ -258,15 +268,15 @@
 {
     if ([[self.tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[RCMainCell class]]){
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
-        [[APP rootController] launchSingleWithPassword:password];
+        [[APP rootController] segueToSingleWithPassword:password];
     }
 }
 
--(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager
+-(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager atLocation:(CGPoint)location
 {
     RCPassword * password = [[RCPassword alloc] init];
     [[RCPasswordManager defaultManager] addPassword:password];
-    [[APP rootController] launchSingleWithPassword:password];
+    [[APP rootController] segueToSingleWithNewPasswordAtLocation:location];
 }
 
 

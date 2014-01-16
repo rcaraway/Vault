@@ -16,6 +16,7 @@
 #import "UIView+QuartzEffects.h"
 #import "RCValtView.h"
 #import "HTAutocompleteTextField.h"
+#import "RCRootViewController+passcodeSegues.h"
 
 @interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate>
 {
@@ -104,7 +105,9 @@
     self.fieldBackView.alpha = 0;
     [self.passwordField resignFirstResponder];
     self.loginButton.alpha = 0;
-    [self.valtView open];
+    [self.valtView openWithCompletionBlock:^{
+        [[APP rootController] seguePasscodeToList];
+    }];
 }
 
 -(void)didFailToLogIn:(NSNotification *)notification

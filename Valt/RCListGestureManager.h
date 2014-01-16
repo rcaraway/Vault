@@ -28,7 +28,7 @@ typedef enum{
 @protocol RCListGestureManagerDelegate <NSObject>
 
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location;
--(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager;
+-(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager atLocation:(CGPoint)location;
 -(void)gestureManager:(RCListGestureManager *)manager needsNewRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsRowMovedAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)updatedPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsPlaceholderRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -39,6 +39,3 @@ typedef enum{
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;
 
 @end
-
-extern NSString * const listGestureManagerDidTapBelowRows;
-extern NSString * const listGestureManagerDidTapRow;
