@@ -66,6 +66,19 @@
     [self removeNotifications];
 }
 
+#pragma mark - Status Bar
+
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UIView * view = [[touches anyObject] view];

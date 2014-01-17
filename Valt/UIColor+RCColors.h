@@ -16,5 +16,6 @@
 +(UIColor *)dropDownColor;
 +(UIColor *)passcodeBackground;
 +(UIColor *)passcodeForeground;
++(UIColor *)valtPurple;
 
 @end

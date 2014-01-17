@@ -25,6 +25,7 @@
 #import "RCInAppPurchaser.h"
 #import "LBActionSheet.h"
 #import "RCRootViewController+passwordSegues.h"
+#import "RCSearchBar.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -94,6 +95,18 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Status Bar
+
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
 
 #pragma mark - NSNotifications
 
@@ -134,7 +147,9 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [self.view endEditing:YES];
+    if ([[[[APP rootController] searchBar] searchField] isFirstResponder]){
+         [self.view endEditing:YES];
+    }
 }
 
 #pragma mark - Sync Button
@@ -233,6 +248,14 @@
 
 
 #pragma mark Gesture Management
+
+-(BOOL)gestureManagerShouldAllowCellCreation:(RCListGestureManager *)manager
+{
+    if ([[[APP rootController] childViewControllers] containsObject:[[APP rootController] singleController]]){
+        return NO;
+    }
+    return YES;
+}
 
 -(void)gestureManager:(RCListGestureManager *)manager needsNewRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -20,8 +20,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
-        self.contentView.backgroundColor = [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
+        self.backgroundColor = [UIColor valtPurple];
+        self.contentView.backgroundColor = [UIColor valtPurple];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self setupTextField];
         separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];

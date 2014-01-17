@@ -58,6 +58,7 @@
     [self closePasscodeCompletion:^{
         [[[self passcodeController] passwordField] setText:@""];
         [UIView animateWithDuration:.23 animations:^{
+            [self setNeedsStatusBarAppearanceUpdate];
             [[[self passcodeController] fieldBackView] setAlpha:1];
             [[[self passcodeController] passwordField] becomeFirstResponder];
             if (![[RCNetworking sharedNetwork] loggedIn]){
@@ -190,6 +191,7 @@
     view.layer.anchorPoint=CGPointMake(0, .5);
     view.center = CGPointMake(view.center.x - view.bounds.size.width/2.0f, view.center.y);
     [UIView animateWithDuration:.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+    [self setNeedsStatusBarAppearanceUpdate];
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);

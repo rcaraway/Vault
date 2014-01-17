@@ -73,6 +73,17 @@
     self.tableView.rowHeight = NORMAL_CELL_HEIGHT;
 }
 
+#pragma mark - Status Bar
+
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
 
 
 #pragma mark - Transitions

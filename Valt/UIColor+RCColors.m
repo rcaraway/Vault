@@ -20,6 +20,11 @@
     return [UIColor colorWithWhite:.3 alpha:1];
 }
 
++(UIColor *)valtPurple
+{
+    return [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
+}
+
 +(UIColor *)listBackground
 {
     return [UIColor colorWithRed:227.0/255.0 green:229.0/255.0 blue:234.0/255.0 alpha:1];

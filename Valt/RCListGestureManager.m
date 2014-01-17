@@ -259,7 +259,9 @@ typedef enum {
     if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
         [self.tableViewDelegate scrollViewDidScroll:scrollView];
     }
-    [self handlePendingRowsDuringScrolling];
+    if ([self.delegate gestureManagerShouldAllowCellCreation:self]){
+         [self handlePendingRowsDuringScrolling];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

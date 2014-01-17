@@ -10,7 +10,9 @@
 #import "RCSingleViewController.h"
 #import "RCListViewController.h"
 #import "RCPassword.h"
+#import "UIColor+RCColors.h"
 #import "RCPasswordManager.h"
+#import "RCTitleViewCell.h"
 
 @implementation RCRootViewController (passwordSegues)
 
@@ -66,6 +68,9 @@
         [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.singleController.view.alpha=0;
             [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height-188)];
+        [self setNeedsStatusBarAppearanceUpdate];
+        [self showSearchAnimated:NO];
+        self.view.backgroundColor = [UIColor listBackground];
     }completion:^(BOOL finished) {
         [self.singleController.view removeFromSuperview];
     }];
@@ -86,12 +91,17 @@
     
     [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
     [UIView animateWithDuration:.26 animations:^{
+        [self hideSearchAnimated:NO];
         [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
         [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y+64)];
         self.singleController.isTransitioning = NO;
         [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.singleController.tableView setFrame:originalRect];
+        UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
+        [field becomeFirstResponder];
+        [self setNeedsStatusBarAppearanceUpdate];
+        self.view.backgroundColor = [UIColor valtPurple];
     }];
 }
 

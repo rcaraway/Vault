@@ -58,10 +58,21 @@
 
 -(BOOL)prefersStatusBarHidden
 {
-    if ([self.view.subviews containsObject:self.passcodeController.view]){
-        return YES;
-    }
     return NO;
+}
+
+-(UIViewController *)childViewControllerForStatusBarHidden
+{
+    if (self.childViewControllers.count > 0)
+        return self.childViewControllers[0];
+    return nil;
+}
+
+-(UIViewController *)childViewControllerForStatusBarStyle
+{
+    if (self.childViewControllers.count > 0)
+        return self.childViewControllers[0];
+    return nil;
 }
 
 
@@ -260,7 +271,7 @@
 -(void)hideSearch
 {
     [self.view bringSubviewToFront:self.searchBar];
-    [self.searchBar setFrame:CGRectMake(0, 20, 320, 0)];
+    [self.searchBar setFrame:CGRectMake(0, -80, 320, 44)];
 }
 
 
