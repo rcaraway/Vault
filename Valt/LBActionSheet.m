@@ -7,6 +7,7 @@
 //
 
 #import "LBActionSheet.h"
+#import "UIView+QuartzEffects.h"
 
 typedef enum _LBActionSheetButtonType {
     LBActionSheetDefaultButtonType = 0,
@@ -560,6 +561,8 @@ static UIImageView* blockView = nil;
     }
     
     [self.controls enumerateObjectsUsingBlock:^(UIView* control, NSUInteger idx, BOOL *stop) {
+        [control setBackgroundColor:[UIColor colorWithWhite:.76 alpha:1]];
+        [control setCornerRadius:5];
         if (control.tag == LBActionSheetCustomButtonType) {
             CGSize neededSize = control.frame.size;
             if (CGSizeEqualToSize(neededSize, CGSizeZero)) {

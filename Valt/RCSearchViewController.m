@@ -125,12 +125,12 @@
     RCMainCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     NSString * text = [self textForIndexPath:indexPath];
     if (indexPath.row == 0){
-        cell.textLabel.text = [NSString stringWithFormat:@"Add item titled \"%@\"", text];
+        cell.customLabel.text = [NSString stringWithFormat:@"Add item titled \"%@\"", text];
     }
     else if (!self.searchFilter){
-        cell.textLabel.text = text;
+        cell.customLabel.text = text;
     }else{
-        cell.textLabel.text = text;
+        cell.customLabel.text = text;
     }
     return cell;
 }
