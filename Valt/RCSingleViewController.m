@@ -26,8 +26,8 @@
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
-#define COMMITING_CREATE_CELL_HEIGHT 50
-#define NORMAL_CELL_FINISHING_HEIGHT 50
+#define COMMITING_CREATE_CELL_HEIGHT 47
+#define NORMAL_CELL_FINISHING_HEIGHT 47
 #define TITLE_CELL_HEIGHT 60
 
 
@@ -125,9 +125,18 @@
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
 }
 
+
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
+    if (scrollView.contentOffset.y < 0){
+        CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
+        if (magnitude > 1)
+            magnitude = 1;
+        self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
+    }else{
+    }
 }
 
 

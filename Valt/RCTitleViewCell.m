@@ -20,8 +20,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor listBackground];
-        self.contentView.backgroundColor = [UIColor cellUnselectedForeground];
+        self.backgroundColor = [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
+        self.contentView.backgroundColor = [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self setupTextField];
         separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
@@ -85,10 +85,13 @@
 
 -(void)setupTextField
 {
-    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(12,0, 320, 60)];
+    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(18,0, 320, 60)];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.placeholder = @"Login Title";
+    self.textField.font = [UIFont fontWithName:@"HelveticaNeue" size:20];
+    [self.textField setTextColor:[UIColor whiteColor]];
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
+    self.textField.keyboardAppearance = UIKeyboardAppearanceDark;
     self.textField.autocompleteType = RCAutocompleteTypeTitle;
     self.textField.returnKeyType = UIReturnKeyNext;
     self.textLabel.adjustsFontSizeToFitWidth = YES;

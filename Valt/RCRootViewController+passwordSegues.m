@@ -57,9 +57,15 @@
 {
     NSIndexPath * indexPath = [self.listController.viewPath copy];
     self.listController.viewPath = nil;
-    [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+    NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
+    CGRect cellRect = [self rectForCellAtIndex:index];
+    self.singleController.isTransitioning = YES;
     [UIView animateWithDuration:.26 animations:^{
+        [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
+        [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+        [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.singleController.view.alpha=0;
+            [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height-188)];
     }completion:^(BOOL finished) {
         [self.singleController.view removeFromSuperview];
     }];
@@ -71,21 +77,28 @@
     self.singleController.isTransitioning = YES;
     self.singleController.view.backgroundColor = [UIColor clearColor];
     [self.singleController.tableView reloadData];
-    CGRect cellRect = [self.listController.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-
+    CGRect cellRect = [self rectForCellAtIndex:index];
+    CGRect originalRect = self.singleController.tableView.frame;
+    [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
     
     self.listController.viewPath = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:password]+1 inSection:0];
-    [self.listController.tableView beginUpdates];
-    [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.listController.tableView endUpdates];
     [self.view addSubview:self.singleController.view];
     
+    [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
     [UIView animateWithDuration:.26 animations:^{
-        self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.5];
-        [self.listController.tableView setFrame:CGRectMake(self.listController.tableView.frame.origin.x, self.listController.tableView.frame.origin.y-cellRect.origin.y+cellRect.size.height, self.listController.tableView.frame.size.width, self.listController.tableView.frame.size.height)];
+        [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
+        [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y+64)];
         self.singleController.isTransitioning = NO;
-        [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationTop];
+        [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.singleController.tableView setFrame:originalRect];
     }];
+}
+
+-(CGRect)rectForCellAtIndex:(NSInteger)index
+{
+    CGRect cellRect = [self.listController.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    return cellRect;
 }
 
 -(NSArray *)dropDownPaths

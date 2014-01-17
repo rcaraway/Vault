@@ -226,7 +226,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath isEqual:self.viewPath]){
-        return 200;
+        return 188;
     }
     return NORMAL_CELL_FINISHING_HEIGHT;
 }

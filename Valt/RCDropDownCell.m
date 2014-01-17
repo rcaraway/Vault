@@ -26,7 +26,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor dropDownColor];
+        self.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
         [self setupTextField];
         [self setupLabel];
     }
@@ -45,12 +45,15 @@
 
 -(void)setupTextField
 {
-    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(18, 0, 320, 47)];
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
     self.textField.autocompleteType = RCAutocompleteTypeUsername;
+    self.textField.font = [UIFont fontWithName:@"HelveticaNeue" size:16];
+    self.textField.textColor = [UIColor colorWithRed:92.0/255.0 green:92.0/255.0 blue:90.0/255.0 alpha:1];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.returnKeyType = UIReturnKeyNext;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.textField.keyboardAppearance = UIKeyboardAppearanceDark;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.textColor = [UIColor blackColor];
     self.textField.adjustsFontSizeToFitWidth = YES;
@@ -60,7 +63,7 @@
 -(void)setupLabel
 {
     self.label = [[UILabel alloc] initWithFrame:self.contentView.bounds];
-    [self.label setText:@"+ Tap to add another field."];
+    [self.label setText:@"+ Add Field"];
     self.label.alpha = 0;
     [self addSubview:self.label];
 }
