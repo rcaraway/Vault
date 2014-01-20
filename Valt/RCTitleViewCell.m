@@ -20,10 +20,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor valtPurple];
-        self.contentView.backgroundColor = [UIColor valtPurple];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self setupTextField];
+        [self setNormalColored];
         separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
         separator.backgroundColor = [UIColor colorWithWhite:.85 alpha:1];
         [self addSubview:separator];
@@ -57,6 +56,22 @@
         self.textLabel.backgroundColor = [UIColor redColor];
         self.textLabel.textColor = [UIColor whiteColor];
     } completion:nil];
+}
+
+
+-(void)setNormalColored
+{
+    self.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    [self.textField setBackgroundColor:self.contentView.backgroundColor];
+    [self.textField setTextColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1]];
+}
+
+-(void)setPurpleColoed
+{
+    self.contentView.backgroundColor = [UIColor valtPurple];
+    [self.textField setBackgroundColor:self.contentView.backgroundColor];
+    [self.textField setTextColor:[UIColor whiteColor]];
 }
 
 -(void)setFocused

@@ -31,7 +31,39 @@
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
 #define COMMITING_CREATE_CELL_HEIGHT 60
-#define NORMAL_CELL_FINISHING_HEIGHT 60
+
+
+@implementation RCTableView
+
+-(id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self){
+        self.shouldAllowMovement = YES;
+    }
+    return self;
+}
+
+-(void)setContentOffset:(CGPoint)contentOffset
+{
+    if (self.shouldAllowMovement){
+        [super setContentOffset:contentOffset];
+    }
+}
+
+-(void)setContentSize:(CGSize)contentSize
+{
+    if (self.shouldAllowMovement){
+        [super setContentSize:contentSize];
+    }
+}
+
+
+
+@end
+
+
+
 
 @interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate>
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
@@ -66,12 +98,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.clearsSelectionOnViewWillAppear = YES;
     self.addingCellIndex = NSNotFound;
     self.dummyCellIndex = NSNotFound;
+    [self setupTableView];
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor listBackground];
-    [self setupTableView];
+    
     [self addNotifications];
     [self setupSyncButtonIfNeeded];
 }
@@ -134,15 +166,19 @@
 
 -(void)setupTableView
 {
+    self.tableView = [[RCTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     self.tableView.allowsSelection = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.alpha = 0;
+    self.tableView.alpha = 1;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
+    [self.view addSubview:self.tableView];
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -223,8 +259,12 @@
                 object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row-1];
             }
         }
-        else
-            object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];
+        else{
+            if ([[RCPasswordManager defaultManager] allTitles].count > indexPath.row){
+                 object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];   
+            }
+        }
+        
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.customLabel.text = (NSString *)object;
@@ -297,8 +337,6 @@
 
 -(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager atLocation:(CGPoint)location
 {
-    RCPassword * password = [[RCPassword alloc] init];
-    [[RCPasswordManager defaultManager] addPassword:password];
     [[APP rootController] segueToSingleWithNewPasswordAtLocation:location];
 }
 

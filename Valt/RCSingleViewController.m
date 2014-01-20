@@ -64,6 +64,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.password = password;
+        self.isTransitioningTo = YES;
         self.addCellIndex = NSNotFound;
         self.dummyCellIndex = NSNotFound;
         self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
@@ -74,20 +75,25 @@
 
 #pragma mark - View LifeCycle
 
+-(void)loadView
+{
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    view.backgroundColor = [UIColor clearColor];
+    self.view = view;
+    [self setupTableView];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.4];
-    self.tableView.backgroundColor = [UIColor clearColor];
     self.gestureManager = [[RCCredentialGestureManager alloc] initWithTableView:self.tableView delegate:self];
-    [self setupTableView];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self setAllTextFieldDelegates];
-    [self launchKeyboardIfNeeded];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -131,12 +137,16 @@
 
 -(void)setupTableView
 {
-    self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height)];
+    self.tableView.delegate  = self;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.dataSource = self;
     self.tableView.allowsSelection = NO;
     [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[RCDropDownCell class] forCellReuseIdentifier:@"DropDownCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
+    [self.view addSubview:self.tableView];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -147,18 +157,20 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    [self.view endEditing:YES];
-    if (scrollView.contentOffset.y < 0){
-        CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
-        if (magnitude > 1)
-            magnitude = 1;
-        self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
-    }else{
+    [self.view endEditing:YES];
+    if (!self.isTransitioningTo){
+        if (scrollView.contentOffset.y < 0){
+            CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
+            if (magnitude > 1)
+                magnitude = 1;
+            self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
+        }else{
+        }
+        CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
+        [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
+        listOffset = [APP rootController].listController.tableView.contentOffset;
+        singleOffset = scrollView.contentOffset;
     }
-    CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
-    [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
-    listOffset = [APP rootController].listController.tableView.contentOffset;
-    singleOffset = scrollView.contentOffset;
 }
 
 
@@ -178,7 +190,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.isTransitioning){
+    if (self.isTransitioningTo){
         return 1;
     }
     NSInteger count = self.credentials.count;
@@ -325,12 +337,8 @@
 -(void)goBackToList
 {
     [self.view endEditing:YES];
-   [self publishChangesToPassword];
-    if ([self passwordContainsNoData] && !self.mayDeleteCell){
-        [[APP rootController] segueSingleToListWithRemovedPassword];
-    }else{
-        [[APP rootController] segueSingleToList];
-    }
+    [self publishChangesToPassword];
+    [[APP rootController] segueSingleToList];
 }
 
 -(BOOL)passwordContainsNoData

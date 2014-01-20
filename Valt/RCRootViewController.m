@@ -266,12 +266,14 @@
          [self.view bringSubviewToFront:self.searchBar];   
     }
     [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
+    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, 30, self.closeView.frame.size.width, self.closeView.frame.size.height)];
 }
 
 -(void)hideSearch
 {
     [self.view bringSubviewToFront:self.searchBar];
     [self.searchBar setFrame:CGRectMake(0, -80, 320, 44)];
+    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, self.closeView.frame.origin.y-80, self.closeView.frame.size.width, self.closeView.frame.size.height)];
 }
 
 

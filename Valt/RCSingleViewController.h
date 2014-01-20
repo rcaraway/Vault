@@ -9,11 +9,15 @@
 #import "RCViewController.h"
 
 @class RCPassword;
-@interface RCSingleViewController : UITableViewController
+@interface RCSingleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+@property(nonatomic, strong) UITableView * tableView;
 @property(nonatomic, strong) RCPassword * password;
 @property (nonatomic) BOOL mayDeleteCell;
-@property(nonatomic) BOOL isTransitioning;
+@property(nonatomic) BOOL isTransitioningTo;
+
 
 -(id)initWithPassword:(RCPassword *)password;
+-(void)setAllTextFieldDelegates;
+
 @end

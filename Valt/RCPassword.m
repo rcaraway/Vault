@@ -118,6 +118,16 @@
     return password;
 }
 
+-(BOOL)isEmpty
+{
+    BOOL usernameEmpty = (!self.username || self.username.length ==0);
+    BOOL titleEmpty = (!self.title || self.title.length == 0);
+    BOOL passwordEmpty = (!self.password || self.password.length == 0);
+    BOOL urlEmpty = (!self.urlName || self.urlName.length == 0);
+    BOOL notesEmpty = (!self.notes || self.notes.length == 0);
+    return (usernameEmpty && titleEmpty && urlEmpty && passwordEmpty && notesEmpty);
+}
+
 -(NSString *)description
 {
     return [NSString stringWithFormat:@"Password: Title %@, Login Name %@, Password %@, URL %@, Notes %@", self.title, self.username, self.password, self.urlName, self.notes];

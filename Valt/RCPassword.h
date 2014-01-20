@@ -29,6 +29,8 @@
 @property(nonatomic, strong) NSString * notes;
 
 
+-(BOOL)isEmpty;
+
 -(void)encrypt;
 -(void)decrypt;
 
