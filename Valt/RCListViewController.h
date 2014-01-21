@@ -8,6 +8,7 @@
 
 #import "RCViewController.h"
 #define NORMAL_CELL_FINISHING_HEIGHT 60
+#define COMMITING_CREATE_CELL_HEIGHT 60
 
 @class RCPassword;
 @class RCTableView;

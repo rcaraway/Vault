@@ -30,7 +30,7 @@
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
-#define COMMITING_CREATE_CELL_HEIGHT 60
+
 
 
 @implementation RCTableView
@@ -172,6 +172,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.alpha = 1;
     self.tableView.delegate = self;
+    self.tableView.backgroundColor = [UIColor listBackground];
     self.tableView.dataSource = self;
     [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
@@ -324,7 +325,9 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager needsRemovalOfRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSIndexPath * copy = [NSIndexPath indexPathForRow:self.addingCellIndex inSection:0];
     self.addingCellIndex = NSNotFound;
+    [self.tableView deleteRowsAtIndexPaths:@[copy] withRowAnimation:UITableViewRowAnimationMiddle];
 }
 
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location
@@ -461,12 +464,6 @@
     JTPullDownTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;
     cell.tintColor = backgroundColor;
-    if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT) {
-        cell.textLabel.text = @"Release to Create Item";
-    } else {
-        cell.textLabel.text = @"Pull to Create Item";
-    }
-    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
@@ -476,17 +473,8 @@
     UIColor *backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
     cellIdentifier = @"UnfoldingTableViewCell";
     JTUnfoldingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
-    cell.textLabel.textColor = [UIColor blackColor];
-    
     cell.tintColor = backgroundColor;
     cell.finishedHeight = COMMITING_CREATE_CELL_HEIGHT;
-    if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT) {
-        cell.textLabel.text = @"Release to Create Item";
-    } else {
-        cell.textLabel.text = @"Pinch Apart to Create Item";
-    }
-    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

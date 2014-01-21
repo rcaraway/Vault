@@ -213,7 +213,7 @@ typedef enum {
         }else{
             [self discardCellAtPendingPath];
         }
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         [UIView animateWithDuration:.5 animations:^{
             self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         }];
@@ -300,8 +300,9 @@ typedef enum {
 
 -(void)discardCellAtPendingPath
 {
-    [self.delegate gestureManager:self needsRemovalOfRowAtIndexPath:self.pendingPath];
+    NSIndexPath * copy = [self.pendingPath copy];
     self.pendingPath = nil;
+    [self.delegate gestureManager:self needsRemovalOfRowAtIndexPath:copy];
 }
 
 -(void)updatePositionOfFakeCell
@@ -473,7 +474,6 @@ typedef enum {
 
 -(CGPoint)upperPinchPoint
 {
-    NSLog(@"NUMBER OF TOUCHES %d", self.longPress.numberOfTouches);
     CGPoint location1 = [self.pinchGesture locationOfTouch:0 inView:self.tableView];
     CGPoint location2 = [self.pinchGesture locationOfTouch:1 inView:self.tableView];
     CGPoint upperPoint = location1.y < location2.y ? location1 : location2;

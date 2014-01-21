@@ -10,8 +10,10 @@
 #import "UIColor+JTGestureBasedTableViewHelper.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define FONT_NAME @"HelveticaNeue"
+#define NORMAL_CELL_FINISHING_HEIGHT 60
+#define COMMITING_CREATE_CELL_HEIGHT 60
 
-#pragma mark -
 
 @implementation JTUnfoldingTableViewCell
 
@@ -32,16 +34,7 @@
     transform.m34 = -1/500.f;
     [self.contentView.layer setSublayerTransform:transform];
     
-    self.transformable1HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-    [self.transformable1HalfView.layer setAnchorPoint:CGPointMake(0.5, 0.0)];
-    [self.transformable1HalfView setClipsToBounds:YES];
-    [self.contentView addSubview:self.transformable1HalfView];
-    
-    self.transformable2HalfView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-    [self.transformable2HalfView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
-    [self.transformable2HalfView setClipsToBounds:YES];
-    [self.contentView addSubview:self.transformable2HalfView];
-    
+    [self setupCustomLabel];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.textLabel.autoresizingMask = UIViewAutoresizingNone;
@@ -52,15 +45,19 @@
     self.tintColor = [UIColor whiteColor];
 }
 
--(void)setupTextField
+-(void)setupCustomLabel
 {
-    self.textField = [[UITextField  alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
-    [self.textField setBackgroundColor:self.contentView.backgroundColor];
-    self.textField.placeholder = @"Login Title";
-    self.textField.textColor = [UIColor blackColor];
-    self.textField.adjustsFontSizeToFitWidth = YES;
-    [self.contentView addSubview:self.textField];
+    self.customLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 15, [UIScreen mainScreen].bounds.size.width-36, 30)];
+    [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
+    [self.customLabel setNumberOfLines:1];
+    UIFont * helvetica =[UIFont fontWithName:FONT_NAME size:20];
+    [self.customLabel setFont:helvetica];
+    [self.customLabel setTextColor:[UIColor whiteColor]];
+    [self.customLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.customLabel setBackgroundColor:[UIColor clearColor]];
+    [self.contentView addSubview:self.customLabel];
 }
+
 
 - (void)layoutSubviews
 {
@@ -69,59 +66,22 @@
     CGFloat fraction = (self.frame.size.height / self.finishedHeight);
     fraction = MAX(MIN(1, fraction), 0);
     
-    CGFloat angle = (M_PI / 2) - asinf(fraction);
-    CATransform3D transform = CATransform3DMakeRotation(angle, -1, 0, 0);
-    [self.transformable1HalfView.layer setTransform:transform];
-    [self.transformable2HalfView.layer setTransform:CATransform3DMakeRotation(angle, 1, 0, 0)];
-    
-    self.transformable1HalfView.backgroundColor = [self.tintColor colorWithBrightness:0.3 + 0.7*fraction];
-    self.transformable2HalfView.backgroundColor = [self.tintColor colorWithBrightness:0.5 + 0.5*fraction];
-
-    CGSize contentViewSize = self.contentView.frame.size;
-    CGFloat contentViewMidY = contentViewSize.height / 2;
-    CGFloat labelHeight = self.finishedHeight / 2;
-
-    // OPTI: Always accomodate 1 px to the top label to ensure two labels 
-    // won't display one px gap in between sometimes for certain angles 
-    self.transformable1HalfView.frame = CGRectMake(0, contentViewMidY - (labelHeight * fraction),
-                                                   contentViewSize.width, labelHeight + 1);
-    self.transformable2HalfView.frame = CGRectMake(0, contentViewMidY - (labelHeight * (1 - fraction)),
-                                                    contentViewSize.width, labelHeight);
-    
-    if ([self.textLabel.text length]) {
-        self.detailTextLabel.text = self.textLabel.text;
-        self.detailTextLabel.font = self.textLabel.font;
-        self.detailTextLabel.textColor = self.textLabel.textColor;
-        self.detailTextLabel.textAlignment = self.textLabel.textAlignment;
-        self.detailTextLabel.textColor = [UIColor blackColor];
+    UIColor * color = [self colorForFraction:fraction];
+    CGRect labelRect = CGRectMake(18, fraction * 15, [UIScreen mainScreen].bounds.size.width-36, 30 * fraction);
+    CGFloat fontSize = fraction * 20;
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
+        self.customLabel.text = @"Release to Add Item";
+        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT)/2.0 , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
+    }else{
+        self.customLabel.text = @"Pull Apart to Add Item";
     }
-    self.textLabel.frame = CGRectMake(10.0, 0.0, contentViewSize.width - 20.0, self.finishedHeight);
-    self.detailTextLabel.frame = CGRectMake(10.0, -self.finishedHeight / 2, contentViewSize.width - 20.0, self.finishedHeight);
+    
+    self.customLabel.frame = labelRect;
+    self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
+    
+    self.contentView.backgroundColor = color;
 }
 
-- (UILabel *)textLabel
-{
-    UILabel *label = [super textLabel];
-    if ([label superview] != [self transformable1HalfView])
-        [self.transformable1HalfView addSubview:label];
-    return label;
-}
-
-- (UILabel *)detailTextLabel
-{
-    UILabel *label = [super detailTextLabel];
-    if ([label superview] != [self transformable2HalfView])
-        [self.transformable2HalfView addSubview:label];
-    return label;
-}
-
-- (UIImageView *)imageView
-{
-    UIImageView *imageView = [super imageView];
-    if ([imageView superview] != [self transformable1HalfView])
-        [self.transformable1HalfView addSubview:imageView];
-    return imageView;
-}
 
 @end
 
@@ -135,12 +95,7 @@
         CATransform3D transform = CATransform3DIdentity;
         transform.m34 = -1/500.f;
         [self.contentView.layer setSublayerTransform:transform];
-        
-        _transformableView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-        [_transformableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [_transformableView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
-        [self.contentView addSubview:_transformableView];
-        
+        [self setupCustomLabel];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.textLabel.autoresizingMask = UIViewAutoresizingNone;
@@ -151,28 +106,18 @@
     return self;
 }
 
-- (UILabel *)textLabel
-{
-    UILabel *label = [super textLabel];
-    if ([label superview] != [self transformableView])
-        [self.transformableView addSubview:label];
-    return label;
-}
 
-- (UILabel *)detailTextLabel
+-(void)setupCustomLabel
 {
-    UILabel *label = [super detailTextLabel];
-    if ([label superview] != [self transformableView])
-        [self.transformableView addSubview:label];
-    return label;
-}
-
-- (UIImageView *)imageView
-{
-    UIImageView *imageView = [super imageView];
-    if ([imageView superview] != [self transformableView])
-        [self.transformableView addSubview:imageView];
-    return imageView;
+    self.customLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 15, [UIScreen mainScreen].bounds.size.width-36, 30)];
+    [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
+    [self.customLabel setNumberOfLines:1];
+    UIFont * helvetica =[UIFont fontWithName:FONT_NAME size:20];
+    [self.customLabel setFont:helvetica];
+    [self.customLabel setTextColor:[UIColor whiteColor]];
+    [self.customLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.customLabel setBackgroundColor:[UIColor clearColor]];
+    [self.contentView addSubview:self.customLabel];
 }
 
 - (void)layoutSubviews
@@ -182,20 +127,11 @@
     CGFloat fraction = (self.frame.size.height / self.finishedHeight);
     fraction = MAX(MIN(1, fraction), 0);
     
-    CGFloat angle = (M_PI / 2) - asinf(fraction);
-    CATransform3D transform = CATransform3DMakeRotation(angle, 1, 0, 0);
-    [self.transformableView setFrame:self.contentView.bounds];
-    [self.transformableView.layer setTransform:transform];
-    self.transformableView.backgroundColor = [self.tintColor colorWithBrightness:0.3 + 0.7*fraction];
+    UIColor * color = [self colorForFraction:fraction];
     
     CGSize contentViewSize = self.contentView.frame.size;
     
-    // OPTI: Always accomodate 1 px to the top label to ensure two labels
-    // won't display one px gap in between sometimes for certain angles
-    self.transformableView.frame = CGRectMake(0.0, contentViewSize.height - self.finishedHeight,
-                                              contentViewSize.width, self.finishedHeight);
     
-
     CGSize requiredLabelSize;
 
     // Since sizeWithFont() method has been depreciated, boundingRectWithSize() method has been used for iOS 7.
@@ -214,7 +150,20 @@
                                             constrainedToSize:contentViewSize
                                                 lineBreakMode:NSLineBreakByClipping];
     }
+    
+    self.contentView.backgroundColor = color;
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
+        self.customLabel.text = @"Release to Add Item";
+        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT)/2.0 , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
+    }else{
+        self.customLabel.text = @"Pull Down to Create Item";
+    }
+    CGRect labelRect = CGRectMake(18, fraction * 15, [UIScreen mainScreen].bounds.size.width-36, 30 * fraction);
+    CGFloat fontSize = fraction * 20;
+    self.customLabel.frame = labelRect;
+    self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
 
+    
     self.imageView.frame = CGRectMake(10.0 + requiredLabelSize.width + 10.0,
                                       (self.finishedHeight - self.imageView.frame.size.height)/2,
                                       self.imageView.frame.size.width,
@@ -232,6 +181,12 @@
 @implementation JTTransformableTableViewCell
 
 @synthesize finishedHeight, tintColor;
+
+
+-(UIColor *)colorForFraction:(CGFloat)fraction
+{
+    return [UIColor colorWithRed:fraction/1.0f green:0 blue:fraction/1.0f alpha:1];
+}
 
 + (JTTransformableTableViewCell *)unfoldingTableViewCellWithReuseIdentifier:(NSString *)reuseIdentifier {
     JTUnfoldingTableViewCell *cell = (id)[[JTUnfoldingTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle

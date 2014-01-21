@@ -24,23 +24,22 @@ typedef enum {
 
 @interface JTTransformableTableViewCell : UITableViewCell <JTTransformableTableViewCell>
 
-@property(nonatomic, strong) UITextField * textField;
-// Use this factory method instead of
-// - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+@property(nonatomic, strong) UILabel * customLabel;
+
 + (JTTransformableTableViewCell *)transformableTableViewCellWithStyle:(JTTransformableTableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+
+-(UIColor *)colorForFraction:(CGFloat)fraction;
 
 @end
 
 
 @interface JTUnfoldingTableViewCell : JTTransformableTableViewCell
 
-@property (nonatomic, strong) UIView *transformable1HalfView;
-@property (nonatomic, strong) UIView *transformable2HalfView;
 
 @end
 
+
 @interface JTPullDownTableViewCell : JTTransformableTableViewCell
 
-@property (nonatomic, strong) UIView *transformableView;
 
 @end
