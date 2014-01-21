@@ -18,6 +18,7 @@ NSString * purchaserDidFail = @"purchaserDidFail";
 NSString * purchaserDidBeginUpgrading = @"purchaserDidBeginUpgrading";
 NSString * purchaserDidPayYearly = @"purchaserDidPayYearly";
 NSString * purchaserDidPayMonthly = @"purchaserDidPayMonthly";
+NSString * purchaseDidLoadProducts = @"purchaseDidLoadProducts";
 
 static RCInAppPurchaser * sharedPurchaser;
 
@@ -50,6 +51,7 @@ static RCInAppPurchaser * sharedPurchaser;
 
 -(void)loadProducts
 {
+    _loadingProducts = YES;
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     [self requestProducts];
 }
@@ -89,6 +91,8 @@ static RCInAppPurchaser * sharedPurchaser;
 {
     NSArray * products = response.products;
     [self setProducts:products];
+    _loadingProducts = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:purchaseDidLoadProducts object:nil];
 }
 
 

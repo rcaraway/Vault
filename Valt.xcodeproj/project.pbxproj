@@ -108,6 +108,7 @@
 		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
 		D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */; };
 		D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */; };
+		D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2CA1271188EDA8B005B6867 /* checker@2x.jpg */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
@@ -291,6 +292,7 @@
 		D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passcodeSegues.m"; sourceTree = "<group>"; };
 		D2C65E2A1888600900649610 /* RCRootViewController+passwordSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+passwordSegues.h"; sourceTree = "<group>"; };
 		D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passwordSegues.m"; sourceTree = "<group>"; };
+		D2CA1271188EDA8B005B6867 /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
@@ -693,6 +695,7 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D2CA1271188EDA8B005B6867 /* checker@2x.jpg */,
 				D2660B6D1884959000E1B964 /* vault.png */,
 			);
 			name = Images;
@@ -876,6 +879,7 @@
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D2660B6E1884959000E1B964 /* vault.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
+				D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -128,7 +128,6 @@ typedef enum {
     }
     else{
         [self.delegate gestureManagerDidTapBelowCells:self atLocation:location];
-     ;
     }
 }
 

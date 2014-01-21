@@ -12,6 +12,8 @@
 #import "RCInAppPurchaser.h"
 #import "HTAutocompleteTextField.h"
 #import "RCPasswordManager.h"
+#import "UIView+QuartzEffects.h"
+#import "RCInAppPurchaser.h"
 
 @interface RCPurchaseViewController () <MLAlertViewDelegate>
 
@@ -28,12 +30,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupBannerButtons];
+    self.monthlyButton.alpha = 0;
+    self.yearlyButton.alpha = 0;
+    self.yearLabel.alpha = 0;
+    self.monthLabel.alpha = 0;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadProducts) name:purchaseDidLoadProducts object:nil];
+    [self.bannerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"checker.jpg"]]];
     [self.cancelButton addTarget:self action:@selector(didTapCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.monthlyButton addTarget:self action:@selector(didTapMonthlyPurchase) forControlEvents:UIControlEventTouchUpInside];
     [self.yearlyButton addTarget:self action:@selector(didTapYearlyPurchase) forControlEvents:UIControlEventTouchUpInside];
     [self.restorePurchaseButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
     [self addNotifications];
     [[RCInAppPurchaser sharePurchaser] loadProducts];
+    [self.loader startAnimating];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,6 +54,71 @@
     }else{
         self.restorePurchaseButton.alpha = 1;
     }
+}
+
+-(void)didLoadProducts
+{
+    [self.loader stopAnimating];
+    [self setupBannerLabels];
+    self.monthlyButton.alpha = 1;
+    self.yearlyButton.alpha = 1;
+    self.yearLabel.alpha = 1;
+    self.monthLabel.alpha = 1;
+}
+
+-(void)setupBannerButtons
+{
+    [self.monthlyButton setCornerRadius:5];
+    [self.yearlyButton setCornerRadius:5];
+    [[self.monthlyButton layer] setBorderWidth:2.0f];
+    [[self.monthlyButton layer] setBorderColor:[UIColor colorWithRed:253/255.0 green:246/255.0 blue:146/255.0 alpha:1].CGColor];
+    [[self.yearlyButton layer] setBorderWidth:2.0f];
+    [[self.yearlyButton layer]setBorderColor:[UIColor colorWithRed:253/255.0 green:246/255.0 blue:146/255.0 alpha:1].CGColor];
+    [self addMotionEffects];
+}
+
+
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+-(void)setupBannerLabels
+{
+    NSString * month = [NSString stringWithFormat:@"%@ Monthly", [[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]];
+    NSString * year = [NSString stringWithFormat:@"%@ Yearly",  [[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]];
+    NSMutableAttributedString * monthString = [[NSMutableAttributedString alloc] initWithString:month];
+    NSMutableAttributedString * yearString = [[NSMutableAttributedString alloc] initWithString:year];
+    NSDictionary * atts1 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:23]};
+    NSDictionary * atts2 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:16]};
+    [monthString addAttributes:atts1 range:[month rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]]];
+    [monthString addAttributes:atts2 range:[month rangeOfString:@"Monthly"]];
+    [yearString addAttributes:atts1 range:[year rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]]];
+    [yearString addAttributes:atts2 range:[year rangeOfString:@"Yearly"]];
+    self.monthLabel.attributedText = monthString;
+    self.yearLabel.attributedText = yearString;
+}
+
+-(void)addMotionEffects
+{
+    UIInterpolatingMotionEffect *verticalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.y"
+     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    verticalMotionEffect.minimumRelativeValue = @(-10);
+    verticalMotionEffect.maximumRelativeValue = @(10);
+    UIInterpolatingMotionEffect *horizontalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.x"
+     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    horizontalMotionEffect.minimumRelativeValue = @(-10);
+    horizontalMotionEffect.maximumRelativeValue = @(10);
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    [self.monthlyButton addMotionEffect:group];
+    [self.yearlyButton addMotionEffect:group];
+    [self.monthLabel addMotionEffect:group];
+    [self.yearLabel addMotionEffect:group];
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,6 +184,7 @@
         [[RCInAppPurchaser sharePurchaser] purchaseMonth];
     }
 }
+
 
 #pragma mark - NSNotifications
 
@@ -216,6 +292,12 @@
         [self loginWithEmail:email password:password];
     }
 }
+
+-(void)alertViewTappedCancel:(MLAlertView *)alertView
+{
+    
+}
+
 
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password
 {

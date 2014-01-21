@@ -58,6 +58,7 @@
         [self setupLoginButton];
 //    }
     [self addNotifications];
+    [self addMotionEffects];
 }
 
 - (void)didReceiveMemoryWarning
@@ -170,7 +171,7 @@
 
 -(void)setupNumberField
 {
-    self.passwordField = [[UITextField  alloc] initWithFrame:CGRectMake(12, 4, self.view.frame.size.width-33, 44)];
+    self.passwordField = [[UITextField  alloc] initWithFrame:CGRectMake(12, 4, self.view.frame.size.width-36, 44)];
     self.passwordField.delegate = self;
     [self.passwordField setBackgroundColor:[UIColor passcodeForeground]];
     [self.passwordField setCornerRadius:5];
@@ -198,6 +199,26 @@
     [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
     [self.loginButton setTitleColor:[UIColor passcodeForeground] forState:UIControlStateNormal];
     [self.view addSubview:self.loginButton];
+}
+
+-(void)addMotionEffects
+{
+    UIInterpolatingMotionEffect *verticalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.y"
+     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    verticalMotionEffect.minimumRelativeValue = @(-5);
+    verticalMotionEffect.maximumRelativeValue = @(5);
+    UIInterpolatingMotionEffect *horizontalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.x"
+     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    horizontalMotionEffect.minimumRelativeValue = @(-5);
+    horizontalMotionEffect.maximumRelativeValue = @(5);
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    [self.fieldBackView addMotionEffect:group];
+    [self.valtView addMotionEffect:group];
 }
 
 

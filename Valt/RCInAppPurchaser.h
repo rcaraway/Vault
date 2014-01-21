@@ -11,10 +11,12 @@
 @interface RCInAppPurchaser : NSObject
 
 @property(nonatomic, readonly) BOOL canMakePurchases;
+@property (nonatomic, readonly) BOOL loadingProducts;
 
 -(NSString *)localizedPriceForMonthly;
 -(NSString *)localizedPriceForYearly;
 -(BOOL)productsExist;
+
 -(void)loadProducts;
 -(void)purchaseMonth;
 -(void)purchaseYear;
@@ -27,5 +29,6 @@ extern NSString * purchaserDidBeginUpgrading;
 extern NSString * purchaserDidPayYearly;
 extern NSString * purchaserDidFail;
 extern NSString * purchaserDidPayMonthly;
+extern NSString * purchaseDidLoadProducts;
 
 
