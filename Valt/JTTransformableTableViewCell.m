@@ -54,7 +54,7 @@
     [self.customLabel setNumberOfLines:1];
     UIFont * helvetica =[UIFont fontWithName:FONT_NAME size:20];
     [self.customLabel setFont:helvetica];
-    [self.customLabel setTextColor:[UIColor whiteColor]];
+    [self.customLabel setTextColor:[UIColor darkGrayColor]];
     [self.customLabel setTextAlignment:NSTextAlignmentCenter];
     [self.customLabel setBackgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:self.customLabel];
@@ -68,7 +68,6 @@
     CGFloat fraction = (self.frame.size.height / self.finishedHeight);
     fraction = MAX(MIN(1, fraction), 0);
     
-    UIColor * color = [self colorForFraction:fraction];
     CGRect labelRect = CGRectMake(18, fraction * 15, [UIScreen mainScreen].bounds.size.width-36, 30 * fraction);
     CGFloat fontSize = fraction * 20;
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
@@ -81,8 +80,6 @@
     self.customLabel.frame = labelRect;
     self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
-    
-    self.contentView.backgroundColor = color;
 }
 
 
@@ -116,7 +113,7 @@
     [self.customLabel setNumberOfLines:1];
     UIFont * helvetica =[UIFont fontWithName:FONT_NAME size:20];
     [self.customLabel setFont:helvetica];
-    [self.customLabel setTextColor:[UIColor whiteColor]];
+    [self.customLabel setTextColor:[UIColor darkGrayColor]];
     [self.customLabel setTextAlignment:NSTextAlignmentCenter];
     [self.customLabel setBackgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:self.customLabel];
@@ -152,7 +149,6 @@
                                             constrainedToSize:contentViewSize
                                                 lineBreakMode:NSLineBreakByClipping];
     }
-    self.contentView.backgroundColor = color;
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
         if ([[RCNetworking sharedNetwork] loggedIn]){
              self.customLabel.text = @"Release to Sync";
@@ -172,6 +168,12 @@
     self.customLabel.frame = labelRect;
     self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
+        self.customLabel.textColor = [UIColor whiteColor];
+        self.contentView.backgroundColor =         [UIColor colorWithRed:195.0/255.0 green:98.0/255.0 blue:240.0/255.0 alpha:1];
+    }else{
+        self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    }
 
     self.imageView.frame = CGRectMake(10.0 + requiredLabelSize.width + 10.0,
                                       (self.finishedHeight - self.imageView.frame.size.height)/2,
@@ -206,22 +208,20 @@
 -(UIColor *)textColorForFraction:(CGFloat)fraction
 {
     if (fraction < 1){
-        return [UIColor whiteColor];
+        return [UIColor darkGrayColor];
     }
-    return [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1];
+    return [UIColor colorWithRed:195.0/255.0 green:98.0/255.0 blue:240.0/255.0 alpha:1];
 }
 
 -(void)updateSeparatorsWithhFraction:(CGFloat)fraction
 {
-    if (fraction < 1){
-        self.separator1.alpha = 0;
-        self.separator2.alpha = 0;
-    }else{
-        self.separator1.alpha = 1;
-        self.separator2.alpha = 1;
-        [self.separator1 setFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+    [self.separator1 setFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+    if (fraction >= 1){
         [self.separator2 setFrame:CGRectMake(0, 59, self.contentView.frame.size.width, 1)];
+    }else{
+        [self.separator2 setFrame:CGRectMake(0, CGRectGetHeight(self.contentView.frame)-1, self.contentView.frame.size.width, 1)];
     }
+
 }
 
 -(void)layoutSubviews
@@ -238,12 +238,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self){
         self.backgroundColor = [UIColor listBackground];
-        
+        self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
         self.separator1 = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
         self.separator1.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:230.0/255.0 alpha:1];
         self.separator2 = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
         self.separator2.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:230.0/255.0 alpha:1];
         [self.contentView addSubview:self.separator1];
+        
         [self.contentView addSubview:self.separator2];
     }
     return self;

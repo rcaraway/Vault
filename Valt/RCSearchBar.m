@@ -27,6 +27,9 @@
         [self setupSearchBack];
         [self setupSearchField];
         [self setupCancelButton];
+        UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height-1, 320, 1)];
+        separator.backgroundColor = [UIColor colorWithWhite:0.82 alpha:1];
+        [self addSubview:separator];
     }
     return self;
 }
@@ -36,9 +39,9 @@
 
 -(void)setupSearchBack
 {
-    self.searchBack = [[UIView alloc] initWithFrame:CGRectMake(40, 10, self.frame.size.width-50, 28)];
+    self.searchBack = [[UIView alloc] initWithFrame:CGRectMake(44,  44.0/2.0-28.0/2.0, self.frame.size.width-52, 28)];
     [self.searchBack setCornerRadius:5];
-    [self.searchBack setBackgroundColor:[UIColor colorWithRed:177.0/255.0 green:90.0/255.0 blue:250.0/255.0 alpha:1]];
+    [self.searchBack setBackgroundColor:[UIColor colorWithWhite:.82 alpha:1]];
     [self addSubview:self.searchBack];
 }
 

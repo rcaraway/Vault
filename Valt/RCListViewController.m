@@ -189,6 +189,7 @@
     }
 }
 
+
 #pragma mark - Sync Button
 
 -(void)setupSyncButtonIfNeeded
@@ -328,7 +329,7 @@
             [[RCPasswordManager defaultManager] addPassword:password atIndex:indexPath.row];
             self.addingCellIndex = NSNotFound;
             cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
     }
 }

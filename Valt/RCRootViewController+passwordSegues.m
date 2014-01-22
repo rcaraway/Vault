@@ -60,7 +60,6 @@ static void * ContentSizeKey;
     CGRect ogRect = self.singleController.view.frame;
     CGRect bottomRect = [self.listController.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:[self.listController.tableView numberOfRowsInSection:0]-1 inSection:0]];
     CGRect adjustRect = CGRectMake(bottomRect.origin.x, bottomRect.origin.y - self.listController.tableView.contentOffset.y, bottomRect.size.width, bottomRect.size.height);
-    NSLog(@"ORIGINAL SIZE %f", self.listController.tableView.contentSize.height);
     [self setOriginalSize:self.listController.tableView.contentSize];
     [self setOriginalOffset:self.listController.tableView.contentOffset];
     [self.singleController.view setFrame:CGRectMake(0, adjustRect.origin.y+bottomRect.size.height+44, self.singleController.view.frame.size.width, self.singleController.view.frame.size.height)];
@@ -91,7 +90,6 @@ static void * ContentSizeKey;
             [self.singleController setAllTextFieldDelegates];
             [cell.textField becomeFirstResponder];
         }completion:^(BOOL finished) {
-            [self.listController.tableView setShouldAllowMovement:YES];
         }];
     }];
 }
@@ -119,13 +117,14 @@ static void * ContentSizeKey;
     
     self.listController.viewPath = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:password]+1 inSection:0];
     [self.view addSubview:self.singleController.view];
-    
+    NSLog(@"Incoming Offset %f", cellRect.origin.y+44);
     [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
     [UIView animateWithDuration:.3 animations:^{
         [self hideSearchAnimated:NO];
         [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
         [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y+44)];
+        [self.listController.tableView setShouldAllowMovement:NO];
         self.singleController.isTransitioningTo = NO;
         [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationBottom];
         [self.singleController.tableView setFrame:originalRect];
@@ -133,8 +132,11 @@ static void * ContentSizeKey;
         UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
         [field becomeFirstResponder];
         [self setNeedsStatusBarAppearanceUpdate];
+    }completion:^(BOOL finished) {
+        NSLog(@"FINISHED List Offset %f Height %f", self.listController.tableView.contentOffset.y, self.listController.tableView.contentSize.height);
     }];
 }
+
 
 
 #pragma mark - Extra Properties
@@ -171,6 +173,7 @@ static void * ContentSizeKey;
     CGRect cellRect = [self rectForCellAtIndex:index];
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
+    [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         self.singleController.view.alpha = 0;
@@ -196,6 +199,7 @@ static void * ContentSizeKey;
     CGRect cellRect = [self rectForCellAtIndex:index];
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
+    [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];

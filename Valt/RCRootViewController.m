@@ -20,6 +20,7 @@
 #import "RCSearchBar.h"
 #import "RCRootViewController+passcodeSegues.h"
 #import "RCCloseView.h"
+#import "RCRootViewController+searchSegue.h"
 
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate, RCCloseViewDelegate>
 
@@ -96,65 +97,6 @@
     [self addChildViewController:self.passcodeController];
 }
 
--(void)launchSingleWithPassword:(RCPassword *)password
-{
-    self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
-    [self addChildViewController:self.singleController];
-    [self.listController removeFromParentViewController];
-}
-
--(void)returnToListAndRemovePassword:(RCPassword *)password
-{
-    if (!self.listController){
-        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    }else{
-        [self.listController.tableView reloadData];
-    }
-    [self addChildViewController:self.listController];
-    [self.singleController removeFromParentViewController];
-    [self.listController removePassword:password];
-}
-
--(void)moveFromListToSearch
-{
-    [UIView animateWithDuration:.3 animations:^{
-        [self.closeView setFrame:CGRectMake(0 -self.closeView.frame.size.width, self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
-    }];
-    if (!self.searchController){
-        self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    [self addChildViewController:self.searchController];
-    [self.listController removeFromParentViewController];
-}
-
--(void)returnToListFromSingle
-{
-    if (!self.listController){
-        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    }
-    [self addChildViewController:self.listController];
-    [self.singleController removeFromParentViewController];
-}
-
--(void)moveFromSearchToList
-{
-    [UIView animateWithDuration:.3 animations:^{
-        [self.closeView setFrame:CGRectMake(0, self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
-    }];
-    if (!self.listController){
-        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    }
-    [self addChildViewController:self.listController];
-    [self.searchController removeFromParentViewController];
-}
-
--(void)moveFromSearchToSingleWithPassword:(RCPassword *)password
-{
-    self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
-    [self addChildViewController:self.singleController];
-    [self.searchController removeFromParentViewController];
-}
-
 -(void)launchAbout
 {
     if (!self.aboutController){
@@ -182,7 +124,7 @@
 
 -(void)setupCloseView
 {
-    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 30, 28, 28)];
+    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 44.0/2.0-28.0/2.0+CGRectGetMinY(self.searchBar.frame), 33, 28)];
     self.closeView.delegate = self;
     [self.view addSubview:self.closeView];
 }
@@ -192,7 +134,7 @@
 
 -(void)setupSearchBar
 {
-    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 0)];
+    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
     self.searchBar.delegate =self;
     [self.view addSubview:self.searchBar];
 }
@@ -201,7 +143,7 @@
 {
     [self setSearchBarSelected];
     self.searchBar.showsCancelButton = YES;
-    [self moveFromListToSearch];
+    [self segueListToSearch];
 }
 
 -(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
@@ -218,7 +160,7 @@
 {
     self.searchBar.showsCancelButton = NO;
     [self.view endEditing:YES];
-    [self moveFromSearchToList];
+    [self segueSearchToList];
 }
 
 -(void)setSearchBarSelected
@@ -266,7 +208,7 @@
          [self.view bringSubviewToFront:self.searchBar];   
     }
     [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
-    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, 30, self.closeView.frame.size.width, self.closeView.frame.size.height)];
+    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, 44.0/2.0-28.0/2.0+CGRectGetMinY(self.searchBar.frame), self.closeView.frame.size.width, self.closeView.frame.size.height)];
 }
 
 -(void)hideSearch

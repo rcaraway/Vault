@@ -72,23 +72,6 @@
     }];
 }
 
--(void)transitionFromSearchToList
-{
-    UIView * searchView = [[self searchController] view];
-    UIView * listView = [[self listController]view];
-    [UIView transitionFromView:searchView toView:listView duration:.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
-        [searchView removeFromSuperview];
-    }];
-}
-
--(void)transitionFromListToSearch
-{
-    UIView * searchView = [[self searchController] view];
-    UIView * listView = [[self listController]view];
-    [UIView transitionFromView:searchView toView:listView duration:.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
-        [searchView removeFromSuperview];
-    }];
-}
 
 #pragma mark - Close View Delegate
 

@@ -16,6 +16,8 @@
 #import <Social/Social.h>
 #import "RCSearchBar.h"
 #import "RCRootViewController+passcodeSegues.h"
+#import "RCRootViewController+searchSegue.h"
+
 
 @interface RCSearchViewController ()
 
@@ -30,19 +32,10 @@
 #define ABOUT_NAME @"About"
 #define FEEDBACK @"Contact Support"
 #define LOCK_NAME @"Lock your Valt"
-#define SYNC_TO_ICLOUD @"Sync to iCloud"
+#define SYNC_TO_ICLOUD @"Upgrade to Platinum"
 #define SPREAD_VALT @"Tweet about Valt"
 
 @implementation RCSearchViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 
 #pragma mark - View Lifecycle
@@ -50,12 +43,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.extraCells = [@[SYNC_TO_ICLOUD, LOCK_NAME, ABOUT_NAME] mutableCopy];
+    self.extraCells = [@[SYNC_TO_ICLOUD, LOCK_NAME,ABOUT_NAME] mutableCopy];
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-        [self.extraCells insertObject:SPREAD_VALT atIndex:2];
+        [self.extraCells addObject:SPREAD_VALT];
     }
     if ([[APP rootController] canSendFeedback]){
-        [self.extraCells insertObject:FEEDBACK atIndex:2];
+        [self.extraCells addObject:FEEDBACK];
     }
     self.allTitles = [[[RCPasswordManager defaultManager] allTitles] mutableCopy];
     [self setupTableView];
@@ -68,7 +61,7 @@
 
 -(void)setupTableView
 {
-    self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"Cell"];
     self.tableView.rowHeight = NORMAL_CELL_HEIGHT;
 }
@@ -83,24 +76,6 @@
 -(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationFade;
-}
-
-
-#pragma mark - Transitions
-
--(void)willMoveToParentViewController:(UIViewController *)parent
-{
-    if (parent == [APP rootController]){
-        RCRootViewController * rootVc = (RCRootViewController *)parent;
-        [rootVc showSearchAnimated:YES];
-        [self.view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
-        [rootVc.view insertSubview:self.view belowSubview:rootVc.searchBar];
-    }
-}
-
--(void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [self.view removeFromSuperview];
 }
 
 
@@ -143,7 +118,8 @@
         password.title = text;
         [[[APP rootController] searchBar] resignFirstResponder];
         [[RCPasswordManager defaultManager] addPassword:password];
-        [[APP rootController] moveFromSearchToSingleWithPassword:password];
+
+        //TODO: segue;
     }else{
         if ([self.extraCells containsObject:text]){
             if ([text isEqualToString:ABOUT_NAME]){
@@ -164,7 +140,7 @@
             }
         }else{
             RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];
-            [[APP rootController] moveFromSearchToSingleWithPassword:password];
+            //TODO: segue
         }
     }
 }

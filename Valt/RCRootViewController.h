@@ -32,9 +32,6 @@
 -(void)launchFeedback;
 
 
--(void)moveFromListToSearch;
--(void)moveFromSearchToList;
--(void)moveFromSearchToSingleWithPassword:(RCPassword *)password;
 
 -(BOOL)canSendFeedback;
 

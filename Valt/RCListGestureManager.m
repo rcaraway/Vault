@@ -223,6 +223,7 @@ typedef enum {
         }
         [UIView animateWithDuration:.26 animations:^{
            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+           self.tableView.contentOffset = CGPointZero;
         }];
     }
     self.state = RCListGestureManagerStateNone;

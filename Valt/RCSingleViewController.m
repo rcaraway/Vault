@@ -166,6 +166,7 @@
             self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
         }else{
         }
+        [[APP rootController].listController.tableView setShouldAllowMovement:YES];
         CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
         [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
         listOffset = [APP rootController].listController.tableView.contentOffset;
