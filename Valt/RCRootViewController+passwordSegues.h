@@ -12,9 +12,7 @@
 @interface RCRootViewController (passwordSegues)
 
 -(void)segueSingleToList;
--(void)segueSingleToListWithRemovedPassword;
 -(void)segueToSingleWithPassword:(RCPassword *)password;
--(void)segueToSingleWithNewPasswordAtIndexPath:(NSIndexPath *)indexPath;
 -(void)segueToSingleWithNewPasswordAtLocation:(CGPoint)location;
 
 @end

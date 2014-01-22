@@ -17,6 +17,7 @@ typedef enum{
 @interface RCListGestureManager : NSObject <UITableViewDelegate>
 
 @property(nonatomic, weak) UITableView * tableView;
+@property(nonatomic) BOOL didAddCell;
 
 -(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
 -(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath;
@@ -36,6 +37,7 @@ typedef enum{
 -(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsFinishedNewRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager needsRemovalOfRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)gestureManager:(RCListGestureManager *)manager didFinishAnimatingNewRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager didChangeToState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath;
 

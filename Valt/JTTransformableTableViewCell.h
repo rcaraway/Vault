@@ -25,10 +25,13 @@ typedef enum {
 @interface JTTransformableTableViewCell : UITableViewCell <JTTransformableTableViewCell>
 
 @property(nonatomic, strong) UILabel * customLabel;
+@property(nonatomic, strong) UIView * separator1;
+@property(nonatomic, strong) UIView * separator2;
 
 + (JTTransformableTableViewCell *)transformableTableViewCellWithStyle:(JTTransformableTableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 -(UIColor *)colorForFraction:(CGFloat)fraction;
+-(UIColor *)textColorForFraction:(CGFloat)fraction;
 
 @end
 

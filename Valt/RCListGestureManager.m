@@ -23,7 +23,6 @@ typedef enum {
 @interface RCListGestureManager () <UIGestureRecognizerDelegate>
 {
     CGPoint lastPinchOrigin;
-    BOOL shouldCallReplaceIndexPath;
 }
 
 
@@ -58,7 +57,6 @@ typedef enum {
         self.tableView = tableView;
         self.delegate = delegate;
         self.tableViewDelegate = tableView.delegate;
-        shouldCallReplaceIndexPath = NO;
         tableView.delegate = self;
         [self setupPinchGesture];
         [self setupPanGesture];
@@ -207,17 +205,32 @@ typedef enum {
     if (self.pendingPath){
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.pendingPath];
         CGFloat requiredHeight = self.tableView.rowHeight;
+        NSIndexPath * copy = [self.pendingPath copy];
         if (cell.frame.size.height >= requiredHeight){
+            [CATransaction begin];
+            [self.tableView beginUpdates];
+            [CATransaction setCompletionBlock:^{
+                if (self.didAddCell){
+                    [self.delegate gestureManager:self didFinishAnimatingNewRowAtIndexPath:copy];
+                    self.didAddCell = NO;
+                }
+            }];
             [self createCellFromPendingPath];
+            [self.tableView endUpdates];
+            [CATransaction commit];
         }else{
             [self discardCellAtPendingPath];
         }
-//        [self.tableView reloadData];
-        [UIView animateWithDuration:.5 animations:^{
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        [UIView animateWithDuration:.26 animations:^{
+           self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         }];
     }
     self.state = RCListGestureManagerStateNone;
+}
+
+-(void)didAddCellAtIndexPath:(NSIndexPath *)indexPath
+{
+   
 }
 
 
@@ -293,8 +306,9 @@ typedef enum {
 
 -(void)createCellFromPendingPath
 {
-    [self.delegate gestureManager:self needsFinishedNewRowAtIndexPath:self.pendingPath];
+    NSIndexPath * copy = [self.pendingPath copy];
     self.pendingPath = nil;
+    [self.delegate gestureManager:self needsFinishedNewRowAtIndexPath:copy];
 }
 
 -(void)discardCellAtPendingPath
@@ -318,7 +332,6 @@ typedef enum {
     UIImageView *snapShotView = (UIImageView *)[self.tableView viewWithTag:CELL_SNAPSHOT_TAG];
     NSIndexPath * indexPath = self.pendingPath;
     [self removeTimer];
-    shouldCallReplaceIndexPath = YES;
     [UIView animateWithDuration:.26
                      animations:^{
                          CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
@@ -326,8 +339,8 @@ typedef enum {
                          snapShotView.frame = CGRectOffset(snapShotView.bounds, rect.origin.x, rect.origin.y);
                      } completion:^(BOOL finished) {
                          [snapShotView removeFromSuperview];
+                         [self reshowAtIndexPath:indexPath];
                      }];
-    [self performSelector:@selector(reshowAtIndexPath:) withObject:indexPath afterDelay:.24];
 }
 
 -(void)removeTimer
@@ -339,17 +352,14 @@ typedef enum {
 
 -(void)reshowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (shouldCallReplaceIndexPath){
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.delegate gestureManager:self needsReplacePlaceholderForRowAtIndexPath:indexPath];
-        [self.tableView endUpdates];
-        [self reloadAllRowsExceptIndexPath:indexPath];
-        self.pendingPath = nil;
-        self.state = RCListGestureManagerStateNone;
-        shouldCallReplaceIndexPath = YES;
-    }
+    [self.tableView beginUpdates];
+    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.delegate gestureManager:self needsReplacePlaceholderForRowAtIndexPath:indexPath];
+    [self.tableView endUpdates];
+    [self reloadAllRowsExceptIndexPath:indexPath];
+    self.pendingPath = nil;
+    self.state = RCListGestureManagerStateNone;
 }
 
 -(void)determineScrollRateDuringPress
@@ -500,6 +510,7 @@ typedef enum {
     }
     if (self.pendingPath && self.state == RCListGestureManagerStateDragging){
         self.pendingRowHeight += self.tableView.contentOffset.y * -1;
+        
         [self.tableView reloadData];
         [self.tableView setContentOffset:CGPointZero];
     }

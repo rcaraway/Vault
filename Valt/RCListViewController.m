@@ -287,6 +287,11 @@
     return NORMAL_CELL_FINISHING_HEIGHT;
 }
 
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"I'M GETTING HIT");
+}
+
 
 #pragma mark Gesture Management
 
@@ -309,25 +314,36 @@
     if ([cell isKindOfClass:[JTTransformableTableViewCell class]]){
         BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
         if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 2){
+            if ([[RCNetworking sharedNetwork] loggedIn]){
+                [[RCNetworking sharedNetwork] fetchFromServer];
+            }else{
+                [[APP rootController] launchPurchaseScreen];
+            }
             self.addingCellIndex = NSNotFound;
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         }else if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT)
         {
+            self.gestureManager.didAddCell = YES;
             RCPassword * password = [[RCPassword alloc] init];
             [[RCPasswordManager defaultManager] addPassword:password atIndex:indexPath.row];
             self.addingCellIndex = NSNotFound;
             cell.finishedHeight = NORMAL_CELL_FINISHING_HEIGHT;
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [[APP rootController] segueToSingleWithNewPasswordAtIndexPath:indexPath];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
         }
     }
+}
+
+-(void)gestureManager:(RCListGestureManager *)manager didFinishAnimatingNewRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
+    [[APP rootController] segueToSingleWithPassword:password];
 }
 
 -(void)gestureManager:(RCListGestureManager *)manager needsRemovalOfRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSIndexPath * copy = [NSIndexPath indexPathForRow:self.addingCellIndex inSection:0];
     self.addingCellIndex = NSNotFound;
-    [self.tableView deleteRowsAtIndexPaths:@[copy] withRowAnimation:UITableViewRowAnimationMiddle];
+    [self.tableView deleteRowsAtIndexPaths:@[copy] withRowAnimation:UITableViewRowAnimationTop];
 }
 
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location
@@ -364,8 +380,6 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath
 {
-    UITableView *tableView = self.gestureManager.tableView;
-    [tableView beginUpdates];
     if (state == RCListGestureManagerPanStateLeft) {
         self.actionSheet = [[LBActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Entry" otherButtonTitles:nil];
         self.deletionPath = indexPath;
@@ -383,7 +397,6 @@
     } else {
         
     }
-    [tableView endUpdates];
     [self.gestureManager resetCellToCenterAtIndexPath:indexPath];
     [self.gestureManager reloadAllRowsExceptIndexPath:indexPath];
 }

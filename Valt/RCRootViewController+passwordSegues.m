@@ -34,23 +34,12 @@ static void * ContentSizeKey;
     [self transitionFromSingleToList];
 }
 
--(void)segueSingleToListWithRemovedPassword
-{
-    
-}
-
-
 -(void)segueToSingleWithPassword:(RCPassword *)password
 {
     self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
     [self addChildViewController:self.singleController];
     [self.listController removeFromParentViewController];
     [self transitionFromListToSingleWithPassword:password];
-}
-
--(void)segueToSingleWithNewPasswordAtIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 -(void)segueToSingleWithNewPasswordAtLocation:(CGPoint)location

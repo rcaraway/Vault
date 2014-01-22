@@ -29,6 +29,12 @@
     return self;
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    [separator setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
+}
+
 -(void)didMoveToSuperview
 {
     [separator setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];

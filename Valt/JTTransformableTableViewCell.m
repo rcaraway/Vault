@@ -9,6 +9,8 @@
 #import "JTTransformableTableViewCell.h"
 #import "UIColor+JTGestureBasedTableViewHelper.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIColor+RCColors.m"
+#import "RCNetworking.h"
 
 #define FONT_NAME @"HelveticaNeue"
 #define NORMAL_CELL_FINISHING_HEIGHT 60
@@ -33,7 +35,7 @@
     CATransform3D transform = CATransform3DIdentity;
     transform.m34 = -1/500.f;
     [self.contentView.layer setSublayerTransform:transform];
-    
+    self.backgroundColor = [UIColor listBackground];
     [self setupCustomLabel];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -77,6 +79,7 @@
     }
     
     self.customLabel.frame = labelRect;
+    self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
     
     self.contentView.backgroundColor = color;
@@ -91,13 +94,12 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
         CATransform3D transform = CATransform3DIdentity;
         transform.m34 = -1/500.f;
         [self.contentView.layer setSublayerTransform:transform];
         [self setupCustomLabel];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        self.backgroundColor = [UIColor listBackground];
         self.textLabel.autoresizingMask = UIViewAutoresizingNone;
         self.textLabel.backgroundColor = [UIColor clearColor];
         
@@ -150,20 +152,27 @@
                                             constrainedToSize:contentViewSize
                                                 lineBreakMode:NSLineBreakByClipping];
     }
-    
     self.contentView.backgroundColor = color;
-    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
+        if ([[RCNetworking sharedNetwork] loggedIn]){
+             self.customLabel.text = @"Release to Sync";
+        }else{
+             self.customLabel.text = @"Upgrade to Sync";
+        }
+        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
+    }
+    else if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
         self.customLabel.text = @"Release to Add Item";
-        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT)/2.0 , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
+        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
     }else{
         self.customLabel.text = @"Pull Down to Create Item";
     }
     CGRect labelRect = CGRectMake(18, fraction * 15, [UIScreen mainScreen].bounds.size.width-36, 30 * fraction);
     CGFloat fontSize = fraction * 20;
     self.customLabel.frame = labelRect;
+    self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
 
-    
     self.imageView.frame = CGRectMake(10.0 + requiredLabelSize.width + 10.0,
                                       (self.finishedHeight - self.imageView.frame.size.height)/2,
                                       self.imageView.frame.size.width,
@@ -185,8 +194,61 @@
 
 -(UIColor *)colorForFraction:(CGFloat)fraction
 {
-    return [UIColor colorWithRed:fraction/1.0f green:0 blue:fraction/1.0f alpha:1];
+    CGFloat adjustedFraction = fraction *.5;
+    if (fraction == 1){
+        adjustedFraction = 1;
+    }
+    CGFloat red = 0, blue = 0, green = 0, alpha = 0;
+    [[UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1] getRed:&red green:&green blue:&blue alpha:&alpha];
+    return [UIColor colorWithRed:red*adjustedFraction green:green*adjustedFraction blue:blue*adjustedFraction alpha:1];
 }
+
+-(UIColor *)textColorForFraction:(CGFloat)fraction
+{
+    if (fraction < 1){
+        return [UIColor whiteColor];
+    }
+    return [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1];
+}
+
+-(void)updateSeparatorsWithhFraction:(CGFloat)fraction
+{
+    if (fraction < 1){
+        self.separator1.alpha = 0;
+        self.separator2.alpha = 0;
+    }else{
+        self.separator1.alpha = 1;
+        self.separator2.alpha = 1;
+        [self.separator1 setFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+        [self.separator2 setFrame:CGRectMake(0, 59, self.contentView.frame.size.width, 1)];
+    }
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    CGFloat fraction = (self.frame.size.height / self.finishedHeight);
+    fraction = MAX(MIN(1, fraction), 0);
+    [self updateSeparatorsWithhFraction:fraction];
+}
+
+
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self){
+        self.backgroundColor = [UIColor listBackground];
+        
+        self.separator1 = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
+        self.separator1.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:230.0/255.0 alpha:1];
+        self.separator2 = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
+        self.separator2.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:230.0/255.0 alpha:1];
+        [self.contentView addSubview:self.separator1];
+        [self.contentView addSubview:self.separator2];
+    }
+    return self;
+}
+
 
 + (JTTransformableTableViewCell *)unfoldingTableViewCellWithReuseIdentifier:(NSString *)reuseIdentifier {
     JTUnfoldingTableViewCell *cell = (id)[[JTUnfoldingTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
