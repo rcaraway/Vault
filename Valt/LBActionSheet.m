@@ -30,6 +30,7 @@ static UIWindow* blockWindow = nil;
 @property (nonatomic, getter = isVisible) BOOL visible;
 @property (nonatomic, strong) UILabel* titleLabel;
 @property(nonatomic, strong) UIView * dimView;
+@property(nonatomic, strong) UITapGestureRecognizer * tapGesture;
 @property (nonatomic, strong) NSArray* controls;
 @property (nonatomic, strong) NSDictionary* buttonBackgroundImages;
 @property (nonatomic, strong) NSDictionary* buttonTitleAttribtues;
@@ -176,11 +177,7 @@ static UIWindow* blockWindow = nil;
             newFrame.origin.y = CGRectGetHeight(self.blockWindow.frame)-CGRectGetHeight(newFrame);
             self.frame = newFrame;
             
-            if (!self.dimView){
-                CGRect screen = [UIScreen mainScreen].bounds;
-                self.dimView = [[UIView  alloc] initWithFrame:screen];
-                [self.dimView setBackgroundColor:[UIColor clearColor]];
-            }
+            [self setupDimView];
             
             [self setNeedsLayout];
             
@@ -196,6 +193,23 @@ static UIWindow* blockWindow = nil;
             self.blockWindow.hidden = YES;
         }
     }
+}
+
+-(void)setupDimView
+{
+    if (!self.dimView){
+        CGRect screen = [UIScreen mainScreen].bounds;
+        self.dimView = [[UIView  alloc] initWithFrame:screen];
+        [self.dimView setBackgroundColor:[UIColor clearColor]];
+        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedDimView)];
+        [self.dimView addGestureRecognizer:self.tapGesture];
+    }
+}
+
+-(void)tappedDimView
+{
+    [self _dismiss:YES completion:^(BOOL finished) {
+    }];
 }
 
 -(NSString*)title {

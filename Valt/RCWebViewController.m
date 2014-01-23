@@ -10,6 +10,7 @@
 #import "RCPassword.h"
 #import "TWMessageBarManager.h"
 #import "LBActionSheet.h"
+#import "RCPasswordManager.h"
 
 @interface RCWebViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate, LBActionSheetDelegate>
 {
@@ -43,6 +44,8 @@
     self.webView.delegate = self;
     self.firstPage = YES;
     NSURL * url = [NSURL URLWithString:self.password.urlName];
+
+    [self.doneButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1] forState:UIControlStateNormal];
     NSURLRequest * request = [NSURLRequest requestWithURL:url];
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
     [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
@@ -117,7 +120,8 @@
     [self.actionSheet showInView:self.view];
 }
 
-- (IBAction)backTapped:(id)sender {
+- (IBAction)backTapped:(id)sender
+{
     if (self.webView.canGoBack){
         [self.webView goBack];
     }
@@ -139,7 +143,17 @@
 
 -(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
 {
-    
+    if ([actionSheet.title isEqualToString:@"Copy to Clipboard:"]){
+        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+        //TODO: add message for successful copy
+        if (buttonIndex != actionSheet.numberOfButtons-1){
+            [pb setString:[actionSheet buttonTitleAtIndex:buttonIndex]];
+        }
+    }else{
+        //TODO: updated URL successfully
+        self.password.urlName = self.urlLabel.text;
+        [[RCPasswordManager defaultManager] updatePassword:self.password];
+    }
 }
 
 
