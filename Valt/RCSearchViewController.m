@@ -107,7 +107,25 @@
     }else{
         cell.customLabel.text = text;
     }
+    [self setCellColor:cell];
     return cell;
+}
+
+-(void)setCellColor:(RCMainCell *)cell
+{
+    if ([cell.customLabel.text isEqualToString:SYNC_TO_ICLOUD]){
+        [cell.customLabel setTextColor:[UIColor purpleColor]];
+    }else if ([cell.customLabel.text isEqualToString:LOCK_NAME]){
+        [cell.customLabel setTextColor:[UIColor blackColor]];
+    }else if ([cell.customLabel.text isEqualToString:SPREAD_VALT]){
+        [cell.customLabel setTextColor:[UIColor cyanColor]];
+    }else if ([cell.customLabel.text isEqualToString:ABOUT_NAME]){
+        [cell.customLabel setTextColor:[UIColor greenColor]];
+    }else if ([cell.customLabel.text isEqualToString:FEEDBACK]){
+        [cell.customLabel setTextColor:[UIColor brownColor]];
+    }else{
+        [cell.customLabel setTextColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1]];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -115,7 +133,7 @@
     NSString * text = [self textForIndexPath:indexPath];
     if (indexPath.row == 0){
         RCPassword * password = [[RCPassword alloc] init];
-        password.title = text;
+        password.title                                 = text;
         [[[APP rootController] searchBar] resignFirstResponder];
         [[RCPasswordManager defaultManager] addPassword:password];
 

@@ -18,7 +18,6 @@ typedef enum _LBActionSheetButtonType {
 
 const CGFloat kLBActionSheetAnimationDuration = 0.3f;
 static UIWindow* blockWindow = nil;
-static UIImageView* blockView = nil;
 
 @interface LBActionSheet () {
     NSArray* controls;
@@ -27,15 +26,15 @@ static UIImageView* blockView = nil;
     UIImageView* backgroundView;
 }
 
+
 @property (nonatomic, getter = isVisible) BOOL visible;
 @property (nonatomic, strong) UILabel* titleLabel;
-
+@property(nonatomic, strong) UIView * dimView;
 @property (nonatomic, strong) NSArray* controls;
 @property (nonatomic, strong) NSDictionary* buttonBackgroundImages;
 @property (nonatomic, strong) NSDictionary* buttonTitleAttribtues;
 @property (nonatomic, strong) UIImageView* backgroundView;
 @property (nonatomic, readonly) UIWindow* blockWindow;
-@property (nonatomic, readonly) UIImageView* blockView;
 
 -(void)_initialize;
 
@@ -45,10 +44,6 @@ static UIImageView* blockView = nil;
 
 -(void)_setButtonBackgroundImage:(UIImage*)image forState:(UIControlState)state type:(LBActionSheetButtonType)type;
 -(UIImage *)_buttonBackgroundImageForState:(UIControlState)state type:(LBActionSheetButtonType)type;
-
--(void)_setButtonTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state type:(LBActionSheetButtonType)type;
--(NSDictionary *)_buttonTitleAttributesForState:(UIControlState)state type:(LBActionSheetButtonType)type;
--(void)_button:(UIButton*)button setTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state;
 
 -(void)_buttonWasPressed:(UIButton*)sender;
 -(void)_applicationWillTerminate:(NSNotification*)notification;
@@ -105,15 +100,14 @@ static UIImageView* blockView = nil;
     }
 }
 
--(void)removeControls:(NSSet *)objects {
+-(void)removeControls:(NSSet *)objects
+{
     NSMutableArray* newButtons = self.controls.mutableCopy ?: [NSMutableArray new];
     [newButtons removeObjectsInArray:objects.allObjects];
     self.controls = newButtons;
-    
     [objects enumerateObjectsUsingBlock:^(UIView* view, BOOL *stop) {
         [view removeFromSuperview];
     }];
-    
     if (self.visible) {
         [self sizeToFit];
         [self setNeedsLayout];
@@ -182,13 +176,22 @@ static UIImageView* blockView = nil;
             newFrame.origin.y = CGRectGetHeight(self.blockWindow.frame)-CGRectGetHeight(newFrame);
             self.frame = newFrame;
             
+            if (!self.dimView){
+                CGRect screen = [UIScreen mainScreen].bounds;
+                self.dimView = [[UIView  alloc] initWithFrame:screen];
+                [self.dimView setBackgroundColor:[UIColor clearColor]];
+            }
+            
             [self setNeedsLayout];
             
+            
             [self.blockWindow makeKeyAndVisible];
+            [self.blockWindow addSubview:self.dimView];
             [self.blockWindow addSubview:self];
             [self.blockWindow bringSubviewToFront:self];
         }
         else {
+            [self.dimView removeFromSuperview];
             [self removeFromSuperview];
             self.blockWindow.hidden = YES;
         }
@@ -205,6 +208,8 @@ static UIImageView* blockView = nil;
         newTitleLabel.backgroundColor = [UIColor clearColor];
         newTitleLabel.textAlignment = NSTextAlignmentCenter;
         newTitleLabel.text = value;
+        newTitleLabel.textColor = [UIColor whiteColor];
+        newTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         newTitleLabel.numberOfLines = 0;
         self.titleLabel = newTitleLabel;
         [self addSubview:self.titleLabel];
@@ -264,10 +269,6 @@ static UIImageView* blockView = nil;
     }
 }
 
--(UIImageView*)dimView {
-    return self.blockView;
-}
-
 -(UIWindow*)blockWindow {
     if (blockWindow) {
         return blockWindow;
@@ -281,19 +282,6 @@ static UIImageView* blockView = nil;
     return window;
 }
 
--(UIImageView*)blockView {
-    if (blockView) {
-        return blockView;
-    }
-    
-    UIImageView* view = [[UIImageView alloc] initWithFrame:self.blockWindow.bounds];
-    view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [self.blockWindow addSubview:view];
-    [self.blockWindow sendSubviewToBack:view];
-    
-    blockView = view;
-    return view;
-}
 
 #pragma mark -
 #pragma mark Initialization
@@ -304,25 +292,36 @@ static UIImageView* blockView = nil;
         if (cancelButtonTitle || destructiveButtonTitle || otherButtonTitles) {
             NSMutableArray* newButtons = [NSMutableArray new];
             if (destructiveButtonTitle) {
-                [newButtons addObject:[self _buttonWithTitle:destructiveButtonTitle orImage:nil type:LBActionSheetDestructiveButtonType]];
+                UIButton * button =[self _buttonWithTitle:destructiveButtonTitle orImage:nil type:LBActionSheetDestructiveButtonType];
+                [button setBackgroundColor:[UIColor redColor]];
+                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [newButtons addObject:button];
             }
             if (otherButtonTitles) {
                 va_list otherTitles;
                 va_start(otherTitles, otherButtonTitles);
                 for (NSString* otherTitle = otherButtonTitles; otherTitle; otherTitle = (va_arg(otherTitles, NSString*))) {
-                    [newButtons addObject:[self _buttonWithTitle:otherTitle orImage:nil type:LBActionSheetDefaultButtonType]];
+                    UIButton * button = [self _buttonWithTitle:otherTitle orImage:nil type:LBActionSheetDefaultButtonType];
+                    [button setBackgroundColor:[UIColor lightGrayColor]];
+                    [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+                    [newButtons addObject:button];
                 }
                 va_end(otherTitles);
             }
             if (cancelButtonTitle) {
-                [newButtons addObject:[self _buttonWithTitle:cancelButtonTitle orImage:nil type:LBActionSheetCancelButtonType]];
+                UIButton * button =[self _buttonWithTitle:cancelButtonTitle orImage:nil type:LBActionSheetCancelButtonType];
+                [button setBackgroundColor:[UIColor colorWithWhite:.5 alpha:1]];
+                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [newButtons addObject:button];
             }
             [newButtons enumerateObjectsUsingBlock:^(UIView* button, NSUInteger idx, BOOL *stop) {
                 [self addSubview:button];
             }];
             self.controls = newButtons;
         }
+
         
+        self.backgroundColor = [UIColor clearColor];
         self.title = title;
         self.delegate = obj;
         [self _initialize];
@@ -330,6 +329,17 @@ static UIImageView* blockView = nil;
     
     return self;
 }
+
+-(void)addCornerMask
+{
+    UIBezierPath *maskPath;
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(5.0, 5.0)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.layer.mask = maskLayer;
+}
+
 
 -(id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -382,15 +392,6 @@ static UIImageView* blockView = nil;
         [newButton setImage:image forState:UIControlStateNormal];
         newButton.adjustsImageWhenHighlighted = NO;
     }
-    
-    UIImage* backgroundImage = [self _buttonBackgroundImageForState:UIControlStateNormal type:type];
-    UIImage* highlihgtedBackgroundImage = [self _buttonBackgroundImageForState:UIControlStateHighlighted type:type];
-    [newButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-    [newButton setBackgroundImage:backgroundImage forState:UIControlStateSelected];
-    [newButton setBackgroundImage:highlihgtedBackgroundImage forState:UIControlStateHighlighted];
-    [newButton setBackgroundImage:highlihgtedBackgroundImage forState:UIControlStateHighlighted|UIControlStateSelected];
-    [self _button:newButton setTitleAttributes:[self _buttonTitleAttributesForState:UIControlStateNormal type:type] forState:UIControlStateNormal];
-    [self _button:newButton setTitleAttributes:[self _buttonTitleAttributesForState:UIControlStateHighlighted type:type] forState:UIControlStateHighlighted];
     [newButton addTarget:self action:@selector(_buttonWasPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     return newButton;
@@ -453,99 +454,8 @@ static UIImageView* blockView = nil;
     }];
 }
 
--(UIImage *)_buttonBackgroundImageForState:(UIControlState)state type:(LBActionSheetButtonType)type {
-    return (UIImage*)self.buttonBackgroundImages[@(type)][@(state)];
-}
-
--(void)_button:(UIButton *)button setTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
-    button.titleLabel.font = attributes[UITextAttributeFont];
-    [button setTitleColor:attributes[UITextAttributeTextColor] forState:state];
-    [button setTitleShadowColor:attributes[UITextAttributeTextShadowColor] forState:state];
-    button.titleLabel.shadowOffset = [(NSValue*)attributes[UITextAttributeTextShadowOffset] CGSizeValue];
-}
-
--(void)_setButtonTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state type:(LBActionSheetButtonType)type {
-    NSNumber* typeKey = @(type);
-    NSNumber* stateKey = @(state);
-    
-    NSMutableDictionary* newButtonBackroundImages = self.buttonTitleAttribtues.mutableCopy ?: [NSMutableDictionary new];
-    NSMutableDictionary* newTypeInfo = [newButtonBackroundImages[typeKey] mutableCopy] ?: [NSMutableDictionary new];
-    [newTypeInfo setObject:attributes forKey:stateKey];
-    [newButtonBackroundImages setObject:newTypeInfo forKey:typeKey];
-    
-    self.buttonTitleAttribtues = newButtonBackroundImages;
-    
-    [self.controls enumerateObjectsUsingBlock:^(UIButton* obj, NSUInteger idx, BOOL *stop) {
-        if (obj.tag != LBActionSheetCustomButtonType && [obj isKindOfClass:[UIButton class]]) {
-            [self _button:obj setTitleAttributes:[self _buttonTitleAttributesForState:UIControlStateNormal type:obj.tag] forState:UIControlStateNormal];
-            [self _button:obj setTitleAttributes:[self _buttonTitleAttributesForState:UIControlStateHighlighted type:obj.tag] forState:UIControlStateHighlighted];
-        }
-    }];
-}
-
--(NSDictionary *)_buttonTitleAttributesForState:(UIControlState)state type:(LBActionSheetButtonType)type {
-    return (NSDictionary*)self.buttonTitleAttribtues[@(type)][@(state)];
-}
-
--(void)setButtonTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetDefaultButtonType];
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetCancelButtonType];
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetDestructiveButtonType];
-}
-
--(NSDictionary*)buttonTitleAttributesForState:(UIControlState)state {
-    return [self defaultButtonTitleAttributesForState:state];
-}
-
--(void)setDefaultButtonBackgroundImage:(UIImage *)image forState:(UIControlState)state {
-    [self _setButtonBackgroundImage:image forState:state type:LBActionSheetDefaultButtonType];
-}
-
--(UIImage*)defaultButtonBackgroundImageForState:(UIControlState)state {
-    return [self _buttonBackgroundImageForState:state type:LBActionSheetDefaultButtonType];
-}
-
--(void)setDefaultButtonTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetDefaultButtonType];
-}
-
--(NSDictionary*)defaultButtonTitleAttributesForState:(UIControlState)state {
-    return [self _buttonTitleAttributesForState:state type:LBActionSheetDefaultButtonType];
-}
-
--(void)setCancelButtonBackgroundImage:(UIImage *)image forState:(UIControlState)state {
-    [self _setButtonBackgroundImage:image forState:state type:LBActionSheetCancelButtonType];
-}
-
--(UIImage*)cancelButtonBackgroundImageForState:(UIControlState)state {
-    return [self _buttonBackgroundImageForState:state type:LBActionSheetCancelButtonType];
-}
-
--(void)setCancelButtonTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetCancelButtonType];
-}
-
--(NSDictionary*)cancelButtonTitleAttributesForState:(UIControlState)state {
-    return [self _buttonTitleAttributesForState:state type:LBActionSheetCancelButtonType];
-}
-
--(void)setDestructiveButtonBackgroundImage:(UIImage *)image forState:(UIControlState)state {
-    [self _setButtonBackgroundImage:image forState:state type:LBActionSheetDestructiveButtonType];
-}
-
--(UIImage*)destructiveButtonBackgroundImageForState:(UIControlState)state {
-    return [self _buttonBackgroundImageForState:state type:LBActionSheetDestructiveButtonType];
-}
-
--(void)setDestructiveButtonTitleAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
-    [self _setButtonTitleAttributes:attributes forState:state type:LBActionSheetDestructiveButtonType];
-}
-
--(NSDictionary*)destructiveButtonTitleAttributesForState:(UIControlState)state {
-    return [self _buttonTitleAttributesForState:state type:LBActionSheetDestructiveButtonType];
-}
-
--(void)layoutSubviews {
+-(void)layoutSubviews
+{
     UIEdgeInsets insets = self.contentInsets;
     UIEdgeInsets offsets = self.controlOffsets;
     CGFloat maxWidth = CGRectGetWidth(self.bounds)-offsets.left-offsets.right-insets.left-insets.right;
@@ -561,19 +471,9 @@ static UIImageView* blockView = nil;
     }
     
     [self.controls enumerateObjectsUsingBlock:^(UIView* control, NSUInteger idx, BOOL *stop) {
-        [control setBackgroundColor:[UIColor colorWithWhite:.76 alpha:1]];
         [control setCornerRadius:5];
-        if (control.tag == LBActionSheetCustomButtonType) {
-            CGSize neededSize = control.frame.size;
-            if (CGSizeEqualToSize(neededSize, CGSizeZero)) {
-                neededSize = [control sizeThatFits:control.frame.size];
-            }
-            control.frame = (CGRect){{CGRectGetWidth(self.bounds)/2.0f-neededSize.width/2.0f, origin.y}, neededSize};
-        }
-        else {
-            CGSize neededSize = [control sizeThatFits:control.frame.size];
-            control.frame = (CGRect){origin, {maxWidth, neededSize.height}};
-        }
+        CGSize neededSize = CGSizeMake(self.bounds.size.width-22, 44);
+        control.frame = (CGRect){{CGRectGetWidth(self.bounds)/2.0f-neededSize.width/2.0f, origin.y}, neededSize};
         origin.y += CGRectGetHeight(control.frame)+offsets.top+offsets.bottom;
     }];
 }
@@ -599,7 +499,7 @@ static UIImageView* blockView = nil;
         neededHeight += neededSize.height+offsets.top+offsets.bottom;
     }];
     
-    return CGSizeMake(size.width, neededHeight+insets.top+insets.bottom);
+    return CGSizeMake(size.width, self.controls.count * 50 + 22 + neededTitleSize.height);
 }
 
 #pragma mark -
@@ -607,23 +507,28 @@ static UIImageView* blockView = nil;
 
 -(void)_animateFromTransform:(CGAffineTransform)fromTransform fromAlpha:(CGFloat)fromAlpha toTransform:(CGAffineTransform)toTransform toAlpha:(CGFloat)toAlpha duration:(CGFloat)duration completion:(void (^)(BOOL))completion {
     self.transform = fromTransform;
-    self.blockView.alpha = fromAlpha;
+
 
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.transform = toTransform;
-        self.blockView.alpha = toAlpha;
+
     } completion:completion];
 }
 
--(void)_showInView:(UIView *)view {
+-(void)_showInView:(UIView *)view
+{
     if ([self.delegate respondsToSelector:@selector(willPresentActionSheet:)]) {
         [self.delegate willPresentActionSheet:self];
     }
     
     self.visible = YES;
     CGAffineTransform fromTransform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0.0f, CGRectGetHeight(self.bounds));
-    
-    [self _animateFromTransform:fromTransform fromAlpha:0.0f toTransform:CGAffineTransformIdentity toAlpha:1.0f duration:kLBActionSheetAnimationDuration completion:^(BOOL finished) {
+
+    self.transform = fromTransform;
+    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+       self.dimView.backgroundColor = [UIColor colorWithWhite:.1 alpha:.6];
+        self.transform = CGAffineTransformIdentity;
+        [self addCornerMask];
+    } completion:^(BOOL finished) {
         if ([self.delegate respondsToSelector:@selector(didPresentActionSheet:)]) {
             [self.delegate didPresentActionSheet:self];
         }
@@ -642,13 +547,14 @@ static UIImageView* blockView = nil;
     [self _showInView:toolbar.superview];
 }
 
--(void)_dismiss:(BOOL)animated completion:(void (^)(BOOL))completion {
-    [self _animateFromTransform:self.transform fromAlpha:1.0f toTransform:CGAffineTransformTranslate(self.transform, 0.0f, CGRectGetHeight(self.frame)) toAlpha:0.0f duration:(animated) ? kLBActionSheetAnimationDuration : 0.0f completion:^(BOOL finished) {
+-(void)_dismiss:(BOOL)animated completion:(void (^)(BOOL))completion
+{
+    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.1 initialSpringVelocity:.9 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.dimView.backgroundColor = [UIColor clearColor];
+        self.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, self.bounds.size.height);
+    } completion:^(BOOL finished) {
         self.visible = NO;
-        
-        if (completion) {
-            completion(finished);
-        }
+        completion(finished);
     }];
 }
 

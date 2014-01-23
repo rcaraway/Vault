@@ -32,7 +32,6 @@
 @property (nonatomic, copy) NSAttributedString* attributedTitle;
 @property (nonatomic, readonly) UILabel* titleLabel;
 
-@property (nonatomic, strong) UIImageView* dimView;
 @property (nonatomic, strong) UIImage* backgroundImage;
 @property (nonatomic) UIEdgeInsets controlOffsets;
 @property (nonatomic) UIEdgeInsets contentInsets;
@@ -49,28 +48,8 @@
 -(NSString *)buttonTitleAtIndex:(NSUInteger)buttonIndex;
 -(UIButton *)buttonAtIndex:(NSUInteger)buttonIndex;
 
--(void)setButtonTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state;
--(NSDictionary*)buttonTitleAttributesForState:(UIControlState)state;
-
--(void)setDefaultButtonBackgroundImage:(UIImage*)image forState:(UIControlState)state;
--(UIImage*)defaultButtonBackgroundImageForState:(UIControlState)state;
--(void)setDefaultButtonTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state;
--(NSDictionary*)defaultButtonTitleAttributesForState:(UIControlState)state;
-
--(void)setCancelButtonBackgroundImage:(UIImage*)image forState:(UIControlState)state;
--(UIImage*)cancelButtonBackgroundImageForState:(UIControlState)state;
--(void)setCancelButtonTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state;
--(NSDictionary*)cancelButtonTitleAttributesForState:(UIControlState)state;
-
--(void)setDestructiveButtonBackgroundImage:(UIImage*)image forState:(UIControlState)state;
--(UIImage*)destructiveButtonBackgroundImageForState:(UIControlState)state;
--(void)setDestructiveButtonTitleAttributes:(NSDictionary*)attributes forState:(UIControlState)state;
--(NSDictionary*)destructiveButtonTitleAttributesForState:(UIControlState)state;
-
 -(void)showFromToolbar:(UIToolbar *)view;
 -(void)showFromTabBar:(UITabBar *)view;
-//-(void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
-//-(void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
 -(void)showInView:(UIView *)view;
 
 -(void)dismissWithClickedButtonIndex:(NSUInteger)buttonIndex animated:(BOOL)animated;

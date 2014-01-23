@@ -382,7 +382,7 @@
 -(void)gestureManager:(RCListGestureManager *)manager didFinishWithState:(RCListGestureManagerPanState)state forIndexPath:(NSIndexPath *)indexPath
 {
     if (state == RCListGestureManagerPanStateLeft) {
-        self.actionSheet = [[LBActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Entry" otherButtonTitles:nil];
+        self.actionSheet = [[LBActionSheet alloc] initWithTitle:[[[RCPasswordManager defaultManager] passwords][indexPath.row] title] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Entry" otherButtonTitles:nil];
         self.deletionPath = indexPath;
         [self.actionSheet showInView:self.view];
     } else if (state == JTTableViewCellEditingStateRight) {

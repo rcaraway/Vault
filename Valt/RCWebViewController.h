@@ -19,10 +19,22 @@
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *refreshButton;
+@property (strong, nonatomic) IBOutlet UIButton *pasteButton;
+
+
+@property (strong, nonatomic) IBOutlet UIView *topView;
 @property (strong, nonatomic) IBOutlet UIButton *doneButton;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *urlLabel;
+@property (strong, nonatomic) IBOutlet UIButton *urlButton;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loader;
+
 - (IBAction)forwardTapped:(id)sender;
 - (IBAction)refreshTapped:(id)sender;
 - (IBAction)doneTapped:(id)sender;
+- (IBAction)pasteTapped:(id)sender;
+
+- (IBAction)urlTapped:(id)sender;
 
 - (IBAction)backTapped:(id)sender;
 

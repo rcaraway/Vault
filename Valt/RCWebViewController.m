@@ -9,12 +9,14 @@
 #import "RCWebViewController.h"
 #import "RCPassword.h"
 #import "TWMessageBarManager.h"
+#import "LBActionSheet.h"
 
-@interface RCWebViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate>
+@interface RCWebViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate, LBActionSheetDelegate>
 {
     CGPoint touchLocation;
 }
 
+@property(nonatomic, strong) LBActionSheet * actionSheet;
 @property(nonatomic, strong) RCPassword * password;
 @property(nonatomic) BOOL usernameFilled;
 @property(nonatomic) BOOL passwordFilled;
@@ -49,6 +51,11 @@
     [self.webView loadRequest:request];
 }
 
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 -(void)printURLLog
 {
     NSLog(@"URL %@", self.webView.request.URL.absoluteString);
@@ -78,16 +85,6 @@
     [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Could not fill out forms" description:@"Tell the developer and he'll get it working in a future update." type:TWMessageBarMessageTypeError];
 }
 
--(void)didFailFillingUsername
-{
-//    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Could not fill out username" description:@"Tell the developer and he'll get it working in a future update." type:TWMessageBarMessageTypeInfo];
-}
-
--(void)didFailFillingPassword
-{
-//    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Could not fill out password" description:@"Tell the developer and he'll get it working in a future update." type:TWMessageBarMessageTypeInfo];
-}
-
 - (IBAction)forwardTapped:(id)sender
 {
     if (self.webView.canGoForward){
@@ -105,6 +102,21 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)pasteTapped:(id)sender
+{
+    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Copy to Clipboard:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:self.password.username, self.password.password, nil];
+    if (self.password.notes.length > 0){
+        [self.actionSheet addButtonWithTitle:self.password.notes];
+    }
+    [self.actionSheet showInView:self.view];
+}
+
+- (IBAction)urlTapped:(id)sender
+{
+    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:[NSString stringWithFormat:@"Change to this URL for %@?", self.password.title] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Update URL" otherButtonTitles:nil];
+    [self.actionSheet showInView:self.view];
+}
+
 - (IBAction)backTapped:(id)sender {
     if (self.webView.canGoBack){
         [self.webView goBack];
@@ -120,6 +132,16 @@
 {
     [self fillSelectedFormWithText:self.password.password];
 }
+
+#pragma mark - Action Sheet
+
+
+
+-(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
+{
+    
+}
+
 
 
 #pragma mark - State Handling
@@ -140,12 +162,11 @@
         self.usernameFilled = [self fillOutUsername];
     }
     if (self.usernameFilled && self.passwordFilled){
+        [self tryToSubmitForm];
         return YES;
     }else if (self.passwordFilled){
-        [self didFailFillingUsername];
         return YES;
     }else if (self.usernameFilled){
-        [self didFailFillingPassword];
         return YES;
     }else{
         return NO;
@@ -187,6 +208,12 @@
     return ([email isEqualToString:self.password.username] || [username isEqualToString:self.password.username] || [username2 isEqualToString:self.password.username]);
 }
 
+-(void)tryToSubmitForm
+{
+    NSString *submit =@"var submits = document.querySelectorAll(\"input[type='submit']\"); for (var i = submits.length >>> 0; i--;){ if (submits[i].value.toLowerCase().indexOf(\"submit\") != -1 || submits[i].value.toLowerCase().indexOf(\"login\") != -1 || submits[i].value.toLowerCase().indexOf(\"log in\") != -1 || submits[i].value.toLowerCase().indexOf(\"sign in\") != -1){submits[i].click();}}";
+    [self.webView stringByEvaluatingJavaScriptFromString:submit];
+}
+
 -(void)showCredentialView
 {
     [self tryToFillOutAllForms];
@@ -207,6 +234,7 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+
     switch (navigationType) {
         case UIWebViewNavigationTypeOther:
             if (self.usernameFilled && self.passwordFilled && ![self.webView.request.URL.absoluteString isEqualToString:request.URL.absoluteString]){
@@ -232,17 +260,37 @@
     return YES;
 }
 
-
+-(void)webViewDidStartLoad:(UIWebView *)webView
+{
+    self.titleLabel.alpha = 0;
+    self.urlLabel.alpha = 0;
+    self.urlButton.enabled = NO;
+    [self.loader startAnimating];
+}
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-        [self tryToFillOutAllForms];
-        self.firstPage = NO;
+    NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    NSString * url = self.webView.request.mainDocumentURL.absoluteString;
+    self.titleLabel.text = theTitle;
+    self.urlLabel.text = url;
+    [self.loader stopAnimating];
+    self.titleLabel.alpha = 1;
+    self.urlLabel.alpha =1;
+    self.urlButton.enabled = YES;
+    [self tryToFillOutAllForms];
+    self.firstPage = NO;
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-//    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed to Load page" description:@"Check your internet connection and try again" type:TWMessageBarMessageTypeError];
+    self.titleLabel.text = @"Failed to Load Page";
+    NSString * url = self.webView.request.mainDocumentURL.absoluteString;
+    self.urlLabel.text = url;
+    [self.loader stopAnimating];
+    self.titleLabel.alpha = 1;
+    self.urlLabel.alpha =1;
+    self.urlButton.enabled = YES;
 }
 
 

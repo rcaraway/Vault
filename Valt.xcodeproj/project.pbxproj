@@ -103,6 +103,7 @@
 		D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */; };
 		D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
+		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
 		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
 		D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */; };
 		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
@@ -282,6 +283,8 @@
 		D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		D2A307601891589200DB1A15 /* RCRootViewController+WebSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+WebSegues.h"; sourceTree = "<group>"; };
+		D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+WebSegues.m"; sourceTree = "<group>"; };
 		D2B5EF971885E533002A50A3 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
 		D2B5EF981885E533002A50A3 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
 		D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCloseView.h; sourceTree = "<group>"; };
@@ -567,7 +570,6 @@
 				D27F4039186334B100104F1C /* RCPurchaseViewController.m */,
 				D27F4046186383EE00104F1C /* RCWebViewController.h */,
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
-				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -704,6 +706,7 @@
 		D27F4041186343D600104F1C /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
+				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 				D27F403F186343CB00104F1C /* AboutController.xib */,
 				D27F403D186343BF00104F1C /* PurchaseController.xib */,
 			);
@@ -759,6 +762,8 @@
 				D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */,
 				D2C65E2A1888600900649610 /* RCRootViewController+passwordSegues.h */,
 				D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */,
+				D2A307601891589200DB1A15 /* RCRootViewController+WebSegues.h */,
+				D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */,
 			);
 			name = "Segue Categories";
 			sourceTree = "<group>";
@@ -946,6 +951,7 @@
 				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
 				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
+				D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */,
 				D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */,
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,

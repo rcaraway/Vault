@@ -10,8 +10,14 @@
                 <outlet property="credentialView" destination="epn-1z-fGU" id="jsC-SZ-04W"/>
                 <outlet property="doneButton" destination="Zfi-YX-ix2" id="HVe-jB-D6U"/>
                 <outlet property="forwardButton" destination="9qh-Ka-4Nz" id="7KC-Pj-GRC"/>
+                <outlet property="loader" destination="27O-l8-qPR" id="FGh-of-I0a"/>
                 <outlet property="passwordButton" destination="eeK-oH-dp0" id="jos-l3-34I"/>
+                <outlet property="pasteButton" destination="pgy-SP-vGp" id="rfK-OC-P1J"/>
                 <outlet property="refreshButton" destination="DhA-6j-LR3" id="xFC-Es-M63"/>
+                <outlet property="titleLabel" destination="ZkS-PG-0UJ" id="Ohx-XY-29w"/>
+                <outlet property="topView" destination="cTT-5u-TlV" id="uE6-Yx-NBr"/>
+                <outlet property="urlButton" destination="SjX-c6-ymB" id="Tjn-Z8-pRT"/>
+                <outlet property="urlLabel" destination="5Na-9J-Yha" id="Fch-5w-Noe"/>
                 <outlet property="usernameField" destination="vlX-ub-Y66" id="iXc-gR-8By"/>
                 <outlet property="view" destination="1" id="3"/>
                 <outlet property="webView" destination="Wpz-1z-aBQ" id="AMd-Qo-ypk"/>
@@ -23,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wpz-1z-aBQ">
-                    <rect key="frame" x="0.0" y="20" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
@@ -62,20 +68,20 @@
                                 <action selector="refreshTapped:" destination="-1" eventType="touchUpInside" id="qog-BL-tHp"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfi-YX-ix2">
-                            <rect key="frame" x="263" y="8" width="37" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgy-SP-vGp">
+                            <rect key="frame" x="258" y="7" width="42" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Done">
+                            <state key="normal" title="Keys">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="doneTapped:" destination="-1" eventType="touchUpInside" id="nGH-MS-5fm"/>
+                                <action selector="pasteTapped:" destination="-1" eventType="touchUpInside" id="o0I-Cl-vqO"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="epn-1z-fGU">
+                <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="epn-1z-fGU">
                     <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -95,6 +101,50 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cTT-5u-TlV">
+                    <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfi-YX-ix2">
+                            <rect key="frame" x="266" y="2" width="48" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Close">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="doneTapped:" destination="-1" eventType="touchUpInside" id="nGH-MS-5fm"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Website Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZkS-PG-0UJ">
+                            <rect key="frame" x="8" y="5" width="250" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="www.thiswebsiteurl.net/hi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Na-9J-Yha">
+                            <rect key="frame" x="8" y="20" width="256" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SjX-c6-ymB">
+                            <rect key="frame" x="0.0" y="0.0" width="258" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="urlTapped:" destination="-1" eventType="touchUpInside" id="XKg-51-tow"/>
+                            </connections>
+                        </button>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="27O-l8-qPR">
+                            <rect key="frame" x="14" y="12" width="20" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.94102758290816324" green="0.94102758290816324" blue="0.94102758290816324" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
