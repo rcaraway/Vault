@@ -76,6 +76,12 @@
 		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
 		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
+		D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A51892BE4200B6A6F0 /* key@2x.png */; };
+		D26D34AA1892BE4200B6A6F0 /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A61892BE4200B6A6F0 /* lock@2x.png */; };
+		D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A71892BE4200B6A6F0 /* search@2x.png */; };
+		D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A81892BE4200B6A6F0 /* list@2x.png */; };
+		D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */; };
+		D26D34B21892C18B00B6A6F0 /* RCRootViewController+menuSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */; };
 		D278D3451891BCDF0062AE39 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3411891BCDF0062AE39 /* back@2x.png */; };
 		D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3421891BCDF0062AE39 /* copyPaste@2x.png */; };
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
@@ -246,6 +252,14 @@
 		D2660B701884964300E1B964 /* RCValtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCValtView.m; sourceTree = "<group>"; };
 		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
 		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
+		D26D34A51892BE4200B6A6F0 /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
+		D26D34A61892BE4200B6A6F0 /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
+		D26D34A71892BE4200B6A6F0 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
+		D26D34A81892BE4200B6A6F0 /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
+		D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMenuViewController.h; sourceTree = "<group>"; };
+		D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMenuViewController.m; sourceTree = "<group>"; };
+		D26D34B01892C18B00B6A6F0 /* RCRootViewController+menuSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+menuSegues.h"; sourceTree = "<group>"; };
+		D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+menuSegues.m"; sourceTree = "<group>"; };
 		D278D3411891BCDF0062AE39 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D278D3421891BCDF0062AE39 /* copyPaste@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copyPaste@2x.png"; sourceTree = "<group>"; };
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
@@ -578,6 +592,8 @@
 				D27F4039186334B100104F1C /* RCPurchaseViewController.m */,
 				D27F4046186383EE00104F1C /* RCWebViewController.h */,
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
+				D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */,
+				D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -705,6 +721,10 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D26D34A51892BE4200B6A6F0 /* key@2x.png */,
+				D26D34A61892BE4200B6A6F0 /* lock@2x.png */,
+				D26D34A71892BE4200B6A6F0 /* search@2x.png */,
+				D26D34A81892BE4200B6A6F0 /* list@2x.png */,
 				D2CA1271188EDA8B005B6867 /* checker@2x.jpg */,
 				D278D3411891BCDF0062AE39 /* back@2x.png */,
 				D278D3421891BCDF0062AE39 /* copyPaste@2x.png */,
@@ -776,6 +796,8 @@
 				D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */,
 				D2A307601891589200DB1A15 /* RCRootViewController+WebSegues.h */,
 				D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */,
+				D26D34B01892C18B00B6A6F0 /* RCRootViewController+menuSegues.h */,
+				D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */,
 			);
 			name = "Segue Categories";
 			sourceTree = "<group>";
@@ -885,6 +907,7 @@
 				D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */,
 				D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */,
 				D2254E5818648502003590AF /* icon-error.png in Resources */,
+				D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */,
 				D278D3451891BCDF0062AE39 /* back@2x.png in Resources */,
 				D2254E5C18648502003590AF /* icon-success.png in Resources */,
 				D2254E5918648502003590AF /* icon-error@2x.png in Resources */,
@@ -894,11 +917,14 @@
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,
 				D2254E5A18648502003590AF /* icon-info.png in Resources */,
+				D26D34AA1892BE4200B6A6F0 /* lock@2x.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
+				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D2660B6E1884959000E1B964 /* vault.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
+				D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */,
 				D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */,
 				D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */,
 			);
@@ -929,6 +955,7 @@
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
+				D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */,
 				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
 				D21717FB1857717600D687F8 /* SPLockOverlay.m in Sources */,
 				D27F4049186383EE00104F1C /* RCWebViewController.m in Sources */,
@@ -960,6 +987,7 @@
 				D21718111857723700D687F8 /* GenericAnimationView.m in Sources */,
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
 				D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */,
+				D26D34B21892C18B00B6A6F0 /* RCRootViewController+menuSegues.m in Sources */,
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
 				D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */,

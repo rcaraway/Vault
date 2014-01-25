@@ -22,9 +22,6 @@ static void * DimViewKey;
 
 -(void)segueListToSearch
 {
-    [UIView animateWithDuration:.3 animations:^{
-        [self.closeView setFrame:CGRectMake(0 -self.closeView.frame.size.width, self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
-    }];
      self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
     [self addChildViewController:self.searchController];
     [self.listController removeFromParentViewController];
@@ -33,13 +30,9 @@ static void * DimViewKey;
 
 -(void)segueSearchToList
 {
-    [UIView animateWithDuration:.3 animations:^{
-        [self.closeView setFrame:CGRectMake(0 , self.closeView.frame.origin.y, self.closeView.frame.size.width, self.closeView.frame.size.height)];
-    }];
     [self addChildViewController:self.listController];
     [self.searchController removeFromParentViewController];
     [self transitionFromSearchToList];
-
 }
 
 -(void)segueSearchToSingleWithPassword:(RCPassword *)password indexPath:(NSIndexPath *)path

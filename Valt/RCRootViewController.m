@@ -19,16 +19,21 @@
 #import <MessageUI/MessageUI.h>
 #import "RCSearchBar.h"
 #import "RCRootViewController+passcodeSegues.h"
-#import "RCCloseView.h"
 #import "RCRootViewController+searchSegue.h"
+#import "UIImage+memoIcons.h"
+#import "RCMenuViewController.h"
+#import "RCRootViewController+menuSegues.h"
 
-@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate, RCCloseViewDelegate>
+@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
 
 @property(nonatomic, strong) MFMailComposeViewController * mailController;
 @property(nonatomic, strong) RCAboutViewController * aboutController;
 @property(nonatomic, strong) RCPurchaseViewController * purchaseController;
 @property(nonatomic, strong) RCWebViewController * webController;
-
+@property(nonatomic, strong) UIView * buttonView;
+@property(nonatomic, strong) UIButton * searchButton;
+@property(nonatomic, strong) UIButton * menuButton;
+@property(nonatomic, strong) UIButton * lockButton;
 
 @end
 
@@ -42,8 +47,8 @@
     [super viewDidLoad];
     [self setupViewControllers];
     [self setupSearchBar];
-    [self setupCloseView];
     [self launchPasscode];
+    [self setupNavbar];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
 }
 
@@ -120,15 +125,56 @@
 }
 
 
-#pragma mark - Close View
+#pragma mark - Nav bar
 
--(void)setupCloseView
+-(void)setupNavbar
 {
-    self.closeView = [[RCCloseView alloc] initWithFrame:CGRectMake(0, 44.0/2.0-28.0/2.0+CGRectGetMinY(self.searchBar.frame), 33, 28)];
-    self.closeView.delegate = self;
-    [self.view addSubview:self.closeView];
+    self.navBar = [[UINavigationBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    UINavigationItem * item = [[UINavigationItem  alloc] initWithTitle:@"Valt"];
+    [self setupNavButtons];
+    [item setRightBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.buttonView]];
+    [item setLeftBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.lockButton]];
+    [item setTitle:@"Valt"];
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, 43.0f, self.navBar.frame.size.width, 1.0f);
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.95f
+                                                     alpha:1.0f].CGColor;
+    [self.navBar.layer addSublayer:bottomBorder];
+    [self.navBar pushNavigationItem:item animated:NO];
 }
 
+-(void)setupNavButtons
+{
+    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    self.searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.menuButton setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
+    self.lockButton= [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.lockButton setImage:[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
+    [self.searchButton setImage:[[UIImage imageNamed:@"search"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
+    [self.searchButton setFrame:CGRectMake(0, 0, 30, 44)];
+    [self.lockButton setFrame:CGRectMake(0, 0, 30, 44)];
+    [self.menuButton setFrame:CGRectMake(30, 0, 30, 44)];
+    [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonView addSubview:self.searchButton];
+    [self.buttonView addSubview:self.menuButton];
+}
+
+-(void)lockTapped
+{
+    [self returnToPasscodeFromList];
+}
+
+-(void)listTapped
+{
+    [self segueToMenu];
+}
+
+-(void)searchTapped
+{
+    
+}
 
 #pragma mark - Search Bar
 
@@ -203,19 +249,16 @@
 {
     if ([self.view.subviews containsObject:self.passcodeController.view]){
         [self.view insertSubview:self.searchBar belowSubview:self.passcodeController.view];
-        [self.view insertSubview:self.closeView belowSubview:self.passcodeController.view];
     }else{
          [self.view bringSubviewToFront:self.searchBar];   
     }
     [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
-    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, 44.0/2.0-28.0/2.0+CGRectGetMinY(self.searchBar.frame), self.closeView.frame.size.width, self.closeView.frame.size.height)];
 }
 
 -(void)hideSearch
 {
     [self.view bringSubviewToFront:self.searchBar];
     [self.searchBar setFrame:CGRectMake(0, -80, 320, 44)];
-    [self.closeView setFrame:CGRectMake(self.closeView.frame.origin.x, self.closeView.frame.origin.y-80, self.closeView.frame.size.width, self.closeView.frame.size.height)];
 }
 
 

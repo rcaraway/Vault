@@ -26,6 +26,7 @@
 #import "LBActionSheet.h"
 #import "RCRootViewController+passwordSegues.h"
 #import "RCSearchBar.h"
+#import "RCRootViewController+menuSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -66,7 +67,7 @@
 
 
 @interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate>
-@property(nonatomic, strong) RCListGestureManager * gestureManager;
+
 
 @property(nonatomic) NSInteger addingCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
@@ -105,7 +106,6 @@
     self.view.backgroundColor = [UIColor listBackground];
     
     [self addNotifications];
-    [self setupSyncButtonIfNeeded];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -114,7 +114,6 @@
     if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
         //TODO:Launch Alert View for renewing
     }
-    [self showTableAnimated];
     [self.tableView reloadData];
 
 }
@@ -156,9 +155,6 @@
 
 -(void)didPurchaseSubscription
 {
-    self.syncButton.alpha =0;
-    [self.syncButton removeFromSuperview];
-    self.syncButton = nil;
 }
 
 
@@ -191,26 +187,6 @@
 
 
 #pragma mark - Sync Button
-
--(void)setupSyncButtonIfNeeded
-{
-    if (![[RCNetworking sharedNetwork] loggedIn]){
-        self.syncButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.syncButton setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height, 320, 50)];
-        [self.syncButton addTarget:self action:@selector(didTapSync) forControlEvents:UIControlEventTouchUpInside];
-        [self.syncButton setBackgroundColor:[UIColor whiteColor]];
-        [self.syncButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [self.syncButton setTitle:@"Sync Data to Cloud" forState:UIControlStateNormal];
-        [[APP rootController].view addSubview:self.syncButton];
-    }
-}
-
--(void)showSyncButton
-{
-    [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [self.syncButton setFrame:CGRectMake(0, [APP rootController].view.frame.size.height-50, 320, 50)];
-    } completion:nil];
-}
 
 -(void)didTapSync
 {
@@ -295,6 +271,11 @@
 
 
 #pragma mark Gesture Management
+
+-(void)gestureManagerDidTapInMenuMode:(RCListGestureManager *)manager
+{
+    [[APP rootController] closeMenu];
+}
 
 -(BOOL)gestureManagerShouldAllowCellCreation:(RCListGestureManager *)manager
 {
@@ -447,28 +428,8 @@
     self.deletionPath = nil;
 }
 
+
 #pragma mark - Table Convenience
-
-
--(void)showTableAnimated
-{
-    dispatch_once(&onceToken, ^{
-        self.tableView.alpha = 0.0;
-        CGAffineTransform scale = CGAffineTransformMakeScale(.3, .3);
-        self.tableView.transform = scale;
-        [UIView animateWithDuration:0.2  animations:^{
-            self.tableView.alpha = 1.0;
-            CGAffineTransform scale = CGAffineTransformMakeScale(1.1, 1.1);
-            self.tableView.transform = scale;
-        } completion:^(BOOL finished) {
-            [self showSyncButton];
-            [UIView animateWithDuration:.2 animations:^{
-                self.tableView.transform = CGAffineTransformIdentity;
-            }completion:^(BOOL finished) {
-            }];
-        }];
-    });
-}
 
 -(JTTransformableTableViewCell *)pullDownCellForIndexPath:(NSIndexPath *)indexPath
 {

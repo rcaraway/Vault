@@ -18,6 +18,7 @@ typedef enum{
 
 @property(nonatomic, weak) UITableView * tableView;
 @property(nonatomic) BOOL didAddCell;
+@property(nonatomic) BOOL menuMode;
 
 -(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
 -(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath;
@@ -28,6 +29,8 @@ typedef enum{
 
 @protocol RCListGestureManagerDelegate <NSObject>
 
+
+-(void)gestureManagerDidTapInMenuMode:(RCListGestureManager *)manager;
 -(BOOL)gestureManagerShouldAllowCellCreation:(RCListGestureManager *)manager;
 -(void)gestureManager:(RCListGestureManager *)manager didTapRowAtIndexPath:(NSIndexPath *)indexPath atLocation:(CGPoint)location;
 -(void)gestureManagerDidTapBelowCells:(RCListGestureManager *)manager atLocation:(CGPoint)location;

@@ -78,7 +78,7 @@ static void * ContentSizeKey;
     }completion:^(BOOL finished) {
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
         [UIView animateWithDuration:.3 animations:^{
-            [self hideSearchAnimated:NO];
+            self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
             [self.listController.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
             [self.listController.tableView setContentOffset:CGPointMake(0, bottomRect.origin.y+bottomRect.size.height+40)];
             self.singleController.isTransitioningTo = NO;
@@ -114,13 +114,11 @@ static void * ContentSizeKey;
     [self.singleController.tableView reloadData];
     [self setOriginalOffset:self.listController.tableView.contentOffset];
     [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
-    
     self.listController.viewPath = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:password]+1 inSection:0];
     [self.view addSubview:self.singleController.view];
-    NSLog(@"Incoming Offset %f", cellRect.origin.y+44);
     [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
     [UIView animateWithDuration:.3 animations:^{
-        [self hideSearchAnimated:NO];
+        self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
         [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
         [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y+44)];
@@ -175,14 +173,15 @@ static void * ContentSizeKey;
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
+        self.navBar.transform = CGAffineTransformIdentity;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         self.singleController.view.alpha = 0;
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+        [self.listController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];
         [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
         [self.listController.tableView setContentOffset:offset];
         [self setNeedsStatusBarAppearanceUpdate];
-        [self showSearchAnimated:NO];
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, [self originalSize].height)];
         self.view.backgroundColor = [UIColor listBackground];
     }completion:^(BOOL finished) {
@@ -200,18 +199,19 @@ static void * ContentSizeKey;
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
-    [UIView animateWithDuration:.3 animations:^{
+    [UIView animateWithDuration:.3  animations:^{
+        self.navBar.transform = CGAffineTransformIdentity;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+        [self.listController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];
         [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor clearColor];
         [self.listController.tableView setContentOffset:offset];
         [self setNeedsStatusBarAppearanceUpdate];
-        [self showSearchAnimated:NO];
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, [self originalSize].height)];
         self.view.backgroundColor = [UIColor listBackground];
-    }completion:^(BOOL finished) {
+    } completion:^(BOOL finished) {
         self.singleController.view.alpha = 0;
         [self.singleController.view removeFromSuperview];
         [self performSelector:@selector(removeCellIfNeeded) withObject:nil afterDelay:.05];

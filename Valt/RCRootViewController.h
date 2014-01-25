@@ -13,7 +13,7 @@
 @class RCPassword;
 @class RCSearchViewController;
 @class RCSearchBar;
-@class RCCloseView;
+@class RCMenuViewController;
 
 
 @interface RCRootViewController : RCViewController 
@@ -23,8 +23,13 @@
 @property(nonatomic, strong) RCSingleViewController * singleController;
 @property(nonatomic, strong) RCSearchViewController * searchController;
 @property(nonatomic, strong) RCSearchBar * searchBar;
+@property(nonatomic, strong) RCMenuViewController * menuController;
+@property(nonatomic, strong) UINavigationBar * navBar;
+@property(nonatomic, strong) UIView * snapshotView;
 
-@property(nonatomic, strong) RCCloseView * closeView;
+@property(nonatomic, strong) UITapGestureRecognizer * snapTap;
+@property(nonatomic, strong) UIPanGestureRecognizer * snapPan;
+
 
 -(void)launchPasscode;
 -(void)launchAbout;
@@ -32,12 +37,8 @@
 -(void)launchFeedback;
 
 
-
 -(BOOL)canSendFeedback;
 
 -(void)launchBrowserWithPassword:(RCPassword *)password;
-
--(void)showSearchAnimated:(BOOL)animated;
--(void)hideSearchAnimated:(BOOL)animated;
 
 @end

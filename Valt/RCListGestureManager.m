@@ -119,13 +119,17 @@ typedef enum {
 
 -(void)didTap
 {
-    CGPoint location = [self.tapGesture locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-    if (indexPath){
-        [self.delegate gestureManager:self didTapRowAtIndexPath:indexPath atLocation:location];
-    }
-    else{
-        [self.delegate gestureManagerDidTapBelowCells:self atLocation:location];
+    if (self.menuMode){
+        [self.delegate gestureManagerDidTapInMenuMode:self];
+    }else{
+        CGPoint location = [self.tapGesture locationInView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+        if (indexPath){
+            [self.delegate gestureManager:self didTapRowAtIndexPath:indexPath atLocation:location];
+        }
+        else{
+            [self.delegate gestureManagerDidTapBelowCells:self atLocation:location];
+        }
     }
 }
 

@@ -12,11 +12,14 @@
 
 @class RCPassword;
 @class RCTableView;
+@class RCListGestureManager;
+
 @interface RCListViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) RCTableView * tableView;
+@property(nonatomic, strong) RCListGestureManager * gestureManager;
 @property(nonatomic) NSIndexPath * viewPath;
-@property(nonatomic, strong) UIButton * syncButton;
+
 -(void)removePassword:(RCPassword *)password;
 
 

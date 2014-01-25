@@ -374,18 +374,20 @@
 
 -(void)attemptToAutofillURLBasedOnTitleForTextField:(HTAutocompleteTextField *)acTextField
 {
-    NSString * typedText = [acTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString * actext = [acTextField.autocompleteLabel.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString * finalText;
-    if (actext.length >0){
-        finalText = [NSString stringWithFormat:@"%@%@", typedText, actext];
-    }else{
-        finalText = typedText;
-    }
-    NSString * urlValue = [[[HTAutocompleteManager sharedManager] titleUrlPairs] objectForKey:finalText];
-    if (urlValue && self.textFields.count > 3){
-        [self.textFields[3] setText:urlValue];
-        self.credentials[3] = urlValue;
+    if ([self.credentials[3] length] == 0){
+        NSString * typedText = [acTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString * actext = [acTextField.autocompleteLabel.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString * finalText;
+        if (actext.length >0){
+            finalText = [NSString stringWithFormat:@"%@%@", typedText, actext];
+        }else{
+            finalText = typedText;
+        }
+        NSString * urlValue = [[[HTAutocompleteManager sharedManager] titleUrlPairs] objectForKey:finalText];
+        if (urlValue && self.textFields.count > 3){
+            [self.textFields[3] setText:urlValue];
+            self.credentials[3] = urlValue;
+        }
     }
 }
 

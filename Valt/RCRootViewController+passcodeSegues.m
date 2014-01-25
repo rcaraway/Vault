@@ -21,9 +21,9 @@
 {
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
-    [self showSearchAnimated:NO];
     [[self listController].view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
     [self.view insertSubview:[self listController].view belowSubview:[self passcodeController].view];
+    [self.view insertSubview:self.navBar belowSubview:self.passcodeController.view];
     [self openUpPasscodeCompletion:^{
     }];
 }
@@ -201,7 +201,6 @@
         if (finished) {
             view.layer.anchorPoint=CGPointMake(.5, .5);
             view.center = CGPointMake(view.center.x + view.bounds.size.width/2.0f, view.center.y);
-            [[self closeView] setFrame:CGRectMake(0, 30, 28, 28)];
             completion();
         }
     }];

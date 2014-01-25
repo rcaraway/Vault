@@ -38,16 +38,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    if (self.textField.text.length > 0){
-        CGFloat width = [self.textField.text sizeWithFont:self.textField.font constrainedToSize:CGSizeMake(self.frame.size.width, self.frame.size.height)].width;
-        [self.textField setFrame:CGRectMake(self.textField.frame.origin.x, self.textField.frame.origin.y, width+10, self.textField.frame.size.height)];
-    }else{
-        if (self.textField.placeholder.length > 0){
-            CGFloat width = [self.textField.placeholder sizeWithFont:self.textField.font constrainedToSize:CGSizeMake(self.frame.size.width, self.frame.size.height)].width;
-            [self.textField setFrame:CGRectMake(self.textField.frame.origin.x, self.textField.frame.origin.y, width+10, self.textField.frame.size.height)];
-        }
-    }
-}
+ }
 
 -(void)setRedColored
 {
@@ -103,6 +94,7 @@
     self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(18,0, 320, 60)];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.placeholder = @"Login Title";
+    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.textField.font = [UIFont fontWithName:@"HelveticaNeue" size:20];
     [self.textField setTextColor:[UIColor whiteColor]];
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
