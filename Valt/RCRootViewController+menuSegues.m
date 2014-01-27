@@ -13,6 +13,8 @@
 #import "UIView+QuartzEffects.h"
 #import <objc/runtime.h>
 
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 static void * LatestPointKey;
 
 @implementation RCRootViewController (menuSegues)
@@ -28,7 +30,10 @@ static void * LatestPointKey;
     [self addChildViewController:self.menuController];
     [self.view addSubview:self.menuController.view];
     [self.menuController.view addSubview:self.snapshotView];
-    [self.listController removeFromParentViewController];
+    if (self.childViewControllers.count > 0){
+        self.currentSideController = self.childViewControllers[0];
+        [self.currentSideController removeFromParentViewController];
+    }
     [self setNeedsStatusBarAppearanceUpdate];
     [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
@@ -44,6 +49,108 @@ static void * LatestPointKey;
     self.listController.view.transform = tranform;
 }
 
+-(void)closeMenu
+{
+    self.currentSideController = self.listController;
+    [self.listController.view setFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
+    UIView * subSnapView = [self.listController.view snapshotViewAfterScreenUpdates:YES];
+    [subSnapView setFrame:self.listController.view.frame];
+    [self.snapshotView addSubview:subSnapView];
+    [self setNavBarMain];;
+    [self.snapshotView addSubview:self.navBar];
+    
+    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.snapshotView.transform =CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        [self.menuController removeFromParentViewController];
+        [self.menuController.view removeFromSuperview];
+        [self addChildViewController:self.currentSideController];
+        [self.view addSubview:self.currentSideController.view];
+        [self.view addSubview:self.navBar];
+        self.currentSideController = nil;
+        [self setNeedsStatusBarAppearanceUpdate];
+        [self.snapshotView removeFromSuperview];
+        self.snapshotView = nil;
+        [self.menuController changeFeelgoodMessage];
+    }];
+}
+
+-(void)goHome
+{
+    UIViewController * current = self.childViewControllers[0];
+    [current removeFromParentViewController];
+    [self addChildViewController:self.listController];
+    UIView * dimview = [[UIView alloc] initWithFrame:self.listController.view.frame];
+    [self.view insertSubview:self.listController.view belowSubview:current.view];
+    self.listController.view.transform = CGAffineTransformMakeScale(.9, .9);
+    
+    UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    CGPoint squareCenterPoint = CGPointMake(CGRectGetMaxX(current.view.frame), CGRectGetMidY(current.view.frame));
+    UIOffset attachmentPoint = UIOffsetMake(CGRectGetMinX(current.view.frame), CGRectGetMaxY(current.view.frame));
+    UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:current.view offsetFromCenter:attachmentPoint attachedToAnchor:squareCenterPoint];
+    [animator addBehavior:attachmentBehavior];
+    self.attachmentBehavior = attachmentBehavior;
+    UIGravityBehavior *gravityBeahvior = [[UIGravityBehavior alloc] initWithItems:@[current.view]];
+    gravityBeahvior.magnitude = 3;
+    gravityBeahvior.angle = DEGREES_TO_RADIANS(100);
+    [animator addBehavior:gravityBeahvior];
+    
+    self.gravityBehavior = gravityBeahvior;
+    self.animator = animator;
+    [self performSelector:@selector(finishedAnimatedGraviry:) withObject:current afterDelay:.7];
+    [self setNavBarMain];
+    
+
+    dimview.backgroundColor = [UIColor blackColor];
+    dimview.alpha = .5;
+    [self.view insertSubview:dimview belowSubview:current.view];
+    [UIView animateWithDuration:.6 animations:^{
+        [dimview setAlpha:0];
+        self.listController.view.transform = CGAffineTransformIdentity;
+        
+    }completion:^(BOOL finished) {
+        [dimview removeFromSuperview];
+    }];
+}
+
+-(void)finishedAnimatedGraviry:(UIViewController *)controller
+{
+    [controller.view removeFromSuperview];
+    controller.view.transform = CGAffineTransformIdentity;
+    [self.animator removeBehavior:self.gravityBehavior];
+    [self.animator removeBehavior:self.attachmentBehavior];
+    self.animator = nil;
+}
+
+-(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title
+{
+    self.currentSideController = controller;
+    [controller.view setFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
+    UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
+    [subSnapView setFrame:controller.view.frame];
+    [self.snapshotView addSubview:subSnapView];
+    [self setNavBarAlternateWithTitle:title];
+    [self.snapshotView addSubview:self.navBar];
+    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.snapshotView.transform =CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        [self.menuController removeFromParentViewController];
+        [self.menuController.view removeFromSuperview];
+        [self addChildViewController:self.currentSideController];
+        [self.view addSubview:self.navBar];
+        [self.view addSubview:self.currentSideController.view];
+        [self.view bringSubviewToFront:self.navBar];
+        self.currentSideController = nil;
+        [self setNeedsStatusBarAppearanceUpdate];
+        [self.snapshotView removeFromSuperview];
+        self.snapshotView = nil;
+        [self.menuController changeFeelgoodMessage];
+    }];
+}
+
+
+#pragma mark - Snapshot
+
 -(void)setupSnapshot
 {
     self.snapshotView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
@@ -57,7 +164,11 @@ static void * LatestPointKey;
 
 -(void)snapshotTapped
 {
-    [self closeMenu];
+    if (self.currentSideController == self.listController)
+        [self closeMenu];
+    else{
+        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title];
+    }
 }
 
 -(void)snapShotPanned
@@ -70,7 +181,11 @@ static void * LatestPointKey;
     }else if (self.snapPan.state == UIGestureRecognizerStateEnded){
         CGFloat velocity = [self.snapPan velocityInView:self.snapshotView].x;
         if (velocity >= 180.0 || self.snapshotView.transform.tx >= -80.0){
-            [self closeMenu];
+            if (self.currentSideController == self.listController)
+                [self closeMenu];
+            else{
+                [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title];
+            }
         }else{
             [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
@@ -78,23 +193,7 @@ static void * LatestPointKey;
             } completion:^(BOOL finished) {
             }];
         }
-        NSLog(@"FINAL %f %f %f", self.snapshotView.transform.tx, self.snapshotView.transform.ty, [self.snapPan velocityInView:self.snapshotView].x);
     }
-}
-
--(void)closeMenu
-{
-    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.snapshotView.transform =CGAffineTransformIdentity;
-    } completion:^(BOOL finished) {
-        [self.menuController removeFromParentViewController];
-        [self.menuController.view removeFromSuperview];
-        [self addChildViewController:self.listController];
-        [self.view addSubview:self.listController.view];
-        [self setNeedsStatusBarAppearanceUpdate];
-        [self.snapshotView removeFromSuperview];
-        self.snapshotView = nil;
-    }];
 }
 
 

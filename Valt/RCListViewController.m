@@ -186,14 +186,6 @@
 }
 
 
-#pragma mark - Sync Button
-
--(void)didTapSync
-{
-    [[APP rootController] launchPurchaseScreen];
-}
-
-
 
 #pragma mark - TableView Delegate/DataSource
 
@@ -299,7 +291,7 @@
             if ([[RCNetworking sharedNetwork] loggedIn]){
                 [[RCNetworking sharedNetwork] fetchFromServer];
             }else{
-                [[APP rootController] launchPurchaseScreen];
+                //TODO: Transition From list to Purchase
             }
             self.addingCellIndex = NSNotFound;
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];

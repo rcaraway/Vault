@@ -9,11 +9,9 @@
                 <outlet property="bannerView" destination="clB-Da-Cfc" id="ERd-Or-DeR"/>
                 <outlet property="blogButton" destination="52n-j1-ObK" id="eKE-dZ-VZK"/>
                 <outlet property="descriptionView" destination="SuM-b8-EgJ" id="haE-mE-ZYu"/>
-                <outlet property="doneButton" destination="Dmi-OU-sje" id="1yd-HV-xSQ"/>
                 <outlet property="feedbackButton" destination="qtt-z1-AlO" id="10R-5f-5wd"/>
                 <outlet property="followRobButton" destination="tVm-cD-WZh" id="6UF-NW-tg9"/>
                 <outlet property="licensesButton" destination="khg-RH-ipg" id="lAI-bb-Z2b"/>
-                <outlet property="navbar" destination="gvT-Al-9wC" id="AB1-6R-5c3"/>
                 <outlet property="pageControl" destination="OJN-HM-Hta" id="K3K-94-Tmk"/>
                 <outlet property="robLabel" destination="ZtQ-z6-yXh" id="fdi-O2-RzQ"/>
                 <outlet property="scrollView" destination="E7I-2Z-leW" id="vzQ-Xn-Xp0"/>
@@ -29,17 +27,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gvT-Al-9wC">
-                    <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <items>
-                        <navigationItem title="About Valt" id="NM1-Ip-dcN">
-                            <barButtonItem key="rightBarButtonItem" title="Done" id="Dmi-OU-sje"/>
-                        </navigationItem>
-                    </items>
-                </navigationBar>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="640" placeholderIntrinsicHeight="317" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E7I-2Z-leW">
-                    <rect key="frame" x="0.0" y="257" width="320" height="317"/>
+                    <rect key="frame" x="0.0" y="193" width="320" height="317"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SuM-b8-EgJ">
@@ -110,7 +99,7 @@
                     </subviews>
                 </scrollView>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="clB-Da-Cfc">
-                    <rect key="frame" x="0.0" y="64" width="320" height="193"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="193"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Valt is proudly made in New Orleans by Rob Caraway" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="221" translatesAutoresizingMaskIntoConstraints="NO" id="ylx-OO-Ols">
@@ -142,7 +131,7 @@
                     <color key="backgroundColor" red="0.77756987876947026" green="0.21956169869402253" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="OJN-HM-Hta">
-                    <rect key="frame" x="140" y="540" width="39" height="37"/>
+                    <rect key="frame" x="140" y="476" width="39" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </pageControl>
             </subviews>

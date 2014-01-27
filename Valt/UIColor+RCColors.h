@@ -10,12 +10,19 @@
 
 @interface UIColor (RCColors)
 
-+(UIColor *)cellUnselectedForeground;
-+(UIColor *)cellSelectedForeground;
 +(UIColor *)listBackground;
 +(UIColor *)dropDownColor;
 +(UIColor *)passcodeBackground;
 +(UIColor *)passcodeForeground;
+
 +(UIColor *)valtPurple;
+
+//Menu Items
++(UIColor *)myValtColor;
++(UIColor *)goPlatinumColor;
++(UIColor *)lockVaultColor;
++(UIColor *)aboutColor;
++(UIColor *)tweetColor;
++(UIColor *)contactSupportColor;
 
 @end

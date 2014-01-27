@@ -11,5 +11,8 @@
 @interface RCMenuViewController : RCViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) UITableView * tableView;
+@property(nonatomic, strong) UIButton * feelgoodButton;
+
+-(void)changeFeelgoodMessage;
 
 @end

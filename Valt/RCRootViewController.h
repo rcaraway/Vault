@@ -14,7 +14,10 @@
 @class RCSearchViewController;
 @class RCSearchBar;
 @class RCMenuViewController;
-
+@class MFMailComposeViewController;
+@class RCAboutViewController;
+@class RCPurchaseViewController;
+@class RCWebViewController;
 
 @interface RCRootViewController : RCViewController 
 
@@ -24,20 +27,28 @@
 @property(nonatomic, strong) RCSearchViewController * searchController;
 @property(nonatomic, strong) RCSearchBar * searchBar;
 @property(nonatomic, strong) RCMenuViewController * menuController;
+@property(nonatomic, strong) MFMailComposeViewController * mailController;
+@property(nonatomic, strong) RCAboutViewController * aboutController;
+@property(nonatomic, strong) RCPurchaseViewController * purchaseController;
+@property(nonatomic, strong) RCWebViewController * webController;
 @property(nonatomic, strong) UINavigationBar * navBar;
 @property(nonatomic, strong) UIView * snapshotView;
+@property (nonatomic, weak) UIViewController * currentSideController;
 
 @property(nonatomic, strong) UITapGestureRecognizer * snapTap;
 @property(nonatomic, strong) UIPanGestureRecognizer * snapPan;
 
+@property (nonatomic, strong) UIDynamicAnimator *animator;
+@property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
+@property (nonatomic, strong) UIGravityBehavior *gravityBehavior;
+
 
 -(void)launchPasscode;
--(void)launchAbout;
--(void)launchPurchaseScreen;
 -(void)launchFeedback;
-
-
 -(BOOL)canSendFeedback;
+
+-(void)setNavBarMain;
+-(void)setNavBarAlternateWithTitle:(NSString *)title;
 
 -(void)launchBrowserWithPassword:(RCPassword *)password;
 

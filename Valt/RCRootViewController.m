@@ -26,13 +26,11 @@
 
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
 
-@property(nonatomic, strong) MFMailComposeViewController * mailController;
-@property(nonatomic, strong) RCAboutViewController * aboutController;
-@property(nonatomic, strong) RCPurchaseViewController * purchaseController;
-@property(nonatomic, strong) RCWebViewController * webController;
+
 @property(nonatomic, strong) UIView * buttonView;
 @property(nonatomic, strong) UIButton * searchButton;
 @property(nonatomic, strong) UIButton * menuButton;
+@property(nonatomic, strong) UIButton * menuButton2;
 @property(nonatomic, strong) UIButton * lockButton;
 
 @end
@@ -161,6 +159,37 @@
     [self.buttonView addSubview:self.menuButton];
 }
 
+
+-(void)setNavBarMain
+{
+    if (self.navBar.items.count >= 2){
+        [self.navBar popNavigationItemAnimated:YES];
+    }
+}
+
+-(void)setNavBarAlternateWithTitle:(NSString *)title
+{
+    if (!self.menuButton2){
+        self.menuButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.menuButton2 setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
+        [self.menuButton2 setFrame:CGRectMake(0, 0, 30, 44)];
+        [self.menuButton2 addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
+    }
+    UINavigationItem * item = [[UINavigationItem alloc] initWithTitle:title];
+    UIBarButtonItem * close = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:self action:@selector(closeTapped)];
+    [item setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.menuButton2]];
+    [item setLeftBarButtonItem:close];
+    if (self.navBar.items.count >= 2){
+        [self.navBar popNavigationItemAnimated:NO];
+    }
+    [self.navBar pushNavigationItem:item animated:NO];
+}
+
+-(void)closeTapped
+{
+    [self goHome];
+}
+
 -(void)lockTapped
 {
     [self returnToPasscodeFromList];
@@ -213,7 +242,7 @@
 {
     UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
     txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor cellUnselectedForeground]}];
+    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
 }
 
 -(void)setSearchBarUnselected
@@ -259,6 +288,25 @@
 {
     [self.view bringSubviewToFront:self.searchBar];
     [self.searchBar setFrame:CGRectMake(0, -80, 320, 44)];
+}
+
+
+#pragma mark - Properties
+
+-(RCAboutViewController *)aboutController
+{
+    if (!_aboutController){
+        _aboutController = [[RCAboutViewController alloc] init];
+    }
+    return _aboutController;
+}
+
+-(RCPurchaseViewController *)purchaseController
+{
+    if (!_purchaseController){
+        _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+    }
+    return _purchaseController;
 }
 
 

@@ -47,4 +47,38 @@
 
 
 
+#pragma mark - Menu Colors
+
++(UIColor *)myValtColor
+{
+    return [UIColor colorWithRed:200.0/255.0 green:115.0/255.0 blue:232.0/255.0 alpha:1];
+}
+
++(UIColor *)goPlatinumColor
+{
+    return [UIColor colorWithRed:255.0/255.0 green:70.0/255.0 blue:0.0/255.0 alpha:1];
+}
+
++(UIColor *)lockVaultColor
+{
+     return [UIColor colorWithRed:157.0/255.0 green:152.0/255.0 blue:0.0/255.0 alpha:1];
+}
+
++(UIColor *)aboutColor
+{
+     return [UIColor colorWithRed:0.0/255.0 green:174.0/255.0 blue:77.0/255.0 alpha:1];
+}
+
++(UIColor *)tweetColor
+{
+     return [UIColor colorWithRed:0.0/255.0 green:176.0/255.0 blue:240.0/255.0 alpha:1];
+}
+
++(UIColor *)contactSupportColor
+{
+     return [UIColor colorWithRed:216.0/255.0 green:115.0/255.0 blue:166.0/255.0 alpha:1];
+}
+
+
+
 @end

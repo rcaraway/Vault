@@ -72,12 +72,17 @@
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
+		D25569661896BC4200F5525D /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569651896BC4200F5525D /* about@2x.png */; };
+		D25569681896BC7B00F5525D /* tweet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569671896BC7B00F5525D /* tweet@2x.png */; };
+		D255696A1896BCA200F5525D /* up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569691896BCA200F5525D /* up@2x.png */; };
+		D255696C1896BCD800F5525D /* support1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D255696B1896BCD800F5525D /* support1@2x.png */; };
+		D255696E1896C46700F5525D /* valtSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D255696D1896C46700F5525D /* valtSmall@2x.png */; };
+		D25569721896C53600F5525D /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569711896C53600F5525D /* lock@2x.png */; };
 		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
 		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
 		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
 		D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A51892BE4200B6A6F0 /* key@2x.png */; };
-		D26D34AA1892BE4200B6A6F0 /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A61892BE4200B6A6F0 /* lock@2x.png */; };
 		D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A71892BE4200B6A6F0 /* search@2x.png */; };
 		D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A81892BE4200B6A6F0 /* list@2x.png */; };
 		D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */; };
@@ -245,6 +250,12 @@
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
+		D25569651896BC4200F5525D /* about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about@2x.png"; sourceTree = "<group>"; };
+		D25569671896BC7B00F5525D /* tweet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tweet@2x.png"; sourceTree = "<group>"; };
+		D25569691896BCA200F5525D /* up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up@2x.png"; sourceTree = "<group>"; };
+		D255696B1896BCD800F5525D /* support1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support1@2x.png"; sourceTree = "<group>"; };
+		D255696D1896C46700F5525D /* valtSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "valtSmall@2x.png"; sourceTree = "<group>"; };
+		D25569711896C53600F5525D /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
 		D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+QuartzEffects.h"; sourceTree = "<group>"; };
 		D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+QuartzEffects.m"; sourceTree = "<group>"; };
 		D2660B6D1884959000E1B964 /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
@@ -253,7 +264,6 @@
 		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
 		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
 		D26D34A51892BE4200B6A6F0 /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
-		D26D34A61892BE4200B6A6F0 /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
 		D26D34A71892BE4200B6A6F0 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		D26D34A81892BE4200B6A6F0 /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
 		D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMenuViewController.h; sourceTree = "<group>"; };
@@ -718,11 +728,24 @@
 			path = Icons;
 			sourceTree = "<group>";
 		};
+		D25569621896BBC900F5525D /* MenuOg */ = {
+			isa = PBXGroup;
+			children = (
+				D25569711896C53600F5525D /* lock@2x.png */,
+				D255696D1896C46700F5525D /* valtSmall@2x.png */,
+				D255696B1896BCD800F5525D /* support1@2x.png */,
+				D25569691896BCA200F5525D /* up@2x.png */,
+				D25569671896BC7B00F5525D /* tweet@2x.png */,
+				D25569651896BC4200F5525D /* about@2x.png */,
+			);
+			name = MenuOg;
+			sourceTree = "<group>";
+		};
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D25569621896BBC900F5525D /* MenuOg */,
 				D26D34A51892BE4200B6A6F0 /* key@2x.png */,
-				D26D34A61892BE4200B6A6F0 /* lock@2x.png */,
 				D26D34A71892BE4200B6A6F0 /* search@2x.png */,
 				D26D34A81892BE4200B6A6F0 /* list@2x.png */,
 				D2CA1271188EDA8B005B6867 /* checker@2x.jpg */,
@@ -904,10 +927,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2254E5D18648502003590AF /* icon-success@2x.png in Resources */,
+				D25569681896BC7B00F5525D /* tweet@2x.png in Resources */,
 				D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */,
 				D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */,
 				D2254E5818648502003590AF /* icon-error.png in Resources */,
 				D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */,
+				D25569721896C53600F5525D /* lock@2x.png in Resources */,
 				D278D3451891BCDF0062AE39 /* back@2x.png in Resources */,
 				D2254E5C18648502003590AF /* icon-success.png in Resources */,
 				D2254E5918648502003590AF /* icon-error@2x.png in Resources */,
@@ -917,12 +942,15 @@
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,
 				D2254E5A18648502003590AF /* icon-info.png in Resources */,
-				D26D34AA1892BE4200B6A6F0 /* lock@2x.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
+				D255696E1896C46700F5525D /* valtSmall@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
 				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
+				D25569661896BC4200F5525D /* about@2x.png in Resources */,
+				D255696C1896BCD800F5525D /* support1@2x.png in Resources */,
 				D2660B6E1884959000E1B964 /* vault.png in Resources */,
+				D255696A1896BCA200F5525D /* up@2x.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 				D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */,
 				D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */,
