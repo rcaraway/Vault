@@ -93,22 +93,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * text = [self textForIndexPath:indexPath];
-    if (indexPath.row == 0){
-        RCPassword * password = [[RCPassword alloc] init];
-        password.title                                 = text;
-        [[[APP rootController] searchBar] resignFirstResponder];
-        [[RCPasswordManager defaultManager] addPassword:password];
-
-        //TODO: segue;
-    }else{
-        RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];
-        //TODO: segue
-    }
+    RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];
+    [[APP rootController] segueSearchToSingleWithPassword:password indexPath:indexPath];
 }
-
-
-#pragma mark - State Handling
-
 
 
 #pragma mark - Convenience
@@ -116,13 +103,8 @@
 -(NSString *)textForIndexPath:(NSIndexPath *)indexPath
 {
     NSString * text;
-    if (indexPath.row == 0){
-        text = [APP rootController].searchBar.text;
-    }
-    else if (!self.searchFilter){
-        return nil;
-    }else{
-        text = self.searchFilter[indexPath.row-1];
+    if (self.searchFilter && indexPath.row < self.searchFilter.count){
+        text = self.searchFilter[indexPath.row];
     }
     return text;
 }

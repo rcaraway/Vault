@@ -428,7 +428,7 @@ typedef enum {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-            [UIView animateWithDuration:.3 animations:^{
+            [UIView animateWithDuration:.2 animations:^{
                 if (translation.x > 0){
                     self.panState = RCListGestureManagerPanStateRight;
                     [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, self.tableView.frame.size.width-translation.x, 0)];

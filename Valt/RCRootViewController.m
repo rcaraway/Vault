@@ -200,12 +200,12 @@
 
 -(void)searchBarDidBeginEditing:(RCSearchBar *)searchBar
 {
-    [self setSearchBarSelected];
+   
 }
 
 -(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
 {
- [self setSearchBarUnselected];
+
 }
 
 -(void)searchBar:(RCSearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -219,57 +219,6 @@
     [self segueSearchToList];
 }
 
--(void)setSearchBarSelected
-{
-    UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
-    txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
-}
-
--(void)setSearchBarUnselected
-{
-    UITextField *txfSearchField = [_searchBar valueForKey:@"_searchField"];
-    txfSearchField.textColor = [UIColor whiteColor];
-    txfSearchField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:@"Search Valt" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-}
-
--(void)showSearchAnimated:(BOOL)animated
-{
-    if (animated){
-        [UIView animateWithDuration:.22 animations:^{
-            [self showSearch];
-        }];
-    }else{
-        [self showSearch];
-    }
-}
-
--(void)hideSearchAnimated:(BOOL)animated
-{
-    if (animated){
-        [UIView animateWithDuration:.22 animations:^{
-            [self hideSearch];
-        }];
-    }else{
-        [self hideSearch];
-    }
-}
-
--(void)showSearch
-{
-    if ([self.view.subviews containsObject:self.passcodeController.view]){
-        [self.view insertSubview:self.searchBar belowSubview:self.passcodeController.view];
-    }else{
-         [self.view bringSubviewToFront:self.searchBar];   
-    }
-    [self.searchBar setFrame:CGRectMake(0, 20, 320, 44)];
-}
-
--(void)hideSearch
-{
-    [self.view bringSubviewToFront:self.searchBar];
-    [self.searchBar setFrame:CGRectMake(0, -80, 320, 44)];
-}
 
 
 #pragma mark - Properties

@@ -35,7 +35,7 @@
         [self.listController.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.navBar.alpha = 0;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.3 animations:^{
+        [UIView animateWithDuration:.23 animations:^{
             self.listController.view.alpha = 0;
             [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, -self.webController.bottomView.frame.size.height)];
             [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, self.webController.topView.frame.size.height+20)];
@@ -53,13 +53,13 @@
         NSIndexPath * copy = [self.listController.webPath copy];
     self.listController.webPath = nil;
 
-    [UIView animateWithDuration:.3 animations:^{
+    [UIView animateWithDuration:.23 animations:^{
         [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, self.webController.bottomView.frame.size.height)];
         [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -self.webController.topView.frame.size.height-20)];
         self.webController.view.alpha = 0;
     }completion:^(BOOL finished) {
         [self.webController.view removeFromSuperview];
-        [UIView animateWithDuration:.4 animations:^{
+        [UIView animateWithDuration:.3 animations:^{
             [self.listController.tableView reloadRowsAtIndexPaths:@[copy] withRowAnimation:UITableViewRowAnimationAutomatic];
             self.navBar.alpha = 1;
         }completion:^(BOOL finished) {

@@ -28,7 +28,7 @@
         [self setupSearchField];
         [self setupCancelButton];
         UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height-1, 320, 1)];
-        separator.backgroundColor = [UIColor colorWithWhite:0.82 alpha:1];
+        separator.backgroundColor = [UIColor colorWithWhite:0.94 alpha:1];
         [self addSubview:separator];
     }
     return self;
@@ -89,7 +89,8 @@
         searchText =[textField.text stringByReplacingCharactersInRange:range withString:@""];
     }
     [self.delegate searchBar:self textDidChange:searchText];
-    return YES;
+    textField.text = searchText;
+    return NO;
 }
 
 

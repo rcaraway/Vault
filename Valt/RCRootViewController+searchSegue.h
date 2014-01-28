@@ -13,6 +13,6 @@
 -(void)segueListToSearch;
 -(void)segueSearchToList;
 -(void)segueSearchToSingleWithPassword:(RCPassword *)password indexPath:(NSIndexPath *)path;
--(void)segueSearchToSingleWithNewPassword;
+-(void)segueSingleToSearch;
 
 @end

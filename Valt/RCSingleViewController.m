@@ -22,7 +22,9 @@
 #import "HTAutocompleteManager.h"
 #import "RCNetworking.h"
 #import "RCListViewController.h"
+
 #import "RCRootViewController+passwordSegues.h"
+#import "RCRootViewController+searchSegue.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -158,7 +160,7 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
-    if (!self.isTransitioningTo){
+    if (!self.isTransitioningTo && !self.cameFromSearch){
         if (scrollView.contentOffset.y < 0){
             CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
             if (magnitude > 1)
@@ -253,7 +255,12 @@
 
 -(void)gestureManagerDidTapOutsideRows:(RCCredentialGestureManager *)manager
 {
-    [self goBackToList];
+    if (!self.cameFromSearch){
+        [self goBackToList];
+    }
+    else{
+        [self goBackToSearch];
+    }
 }
 
 -(BOOL)gestureManagerShouldAllowNewCellAtBottom:(RCCredentialGestureManager *)gestureManager
@@ -340,6 +347,14 @@
     [self.view endEditing:YES];
     [self publishChangesToPassword];
     [[APP rootController] segueSingleToList];
+}
+
+-(void)goBackToSearch
+{
+    [self.view endEditing:YES];
+    [self publishChangesToPassword];
+    self.cameFromSearch = NO;
+    [[APP rootController] segueSingleToSearch];
 }
 
 -(BOOL)passwordContainsNoData
