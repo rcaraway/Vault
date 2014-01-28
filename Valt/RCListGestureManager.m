@@ -146,8 +146,7 @@ typedef enum {
         NSIndexPath * indexPath = self.pendingPath;
         self.pendingPath = nil;
         [self handleFinalStateForIndexPath:indexPath];
-        self.panState = RCListGestureManagerPanStateMiddle;
-        self.state = RCListGestureManagerStateNone;
+       
     }
 }
 
@@ -428,9 +427,24 @@ typedef enum {
 {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
-        [self.delegate gestureManager:self didFinishWithState:self.panState forIndexPath:indexPath];
+        UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            [UIView animateWithDuration:.3 animations:^{
+                if (translation.x > 0){
+                    self.panState = RCListGestureManagerPanStateRight;
+                    [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, self.tableView.frame.size.width-translation.x, 0)];
+                }else{
+                    self.panState = RCListGestureManagerPanStateLeft;
+                    [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, -(self.tableView.frame.size.width + translation.x), 0)];
+                }
+            } completion:^(BOOL finished) {
+                [self.delegate gestureManager:self didFinishWithState:self.panState forIndexPath:indexPath];
+                self.panState = RCListGestureManagerPanStateMiddle;
+                self.state = RCListGestureManagerStateNone;
+            }];
     }else{
         [self resetCellToCenterAtIndexPath:indexPath];
+        self.panState = RCListGestureManagerPanStateMiddle;
+        self.state = RCListGestureManagerStateNone;
     }
 }
 

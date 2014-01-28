@@ -100,22 +100,6 @@
     [self addChildViewController:self.passcodeController];
 }
 
--(void)launchAbout
-{
-    if (!self.aboutController){
-        self.aboutController = [[RCAboutViewController alloc] init];
-    }
-    [self presentViewController:self.aboutController animated:YES completion:nil];
-}
-
--(void)launchPurchaseScreen
-{
-    if (!self.purchaseController){
-        self.purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
-    }
-    [self presentViewController:self.purchaseController animated:YES completion:nil];
-}
-
 -(void)launchBrowserWithPassword:(RCPassword *)password
 {
     self.webController = [[RCWebViewController alloc] initWithPassword:password];
@@ -155,6 +139,7 @@
     [self.menuButton setFrame:CGRectMake(30, 0, 30, 44)];
     [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.searchButton addTarget:self action:@selector(searchTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonView addSubview:self.searchButton];
     [self.buttonView addSubview:self.menuButton];
 }
@@ -202,23 +187,20 @@
 
 -(void)searchTapped
 {
-    
+    [self segueListToSearch];
 }
 
 #pragma mark - Search Bar
 
 -(void)setupSearchBar
 {
-    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
+    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
     self.searchBar.delegate =self;
-    [self.view addSubview:self.searchBar];
 }
 
 -(void)searchBarDidBeginEditing:(RCSearchBar *)searchBar
 {
     [self setSearchBarSelected];
-    self.searchBar.showsCancelButton = YES;
-    [self segueListToSearch];
 }
 
 -(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
@@ -233,7 +215,6 @@
 
 -(void)searchBarCancelTapped:(RCSearchBar *)searchBar
 {
-    self.searchBar.showsCancelButton = NO;
     [self.view endEditing:YES];
     [self segueSearchToList];
 }
@@ -307,6 +288,14 @@
         _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
     }
     return _purchaseController;
+}
+
+-(RCWebViewController *)webController
+{
+    if (!_webController){
+        _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewController" bundle:nil];
+    }
+    return _webController;
 }
 
 

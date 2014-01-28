@@ -14,6 +14,7 @@
 
 -(void)setFocused;
 -(void)setGreenColored;
+-(void)setCompletelyGreen;
 -(void)removeFocus;
 -(void)setRedColored;
 

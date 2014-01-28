@@ -50,6 +50,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"Cell"];
     self.tableView.rowHeight = NORMAL_CELL_HEIGHT;
+    self.tableView.tableFooterView = [[UIView  alloc] initWithFrame:CGRectZero];
 }
 
 #pragma mark - Status Bar
@@ -76,23 +77,16 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (!self.searchFilter){
-        return 1;
+        return 0;
     }
-    return self.searchFilter.count+1;
+    return self.searchFilter.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RCMainCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     NSString * text = [self textForIndexPath:indexPath];
-    if (indexPath.row == 0){
-        cell.customLabel.text = [NSString stringWithFormat:@"Add item titled \"%@\"", text];
-    }
-    else if (!self.searchFilter){
-        cell.customLabel.text = text;
-    }else{
-        cell.customLabel.text = text;
-    }
+    cell.customLabel.text = text;
     return cell;
 }
 

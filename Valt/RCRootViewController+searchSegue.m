@@ -25,7 +25,17 @@ static void * DimViewKey;
      self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
     [self addChildViewController:self.searchController];
     [self.listController removeFromParentViewController];
-    [self transitionFromListToSearch];
+    [self.view insertSubview:self.searchController.view belowSubview:self.listController.view];
+    [self.view insertSubview:self.searchBar belowSubview:self.navBar];
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.listController.view.alpha = 0;
+        self.navBar.alpha=0;
+    } completion:^(BOOL finished) {
+        [self.listController.view removeFromSuperview];
+        [self.view bringSubviewToFront:self.searchBar];
+//        self.navBar.alpha = 1;
+        [self.searchBar.searchField becomeFirstResponder];
+    }];
 }
 
 -(void)segueSearchToList

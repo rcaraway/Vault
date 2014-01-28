@@ -18,7 +18,9 @@
 
 @property(nonatomic, strong) RCTableView * tableView;
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
-@property(nonatomic) NSIndexPath * viewPath;
+@property(nonatomic, strong) NSIndexPath * viewPath;
+@property(nonatomic, strong) NSIndexPath * webPath;
+
 
 -(void)removePassword:(RCPassword *)password;
 

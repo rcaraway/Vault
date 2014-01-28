@@ -17,6 +17,10 @@
 
 +(UIColor *)valtPurple;
 
+//Cell State
++(UIColor *)browserGreen;
++(UIColor *)deleteRed;
+
 //Menu Items
 +(UIColor *)myValtColor;
 +(UIColor *)goPlatinumColor;

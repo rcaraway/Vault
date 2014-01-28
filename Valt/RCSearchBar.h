@@ -16,7 +16,6 @@
 @property(nonatomic, strong) UIView * searchBack;
 @property(nonatomic, copy, readonly) NSString * text;
 @property(nonatomic, strong) UITextField * searchField;
-@property (nonatomic) BOOL showsCancelButton;
 
 @end
 

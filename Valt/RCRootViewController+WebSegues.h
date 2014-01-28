@@ -10,4 +10,7 @@
 
 @interface RCRootViewController (WebSegues)
 
+-(void)segueToWebFromIndexPath:(NSIndexPath *)indexPath;
+-(void)closeWeb;
+
 @end

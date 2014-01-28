@@ -6,11 +6,19 @@
 //  Copyright (c) 2013 Rob Caraway. All rights reserved.
 //
 
+#import "RCAppDelegate.h"
 #import "RCWebViewController.h"
-#import "RCPassword.h"
-#import "TWMessageBarManager.h"
+#import "RCRootViewController.h"
+
+#import "RCRootViewController+WebSegues.h"
+
 #import "LBActionSheet.h"
+
+#import "TWMessageBarManager.h"
+#import "RCPassword.h"
 #import "RCPasswordManager.h"
+
+
 
 @interface RCWebViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate, LBActionSheetDelegate>
 {
@@ -18,7 +26,7 @@
 }
 
 @property(nonatomic, strong) LBActionSheet * actionSheet;
-@property(nonatomic, strong) RCPassword * password;
+
 @property(nonatomic) BOOL usernameFilled;
 @property(nonatomic) BOOL passwordFilled;
 @property(nonatomic) BOOL firstPage;
@@ -42,16 +50,12 @@
 {
     [super viewDidLoad];
     self.webView.delegate = self;
-    self.firstPage = YES;
-    NSURL * url = [NSURL URLWithString:self.password.urlName];
-
     [self.doneButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1] forState:UIControlStateNormal];
-    NSURLRequest * request = [NSURLRequest requestWithURL:url];
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
     [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
     [self.usernameField addTarget:self action:@selector(usernameTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.passwordButton addTarget:self action:@selector(passwordTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.webView loadRequest:request];
+    [self loadPasswordRequest];
 }
 
 -(BOOL)shouldAutorotate
@@ -78,7 +82,31 @@
 
 - (void)didReceiveMemoryWarning
 {
+    if (self.isViewLoaded && !self.view.window){
+        [self freeAllMemory];
+    }
     [super didReceiveMemoryWarning];    
+}
+
+-(void)freeAllMemory
+{
+    [self.webView stopLoading];
+    self.usernameField = nil;
+    self.passwordButton = nil;
+    self.bottomView = nil;
+    self.credentialView = nil;
+    self.webView = nil;
+    self.backButton = nil;
+    self.forwardButton = nil;
+    self.refreshButton = nil;
+    self.pasteButton = nil;
+    self.topView = nil;
+    self.doneButton = nil;
+    self.urlButton =nil;
+    self.urlLabel = nil;
+    self.titleLabel = nil;
+    self.loader = nil;
+    self.view = nil;
 }
 
 #pragma mark - Event Hanlding
@@ -102,7 +130,7 @@
 
 - (IBAction)doneTapped:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [[APP rootController] closeWeb];
 }
 
 - (IBAction)pasteTapped:(id)sender
@@ -159,6 +187,14 @@
 
 
 #pragma mark - State Handling
+
+-(void)loadPasswordRequest
+{
+    self.firstPage = YES;
+    NSURL * url = [NSURL URLWithString:self.password.urlName];
+    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    [self.webView loadRequest:request];
+}
 
 -(void)printHTML
 {

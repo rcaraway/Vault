@@ -43,20 +43,22 @@
 -(void)setRedColored
 {
     [UIView animateWithDuration:.23 animations:^{
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor deleteRed];
     } completion:nil];
 }
 
 -(void)setGreenColored
 {
     [UIView animateWithDuration:.23 animations:^{
-        self.backgroundColor = [UIColor colorWithRed:0 green:178.0/255.0 blue:95.0/255.0 alpha:1];
+        self.backgroundColor = [UIColor browserGreen];
     } completion:nil];
 }
 
--(void)setFocused
+-(void)setCompletelyGreen
 {
-
+    self.contentView.backgroundColor = [UIColor browserGreen];
+    self.customLabel.backgroundColor = [UIColor browserGreen];
+    self.backgroundColor = [UIColor browserGreen];
 }
 
 -(void)removeFocus
@@ -66,6 +68,12 @@
     } completion:nil];
 }
 
+-(void)prepareForReuse
+{
+    self.backgroundColor = [UIColor listBackground];
+    self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
+}
 
 -(void)setupCustomLabel
 {

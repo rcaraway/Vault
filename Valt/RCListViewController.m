@@ -27,6 +27,7 @@
 #import "RCRootViewController+passwordSegues.h"
 #import "RCSearchBar.h"
 #import "RCRootViewController+menuSegues.h"
+#import "RCRootViewController+WebSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -214,10 +215,13 @@
             return cell;
         }
         
-    } if ([indexPath isEqual:self.viewPath]){
+    } if ([indexPath isEqual:self.viewPath] || [indexPath isEqual:self.webPath]){
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.customLabel.text = @"";
+        if ([indexPath isEqual:self.webPath]){
+            [cell setCompletelyGreen];
+        }
         return cell;
     }
     else{
@@ -253,12 +257,10 @@
     if ([indexPath isEqual:self.viewPath]){
         return 188;
     }
+    if ([indexPath isEqual:self.webPath]){
+        return self.view.frame.size.height;
+    }
     return NORMAL_CELL_FINISHING_HEIGHT;
-}
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    NSLog(@"I'M GETTING HIT");
 }
 
 
@@ -361,7 +363,7 @@
     } else if (state == JTTableViewCellEditingStateRight) {
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         if (password.hasValidURL){
-            [[APP rootController] launchBrowserWithPassword:password];
+            [[APP rootController] segueToWebFromIndexPath:indexPath];
         }else{
             //pop up, ask for a url to go to
             //save it
@@ -369,11 +371,12 @@
         }
         
     } else {
-        
+        [self.gestureManager resetCellToCenterAtIndexPath:indexPath];
+        [self.gestureManager reloadAllRowsExceptIndexPath:indexPath];
     }
-    [self.gestureManager resetCellToCenterAtIndexPath:indexPath];
-    [self.gestureManager reloadAllRowsExceptIndexPath:indexPath];
 }
+
+
 
 -(void)removePassword:(RCPassword *)password
 {
@@ -409,14 +412,17 @@
 {
     if (buttonIndex == 0){
         [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
-        [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationMiddle];
         [[RCNetworking sharedNetwork] sync];
+    }else{
+        [self.gestureManager resetCellToCenterAtIndexPath:self.deletionPath];
     }
     self.deletionPath = nil;
 }
 
 -(void)actionSheetCancel:(LBActionSheet *)actionSheet
 {
+
     self.deletionPath = nil;
 }
 

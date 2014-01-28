@@ -46,6 +46,17 @@
 }
 
 
+#pragma mark -  Cell States
+
++(UIColor *)browserGreen
+{
+    return [UIColor colorWithRed:0 green:178.0/255.0 blue:95.0/255.0 alpha:1];
+}
+
++(UIColor *)deleteRed
+{
+    return [UIColor redColor];
+}
 
 #pragma mark - Menu Colors
 

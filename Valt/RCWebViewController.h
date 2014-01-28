@@ -11,8 +11,11 @@
 
 @interface RCWebViewController : UIViewController
 
+@property(nonatomic, strong) RCPassword * password;
+
 @property (strong, nonatomic) IBOutlet UIButton *usernameField;
 @property (strong, nonatomic) IBOutlet UIButton *passwordButton;
+@property (strong, nonatomic) IBOutlet UIView *bottomView;
 
 @property (strong, nonatomic) IBOutlet UIView *credentialView;
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
@@ -39,4 +42,8 @@
 - (IBAction)backTapped:(id)sender;
 
 -(id)initWithPassword:(RCPassword *)password;
+
+-(void)loadPasswordRequest;
+-(void)freeAllMemory;
+
 @end
