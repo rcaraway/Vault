@@ -10,6 +10,17 @@
 
 @implementation UIColor (RCColors)
 
+
++(UIColor *)navColor
+{
+    return [UIColor colorWithWhite:.97 alpha:1];
+}
+
++(UIColor *)mainCellColor
+{
+    return [UIColor whiteColor];
+}
+
 +(UIColor *)cellUnselectedForeground
 {
     return [UIColor colorWithWhite:.95 alpha:1];

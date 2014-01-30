@@ -212,7 +212,6 @@
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
     }else if ([text isEqualToString:LOCK_NAME]){
-        [[APP rootController] returnToPasscodeFromSearch];
     }else if ([text isEqualToString:FEEDBACK]){
         [[APP rootController] launchFeedback];
     }

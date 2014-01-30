@@ -7,8 +7,12 @@
 //
 
 #import "RCRootViewController+WebSegues.h"
+
 #import "RCListViewController.h"
 #import "RCWebViewController.h"
+
+#import "RCMessageView.h"
+
 #import "RCPasswordManager.h"
 #import "RCPassword.h"
 
@@ -41,6 +45,7 @@
             [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, self.webController.topView.frame.size.height+20)];
         }completion:^(BOOL finished) {
             [self.view bringSubviewToFront:self.webController.view];
+            [self.view bringSubviewToFront:self.messageView];
             self.listController.view.alpha = 1;
         }];
     }];

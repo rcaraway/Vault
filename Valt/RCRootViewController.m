@@ -23,6 +23,7 @@
 #import "UIImage+memoIcons.h"
 #import "RCMenuViewController.h"
 #import "RCRootViewController+menuSegues.h"
+#import "RCMessageView.h"
 
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
 
@@ -47,6 +48,8 @@
     [self setupSearchBar];
     [self launchPasscode];
     [self setupNavbar];
+    [self setupMessageView];
+    [self addNotifications];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
 }
 
@@ -55,41 +58,62 @@
     [super didReceiveMemoryWarning];
 }
 
+
+#pragma mark - Settings
+
 -(BOOL)shouldAutorotate
 {
     return NO;
 }
 
--(BOOL)prefersStatusBarHidden
+
+#pragma mark - Status Bar
+
+
+
+
+//-(UIViewController *)childViewControllerForStatusBarHidden
+//{
+//    if (!self.messageView.messageShowing){
+//        if (self.childViewControllers.count > 0)
+//            return self.childViewControllers[0];
+//    }
+//    return nil;
+//}
+//
+//-(UIViewController *)childViewControllerForStatusBarStyle
+//{
+//    if (self.childViewControllers.count > 0)
+//        return self.childViewControllers[0];
+//    return nil;
+//}
+
+-(void)setupMessageView
 {
-    return NO;
+    self.messageView = [[RCMessageView  alloc] init];
+
 }
 
--(UIViewController *)childViewControllerForStatusBarHidden
+
+#pragma mark - NSNotification Events
+
+-(void)addNotifications
 {
-    if (self.childViewControllers.count > 0)
-        return self.childViewControllers[0];
-    return nil;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willUpdateMessage) name:messageViewWillShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willUpdateMessage) name:messageViewWillHide object:nil];
 }
 
--(UIViewController *)childViewControllerForStatusBarStyle
+-(void)willUpdateMessage
 {
-    if (self.childViewControllers.count > 0)
-        return self.childViewControllers[0];
-    return nil;
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 
--(void)setupViewControllers
-{
-    self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    self.searchController = [[RCSearchViewController  alloc] initWithNibName:nil bundle:nil];
-}
-
-#pragma mark - VC Transitions
+#pragma mark - State Handling
 
 -(void)launchPasscode
 {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     if (!self.passcodeController){
         if ([[RCPasswordManager defaultManager] masterPasswordExists]){
             self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
@@ -98,12 +122,13 @@
         }
     }
     [self addChildViewController:self.passcodeController];
+    [self.view addSubview:self.passcodeController.view];
 }
 
--(void)launchBrowserWithPassword:(RCPassword *)password
+-(void)setupViewControllers
 {
-    self.webController = [[RCWebViewController alloc] initWithPassword:password];
-    [self presentViewController:self.webController animated:YES completion:nil];
+    self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    self.searchController = [[RCSearchViewController  alloc] initWithNibName:nil bundle:nil];
 }
 
 
@@ -122,6 +147,8 @@
     bottomBorder.backgroundColor = [UIColor colorWithWhite:0.95f
                                                      alpha:1.0f].CGColor;
     [self.navBar.layer addSublayer:bottomBorder];
+    [self.navBar setBackgroundColor:[UIColor navColor]];
+    [self.navBar setTintColor:[UIColor navColor]];
     [self.navBar pushNavigationItem:item animated:NO];
 }
 
@@ -189,6 +216,9 @@
 {
     [self segueListToSearch];
 }
+
+
+
 
 #pragma mark - Search Bar
 
@@ -271,30 +301,5 @@
     return [MFMailComposeViewController canSendMail];
 }
 
-#pragma mark - Convenience
-
--(void)discardPasscode
-{
-    if (self.passcodeController.isViewLoaded && self.passcodeController.view.window){
-        [self.passcodeController removeFromParentViewController];
-        [self.passcodeController.view removeFromSuperview];
-    }
-}
-
--(void)discardList
-{
-    if (self.listController.isViewLoaded && self.listController.view.window){
-        [self.listController removeFromParentViewController];
-        [self.listController.view removeFromSuperview];
-    }
-}
-
--(void)discardSingle
-{
-    if (self.singleController.isViewLoaded && self.singleController.view.window){
-        [self.singleController removeFromParentViewController];
-        [self.singleController.view removeFromSuperview];
-    }
-}
 
 @end

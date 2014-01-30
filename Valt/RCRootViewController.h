@@ -18,6 +18,7 @@
 @class RCAboutViewController;
 @class RCPurchaseViewController;
 @class RCWebViewController;
+@class RCMessageView;
 
 @interface RCRootViewController : RCViewController 
 
@@ -33,6 +34,7 @@
 @property(nonatomic, strong) RCWebViewController * webController;
 @property(nonatomic, strong) UINavigationBar * navBar;
 @property(nonatomic, strong) UIView * snapshotView;
+@property(nonatomic, strong) RCMessageView * messageView;
 @property (nonatomic, weak) UIViewController * currentSideController;
 
 @property(nonatomic, strong) UITapGestureRecognizer * snapTap;
@@ -43,13 +45,12 @@
 @property (nonatomic, strong) UIGravityBehavior *gravityBehavior;
 
 
--(void)launchPasscode;
 -(void)launchFeedback;
 -(BOOL)canSendFeedback;
 
+
+
 -(void)setNavBarMain;
 -(void)setNavBarAlternateWithTitle:(NSString *)title;
-
--(void)launchBrowserWithPassword:(RCPassword *)password;
 
 @end

@@ -62,7 +62,7 @@ static void * ContentSizeKey;
     CGRect adjustRect = CGRectMake(bottomRect.origin.x, bottomRect.origin.y - self.listController.tableView.contentOffset.y, bottomRect.size.width, bottomRect.size.height);
     [self setOriginalSize:self.listController.tableView.contentSize];
     [self setOriginalOffset:self.listController.tableView.contentOffset];
-    [self.singleController.view setFrame:CGRectMake(0, adjustRect.origin.y+bottomRect.size.height+44, self.singleController.view.frame.size.width, self.singleController.view.frame.size.height)];
+    [self.singleController.view setFrame:CGRectMake(0, adjustRect.origin.y+bottomRect.size.height, self.singleController.view.frame.size.width, self.singleController.view.frame.size.height)];
     self.singleController.view.backgroundColor = [UIColor clearColor];
     self.singleController.view.alpha = 0;
     [self.view addSubview:self.singleController.view];
@@ -78,6 +78,7 @@ static void * ContentSizeKey;
     }completion:^(BOOL finished) {
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
         [UIView animateWithDuration:.3 animations:^{
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
             self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
             [self.listController.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
             [self.listController.tableView setContentOffset:CGPointMake(0, bottomRect.origin.y+bottomRect.size.height+40)];
@@ -118,10 +119,11 @@ static void * ContentSizeKey;
     [self.view addSubview:self.singleController.view];
     [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
     [UIView animateWithDuration:.3 animations:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
         [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
-        [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y+44)];
+        [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y)];
         [self.listController.tableView setShouldAllowMovement:NO];
         self.singleController.isTransitioningTo = NO;
         [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationBottom];
@@ -129,9 +131,7 @@ static void * ContentSizeKey;
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setPurpleColoed];
         UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
         [field becomeFirstResponder];
-        [self setNeedsStatusBarAppearanceUpdate];
     }completion:^(BOOL finished) {
-        NSLog(@"FINISHED List Offset %f Height %f", self.listController.tableView.contentOffset.y, self.listController.tableView.contentSize.height);
     }];
 }
 
@@ -173,6 +173,7 @@ static void * ContentSizeKey;
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         self.singleController.view.alpha = 0;
@@ -181,7 +182,6 @@ static void * ContentSizeKey;
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];
         [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
         [self.listController.tableView setContentOffset:offset];
-        [self setNeedsStatusBarAppearanceUpdate];
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, [self originalSize].height)];
         self.view.backgroundColor = [UIColor listBackground];
     }completion:^(BOOL finished) {
@@ -200,6 +200,7 @@ static void * ContentSizeKey;
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3  animations:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -208,7 +209,6 @@ static void * ContentSizeKey;
         [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor clearColor];
         [self.listController.tableView setContentOffset:offset];
-        [self setNeedsStatusBarAppearanceUpdate];
         [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, [self originalSize].height)];
         self.view.backgroundColor = [UIColor listBackground];
     } completion:^(BOOL finished) {

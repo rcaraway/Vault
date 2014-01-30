@@ -12,7 +12,6 @@
 
 @property(nonatomic, strong) UILabel * customLabel;
 
--(void)setFocused;
 -(void)setGreenColored;
 -(void)setCompletelyGreen;
 -(void)removeFocus;

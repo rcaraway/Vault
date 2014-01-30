@@ -87,6 +87,7 @@
 		D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A81892BE4200B6A6F0 /* list@2x.png */; };
 		D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */; };
 		D26D34B21892C18B00B6A6F0 /* RCRootViewController+menuSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */; };
+		D2773721189AB01D0048F641 /* RCMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2773720189AB01D0048F641 /* RCMessageView.m */; };
 		D278D3451891BCDF0062AE39 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3411891BCDF0062AE39 /* back@2x.png */; };
 		D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3421891BCDF0062AE39 /* copyPaste@2x.png */; };
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
@@ -120,7 +121,6 @@
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
 		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
-		D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */; };
 		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
 		D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */; };
 		D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */; };
@@ -270,6 +270,8 @@
 		D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMenuViewController.m; sourceTree = "<group>"; };
 		D26D34B01892C18B00B6A6F0 /* RCRootViewController+menuSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+menuSegues.h"; sourceTree = "<group>"; };
 		D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+menuSegues.m"; sourceTree = "<group>"; };
+		D277371F189AB01D0048F641 /* RCMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMessageView.h; sourceTree = "<group>"; };
+		D2773720189AB01D0048F641 /* RCMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMessageView.m; sourceTree = "<group>"; };
 		D278D3411891BCDF0062AE39 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D278D3421891BCDF0062AE39 /* copyPaste@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copyPaste@2x.png"; sourceTree = "<group>"; };
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
@@ -319,8 +321,6 @@
 		D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+WebSegues.m"; sourceTree = "<group>"; };
 		D2B5EF971885E533002A50A3 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
 		D2B5EF981885E533002A50A3 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
-		D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCloseView.h; sourceTree = "<group>"; };
-		D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCloseView.m; sourceTree = "<group>"; };
 		D2C65E2418885FC900649610 /* RCRootViewController+searchSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+searchSegue.h"; sourceTree = "<group>"; };
 		D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+searchSegue.m"; sourceTree = "<group>"; };
 		D2C65E2718885FEF00649610 /* RCRootViewController+passcodeSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+passcodeSegues.h"; sourceTree = "<group>"; };
@@ -697,8 +697,8 @@
 				D2660B701884964300E1B964 /* RCValtView.m */,
 				D2B5EF971885E533002A50A3 /* RCSearchBar.h */,
 				D2B5EF981885E533002A50A3 /* RCSearchBar.m */,
-				D2B5EF9B1885F4A1002A50A3 /* RCCloseView.h */,
-				D2B5EF9C1885F4A1002A50A3 /* RCCloseView.m */,
+				D277371F189AB01D0048F641 /* RCMessageView.h */,
+				D2773720189AB01D0048F641 /* RCMessageView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -982,6 +982,7 @@
 				D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */,
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
+				D2773721189AB01D0048F641 /* RCMessageView.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
 				D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */,
 				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
@@ -1031,7 +1032,6 @@
 				D27F4061186887A900104F1C /* RCNetworking.m in Sources */,
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
-				D2B5EF9D1885F4A1002A50A3 /* RCCloseView.m in Sources */,
 				D21718101857723700D687F8 /* FlipView.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */,

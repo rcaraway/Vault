@@ -10,10 +10,14 @@
 
 @interface UIColor (RCColors)
 
++(UIColor *)navColor;
+
 +(UIColor *)listBackground;
++(UIColor *)mainCellColor;
 +(UIColor *)dropDownColor;
 +(UIColor *)passcodeBackground;
 +(UIColor *)passcodeForeground;
+
 
 +(UIColor *)valtPurple;
 

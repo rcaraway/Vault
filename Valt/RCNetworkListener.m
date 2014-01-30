@@ -9,12 +9,11 @@
 #import "RCNetworkListener.h"
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
-#import "KGStatusBar.h"
 #import "NSIndexPath+VaultPaths.h"
 #import "RCRootViewController.h"
 #import "RCAppDelegate.h"
 #import "RCListViewController.h"
-
+#import "RCMessageView.h"
 
 
 @interface RCNetworkListener ()
@@ -75,11 +74,9 @@ static RCNetworkListener * sharedQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginLoggingIn) name:networkingDidBeginLoggingIn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSyncing) name:networkingDidBeginSyncing object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginFetching) name:networkingDidBeginFetching object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginDecrypting) name:networkingDidBeginDecrypting object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetch:) name:networkingDidFetchCredentials object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSync) name:networkingDidSync object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDecrypt) name:networkingDidDecrypt object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGrantPasswordAccess) name:passwordManagerAccessGranted object:nil];
@@ -114,7 +111,12 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didBeginExtendingPremium
 {
-    [KGStatusBar showWithStatus:@"Saving Subscription..."];
+    [self showMessage:@"Saving Subscription..." autoDismiss:NO];
+}
+
+-(void)showMessage:(NSString *)message autoDismiss:(BOOL)autoDismiss
+{
+    [[[APP rootController] messageView] showMessage:message autoDismiss:autoDismiss];
 }
 
 -(void)didGoPremium
@@ -125,29 +127,21 @@ static RCNetworkListener * sharedQueue;
 -(void)didBeginLoggingIn
 {
     if ([[RCPasswordManager defaultManager] accessGranted]) {
-        [KGStatusBar showWithStatus:@"Logging In..."];
+        [self showMessage:@"Logging In..." autoDismiss:NO];
     }
 }
 
 -(void)didBeginSyncing
 {
-    [KGStatusBar showWithStatus:@"Saving..."];
+    [self showMessage:@"Saving to Cloud..." autoDismiss:NO];
 }
 
 -(void)didBeginFetching
 {
-    [KGStatusBar showWithStatus:@"Syncing..."];
+    [self showMessage:@"Syncing..." autoDismiss:NO];
 }
 
--(void)didBeginDecrypting
-{
-    [KGStatusBar showWithStatus:@"Decrypting..."];
-}
 
--(void)didDecrypt
-{
-    [KGStatusBar showSuccessWithStatus:@"Synced."];
-}
 
 #pragma mark - Success Handling
 
@@ -175,7 +169,7 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didSync
 {
-    [KGStatusBar showSuccessWithStatus:@"Saved to Cloud."];
+    [self showMessage:@"Saved to Backup" autoDismiss:YES];
 }
 
 -(void)didGrantAccess
@@ -190,21 +184,8 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didDenyAccess
 {
-    [KGStatusBar showErrorWithStatus:@"Access Denied"];
+    [self showMessage:@"Access Denied" autoDismiss:YES];
 }
-
-
-#pragma mark - Failure Handling
-
--(void)didFailToGrantAccess
-{
-    [KGStatusBar showErrorWithStatus:@"Incorrect Password."];
-}
-
-
-
-
-
 
 
 

@@ -7,14 +7,12 @@
 //
 
 #import "RCRootViewController+searchSegue.h"
-#import "RCCloseView.h"
 #import "RCSearchViewController.h"
 #import "RCSingleViewController.h"
 #import "RCListViewController.h"
 #import "RCSearchBar.h"
 #import <objc/runtime.h>
 
-static void * DimViewKey;
 
 @implementation RCRootViewController (searchSegue)
 

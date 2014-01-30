@@ -20,20 +20,16 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-        separator.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:230.0/255.0 alpha:1];
+        separator.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
         self.backgroundColor = [UIColor listBackground];
-        self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+        self.contentView.backgroundColor = [UIColor mainCellColor];
         [self setupCustomLabel];
         [self addSubview:separator];
     }
     return self;
 }
 
--(void)layoutSubviews
-{
-    [super layoutSubviews];
-    [separator setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-}
+
 
 -(void)didMoveToSuperview
 {
@@ -71,7 +67,7 @@
 -(void)prepareForReuse
 {
     self.backgroundColor = [UIColor listBackground];
-    self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    self.contentView.backgroundColor = [UIColor mainCellColor];
     [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
 }
 
@@ -82,7 +78,7 @@
     [self.customLabel setNumberOfLines:1];
     UIFont * helvetica =[UIFont fontWithName:@"HelveticaNeue" size:20];
     [self.customLabel setFont:helvetica];
-    [self.customLabel setTextColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1]];
+    [self.customLabel setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
     [self.contentView addSubview:self.customLabel];
 }
 

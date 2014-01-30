@@ -34,7 +34,7 @@ static void * LatestPointKey;
         self.currentSideController = self.childViewControllers[0];
         [self.currentSideController removeFromParentViewController];
     }
-    [self setNeedsStatusBarAppearanceUpdate];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
         self.snapshotView.transform = tranform;
@@ -52,7 +52,7 @@ static void * LatestPointKey;
 -(void)closeMenu
 {
     self.currentSideController = self.listController;
-    [self.listController.view setFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
+    [self.listController.view setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20)];
     UIView * subSnapView = [self.listController.view snapshotViewAfterScreenUpdates:YES];
     [subSnapView setFrame:self.listController.view.frame];
     [self.snapshotView addSubview:subSnapView];
@@ -64,6 +64,7 @@ static void * LatestPointKey;
     } completion:^(BOOL finished) {
         [self.menuController removeFromParentViewController];
         [self.menuController.view removeFromSuperview];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         [self addChildViewController:self.currentSideController];
         [self.view addSubview:self.currentSideController.view];
         [self.view addSubview:self.navBar];
@@ -141,7 +142,7 @@ static void * LatestPointKey;
         [self.view addSubview:self.currentSideController.view];
         [self.view bringSubviewToFront:self.navBar];
         self.currentSideController = nil;
-        [self setNeedsStatusBarAppearanceUpdate];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         [self.menuController changeFeelgoodMessage];

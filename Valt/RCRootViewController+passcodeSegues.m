@@ -13,7 +13,7 @@
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
 #import "RCValtView.h"
-#import "RCCloseView.h"
+#import "RCMessageView.h"
 
 @implementation RCRootViewController (passcodeSegues)
 
@@ -21,9 +21,10 @@
 {
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
-    [[self listController].view setFrame:CGRectMake(0, 64, 320, [UIScreen mainScreen].bounds.size.height-64)];
+    [[self listController].view setFrame:CGRectMake(0, 20, 320, [UIScreen mainScreen].bounds.size.height-20)];
     [self.view insertSubview:[self listController].view belowSubview:[self passcodeController].view];
     [self.view insertSubview:self.navBar belowSubview:self.passcodeController.view];
+    [self.view insertSubview:self.messageView belowSubview:self.passcodeController.view];
     [self openUpPasscodeCompletion:^{
     }];
 }
@@ -39,18 +40,6 @@
     }];
 }
 
--(void)returnToPasscodeFromSearch
-{
-    [self addChildViewController:self.passcodeController];
-    [self.searchController removeFromParentViewController];
-    [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
-    }];
-    [self transitionBackToPasscodeCompletion:^{
-        [self.searchController.view removeFromSuperview];
-    }];
-}
-
-
 #pragma mark - Transition
 
 -(void)transitionBackToPasscodeCompletion:(void(^)())completion
@@ -58,7 +47,6 @@
     [self closePasscodeCompletion:^{
         [[[self passcodeController] passwordField] setText:@""];
         [UIView animateWithDuration:.23 animations:^{
-            [self setNeedsStatusBarAppearanceUpdate];
             [[[self passcodeController] fieldBackView] setAlpha:1];
             [[[self passcodeController] passwordField] becomeFirstResponder];
             if (![[RCNetworking sharedNetwork] loggedIn]){
@@ -70,33 +58,6 @@
                 completion();
         }];
     }];
-}
-
-
-#pragma mark - Close View Delegate
-
--(void)closeView:(RCCloseView *)closeView didFinishWithClosing:(BOOL)closing atOrigin:(CGFloat)xOrigin
-{
-    if (closing){
-        [self returnToPasscodeFromList];
-    }else{
-        [self openPasscodeFromOrigin:xOrigin];
-    }
-}
-
--(void)closeView:(RCCloseView *)closeView didChangeXOrigin:(CGFloat)xOrigin
-{
-    [self movePasscodeToXOrigin:xOrigin];
-}
-
--(void)closeViewDidBegin:(RCCloseView *)closeView
-{
-    
-}
-
--(void)closeViewDidTap:(RCCloseView *)closeView
-{
-    [self showPasscodeHint];
 }
 
 -(void)movePasscodeToXOrigin:(CGFloat)xOrigin
@@ -174,7 +135,7 @@
     view.layer.anchorPoint=CGPointMake(0, .5);
     view.center = CGPointMake(view.center.x - view.bounds.size.width/2.0f, view.center.y);
     [UIView animateWithDuration:.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-    [self setNeedsStatusBarAppearanceUpdate];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
@@ -197,6 +158,7 @@
     [UIView animateWithDuration:.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
         view.layer.transform =_3Dt;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     } completion:^(BOOL finished){
         if (finished) {
             view.layer.anchorPoint=CGPointMake(.5, .5);

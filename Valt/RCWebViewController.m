@@ -11,8 +11,10 @@
 #import "RCRootViewController.h"
 
 #import "RCRootViewController+WebSegues.h"
+#import "UIColor+RCColors.h"
 
 #import "LBActionSheet.h"
+#import "RCMessageView.h"
 
 #import "TWMessageBarManager.h"
 #import "RCPassword.h"
@@ -55,13 +57,29 @@
     [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
     [self.usernameField addTarget:self action:@selector(usernameTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.passwordButton addTarget:self action:@selector(passwordTapped) forControlEvents:UIControlEventTouchUpInside];
+    self.topView.backgroundColor = [UIColor navColor];
+    self.bottomView.backgroundColor = [UIColor navColor];
     [self loadPasswordRequest];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.topView.backgroundColor = [UIColor navColor];
+    self.titleLabel.backgroundColor = [UIColor navColor];
+    self.doneButton.backgroundColor = [UIColor navColor];
+    self.bottomView.backgroundColor = [UIColor navColor];
 }
 
 -(BOOL)shouldAutorotate
 {
     return NO;
 }
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
+}
+
 
 -(void)printURLLog
 {
@@ -167,20 +185,18 @@
 
 #pragma mark - Action Sheet
 
-
-
 -(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
 {
+    if (buttonIndex != actionSheet.numberOfButtons-1){
     if ([actionSheet.title isEqualToString:@"Copy to Clipboard:"]){
         UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        //TODO: add message for successful copy
-        if (buttonIndex != actionSheet.numberOfButtons-1){
-            [pb setString:[actionSheet buttonTitleAtIndex:buttonIndex]];
-        }
+        [pb setString:[actionSheet buttonTitleAtIndex:buttonIndex]];
+        [[[APP rootController] messageView] showMessage:@"Copied to Clipboard" autoDismiss:YES];
     }else{
-        //TODO: updated URL successfully
-        self.password.urlName = self.urlLabel.text;
-        [[RCPasswordManager defaultManager] updatePassword:self.password];
+            [[[APP rootController] messageView] showMessage:@"Updated URL" autoDismiss:YES];
+            self.password.urlName = self.urlLabel.text;
+            [[RCPasswordManager defaultManager] updatePassword:self.password];
+        }
     }
 }
 

@@ -89,15 +89,6 @@
 }
 
 
-#pragma mark - VC Transitions
-
--(void)willMoveToParentViewController:(UIViewController *)parent
-{
-    [parent.view addSubview:self.view];
-}
-
-
-
 #pragma mark - NSNotifications
 
 -(void)addNotifications

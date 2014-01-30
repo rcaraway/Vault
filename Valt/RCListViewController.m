@@ -166,6 +166,7 @@
     self.tableView = [[RCTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.tableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     self.tableView.allowsSelection = NO;
+    [self.tableView setContentInset:UIEdgeInsetsMake(44, 0, 0, 0)];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.alpha = 1;
     self.tableView.delegate = self;
@@ -175,6 +176,7 @@
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    NSLog(@"CONTENT OFFSET %f", self.tableView.contentOffset.y);
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
     [self.view addSubview:self.tableView];
 }

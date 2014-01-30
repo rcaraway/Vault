@@ -9,6 +9,7 @@
 #import "RCListGestureManager.h"
 
 
+
 typedef enum {
     RCListGestureManagerStateNone,
     RCListGestureManagerStateDragging,
@@ -19,6 +20,8 @@ typedef enum {
 
 #define PAN_COMMIT_LENGTH 70
 #define CELL_SNAPSHOT_TAG 100000
+
+#define TOP_INSET 44
 
 @interface RCListGestureManager () <UIGestureRecognizerDelegate>
 {
@@ -225,8 +228,8 @@ typedef enum {
             [self discardCellAtPendingPath];
         }
         [UIView animateWithDuration:.26 animations:^{
-           self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-           self.tableView.contentOffset = CGPointZero;
+           self.tableView.contentInset = UIEdgeInsetsMake(TOP_INSET, 0, 0, 0);
+            self.tableView.contentOffset = CGPointMake(0, -TOP_INSET);
         }];
     }
     self.state = RCListGestureManagerStateNone;
@@ -520,18 +523,17 @@ typedef enum {
 
 -(void)handlePendingRowsDuringScrolling
 {
-    if (self.tableView.contentOffset.y < 0){
+    if (self.tableView.contentOffset.y < -TOP_INSET){
         if (!self.pendingPath && self.state == RCListGestureManagerStateNone && !self.tableView.isDecelerating){
             self.state = RCListGestureManagerStateDragging;
-            self.pendingRowHeight = fabsf(self.tableView.contentOffset.y);
+            self.pendingRowHeight = fabsf(self.tableView.contentOffset.y+TOP_INSET);
             [self addRowToTop];
         }
     }
     if (self.pendingPath && self.state == RCListGestureManagerStateDragging){
-        self.pendingRowHeight += self.tableView.contentOffset.y * -1;
-        
+        self.pendingRowHeight += (self.tableView.contentOffset.y+TOP_INSET) * -1;
         [self.tableView reloadData];
-        [self.tableView setContentOffset:CGPointZero];
+        [self.tableView setContentOffset:CGPointMake(0, -TOP_INSET)];
     }
 }
 

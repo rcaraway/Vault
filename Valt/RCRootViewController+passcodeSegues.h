@@ -11,7 +11,6 @@
 @interface RCRootViewController (passcodeSegues)
 
 -(void)seguePasscodeToList;
--(void)returnToPasscodeFromSearch;
 -(void)returnToPasscodeFromList;
 
 -(void)showPasscodeHint;
