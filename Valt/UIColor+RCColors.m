@@ -38,7 +38,7 @@
 
 +(UIColor *)listBackground
 {
-    return [UIColor colorWithRed:227.0/255.0 green:229.0/255.0 blue:234.0/255.0 alpha:1];
+    return [UIColor colorWithWhite:.88 alpha:1];
 }
 
 +(UIColor *)dropDownColor
@@ -81,10 +81,6 @@
     return [UIColor colorWithRed:255.0/255.0 green:70.0/255.0 blue:0.0/255.0 alpha:1];
 }
 
-+(UIColor *)lockVaultColor
-{
-     return [UIColor colorWithRed:157.0/255.0 green:152.0/255.0 blue:0.0/255.0 alpha:1];
-}
 
 +(UIColor *)aboutColor
 {
@@ -98,7 +94,7 @@
 
 +(UIColor *)contactSupportColor
 {
-     return [UIColor colorWithRed:216.0/255.0 green:115.0/255.0 blue:166.0/255.0 alpha:1];
+    return [UIColor colorWithRed:157.0/255.0 green:152.0/255.0 blue:0.0/255.0 alpha:1];
 }
 
 

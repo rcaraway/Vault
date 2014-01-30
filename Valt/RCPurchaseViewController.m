@@ -137,7 +137,7 @@
 
 -(void)didTapLogin
 {
-    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login" textFields:YES delegate:self cancelButtonTitle:nil confirmButtonTitle:@"Create Account"];
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Login" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
     [self.alertView show];
 }
 

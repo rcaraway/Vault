@@ -44,7 +44,6 @@
 @property (nonatomic, strong) RCCredentialGestureManager * gestureManager;
 @property(nonatomic, strong) NSMutableArray * credentials;
 @property(nonatomic, strong) NSMutableArray * textFields;
-@property(nonatomic) NSInteger addCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
 
 @property (nonatomic, strong) id grabbedObject;
@@ -67,7 +66,6 @@
     if (self) {
         self.password = password;
         self.isTransitioningTo = YES;
-        self.addCellIndex = NSNotFound;
         self.dummyCellIndex = NSNotFound;
         self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
     }
@@ -197,14 +195,6 @@
         return 1;
     }
     NSInteger count = self.credentials.count;
-    if (count < 5){
-        count = 5;
-        self.addCellIndex = 4;
-    }else if (count == 6){
-        self.addCellIndex = 5;
-    }else{
-        self.addCellIndex = NSNotFound;
-    }
     return count;
 }
 
@@ -221,11 +211,7 @@
     }else{
         static NSString * cellId = @"DropDownCell";
         RCDropDownCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-        if (indexPath.row == self.addCellIndex){
-            [cell setAddMoreState];
-        }else{
-             [cell setTitle:object placeHolder:[self placeholderForIndexPath:indexPath]];
-        }
+         [cell setTitle:object placeHolder:[self placeholderForIndexPath:indexPath]];
         return cell;
     }
 }
@@ -242,15 +228,12 @@
 
 -(BOOL)gestureManagerShouldAllowEditingAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row >= 4){
-        return YES;
-    }
     return NO;
 }
 
 -(void)gestureManager:(RCCredentialGestureManager *)gestureManager needsNewRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.credentials addObject:@""];
+   
 }
 
 -(void)gestureManagerDidTapOutsideRows:(RCCredentialGestureManager *)manager
@@ -265,9 +248,6 @@
 
 -(BOOL)gestureManagerShouldAllowNewCellAtBottom:(RCCredentialGestureManager *)gestureManager
 {
-    if ([self.tableView numberOfRowsInSection:0] <= 6){
-        return YES;
-    }
     return NO;
 }
 
@@ -465,7 +445,7 @@
             return @"URL";
             break;
         default:
-            return [NSString stringWithFormat:@"More Notes %d", indexPath.row];
+            return [NSString stringWithFormat:@"Notes %d", indexPath.row];
             break;
     }
 }

@@ -28,7 +28,6 @@
 //Menu Items
 +(UIColor *)myValtColor;
 +(UIColor *)goPlatinumColor;
-+(UIColor *)lockVaultColor;
 +(UIColor *)aboutColor;
 +(UIColor *)tweetColor;
 +(UIColor *)contactSupportColor;

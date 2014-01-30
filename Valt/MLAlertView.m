@@ -109,22 +109,17 @@ static UIColor * successColor;
     }
     [UIView animateWithDuration:.3 animations:^{
         self.loader.alpha = 1;
-        self.messageView.alpha = 0;
         self.title = self.titleLabel.text;
-        self.buttonView.alpha = 0;
-        self.loginTextField.alpha = 0;
-        self.passwordTextField.alpha = 0;
+        self.buttonView.userInteractionEnabled = NO;
         self.titleLabel.text=text;
-        [self.titleBack setBackgroundColor:loadingColor];
         [self.loader startAnimating];
     }];
 }
 
 -(void)setupLoader
 {
-    self.loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [self.loader setColor:[UIColor purpleColor]];
-    [self.loader setCenter:CGPointMake(CGRectGetWidth(self.frame)/2.0, CGRectGetHeight(self.frame)/2.0)];
+    self.loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.loader setCenter:CGPointMake(CGRectGetWidth(self.frame)-20, 20)];
     [self.loader setAlpha:0];
     [self addSubview:self.loader];
 }
@@ -142,14 +137,23 @@ static UIColor * successColor;
 
 -(void)showFailWithTitle:(NSString *)title
 {
+    [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self setFrame:CGRectMake(self.frame.origin.x-10, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self setFrame:CGRectMake(self.frame.origin.x+20, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                [self setFrame:CGRectMake(self.frame.origin.x-10, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
+            } completion:^(BOOL finished) {
+            }];
+        }];
+    }];
     self.loader.alpha = 0;
     [self.loader stopAnimating];
-    [self.titleBack setBackgroundColor:failureColor];
-    self.loginTextField.alpha = 1;
-    self.passwordTextField.alpha = 1;
-    self.buttonView.alpha = 1;
+    self.buttonView.userInteractionEnabled = YES;
     self.titleLabel.text = title;
-    [self performSelector:@selector(showNormal) withObject:nil afterDelay:2];
+    [self performSelector:@selector(showNormal) withObject:nil afterDelay:1.5];
 }
 
 -(void)showNormal

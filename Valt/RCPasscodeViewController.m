@@ -22,6 +22,7 @@
 {
     BOOL isNewUser;
     NSString * confirmString;
+    NSString * loginPassword;
 }
 
 
@@ -119,11 +120,13 @@
 {
     NSString * message = notification.object;
     [self.alertView showFailWithTitle:[message capitalizedString]];
+    [self.alertView.loginTextField becomeFirstResponder];
 }
 
 -(void)didLogIn:(NSNotification *)notification
 {
     [self.alertView dismissWithSuccessTitle:@"Login Successful"];
+    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:loginPassword];
 }
 
 -(void)didDenyAccess
@@ -229,9 +232,9 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
     if (buttonIndex ==1){
-        [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
         [alertView loadWithText:@"Logging in"];
-        [self.view.window endEditing:YES];
+        loginPassword = password;
+        [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
     }
 }
 

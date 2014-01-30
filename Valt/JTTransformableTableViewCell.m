@@ -76,7 +76,7 @@
     }else{
         self.customLabel.text = @"Pull Apart to Add Item";
     }
-    
+    self.contentView.backgroundColor =[UIColor mainCellColor];
     self.customLabel.frame = labelRect;
     self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
@@ -172,7 +172,7 @@
         self.customLabel.textColor = [UIColor whiteColor];
         self.contentView.backgroundColor =         [UIColor colorWithRed:195.0/255.0 green:98.0/255.0 blue:240.0/255.0 alpha:1];
     }else{
-        self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+        self.contentView.backgroundColor =[UIColor mainCellColor];
     }
 
     self.imageView.frame = CGRectMake(10.0 + requiredLabelSize.width + 10.0,

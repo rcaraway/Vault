@@ -42,6 +42,7 @@
     self = [super initWithFrame:frame];
     if (self){
         self.shouldAllowMovement = YES;
+        self.extendedSize = NO;
     }
     return self;
 }
@@ -56,10 +57,19 @@
 -(void)setContentSize:(CGSize)contentSize
 {
     if (self.shouldAllowMovement){
-        [super setContentSize:contentSize];
+        CGFloat height = [[RCPasswordManager defaultManager] passwords].count * NORMAL_CELL_FINISHING_HEIGHT + 100;
+        if (_extendedSize){
+            height += 188;
+        }
+        [super setContentSize:CGSizeMake(self.frame.size.width, height)];         
     }
 }
 
+-(void)setExtendedSize:(BOOL)extendedSize
+{
+    _extendedSize = extendedSize;
+    [self setContentSize:CGSizeZero];
+}
 
 
 @end
@@ -127,20 +137,10 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Status Bar
-
--(UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleDefault;
-}
-
--(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationFade;
-}
 
 
-#pragma mark - NSNotifications
+
+#pragma mark - NSNotifications Event Handling
 
 -(void)addNotifications
 {
@@ -176,7 +176,6 @@
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    NSLog(@"CONTENT OFFSET %f", self.tableView.contentOffset.y);
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
     [self.view addSubview:self.tableView];
 }

@@ -29,7 +29,6 @@
 #define HOME @"My Valt"
 #define ABOUT_NAME @"About"
 #define FEEDBACK @"Contact Support"
-#define LOCK_NAME @"Lock your Valt"
 #define UPGRADE @"Go Platinum"
 #define RENEW @"Renew Platinum"
 #define SPREAD_VALT @"Tweet about Valt"
@@ -61,8 +60,6 @@
             color = [UIColor aboutColor];
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
             color = [UIColor contactSupportColor];
-        }else if ([self.textLabel.text isEqualToString:LOCK_NAME]){
-            color = [UIColor lockVaultColor];
         }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             color = [UIColor goPlatinumColor];
         }else{
@@ -76,8 +73,6 @@
             self.imageView.image = [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]];
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
             self.imageView.image = [[UIImage imageNamed:@"support1"] tintedIconWithColor:[UIColor contactSupportColor]];
-        }else if ([self.textLabel.text isEqualToString:LOCK_NAME]){
-            self.imageView.image = [[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor lockVaultColor]];
         }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             self.imageView.image = [[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]];
         }else{
@@ -170,9 +165,6 @@
     cell.backgroundColor = self.view.backgroundColor;
     cell.imageView.image = self.cellImages[indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
-    if ([self.cellNames[indexPath.row] isEqualToString:LOCK_NAME]){
-
-    }
 }
 
 
@@ -211,7 +203,6 @@
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum"];
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
-    }else if ([text isEqualToString:LOCK_NAME]){
     }else if ([text isEqualToString:FEEDBACK]){
         [[APP rootController] launchFeedback];
     }
@@ -222,7 +213,7 @@
 
 -(void)setupCellNames
 {
-    self.cellNames = [@[HOME, LOCK_NAME,ABOUT_NAME] mutableCopy];
+    self.cellNames = [@[HOME,ABOUT_NAME] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateNone){
         [self.cellNames insertObject:UPGRADE atIndex:1];
     }else if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
@@ -238,7 +229,7 @@
 
 -(void)setupCellImages
 {
-    self.cellImages = [@[[[UIImage imageNamed:@"valtSmall"] tintedImageWithColorOverlay:[UIColor myValtColor]],[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor lockVaultColor]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
+    self.cellImages = [@[[[UIImage imageNamed:@"valtSmall"] tintedImageWithColorOverlay:[UIColor myValtColor]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
         [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:1];
     }

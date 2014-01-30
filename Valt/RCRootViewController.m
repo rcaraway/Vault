@@ -154,16 +154,16 @@
 
 -(void)setupNavButtons
 {
-    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     self.searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.menuButton setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     self.lockButton= [UIButton buttonWithType:UIButtonTypeCustom];
     [self.lockButton setImage:[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     [self.searchButton setImage:[[UIImage imageNamed:@"search"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
-    [self.searchButton setFrame:CGRectMake(0, 0, 30, 44)];
-    [self.lockButton setFrame:CGRectMake(0, 0, 30, 44)];
-    [self.menuButton setFrame:CGRectMake(30, 0, 30, 44)];
+    [self.searchButton setFrame:CGRectMake(0, 0, 40, 44)];
+    [self.lockButton setFrame:CGRectMake(0, 0, 40, 44)];
+    [self.menuButton setFrame:CGRectMake(50, 0, 30, 44)];
     [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.searchButton addTarget:self action:@selector(searchTapped) forControlEvents:UIControlEventTouchUpInside];
