@@ -20,6 +20,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *monthLabel;
 @property (strong, nonatomic) IBOutlet UILabel *yearLabel;
 
+@property (strong, nonatomic) IBOutlet UIImageView *cloudImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *deviceImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *supportImageView;
+
+
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loader;
 
 @end

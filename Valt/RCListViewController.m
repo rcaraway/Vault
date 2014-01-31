@@ -175,7 +175,8 @@
     [self.tableView registerClass:[RCMainCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[JTPullDownTableViewCell class] forCellReuseIdentifier:@"PullDownTableViewCell"];
     [self.tableView registerClass:[JTUnfoldingTableViewCell class] forCellReuseIdentifier:@"UnfoldingTableViewCell"];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorColor = [UIColor colorWithWhite:.8 alpha:1];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
     [self.view addSubview:self.tableView];
 }

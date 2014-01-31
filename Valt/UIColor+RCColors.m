@@ -13,7 +13,7 @@
 
 +(UIColor *)navColor
 {
-    return [UIColor colorWithWhite:.97 alpha:1];
+    return [UIColor colorWithWhite:.982 alpha:1];
 }
 
 +(UIColor *)mainCellColor

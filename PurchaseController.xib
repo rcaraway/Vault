@@ -7,11 +7,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RCPurchaseViewController">
             <connections>
                 <outlet property="bannerView" destination="W67-9O-dgm" id="TzR-nB-8bg"/>
+                <outlet property="cloudImageView" destination="fMg-M9-WOE" id="XNB-K3-2T5"/>
+                <outlet property="deviceImageView" destination="KVa-3l-Rtg" id="LSr-7o-I6r"/>
                 <outlet property="loader" destination="hdk-hJ-WGx" id="wro-wp-YOC"/>
                 <outlet property="monthLabel" destination="VO5-t4-Dfg" id="14o-1J-LDb"/>
                 <outlet property="monthlyButton" destination="UIl-eP-oLc" id="sBJ-p9-CSs"/>
                 <outlet property="multiDeviceLabel" destination="Cjd-1d-T1l" id="rK0-Az-ELR"/>
                 <outlet property="restorePurchaseButton" destination="1sS-Ex-PEy" id="kGb-I2-LcB"/>
+                <outlet property="supportImageView" destination="G6L-J5-1ca" id="veb-tN-Kw5"/>
                 <outlet property="titleLabel" destination="Bp7-XX-gCn" id="NcF-Hz-0Yd"/>
                 <outlet property="view" destination="Gfv-6b-Ced" id="wro-cI-Sgf"/>
                 <outlet property="yearLabel" destination="KeZ-C1-LZl" id="oOe-cX-MDM"/>
@@ -23,22 +26,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Never worry about losing your data." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="Cjd-1d-T1l">
-                    <rect key="frame" x="82" y="240" width="218" height="50"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Never worry about losing your data." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="Cjd-1d-T1l">
+                    <rect key="frame" x="116" y="234" width="176" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.25065579379562042" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Access from anywhere whenever you need it." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="syv-FP-hDD">
-                    <rect key="frame" x="82" y="321" width="218" height="50"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Access from anywhere whenever you need it." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="190" translatesAutoresizingMaskIntoConstraints="NO" id="syv-FP-hDD">
+                    <rect key="frame" x="116" y="323" width="190" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.25065579380000003" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Get access to additional support features." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="bRl-7p-Ql5">
-                    <rect key="frame" x="82" y="409" width="218" height="50"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Get access to additional support features." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="bRl-7p-Ql5">
+                    <rect key="frame" x="116" y="415" width="177" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.25065579380000003" alpha="1" colorSpace="calibratedWhite"/>
@@ -70,21 +73,21 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$7.99 Yearly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="94" translatesAutoresizingMaskIntoConstraints="NO" id="KeZ-C1-LZl">
-                            <rect key="frame" x="178" y="114" width="94" height="60"/>
+                            <rect key="frame" x="181" y="113" width="94" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="23"/>
                             <color key="textColor" red="0.95343508359999996" green="0.97700095659999997" blue="0.75956352959999995" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIl-eP-oLc">
-                            <rect key="frame" x="27" y="114" width="126" height="60"/>
+                            <rect key="frame" x="28" y="114" width="126" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6r-XZ-AXm">
-                            <rect key="frame" x="163" y="114" width="126" height="60"/>
+                            <rect key="frame" x="167" y="114" width="126" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -105,26 +108,43 @@
                     <color key="backgroundColor" red="0.66380294699979658" green="0.23148470719812697" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Better Support" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVg-Vi-c8j">
-                    <rect key="frame" x="82" y="388" width="133" height="23"/>
+                    <rect key="frame" x="116" y="396" width="133" height="23"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Multi Device" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLL-1j-Zlh">
-                    <rect key="frame" x="82" y="303" width="133" height="21"/>
+                    <rect key="frame" x="116" y="306" width="133" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cloud backup" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4V-Yv-Jyc">
-                    <rect key="frame" x="82" y="222" width="133" height="23"/>
+                    <rect key="frame" x="116" y="216" width="133" height="23"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backup.png" translatesAutoresizingMaskIntoConstraints="NO" id="fMg-M9-WOE">
+                    <rect key="frame" x="28" y="216" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="multiDevice.png" translatesAutoresizingMaskIntoConstraints="NO" id="KVa-3l-Rtg">
+                    <rect key="frame" x="28" y="306" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="moreSupport.png" translatesAutoresizingMaskIntoConstraints="NO" id="G6L-J5-1ca">
+                    <rect key="frame" x="28" y="396" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="backup.png" width="64" height="64"/>
+        <image name="moreSupport.png" width="64" height="64"/>
+        <image name="multiDevice.png" width="64" height="64"/>
+    </resources>
 </document>

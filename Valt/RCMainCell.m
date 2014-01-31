@@ -11,7 +11,6 @@
 
 @implementation RCMainCell
 {
-    UIView * separator;
 }
 
 
@@ -19,22 +18,13 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-        separator.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
         self.backgroundColor = [UIColor listBackground];
         self.contentView.backgroundColor = [UIColor mainCellColor];
         [self setupCustomLabel];
-        [self addSubview:separator];
     }
     return self;
 }
 
-
-
--(void)didMoveToSuperview
-{
-    [separator setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-}
 
 -(void)setRedColored
 {

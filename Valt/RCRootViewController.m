@@ -144,31 +144,40 @@
     [item setTitle:@"Valt"];
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, 43.0f, self.navBar.frame.size.width, 1.0f);
-    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.95f
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.96f
                                                      alpha:1.0f].CGColor;
     [self.navBar.layer addSublayer:bottomBorder];
-    [self.navBar setBackgroundColor:[UIColor navColor]];
-    [self.navBar setTintColor:[UIColor navColor]];
+    self.navBar.translucent = NO;
+    [self.navBar setBarTintColor:[UIColor navColor]];
     [self.navBar pushNavigationItem:item animated:NO];
 }
 
 -(void)setupNavButtons
 {
-    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 88, 44)];
     self.searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.menuButton setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     self.lockButton= [UIButton buttonWithType:UIButtonTypeCustom];
     [self.lockButton setImage:[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     [self.searchButton setImage:[[UIImage imageNamed:@"search"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
-    [self.searchButton setFrame:CGRectMake(0, 0, 40, 44)];
-    [self.lockButton setFrame:CGRectMake(0, 0, 40, 44)];
-    [self.menuButton setFrame:CGRectMake(50, 0, 30, 44)];
+    [self.searchButton setFrame:CGRectMake(0, 0, 44, 44)];
+    [self.lockButton setFrame:CGRectMake(0, 0, 44, 44)];
+    [self.menuButton setFrame:CGRectMake(50, 0, 44, 44)];
+    [self.menuButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.searchButton setImageEdgeInsets:UIEdgeInsetsMake(11, 22, 11, 0)];
+    [self.lockButton setImageEdgeInsets:UIEdgeInsetsMake(11, 0, 11, 22)];
     [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.searchButton addTarget:self action:@selector(searchTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonView addSubview:self.searchButton];
     [self.buttonView addSubview:self.menuButton];
+}
+
+
+-(UILabel *)navLabelWithTitle:(NSString *)title
+{
+    
 }
 
 

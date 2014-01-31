@@ -124,6 +124,9 @@
 		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
 		D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */; };
 		D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */; };
+		D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */; };
+		D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */; };
+		D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */; };
 		D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2CA1271188EDA8B005B6867 /* checker@2x.jpg */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
@@ -327,6 +330,9 @@
 		D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passcodeSegues.m"; sourceTree = "<group>"; };
 		D2C65E2A1888600900649610 /* RCRootViewController+passwordSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+passwordSegues.h"; sourceTree = "<group>"; };
 		D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passwordSegues.m"; sourceTree = "<group>"; };
+		D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup@2x.png"; sourceTree = "<group>"; };
+		D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multiDevice@2x.png"; sourceTree = "<group>"; };
+		D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreSupport@2x.png"; sourceTree = "<group>"; };
 		D2CA1271188EDA8B005B6867 /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
@@ -744,6 +750,7 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D2C85EF5189BE7D300D4DFB1 /* Purchase */,
 				D25569621896BBC900F5525D /* MenuOg */,
 				D26D34A51892BE4200B6A6F0 /* key@2x.png */,
 				D26D34A71892BE4200B6A6F0 /* search@2x.png */,
@@ -806,6 +813,16 @@
 				D27F40801868F57300104F1C /* NSData+Base64.m */,
 			);
 			name = Base64;
+			sourceTree = "<group>";
+		};
+		D2C85EF5189BE7D300D4DFB1 /* Purchase */ = {
+			isa = PBXGroup;
+			children = (
+				D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */,
+				D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */,
+				D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */,
+			);
+			name = Purchase;
 			sourceTree = "<group>";
 		};
 		D2CEE434188823AA0094F321 /* Segue Categories */ = {
@@ -945,6 +962,9 @@
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D255696E1896C46700F5525D /* valtSmall@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
+				D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */,
+				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,
+				D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */,
 				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
