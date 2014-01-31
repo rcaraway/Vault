@@ -13,6 +13,7 @@
 -(void)shake;
 -(void)openWithCompletionBlock:(void(^)())completion;
 -(void)lockWithCompletionBlock:(void(^)())completion;
+-(void)openNotAnimated;
 
 @end
 

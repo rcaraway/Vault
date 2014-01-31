@@ -14,6 +14,6 @@
 -(void)dragMainToXOrigin:(CGFloat)xOrigin;
 -(void)closeMenu;
 -(void)goHome;
--(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title;
+-(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color;
 
 @end

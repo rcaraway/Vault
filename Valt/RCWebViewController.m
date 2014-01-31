@@ -100,7 +100,7 @@
 
 - (void)didReceiveMemoryWarning
 {
-    if (self.isViewLoaded && !self.view.window){
+    if (!self.parentViewController && self.isViewLoaded && !self.view.window){
         [self freeAllMemory];
     }
     [super didReceiveMemoryWarning];    
@@ -124,6 +124,7 @@
     self.urlLabel = nil;
     self.titleLabel = nil;
     self.loader = nil;
+    self.actionSheet = nil;
     self.view = nil;
 }
 
@@ -276,7 +277,7 @@
 
 -(void)tryToSubmitForm
 {
-    NSString *submit =@"var submits = document.querySelectorAll(\"input[type='submit']\"); for (var i = submits.length >>> 0; i--;){ if (submits[i].value.toLowerCase().indexOf(\"submit\") != -1 || submits[i].value.toLowerCase().indexOf(\"login\") != -1 || submits[i].value.toLowerCase().indexOf(\"log in\") != -1 || submits[i].value.toLowerCase().indexOf(\"sign in\") != -1){submits[i].click();}}";
+    NSString *submit =@"var submits = document.querySelectorAll(\"input[type='submit']\"); for (var i = submits.length >>> 0; i--;){ if (submits[i].value.toLowerCase().indexOf(\"submit\") != -1 || submits[i].value.toLowerCase().indexOf(\"login\") != -1 || submits[i].value.toLowerCase().indexOf(\"log in\") != -1 || submits[i].value.toLowerCase().indexOf(\"sign in\") != -1 || submits[i].value.toLowerCase().indexOf(\"log on\") != -1){submits[i].click();}}";
     [self.webView stringByEvaluatingJavaScriptFromString:submit];
 }
 

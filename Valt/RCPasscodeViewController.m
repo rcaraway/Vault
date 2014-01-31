@@ -55,17 +55,43 @@
     [self setupFieldBackView];
     [self setupValtView];
     [self setupNumberField];
-//    if (![[RCNetworking sharedNetwork] loggedIn]){
+    if (![[RCNetworking sharedNetwork] loggedIn]){
         [self setupLoginButton];
-//    }
+    }
     [self addNotifications];
     [self addMotionEffects];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.opened){
+        [self setToOpenState];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    if (self.opened){
+        [self freeAllMemory];
+    }
+}
+
+-(void)dealloc
+{
+    [self freeAllMemory];
+}
+
+-(void)freeAllMemory
+{
     [self removeNotifications];
+    self.fieldBackView = nil;
+    self.valtView = nil;
+    self.passwordField = nil;
+    self.loginButton = nil;
+    self.alertView = nil;
+    self.view = nil;
 }
 
 #pragma mark - Status Bar
@@ -179,7 +205,9 @@
     self.passwordField.returnKeyType = UIReturnKeyDone;
     [self.passwordField setTextColor:[UIColor whiteColor]];
     self.passwordField.secureTextEntry = YES;
-    [self.passwordField becomeFirstResponder];
+    if (!self.opened){
+         [self.passwordField becomeFirstResponder];
+    }
     [self.fieldBackView addSubview:self.passwordField];
 }
 
@@ -251,6 +279,22 @@
 }
 
 #pragma mark - State Handling
+
+-(void)setToOpenState
+{
+    UIView * view = self.view;
+    view.layer.anchorPoint=CGPointMake(0, .5);
+    view.center = CGPointMake(0, view.center.y);
+    view.transform = CGAffineTransformMakeTranslation(0,0);
+    CATransform3D _3Dt = CATransform3DIdentity;
+    _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
+    _3Dt.m34 = 0.001f;
+    _3Dt.m14 = -0.0015f;
+    view.layer.transform =_3Dt;
+    self.fieldBackView.alpha = 0;
+    self.loginButton.alpha = 0;
+    [self.valtView openNotAnimated];
+}
 
 -(void)didTapButton
 {

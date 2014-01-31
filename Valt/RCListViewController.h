@@ -14,7 +14,7 @@
 @class RCTableView;
 @class RCListGestureManager;
 
-@interface RCListViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RCListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) RCTableView * tableView;
 @property(nonatomic, strong) RCListGestureManager * gestureManager;

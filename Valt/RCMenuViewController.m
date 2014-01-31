@@ -105,8 +105,9 @@
 
 @end
 
-@implementation RCMenuViewController
 
+
+@implementation RCMenuViewController
 
 #pragma mark - View LifeCycle
 
@@ -124,19 +125,19 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if (!self.parentViewController && self.isViewLoaded && !self.view.window){
+        [self freeAllMemory];
+    }
 }
 
-#pragma mark - Settings
-
--(BOOL)prefersStatusBarHidden
+-(void)freeAllMemory
 {
-    return YES;
-}
-
--(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationNone;
+    self.tableView = nil;
+    self.feelgoodButton = nil;
+    self.cellImages = nil;
+    self.cellNames = nil;
+    self.tweetController = nil;
+    self.view = nil;
 }
 
 
@@ -165,6 +166,23 @@
     cell.backgroundColor = self.view.backgroundColor;
     cell.imageView.image = self.cellImages[indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
+    if ([self.cellNames[indexPath.row] isEqualToString:UPGRADE] || [self.cellNames[indexPath.row] isEqualToString:RENEW]){
+            UIInterpolatingMotionEffect *verticalMotionEffect =
+            [[UIInterpolatingMotionEffect alloc]
+             initWithKeyPath:@"center.y"
+             type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            verticalMotionEffect.minimumRelativeValue = @(-5);
+            verticalMotionEffect.maximumRelativeValue = @(5);
+            UIInterpolatingMotionEffect *horizontalMotionEffect =
+            [[UIInterpolatingMotionEffect alloc]
+             initWithKeyPath:@"center.x"
+             type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            horizontalMotionEffect.minimumRelativeValue = @(-5);
+            horizontalMotionEffect.maximumRelativeValue = @(5);
+            UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+            group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+            [cell.imageView addMotionEffect:group];
+    }
 }
 
 
@@ -198,9 +216,9 @@
         [[APP rootController] closeMenu];
     }
     else if ([text isEqualToString:ABOUT_NAME]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] aboutController] title:@"About"];
+        [[APP rootController] closeToNewViewController:[[APP rootController] aboutController] title:@"About" color:[UIColor aboutColor]];
     }else if ([text isEqualToString:UPGRADE]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum"];
+        [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
     }else if ([text isEqualToString:FEEDBACK]){

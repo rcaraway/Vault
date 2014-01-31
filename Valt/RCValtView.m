@@ -71,6 +71,12 @@
     }];
 }
 
+-(void)openNotAnimated
+{
+    self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
+    self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
+}
+
 -(void)lockWithCompletionBlock:(void(^)())completion
 {
     [UIView animateWithDuration:.5 animations:^{
@@ -95,6 +101,7 @@
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
+    [self.layer removeAllAnimations];
     if (open){
         doneBlock();
     }else{

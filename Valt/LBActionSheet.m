@@ -208,6 +208,7 @@ static UIWindow* blockWindow = nil;
 
 -(void)tappedDimView
 {
+    [self.delegate actionSheet:self clickedButtonAtIndex:self.cancelButtonIndex];
     [self _dismiss:YES completion:^(BOOL finished) {
     }];
 }

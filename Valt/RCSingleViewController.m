@@ -96,41 +96,21 @@
     [self setAllTextFieldDelegates];
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
-
-#pragma mark - Status Bar
-
--(UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
--(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationSlide;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-
--(void)launchKeyboardIfNeeded
-{
-    if (self.credentials.count == 0 || (self.credentials.count > 0 && [self.credentials[0] isEqualToString:@""])){
-        RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        [cell.textField becomeFirstResponder];
+    if (!self.parentViewController && self.isViewLoaded && !self.view.window){
+        [self freeAllMemory];
     }
 }
+
+-(void)freeAllMemory
+{
+    self.tableView = nil;
+    self.gestureManager = nil;
+    self.view = nil;
+}
+
 
 
 #pragma mark - View Setup
@@ -174,13 +154,13 @@
     }
 }
 
-
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView.contentOffset.y <= - 60){
          [[APP rootController] segueSingleToList];
     }
 }
+
 
 #pragma mark - TableView Delegate/DataSource
 
@@ -268,6 +248,14 @@
 
 #pragma mark - State Updating/Handling
 
+-(void)launchKeyboardIfNeeded
+{
+    if (self.credentials.count == 0 || (self.credentials.count > 0 && [self.credentials[0] isEqualToString:@""])){
+        RCTitleViewCell * cell = (RCTitleViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [cell.textField becomeFirstResponder];
+    }
+}
+
 -(void)publishChangesToPassword
 {
     for (int i = 0; i < self.credentials.count; i++) {
@@ -288,18 +276,6 @@
     if (dataChanged && ![self textfieldsEmpty]){
         [[RCNetworking sharedNetwork] sync];
     }
-}
-
--(BOOL)textfieldsEmpty
-{
-    BOOL empty = YES;
-    for (UITextField * tf in self.textFields) {
-        if (tf.text.length > 0){
-            empty = NO;
-            break;
-        }
-    }
-    return empty;
 }
 
 -(void)setAllTextFieldDelegates
@@ -418,7 +394,20 @@
     }
 }
 
-#pragma mark - Table Convenience
+
+#pragma mark - Convenience
+
+-(BOOL)textfieldsEmpty
+{
+    BOOL empty = YES;
+    for (UITextField * tf in self.textFields) {
+        if (tf.text.length > 0){
+            empty = NO;
+            break;
+        }
+    }
+    return empty;
+}
 
 -(NSString *)stringForIndexPath:(NSIndexPath *)indexPath
 {

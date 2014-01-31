@@ -43,6 +43,17 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    if (!self.parentViewController && self.isViewLoaded && !self.view.window){
+        [self freeAllMemory];
+    }
+}
+
+-(void)freeAllMemory
+{
+    self.tableView = nil;
+    self.searchFilter = nil;
+    self.allTitles = nil;
+    self.view = nil;
 }
 
 -(void)setupTableView

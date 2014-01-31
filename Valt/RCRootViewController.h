@@ -51,6 +51,6 @@
 
 
 -(void)setNavBarMain;
--(void)setNavBarAlternateWithTitle:(NSString *)title;
+-(void)setNavBarAlternateWithTitle:(NSString *)title color:(UIColor *)color;
 
 @end

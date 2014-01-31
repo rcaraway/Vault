@@ -30,12 +30,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
     [self setupBannerButtons];
     self.monthlyButton.alpha = 0;
     self.yearlyButton.alpha = 0;
     self.yearLabel.alpha = 0;
     self.monthLabel.alpha = 0;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadProducts) name:purchaseDidLoadProducts object:nil];
     [self.bannerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"checker.jpg"]]];
     [self.cancelButton addTarget:self action:@selector(didTapCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.monthlyButton addTarget:self action:@selector(didTapMonthlyPurchase) forControlEvents:UIControlEventTouchUpInside];
@@ -83,48 +83,37 @@
     return NO;
 }
 
--(void)setupBannerLabels
-{
-    NSString * month = [NSString stringWithFormat:@"%@ Monthly", [[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]];
-    NSString * year = [NSString stringWithFormat:@"%@ Yearly",  [[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]];
-    NSMutableAttributedString * monthString = [[NSMutableAttributedString alloc] initWithString:month];
-    NSMutableAttributedString * yearString = [[NSMutableAttributedString alloc] initWithString:year];
-    NSDictionary * atts1 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:23]};
-    NSDictionary * atts2 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:16]};
-    [monthString addAttributes:atts1 range:[month rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]]];
-    [monthString addAttributes:atts2 range:[month rangeOfString:@"Monthly"]];
-    [yearString addAttributes:atts1 range:[year rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]]];
-    [yearString addAttributes:atts2 range:[year rangeOfString:@"Yearly"]];
-    self.monthLabel.attributedText = monthString;
-    self.yearLabel.attributedText = yearString;
-}
-
--(void)addMotionEffects
-{
-    UIInterpolatingMotionEffect *verticalMotionEffect =
-    [[UIInterpolatingMotionEffect alloc]
-     initWithKeyPath:@"center.y"
-     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    verticalMotionEffect.minimumRelativeValue = @(-10);
-    verticalMotionEffect.maximumRelativeValue = @(10);
-    UIInterpolatingMotionEffect *horizontalMotionEffect =
-    [[UIInterpolatingMotionEffect alloc]
-     initWithKeyPath:@"center.x"
-     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    horizontalMotionEffect.minimumRelativeValue = @(-10);
-    horizontalMotionEffect.maximumRelativeValue = @(10);
-    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
-    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
-    [self.monthlyButton addMotionEffect:group];
-    [self.yearlyButton addMotionEffect:group];
-    [self.monthLabel addMotionEffect:group];
-    [self.yearLabel addMotionEffect:group];
-}
-
 - (void)didReceiveMemoryWarning
 {
-    [self removeNotifications];
+    if (!self.parentViewController && self.isViewLoaded && !self.view.window){
+        [self freeAllMemory];
+    }
     [super didReceiveMemoryWarning];
+}
+
+-(void)freeAllMemory
+{
+    [self removeNotifications];
+    self.titleLabel = nil;
+    self.monthLabel = nil;
+    self.monthlyButton = nil;
+    self.yearLabel = nil;
+    self.yearlyButton =nil;
+    self.multiDeviceLabel = nil;
+    self.restorePurchaseButton = nil;
+    self.cancelButton = nil;
+    self.bannerView = nil;
+    self.cloudImageView = nil;
+    self.deviceImageView = nil;
+    self.supportImageView = nil;
+    self.alertView = nil;
+    self.loader = nil;
+    self.view = nil;
+}
+
+-(void)dealloc
+{
+    [self freeAllMemory];
 }
 
 
@@ -190,11 +179,12 @@
 
 -(void)addNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadProducts) name:purchaseDidLoadProducts object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSignup) name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailSignup:) name:networkingDidFailToSignup object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSigningUp) name:networkingDidBeginSigningUp object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogin) name:networkingDidLogin object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogin) name:networkingDidFailToLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToPurchase) name:purchaserDidFail object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayMonthly object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayYearly object:nil];
@@ -202,6 +192,12 @@
 
 -(void)removeNotifications
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaseDidLoadProducts object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidLogin object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToLogin object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidFail object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayMonthly object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayYearly object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidBeginSigningUp object:nil];
@@ -266,6 +262,47 @@
     [self.alertView showFailWithTitle:message];
 }
 
+
+#pragma mark - View setup
+
+-(void)setupBannerLabels
+{
+    NSString * month = [NSString stringWithFormat:@"%@ Monthly", [[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]];
+    NSString * year = [NSString stringWithFormat:@"%@ Yearly",  [[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]];
+    NSMutableAttributedString * monthString = [[NSMutableAttributedString alloc] initWithString:month];
+    NSMutableAttributedString * yearString = [[NSMutableAttributedString alloc] initWithString:year];
+    NSDictionary * atts1 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:23]};
+    NSDictionary * atts2 = @{NSFontAttributeName: [UIFont fontWithName:@"GillSans" size:16]};
+    [monthString addAttributes:atts1 range:[month rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForMonthly]]];
+    [monthString addAttributes:atts2 range:[month rangeOfString:@"Monthly"]];
+    [yearString addAttributes:atts1 range:[year rangeOfString:[[RCInAppPurchaser sharePurchaser] localizedPriceForYearly]]];
+    [yearString addAttributes:atts2 range:[year rangeOfString:@"Yearly"]];
+    self.monthLabel.attributedText = monthString;
+    self.yearLabel.attributedText = yearString;
+}
+
+-(void)addMotionEffects
+{
+    UIInterpolatingMotionEffect *verticalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.y"
+     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    verticalMotionEffect.minimumRelativeValue = @(-10);
+    verticalMotionEffect.maximumRelativeValue = @(10);
+    UIInterpolatingMotionEffect *horizontalMotionEffect =
+    [[UIInterpolatingMotionEffect alloc]
+     initWithKeyPath:@"center.x"
+     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    horizontalMotionEffect.minimumRelativeValue = @(-10);
+    horizontalMotionEffect.maximumRelativeValue = @(10);
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    [self.monthlyButton addMotionEffect:group];
+    [self.yearlyButton addMotionEffect:group];
+    [self.monthLabel addMotionEffect:group];
+    [self.yearLabel addMotionEffect:group];
+}
+
 #pragma mark - Alert View
 
 -(void)showSignup
@@ -299,6 +336,8 @@
 }
 
 
+#pragma mark - Actions / State Handling
+
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
     [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
@@ -316,6 +355,9 @@
         [self.alertView showFailWithTitle:@"Invalid Email"];
     }
 }
+
+
+#pragma mark - Convenience 
 
 -(BOOL)isValidEmail
 {

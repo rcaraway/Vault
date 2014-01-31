@@ -8,11 +8,21 @@
 
 #import "RCMainCell.h"
 #import "UIColor+RCColors.h"
+#import "UIImage+memoIcons.h"
+
+static UIImage * deleteIcon;
+static UIImage * loginIcon;
 
 @implementation RCMainCell
 {
 }
 
+
++(void)initialize
+{
+    deleteIcon = [UIImage imageNamed:@"cross"];
+    loginIcon = [UIImage imageNamed:@"login"];
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -21,6 +31,7 @@
         self.backgroundColor = [UIColor listBackground];
         self.contentView.backgroundColor = [UIColor mainCellColor];
         [self setupCustomLabel];
+        [self setupIconView];
     }
     return self;
 }
@@ -45,6 +56,28 @@
     self.contentView.backgroundColor = [UIColor browserGreen];
     self.customLabel.backgroundColor = [UIColor browserGreen];
     self.backgroundColor = [UIColor browserGreen];
+}
+
+-(void)showLoginIconWithScale:(CGFloat)scale translation:(CGFloat)translation
+{
+    self.iconView.alpha = 1;
+    if (scale ==1 ){
+        self.iconView.image = [loginIcon tintedIconWithColor:[UIColor whiteColor]];
+    }else
+        self.iconView.image = loginIcon;
+    self.iconView.transform = CGAffineTransformMakeScale(scale, scale);
+    [self.iconView setCenter:CGPointMake(0+translation/2.0, self.frame.size.height/2.0)];
+}
+
+-(void)showDeleteIconWithScale:(CGFloat)scale translation:(CGFloat)translation
+{
+    self.iconView.alpha = 1;
+    if (scale ==1 ){
+        self.iconView.image = [deleteIcon tintedIconWithColor:[UIColor whiteColor]];
+    }else
+        self.iconView.image = deleteIcon;
+    self.iconView.transform = CGAffineTransformMakeScale(scale, scale);
+    [self.iconView setCenter:CGPointMake(self.frame.size.width  - fabsf(translation)/2.0, self.frame.size.height/2.0)];
 }
 
 -(void)removeFocus
@@ -72,5 +105,12 @@
     [self.contentView addSubview:self.customLabel];
 }
 
+-(void)setupIconView
+{
+    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    self.iconView.image = loginIcon;
+    self.iconView.alpha = 0;
+    [self insertSubview:self.iconView aboveSubview:self.contentView];
+}
 
 @end

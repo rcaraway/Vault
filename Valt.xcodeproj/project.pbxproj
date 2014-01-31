@@ -127,6 +127,8 @@
 		D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */; };
 		D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */; };
 		D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */; };
+		D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F00189C41CD00D4DFB1 /* cross@2x.png */; };
+		D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F02189C41F600D4DFB1 /* login@2x.png */; };
 		D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2CA1271188EDA8B005B6867 /* checker@2x.jpg */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
@@ -333,6 +335,8 @@
 		D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup@2x.png"; sourceTree = "<group>"; };
 		D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multiDevice@2x.png"; sourceTree = "<group>"; };
 		D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreSupport@2x.png"; sourceTree = "<group>"; };
+		D2C85F00189C41CD00D4DFB1 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		D2C85F02189C41F600D4DFB1 /* login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login@2x.png"; sourceTree = "<group>"; };
 		D2CA1271188EDA8B005B6867 /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
@@ -750,6 +754,8 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D2C85F00189C41CD00D4DFB1 /* cross@2x.png */,
+				D2C85F02189C41F600D4DFB1 /* login@2x.png */,
 				D2C85EF5189BE7D300D4DFB1 /* Purchase */,
 				D25569621896BBC900F5525D /* MenuOg */,
 				D26D34A51892BE4200B6A6F0 /* key@2x.png */,
@@ -961,6 +967,7 @@
 				D2254E5A18648502003590AF /* icon-info.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D255696E1896C46700F5525D /* valtSmall@2x.png in Resources */,
+				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
 				D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */,
 				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,
@@ -968,6 +975,7 @@
 				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
+				D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */,
 				D255696C1896BCD800F5525D /* support1@2x.png in Resources */,
 				D2660B6E1884959000E1B964 /* vault.png in Resources */,
 				D255696A1896BCA200F5525D /* up@2x.png in Resources */,

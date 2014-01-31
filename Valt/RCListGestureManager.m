@@ -7,7 +7,7 @@
 //
 
 #import "RCListGestureManager.h"
-
+#import "RCMainCell.h"
 
 
 typedef enum {
@@ -430,14 +430,16 @@ typedef enum {
 {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
-        UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        RCMainCell * cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [UIView animateWithDuration:.2 animations:^{
                 if (translation.x > 0){
                     self.panState = RCListGestureManagerPanStateRight;
                     [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, self.tableView.frame.size.width-translation.x, 0)];
+                    cell.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, cell.iconView.center.y);
                 }else{
                     self.panState = RCListGestureManagerPanStateLeft;
                     [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, -(self.tableView.frame.size.width + translation.x), 0)];
+                    cell.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, cell.iconView.center.y);
                 }
             } completion:^(BOOL finished) {
                 [self.delegate gestureManager:self didFinishWithState:self.panState forIndexPath:indexPath];
@@ -453,8 +455,14 @@ typedef enum {
 
 -(void)resetCellToCenterAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    RCMainCell *cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [UIView animateWithDuration:.22 animations:^{
+            cell.iconView.transform = CGAffineTransformMakeScale(0, 0);
+        if (cell.contentView.bounds.origin.x > cell.contentView.frame.origin.x){
+            cell.iconView.center = CGPointMake(cell.frame.size.width, cell.iconView.center.y);
+        }else{
+            cell.iconView.center = CGPointMake(0, cell.iconView.center.y);
+        }
         cell.contentView.frame = cell.contentView.bounds;
     }];
 }
@@ -490,8 +498,14 @@ typedef enum {
 
 -(void)translateCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    RCMainCell *cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     CGPoint translation = [self.panGesture translationInView:self.tableView];
+    CGFloat fraction =  fminf(fabsf((translation.x)/PAN_COMMIT_LENGTH), 1.0);
+    if (translation.x >= 0){
+        [cell showLoginIconWithScale:fraction translation:translation.x];
+    }else{
+        [cell showDeleteIconWithScale:fraction translation:translation.x];
+    }
     cell.contentView.frame = CGRectOffset(cell.contentView.bounds, translation.x, 0);
 }
 

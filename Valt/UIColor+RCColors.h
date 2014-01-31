@@ -18,8 +18,8 @@
 +(UIColor *)passcodeBackground;
 +(UIColor *)passcodeForeground;
 
-
 +(UIColor *)valtPurple;
+
 
 //Cell State
 +(UIColor *)browserGreen;

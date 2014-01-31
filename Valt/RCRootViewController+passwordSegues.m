@@ -57,6 +57,7 @@ static void * ContentSizeKey;
 
 -(void)transitionToSingleWithNewCellAtLocation:(CGPoint)location
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     CGRect ogRect = self.singleController.view.frame;
     CGRect bottomRect = [self.listController.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:[self.listController.tableView numberOfRowsInSection:0]-1 inSection:0]];
     CGRect adjustRect = CGRectMake(bottomRect.origin.x, bottomRect.origin.y - self.listController.tableView.contentOffset.y, bottomRect.size.width, bottomRect.size.height);
@@ -91,7 +92,9 @@ static void * ContentSizeKey;
             [cell setPurpleColoed];
             [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
             [self.singleController setAllTextFieldDelegates];
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             [cell.textField becomeFirstResponder];
+
         }completion:^(BOOL finished) {
         }];
     }];
@@ -109,6 +112,7 @@ static void * ContentSizeKey;
 
 -(void)transitionFromListToSingleWithPassword:(RCPassword *)password
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     NSInteger index =[[[RCPasswordManager defaultManager] passwords] indexOfObject:password];
     self.singleController.view.backgroundColor = [UIColor clearColor];
     CGRect cellRect = [self rectForCellAtIndex:index];
@@ -133,6 +137,7 @@ static void * ContentSizeKey;
         [self.singleController.tableView setFrame:originalRect];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setPurpleColoed];
         UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         [field becomeFirstResponder];
     }completion:^(BOOL finished) {
     }];
@@ -168,6 +173,7 @@ static void * ContentSizeKey;
 
 -(void)transitionPullUpFromSingleToList
 {
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     NSIndexPath * indexPath = [self.listController.viewPath copy];
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
@@ -190,11 +196,13 @@ static void * ContentSizeKey;
     }completion:^(BOOL finished) {
         [self.singleController.view removeFromSuperview];
         [self performSelector:@selector(removeCellIfNeeded) withObject:nil afterDelay:.05];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
 -(void)transitionNormallyFromSingleToList
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     NSIndexPath * indexPath = [self.listController.viewPath copy];
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
@@ -218,6 +226,7 @@ static void * ContentSizeKey;
         self.singleController.view.alpha = 0;
         [self.singleController.view removeFromSuperview];
         [self performSelector:@selector(removeCellIfNeeded) withObject:nil afterDelay:.05];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 

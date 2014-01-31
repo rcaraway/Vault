@@ -11,6 +11,14 @@
 @implementation UIColor (RCColors)
 
 
+
++(UIColor *)valtPurple
+{
+    return [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
+}
+
+
+
 +(UIColor *)navColor
 {
     return [UIColor colorWithWhite:.982 alpha:1];
@@ -31,10 +39,6 @@
     return [UIColor colorWithWhite:.3 alpha:1];
 }
 
-+(UIColor *)valtPurple
-{
-    return [UIColor colorWithRed:178.0/255.0 green:103.0/255.0 blue:250.0/255.0 alpha:1];
-}
 
 +(UIColor *)listBackground
 {

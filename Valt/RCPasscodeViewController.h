@@ -17,6 +17,9 @@
 @property(nonatomic, strong) UITextField * passwordField;
 @property(nonatomic, strong) UIButton * loginButton;
 
+@property (nonatomic) BOOL opened;
+-(void)freeAllMemory;
+
 -(id)initWithNewUser:(BOOL)newUser;
 
 @end

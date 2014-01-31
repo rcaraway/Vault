@@ -43,8 +43,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87332589285714279" green="0.86106185979694883" blue="0.84697348681195095" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
-                            <color key="textColor" red="0.24966119260204078" green="0.24966119260204078" blue="0.24966119260204078" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="18"/>
+                            <color key="textColor" red="0.40397799744897955" green="0.40397799744897955" blue="0.40397799744897955" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsb-Sg-9Zx">
@@ -105,7 +105,7 @@
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Valt is proudly made in New Orleans by Rob Caraway" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="221" translatesAutoresizingMaskIntoConstraints="NO" id="ylx-OO-Ols">
                             <rect key="frame" x="50" y="17" width="221" height="88"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="25"/>
+                            <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="25"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>

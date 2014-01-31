@@ -100,6 +100,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.addingCellIndex = NSNotFound;
+        self.dummyCellIndex = NSNotFound;
     }
     return self;
 }
@@ -110,12 +112,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.addingCellIndex = NSNotFound;
-    self.dummyCellIndex = NSNotFound;
     [self setupTableView];
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor listBackground];
-    
     [self addNotifications];
 }
 
@@ -131,13 +130,24 @@
 
 - (void)didReceiveMemoryWarning
 {
-    if (self.isViewLoaded && !self.view.window){
-        [self removeNotifications];
+    if (self.isViewLoaded && self.parentViewController == nil && !self.view.window){
+        [self freeAllMemory];
     }
     [super didReceiveMemoryWarning];
 }
 
+-(void)freeAllMemory
+{
+    [self removeNotifications];
+    self.tableView = nil;
+    self.gestureManager = nil;
+    self.view = nil;
+}
 
+-(void)dealloc
+{
+    [self freeAllMemory];
+}
 
 
 #pragma mark - NSNotifications Event Handling

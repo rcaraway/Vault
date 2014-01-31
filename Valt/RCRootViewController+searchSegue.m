@@ -21,6 +21,7 @@
 
 -(void)segueListToSearch
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
     [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, 0, 44)];
     [self addChildViewController:self.searchController];
@@ -36,11 +37,13 @@
         self.navBar.alpha = 1;
         self.listController.view.alpha = 1;
         [self.searchBar.searchField becomeFirstResponder];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
 -(void)segueSearchToList
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.listController];
     [self.searchController removeFromParentViewController];
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
@@ -54,6 +57,7 @@
         [self.searchBar removeFromSuperview];
         self.searchController.view.alpha = 1;
         self.searchBar.alpha = 1;
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 

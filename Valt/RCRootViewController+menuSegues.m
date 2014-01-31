@@ -11,6 +11,9 @@
 #import "RCMenuViewController.h"
 #import "RCListGestureManager.h"
 #import "UIView+QuartzEffects.h"
+#import "RCPurchaseViewController.h"
+#import "RCAboutViewController.h"
+#import "UIColor+RCColors.h"
 #import <objc/runtime.h>
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -23,6 +26,7 @@ static void * LatestPointKey;
 
 -(void)segueToMenu
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     if (!self.menuController){
         self.menuController = [[RCMenuViewController  alloc] initWithNibName:nil bundle:nil];
     }
@@ -35,10 +39,11 @@ static void * LatestPointKey;
         [self.currentSideController removeFromParentViewController];
     }
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
         self.snapshotView.transform = tranform;
     } completion:^(BOOL finished) {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
@@ -51,6 +56,7 @@ static void * LatestPointKey;
 
 -(void)closeMenu
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     self.currentSideController = self.listController;
     [self.listController.view setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20)];
     UIView * subSnapView = [self.listController.view snapshotViewAfterScreenUpdates:YES];
@@ -59,7 +65,7 @@ static void * LatestPointKey;
     [self setNavBarMain];;
     [self.snapshotView addSubview:self.navBar];
     
-    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.snapshotView.transform =CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.menuController removeFromParentViewController];
@@ -73,11 +79,13 @@ static void * LatestPointKey;
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         [self.menuController changeFeelgoodMessage];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
 -(void)goHome
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     UIViewController * current = self.childViewControllers[0];
     [current removeFromParentViewController];
     [self addChildViewController:self.listController];
@@ -111,6 +119,7 @@ static void * LatestPointKey;
         
     }completion:^(BOOL finished) {
         [dimview removeFromSuperview];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
@@ -123,16 +132,16 @@ static void * LatestPointKey;
     self.animator = nil;
 }
 
--(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title
+-(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     self.currentSideController = controller;
-    [controller.view setFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
     UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
     [subSnapView setFrame:controller.view.frame];
     [self.snapshotView addSubview:subSnapView];
-    [self setNavBarAlternateWithTitle:title];
+    [self setNavBarAlternateWithTitle:title color:color];
     [self.snapshotView addSubview:self.navBar];
-    [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.snapshotView.transform =CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.menuController removeFromParentViewController];
@@ -146,6 +155,7 @@ static void * LatestPointKey;
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         [self.menuController changeFeelgoodMessage];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
@@ -168,8 +178,16 @@ static void * LatestPointKey;
     if (self.currentSideController == self.listController)
         [self closeMenu];
     else{
-        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title];
+        [self closeToSideScreen];
     }
+}
+
+-(void)closeToSideScreen
+{
+    if (self.currentSideController == self.purchaseController)
+        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor goPlatinumColor]];
+    else
+        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor aboutColor]];
 }
 
 -(void)snapShotPanned
@@ -185,7 +203,7 @@ static void * LatestPointKey;
             if (self.currentSideController == self.listController)
                 [self closeMenu];
             else{
-                [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title];
+                [self closeToSideScreen];
             }
         }else{
             [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{

@@ -19,6 +19,7 @@
 
 -(void)seguePasscodeToList
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
     [[self listController].view setFrame:CGRectMake(0, 20, 320, [UIScreen mainScreen].bounds.size.height-20)];
@@ -26,17 +27,23 @@
     [self.view insertSubview:self.navBar belowSubview:self.passcodeController.view];
     [self.view insertSubview:self.messageView belowSubview:self.passcodeController.view];
     [self openUpPasscodeCompletion:^{
+        [self.passcodeController.view removeFromSuperview];
+        self.passcodeController.opened = YES;
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
 -(void)returnToPasscodeFromList
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];
     [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
     }];
     [self transitionBackToPasscodeCompletion:^{
+        self.passcodeController.opened = NO;
         [self.listController.view removeFromSuperview];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
@@ -133,8 +140,8 @@
 {
     UIView * view = [self passcodeController].view;
     view.layer.anchorPoint=CGPointMake(0, .5);
-    view.center = CGPointMake(view.center.x - view.bounds.size.width/2.0f, view.center.y);
-    [UIView animateWithDuration:.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+    view.center = CGPointMake(0, view.center.y);
+    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
@@ -154,15 +161,16 @@
 -(void)closePasscodeCompletion:(void(^)())completion
 {
     UIView * view = [self passcodeController].view;
+    [self.view addSubview:view];
     [self.view bringSubviewToFront:view];
-    [UIView animateWithDuration:.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
         view.layer.transform =_3Dt;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     } completion:^(BOOL finished){
         if (finished) {
             view.layer.anchorPoint=CGPointMake(.5, .5);
-            view.center = CGPointMake(view.center.x + view.bounds.size.width/2.0f, view.center.y);
+            view.center = CGPointMake(view.bounds.size.width/2.0f, view.center.y);
             completion();
         }
     }];

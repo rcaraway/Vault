@@ -25,6 +25,7 @@
 
 -(void)segueToWebFromIndexPath:(NSIndexPath *)indexPath
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
     CGRect cellRect = [self.listController.tableView rectForRowAtIndexPath:indexPath];
     [self addChildViewController:self.webController];
@@ -47,12 +48,14 @@
             [self.view bringSubviewToFront:self.webController.view];
             [self.view bringSubviewToFront:self.messageView];
             self.listController.view.alpha = 1;
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     }];
 }
 
 -(void)closeWeb
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self.webController removeFromParentViewController];
     [self.webController.webView stopLoading];
         NSIndexPath * copy = [self.listController.webPath copy];
@@ -71,6 +74,7 @@
             self.webController.webView.delegate = nil;
             [self.webController freeAllMemory];
             self.webController = nil;
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     }];
 }

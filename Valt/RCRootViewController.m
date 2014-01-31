@@ -55,7 +55,18 @@
 
 - (void)didReceiveMemoryWarning
 {
+    [self freeAvailableMemory];
     [super didReceiveMemoryWarning];
+}
+
+-(void)freeAvailableMemory
+{
+    if (self.mailController && !self.presentedViewController){
+        self.mailController = nil;
+    }
+    if (self.snapshotView && !self.snapshotView.superview){
+        self.snapshotView = nil;
+    }
 }
 
 
@@ -66,32 +77,9 @@
     return NO;
 }
 
-
-#pragma mark - Status Bar
-
-
-
-
-//-(UIViewController *)childViewControllerForStatusBarHidden
-//{
-//    if (!self.messageView.messageShowing){
-//        if (self.childViewControllers.count > 0)
-//            return self.childViewControllers[0];
-//    }
-//    return nil;
-//}
-//
-//-(UIViewController *)childViewControllerForStatusBarStyle
-//{
-//    if (self.childViewControllers.count > 0)
-//        return self.childViewControllers[0];
-//    return nil;
-//}
-
 -(void)setupMessageView
 {
     self.messageView = [[RCMessageView  alloc] init];
-
 }
 
 
@@ -121,6 +109,7 @@
             self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:YES];
         }
     }
+    self.passcodeController.opened = NO;
     [self addChildViewController:self.passcodeController];
     [self.view addSubview:self.passcodeController.view];
 }
@@ -139,9 +128,10 @@
     self.navBar = [[UINavigationBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
     UINavigationItem * item = [[UINavigationItem  alloc] initWithTitle:@"Valt"];
     [self setupNavButtons];
+    
     [item setRightBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.buttonView]];
     [item setLeftBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.lockButton]];
-    [item setTitle:@"Valt"];
+    [item setTitleView:[self navLabelWithTitle:@"Logins" color:[UIColor valtPurple]]];
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, 43.0f, self.navBar.frame.size.width, 1.0f);
     bottomBorder.backgroundColor = [UIColor colorWithWhite:0.96f
@@ -174,12 +164,25 @@
     [self.buttonView addSubview:self.menuButton];
 }
 
-
--(UILabel *)navLabelWithTitle:(NSString *)title
+-(UILabel *)navLabelWithTitle:(NSString *)title color:(UIColor *)color
 {
-    
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    [label setFont:[UIFont boldSystemFontOfSize:17]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setText:title];
+    [label setTextColor:color];
+    [label setBackgroundColor:[UIColor navColor]];
+    return label;
 }
 
+-(UIButton *)navHomeIconWithColor:(UIColor *)color
+{
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[[UIImage imageNamed:@"valtSmall"] tintedImageWithColorOverlay:color] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
+    [button setFrame:CGRectMake(0, 0, 44, 44)];
+    return button;
+}
 
 -(void)setNavBarMain
 {
@@ -188,18 +191,19 @@
     }
 }
 
--(void)setNavBarAlternateWithTitle:(NSString *)title
+-(void)setNavBarAlternateWithTitle:(NSString *)title color:(UIColor *)color
 {
     if (!self.menuButton2){
         self.menuButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.menuButton2 setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
         [self.menuButton2 setFrame:CGRectMake(0, 0, 30, 44)];
         [self.menuButton2 addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     }
+    [self.menuButton2 setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:color] forState:UIControlStateNormal];
     UINavigationItem * item = [[UINavigationItem alloc] initWithTitle:title];
-    UIBarButtonItem * close = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:self action:@selector(closeTapped)];
+    UIBarButtonItem * close = [[UIBarButtonItem alloc] initWithCustomView:[self navHomeIconWithColor:color]];
     [item setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.menuButton2]];
     [item setLeftBarButtonItem:close];
+    [item setTitleView:[self navLabelWithTitle:title color:color]];
     if (self.navBar.items.count >= 2){
         [self.navBar popNavigationItemAnimated:NO];
     }
@@ -213,6 +217,7 @@
 
 -(void)lockTapped
 {
+    
     [self returnToPasscodeFromList];
 }
 
