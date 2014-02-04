@@ -71,6 +71,7 @@
 		D227A9EF186CB5A800361DEB /* RCNetworkingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */; };
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A118A1870C00C2285D /* checker@2x.jpg */; };
+		D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A718A199C200C2285D /* AboutControllerIpad.xib */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
 		D25569661896BC4200F5525D /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569651896BC4200F5525D /* about@2x.png */; };
@@ -255,6 +256,7 @@
 		D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkingTests.m; sourceTree = "<group>"; };
 		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
 		D22D30A118A1870C00C2285D /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
+		D22D30A718A199C200C2285D /* AboutControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutControllerIpad.xib; sourceTree = "<group>"; };
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
@@ -782,6 +784,7 @@
 		D27F4041186343D600104F1C /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
+				D22D30A718A199C200C2285D /* AboutControllerIpad.xib */,
 				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 				D27F403F186343CB00104F1C /* AboutController.xib */,
 				D27F403D186343BF00104F1C /* PurchaseController.xib */,
@@ -983,6 +986,7 @@
 				D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */,
 				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,
 				D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */,
+				D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */,
 				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
