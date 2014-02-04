@@ -6,19 +6,26 @@
 //  Copyright (c) 2013 Rob Caraway. All rights reserved.
 //
 
-#import "RCSearchViewController.h"
-#import "RCPasswordManager.h"
-#import "RCRootViewController.h"
+//VC
 #import "RCAppDelegate.h"
+#import "RCSearchViewController.h"
+#import "RCRootViewController.h"
+
+//Model
 #import "RCNetworking.h"
 #import "RCPassword.h"
+#import "RCPasswordManager.h"
+
+//Views
 #import "RCMainCell.h"
 #import "RCSearchBar.h"
+
+//Categories
 #import "RCRootViewController+passcodeSegues.h"
 #import "RCRootViewController+searchSegue.h"
 
 
-@interface RCSearchViewController ()
+@interface RCSearchViewController ()<RCSearchBarDelegate>
 
 @property(nonatomic, strong) NSMutableArray * allTitles;
 @property(nonatomic, strong) NSMutableArray * searchFilter;
@@ -38,6 +45,7 @@
     [super viewDidLoad];
     self.allTitles = [[[RCPasswordManager defaultManager] allTitles] mutableCopy];
     [self setupTableView];
+    [self setupSearchBar];
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,6 +114,37 @@
     NSString * text = [self textForIndexPath:indexPath];
     RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];
     [[APP rootController] segueSearchToSingleWithPassword:password indexPath:indexPath];
+}
+
+
+#pragma mark - SearchBar
+
+-(void)setupSearchBar
+{
+    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    self.searchBar.delegate =self;
+    [self.view addSubview:self.searchBar];
+}
+
+-(void)searchBarDidBeginEditing:(RCSearchBar *)searchBar
+{
+    
+}
+
+-(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
+{
+    
+}
+
+-(void)searchBar:(RCSearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self filterSearchWithText:searchText];
+}
+
+-(void)searchBarCancelTapped:(RCSearchBar *)searchBar
+{
+    [self.view endEditing:YES];
+    [[APP rootController] segueSearchToList];
 }
 
 

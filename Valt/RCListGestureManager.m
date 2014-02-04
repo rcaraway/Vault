@@ -7,8 +7,14 @@
 //
 
 #import "RCListGestureManager.h"
+
 #import "RCMainCell.h"
 
+#import "RCAppDelegate.h"
+#import "RCRootViewController+menuSegues.h"
+#import "RCRootViewController+passcodeSegues.h"
+#import "RCRootViewController.h"
+#import "RCMenuViewController.h"
 
 typedef enum {
     RCListGestureManagerStateNone,
@@ -143,13 +149,20 @@ typedef enum {
         && [self.panGesture numberOfTouches] > 0) {
          NSIndexPath * indexPath = [self panGesturePath];
         self.state = RCListGestureManagerStatePanning;
-        [self translateCellAtIndexPath:indexPath];
-        [self determinePanStateForIndexPath:indexPath];
+        if (indexPath){
+            [self translateCellAtIndexPath:indexPath];
+            [self determinePanStateForIndexPath:indexPath];
+        }else{
+            [self handlePanningForBelowCells];
+        }
     }else if (self.panGesture.state == UIGestureRecognizerStateEnded){
         NSIndexPath * indexPath = self.pendingPath;
         self.pendingPath = nil;
-        [self handleFinalStateForIndexPath:indexPath];
-       
+        if (indexPath){
+             [self handleFinalStateForIndexPath:indexPath];
+        }else{
+            [self finishPanningBelowCells];
+        }
     }
 }
 
@@ -164,6 +177,44 @@ typedef enum {
     }
 }
 
+
+-(void)handlePanningForBelowCells
+{
+    CGFloat translation = [self.panGesture translationInView:self.tableView].x;
+    if (self.panGesture.state == UIGestureRecognizerStateBegan){
+        [[APP rootController] beginDragToMenu];
+    }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
+        if (translation <= 0){
+            [[APP rootController] dragSideToXOrigin:translation];
+            [[APP rootController] resetToOpen];
+        }else{
+            [[APP rootController] movePasscodeToXOrigin:translation];
+        }
+    }
+}
+
+-(void)finishPanningBelowCells
+{
+    CGFloat translation = [self.panGesture translationInView:self.tableView].x;
+    CGFloat velocity = [self.panGesture velocityInView:self.tableView].x;
+    if (translation <= -160.0 || velocity <= -180.0){
+        [[APP rootController] finishDragWithSegue];
+    }else if (translation >= 160.0 || velocity >= 180.0){
+        [[APP rootController].view addSubview:[[APP rootController] currentSideController].view];
+        [[APP rootController].view bringSubviewToFront:(UIView *)[APP rootController].messageView];
+        [[APP rootController].view bringSubviewToFront:[APP rootController].navBar];
+        [[[APP rootController] menuController] removeFromParentViewController];
+        [[[APP rootController] snapshotView] removeFromSuperview];
+        [[APP rootController] setSnapshotView:nil];
+        [[APP rootController] returnToPasscodeFromList];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    }else{
+        [[APP rootController] finishDragWithClose];
+        [[APP rootController] resetToOpen];
+    }
+    self.panState = RCListGestureManagerPanStateMiddle;
+    self.state = RCListGestureManagerStateNone;
+}
 
 #pragma mark - State Handling
 
@@ -591,8 +642,6 @@ typedef enum {
     CGPoint location = [self.panGesture locationInView:self.tableView];
     NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
     if (fabsf(point.y) > fabsf(point.x)) {
-        return NO;
-    } else if (!indexPath) {
         return NO;
     }
     return YES;

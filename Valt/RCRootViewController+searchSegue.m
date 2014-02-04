@@ -27,16 +27,16 @@
     [self addChildViewController:self.searchController];
     [self.listController removeFromParentViewController];
     [self.view insertSubview:self.searchController.view belowSubview:self.listController.view];
-    [self.view insertSubview:self.searchBar belowSubview:self.navBar];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [self.view insertSubview:self.searchController.searchBar belowSubview:self.navBar];
+    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.listController.view.alpha = 0;
         self.navBar.alpha=0;
     } completion:^(BOOL finished) {
         [self.listController.view removeFromSuperview];
-        [self.view bringSubviewToFront:self.searchBar];
+        [self.view bringSubviewToFront:self.searchController.searchBar];
         self.navBar.alpha = 1;
         self.listController.view.alpha = 1;
-        [self.searchBar.searchField becomeFirstResponder];
+        [self.searchController.searchBar.searchField becomeFirstResponder];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
@@ -47,16 +47,16 @@
     [self addChildViewController:self.listController];
     [self.searchController removeFromParentViewController];
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.searchBar.searchField resignFirstResponder];
-        self.searchBar.alpha = 0;
-        self.searchBar.searchField.text = @"";
+    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.searchController.searchBar.searchField resignFirstResponder];
+        self.searchController.searchBar.alpha = 0;
+        self.searchController.searchBar.searchField.text = @"";
         self.searchController.view.alpha = 0;
     } completion:^(BOOL finished) {
         [self.searchController.view removeFromSuperview];
-        [self.searchBar removeFromSuperview];
+        [self.searchController.searchBar removeFromSuperview];
         self.searchController.view.alpha = 1;
-        self.searchBar.alpha = 1;
+        self.searchController.searchBar.alpha = 1;
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
@@ -71,8 +71,8 @@
     [self.view addSubview:self.singleController.view];
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.singleController.view.alpha = 1;
-        self.searchBar.searchField.text = @"";
-        [self.searchBar.searchField resignFirstResponder];
+        self.searchController.searchBar.searchField.text = @"";
+        [self.searchController.searchBar.searchField resignFirstResponder];
     } completion:^(BOOL finished) {
     }];
 }
@@ -85,7 +85,7 @@
         self.singleController.view.alpha = 0;
     } completion:^(BOOL finished) {
         [self.singleController.view removeFromSuperview];
-        [self.searchBar.searchField becomeFirstResponder];
+        [self.searchController.searchBar.searchField becomeFirstResponder];
     }];
 }
 

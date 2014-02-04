@@ -7,27 +7,33 @@
 //
 
 #import "RCListViewController.h"
-#import "JTTableViewGestureRecognizer.h"
-#import "JTTransformableTableViewCell.h"
-#import "UIColor+JTGestureBasedTableViewHelper.h"
+
+//Model
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
-#import "RCDropDownCell.h"
-#import "RCMainCell.h"
-#import "UIColor+RCColors.h"
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
-#import "UIImage+memoIcons.h"
 #import "RCListGestureManager.h"
-#import "JTTransformableTableViewCell.h"
-#import "HTAutocompleteTextField.h"
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
+
+//Views
+#import "JTTransformableTableViewCell.h"
+#import "HTAutocompleteTextField.h"
 #import "LBActionSheet.h"
-#import "RCRootViewController+passwordSegues.h"
 #import "RCSearchBar.h"
+#import "RCBackupView.h"
+#import "RCDropDownCell.h"
+#import "RCMainCell.h"
+
+//Categories
+#import "UIColor+RCColors.h"
+#import "UIImage+memoIcons.h"
+#import "UIColor+JTGestureBasedTableViewHelper.h"
+#import "RCRootViewController+passwordSegues.h"
 #import "RCRootViewController+menuSegues.h"
 #import "RCRootViewController+WebSegues.h"
+#import "RCRootViewController+purchaseSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -71,13 +77,18 @@
     [self setContentSize:CGSizeZero];
 }
 
+-(void)reloadData
+{
+    [super reloadData];
+}
+
 
 @end
 
 
 
 
-@interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate>
+@interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate, RCBackupViewDelegate>
 
 
 @property(nonatomic) NSInteger addingCellIndex;
@@ -121,11 +132,24 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
+    [self reloadIfNeeded];
+    static BOOL backupShown = NO;
+    if ([APP launchCountTriggered] && [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && !backupShown){
+        [self setupBackupView];
+        [self performSelector:@selector(showBackup) withObject:nil afterDelay:.6];
+        backupShown = YES;
+    }else if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
         //TODO:Launch Alert View for renewing
     }
-    [self.tableView reloadData];
+}
 
+-(void)reloadIfNeeded
+{
+    static BOOL firstLaunch = YES;
+    if (!firstLaunch){
+        [self.tableView reloadData];
+    }
+    firstLaunch = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -191,16 +215,21 @@
     [self.view addSubview:self.tableView];
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)setupBackupView
 {
-    if ([[[[APP rootController] searchBar] searchField] isFirstResponder]){
-         [self.view endEditing:YES];
-    }
+    self.backupView = [[RCBackupView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 60)];
+    self.backupView.delegate = self;
+    [self.view addSubview:self.backupView];
 }
 
 
 
 #pragma mark - TableView Delegate/DataSource
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -213,6 +242,16 @@
         return [[RCPasswordManager defaultManager] allTitles].count+1;
     }
     return [[RCPasswordManager defaultManager] allTitles].count;
+}
+
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath == self.webPath){
+        [(RCMainCell *)cell setCompletelyGreen];
+    }else{
+        [(RCMainCell *)cell setNormalColored];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -233,13 +272,23 @@
         cell.customLabel.text = @"";
         if ([indexPath isEqual:self.webPath]){
             [cell setCompletelyGreen];
+        }else{
+            [(RCMainCell *)cell setNormalColored];
         }
         return cell;
     }
     else{
         NSString *object;
+        NSInteger extraIndex = NSNotFound;
         if (self.addingCellIndex != NSNotFound){
-            if (indexPath.row < self.addingCellIndex){
+            extraIndex = self.addingCellIndex;
+        }else if (self.viewPath){
+            extraIndex = self.viewPath.row;
+        }else if (self.webPath){
+            extraIndex = self.webPath.row;
+        }
+        if (extraIndex != NSNotFound){
+            if (indexPath.row < extraIndex){
                 object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];
             }else{
                 object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row-1];
@@ -254,6 +303,7 @@
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.customLabel.text = (NSString *)object;
+        [cell setNormalColored];
         if (indexPath.row == self.dummyCellIndex){
                 cell.customLabel.text = @"";
         }
@@ -305,7 +355,7 @@
             if ([[RCNetworking sharedNetwork] loggedIn]){
                 [[RCNetworking sharedNetwork] fetchFromServer];
             }else{
-                //TODO: Transition From list to Purchase
+                [[APP rootController] segueToPurchaseFromList];
             }
             self.addingCellIndex = NSNotFound;
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -372,9 +422,11 @@
         self.actionSheet = [[LBActionSheet alloc] initWithTitle:[[[RCPasswordManager defaultManager] passwords][indexPath.row] title] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Entry" otherButtonTitles:nil];
         self.deletionPath = indexPath;
         [self.actionSheet showInView:self.view];
-    } else if (state == JTTableViewCellEditingStateRight) {
+    } else if (state == RCListGestureManagerPanStateRight) {
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         if (password.hasValidURL){
+            RCMainCell * cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            [cell setCompletelyGreen];
             [[APP rootController] segueToWebFromIndexPath:indexPath];
         }else{
             //pop up, ask for a url to go to
@@ -415,6 +467,39 @@
     }
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
+}
+
+
+#pragma mark - Backup View
+
+-(void)showBackup
+{
+    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.2 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.backupView setFrame:CGRectOffset(self.backupView.frame, 0, -60)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)hideBackup
+{
+    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.2 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.backupView setFrame:CGRectOffset(self.backupView.frame, 0, 60)];
+    } completion:^(BOOL finished) {
+        [self.backupView removeFromSuperview];
+        self.backupView = nil;
+    }];
+}
+
+-(void)backupViewDidTapNo:(RCBackupView *)backupView
+{
+    [self hideBackup];
+}
+
+-(void)backupViewDidTapYes:(RCBackupView *)backupView
+{
+    [[APP rootController] segueToPurchaseFromList];
+    [self hideBackup];
 }
 
 

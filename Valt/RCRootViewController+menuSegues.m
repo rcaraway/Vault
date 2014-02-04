@@ -7,16 +7,22 @@
 //
 
 #import "RCRootViewController+menuSegues.h"
+#import "UIColor+RCColors.h"
+#import "UIView+QuartzEffects.h"
+
+#import "RCListGestureManager.h"
+
 #import "RCListViewController.h"
 #import "RCMenuViewController.h"
-#import "RCListGestureManager.h"
-#import "UIView+QuartzEffects.h"
 #import "RCPurchaseViewController.h"
 #import "RCAboutViewController.h"
-#import "UIColor+RCColors.h"
+
+#import "RCMessageView.h"
+
 #import <objc/runtime.h>
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 
 static void * LatestPointKey;
 
@@ -47,11 +53,51 @@ static void * LatestPointKey;
     }];
 }
 
--(void)dragMainToXOrigin:(CGFloat)xOrigin
+-(void)beginDragToMenu
+{
+    if (!self.menuController){
+        self.menuController = [[RCMenuViewController  alloc] initWithNibName:nil bundle:nil];
+    }
+    [self setupSnapshot];
+    [self addChildViewController:self.menuController];
+    [self.view addSubview:self.menuController.view];
+    [self.menuController.view addSubview:self.snapshotView];
+    if (self.childViewControllers.count > 0){
+        self.currentSideController = self.childViewControllers[0];
+        [self.currentSideController removeFromParentViewController];
+    }
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
+-(void)dragSideToXOrigin:(CGFloat)xOrigin
 {
     CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, xOrigin, 0);
-    self.navBar.transform = tranform;
-    self.listController.view.transform = tranform;
+    self.snapshotView.transform = tranform;
+}
+
+-(void)finishDragWithClose
+{
+    [UIView animateWithDuration:.34 animations:^{
+        self.snapshotView.transform = CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        [self.menuController removeFromParentViewController];
+        [self addChildViewController:self.currentSideController];
+        [self.view addSubview:self.currentSideController.view];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        [self.view addSubview:self.messageView];
+        [self.view addSubview:self.navBar];
+        [self.snapshotView removeFromSuperview];
+    }];
+}
+
+-(void)finishDragWithSegue
+{
+    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
+        self.snapshotView.transform = tranform;
+    } completion:^(BOOL finished) {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    }];
 }
 
 -(void)closeMenu
@@ -89,9 +135,10 @@ static void * LatestPointKey;
     UIViewController * current = self.childViewControllers[0];
     [current removeFromParentViewController];
     [self addChildViewController:self.listController];
+    CGRect rect = CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64);
     UIView * dimview = [[UIView alloc] initWithFrame:self.listController.view.frame];
     [self.view insertSubview:self.listController.view belowSubview:current.view];
-    self.listController.view.transform = CGAffineTransformMakeScale(.9, .9);
+    self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
     
     UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     CGPoint squareCenterPoint = CGPointMake(CGRectGetMaxX(current.view.frame), CGRectGetMidY(current.view.frame));
@@ -108,28 +155,29 @@ static void * LatestPointKey;
     self.animator = animator;
     [self performSelector:@selector(finishedAnimatedGraviry:) withObject:current afterDelay:.7];
     [self setNavBarMain];
-    
+    [self.view bringSubviewToFront:self.navBar];
 
     dimview.backgroundColor = [UIColor blackColor];
     dimview.alpha = .5;
     [self.view insertSubview:dimview belowSubview:current.view];
-    [UIView animateWithDuration:.6 animations:^{
+    [UIView animateWithDuration:.72 animations:^{
         [dimview setAlpha:0];
         self.listController.view.transform = CGAffineTransformIdentity;
-        
     }completion:^(BOOL finished) {
+        [self.animator removeBehavior:self.gravityBehavior];
+        [self.animator removeBehavior:self.attachmentBehavior];
+        self.animator = nil;
+        current.view.transform = CGAffineTransformIdentity;
+        current.view.frame = rect;
         [dimview removeFromSuperview];
+        [current.view removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
 -(void)finishedAnimatedGraviry:(UIViewController *)controller
 {
-    [controller.view removeFromSuperview];
-    controller.view.transform = CGAffineTransformIdentity;
-    [self.animator removeBehavior:self.gravityBehavior];
-    [self.animator removeBehavior:self.attachmentBehavior];
-    self.animator = nil;
+
 }
 
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color

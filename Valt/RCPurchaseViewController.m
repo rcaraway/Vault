@@ -7,12 +7,20 @@
 //
 
 #import "RCPurchaseViewController.h"
+
+#import "RCAppDelegate.h"
+#import "RCRootViewController.h"
+#import "RCRootViewController+menuSegues.h"
+
 #import "MLAlertView.h"
-#import "RCNetworking.h"
-#import "RCInAppPurchaser.h"
 #import "HTAutocompleteTextField.h"
-#import "RCPasswordManager.h"
+
 #import "UIView+QuartzEffects.h"
+#import "UIColor+RCColors.h"
+#import "UIImage+memoIcons.h"
+
+#import "RCNetworking.h"
+#import "RCPasswordManager.h"
 #import "RCInAppPurchaser.h"
 
 @interface RCPurchaseViewController () <MLAlertViewDelegate>
@@ -36,7 +44,7 @@
     self.yearlyButton.alpha = 0;
     self.yearLabel.alpha = 0;
     self.monthLabel.alpha = 0;
-    [self.bannerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"checker.jpg"]]];
+    [self.bannerView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage imageNamed:@"checker.jpg"] tintedImageWithColorOverlay:[UIColor colorWithRed:1 green:0 blue:0 alpha:.7]]]];
     [self.cancelButton addTarget:self action:@selector(didTapCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.monthlyButton addTarget:self action:@selector(didTapMonthlyPurchase) forControlEvents:UIControlEventTouchUpInside];
     [self.yearlyButton addTarget:self action:@selector(didTapYearlyPurchase) forControlEvents:UIControlEventTouchUpInside];
@@ -118,6 +126,27 @@
 
 
 #pragma mark - Event Handling
+
+- (IBAction)didPan:(UIPanGestureRecognizer *)sender {
+    
+    CGFloat translation =[sender translationInView:self.view].x;
+    if (sender.state == UIGestureRecognizerStateBegan){
+        [[APP rootController] beginDragToMenu];
+    }else if (sender.state == UIGestureRecognizerStateChanged){
+        
+        if (translation <= 20){
+            [[APP rootController] dragSideToXOrigin:translation];
+        }
+    }else if (sender.state == UIGestureRecognizerStateEnded){
+        CGFloat velocity = [sender velocityInView:self.view].x;
+        if (velocity <= -180.0 || translation <= -160.0){
+            [[APP rootController] finishDragWithSegue];
+        }else{
+            [[APP rootController] finishDragWithClose];
+        }
+    }
+    
+}
 
 -(void)didTapCancel
 {

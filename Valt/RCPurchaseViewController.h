@@ -24,7 +24,11 @@
 @property (strong, nonatomic) IBOutlet UIImageView *deviceImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *supportImageView;
 
+@property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGesture;
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loader;
+
+
+- (IBAction)didPan:(UIPanGestureRecognizer *)sender;
 
 @end

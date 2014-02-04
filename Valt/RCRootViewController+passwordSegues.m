@@ -173,7 +173,7 @@ static void * ContentSizeKey;
 
 -(void)transitionPullUpFromSingleToList
 {
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     NSIndexPath * indexPath = [self.listController.viewPath copy];
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];

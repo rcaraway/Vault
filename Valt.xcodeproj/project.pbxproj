@@ -70,6 +70,7 @@
 		D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D2254E5718648502003590AF /* TWMessageBarManager.podspec */; };
 		D227A9EF186CB5A800361DEB /* RCNetworkingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */; };
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
+		D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A118A1870C00C2285D /* checker@2x.jpg */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
 		D25569661896BC4200F5525D /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569651896BC4200F5525D /* about@2x.png */; };
@@ -81,6 +82,8 @@
 		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
 		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
+		D267E01818A01B5200339143 /* RCBackupView.m in Sources */ = {isa = PBXBuildFile; fileRef = D267E01718A01B5200339143 /* RCBackupView.m */; };
+		D267E01B18A0380D00339143 /* RCRootViewController+purchaseSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */; };
 		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
 		D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A51892BE4200B6A6F0 /* key@2x.png */; };
 		D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A71892BE4200B6A6F0 /* search@2x.png */; };
@@ -129,7 +132,6 @@
 		D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */; };
 		D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F00189C41CD00D4DFB1 /* cross@2x.png */; };
 		D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F02189C41F600D4DFB1 /* login@2x.png */; };
-		D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2CA1271188EDA8B005B6867 /* checker@2x.jpg */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
@@ -252,6 +254,7 @@
 		D2254E5718648502003590AF /* TWMessageBarManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TWMessageBarManager.podspec; sourceTree = "<group>"; };
 		D227A9EE186CB5A800361DEB /* RCNetworkingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkingTests.m; sourceTree = "<group>"; };
 		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
+		D22D30A118A1870C00C2285D /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
@@ -266,6 +269,10 @@
 		D2660B6D1884959000E1B964 /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
 		D2660B6F1884964300E1B964 /* RCValtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCValtView.h; sourceTree = "<group>"; };
 		D2660B701884964300E1B964 /* RCValtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCValtView.m; sourceTree = "<group>"; };
+		D267E01618A01B5100339143 /* RCBackupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBackupView.h; sourceTree = "<group>"; };
+		D267E01718A01B5200339143 /* RCBackupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBackupView.m; sourceTree = "<group>"; };
+		D267E01918A0380D00339143 /* RCRootViewController+purchaseSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+purchaseSegues.h"; sourceTree = "<group>"; };
+		D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+purchaseSegues.m"; sourceTree = "<group>"; };
 		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
 		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
 		D26D34A51892BE4200B6A6F0 /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
@@ -337,7 +344,6 @@
 		D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreSupport@2x.png"; sourceTree = "<group>"; };
 		D2C85F00189C41CD00D4DFB1 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
 		D2C85F02189C41F600D4DFB1 /* login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login@2x.png"; sourceTree = "<group>"; };
-		D2CA1271188EDA8B005B6867 /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
 		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
@@ -709,6 +715,8 @@
 				D2B5EF981885E533002A50A3 /* RCSearchBar.m */,
 				D277371F189AB01D0048F641 /* RCMessageView.h */,
 				D2773720189AB01D0048F641 /* RCMessageView.m */,
+				D267E01618A01B5100339143 /* RCBackupView.h */,
+				D267E01718A01B5200339143 /* RCBackupView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -761,7 +769,7 @@
 				D26D34A51892BE4200B6A6F0 /* key@2x.png */,
 				D26D34A71892BE4200B6A6F0 /* search@2x.png */,
 				D26D34A81892BE4200B6A6F0 /* list@2x.png */,
-				D2CA1271188EDA8B005B6867 /* checker@2x.jpg */,
+				D22D30A118A1870C00C2285D /* checker@2x.jpg */,
 				D278D3411891BCDF0062AE39 /* back@2x.png */,
 				D278D3421891BCDF0062AE39 /* copyPaste@2x.png */,
 				D278D3431891BCDF0062AE39 /* forward@2x.png */,
@@ -844,6 +852,8 @@
 				D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */,
 				D26D34B01892C18B00B6A6F0 /* RCRootViewController+menuSegues.h */,
 				D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */,
+				D267E01918A0380D00339143 /* RCRootViewController+purchaseSegues.h */,
+				D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */,
 			);
 			name = "Segue Categories";
 			sourceTree = "<group>";
@@ -964,6 +974,7 @@
 				D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */,
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,
+				D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */,
 				D2254E5A18648502003590AF /* icon-info.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D255696E1896C46700F5525D /* valtSmall@2x.png in Resources */,
@@ -982,7 +993,6 @@
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 				D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */,
 				D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */,
-				D2CA1272188EDA8B005B6867 /* checker@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1023,6 +1033,7 @@
 				D21718211857738D00D687F8 /* RCViewController.m in Sources */,
 				D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */,
 				D217183718577A2100D687F8 /* RCPasswordManager.m in Sources */,
+				D267E01818A01B5200339143 /* RCBackupView.m in Sources */,
 				D21718311857789E00D687F8 /* PDKeychainBindings.m in Sources */,
 				D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */,
 				D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */,
@@ -1042,6 +1053,7 @@
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
 				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,
 				D21718111857723700D687F8 /* GenericAnimationView.m in Sources */,
+				D267E01B18A0380D00339143 /* RCRootViewController+purchaseSegues.m in Sources */,
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
 				D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */,
 				D26D34B21892C18B00B6A6F0 /* RCRootViewController+menuSegues.m in Sources */,
@@ -1193,8 +1205,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Rob Caraway (825EKEGP3R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Rob Caraway (825EKEGP3R)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
@@ -1202,9 +1214,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE = "DD50D97F-BDE2-4F1D-85D8-E681AC2CD726";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1214,8 +1227,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Rob Caraway (825EKEGP3R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Rob Caraway (825EKEGP3R)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
@@ -1223,9 +1236,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE = "DD50D97F-BDE2-4F1D-85D8-E681AC2CD726";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1320,8 +1334,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Rob Caraway (825EKEGP3R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Rob Caraway (825EKEGP3R)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
@@ -1329,9 +1343,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE = "DD50D97F-BDE2-4F1D-85D8-E681AC2CD726";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Testing;

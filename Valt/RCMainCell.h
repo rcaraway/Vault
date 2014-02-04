@@ -17,6 +17,7 @@
 -(void)showDeleteIconWithScale:(CGFloat)scale translation:(CGFloat)translation;
 -(void)setGreenColored;
 -(void)setCompletelyGreen;
+-(void)setNormalColored;
 -(void)removeFocus;
 -(void)setRedColored;
 

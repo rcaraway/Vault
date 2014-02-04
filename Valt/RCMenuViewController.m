@@ -261,7 +261,7 @@
 
 -(void)setupTableView
 {
-    self.tableView = [[UITableView  alloc] initWithFrame:CGRectMake(40, 0, self.view.frame.size.width-40, self.view.frame.size.height) style:UITableViewStylePlain];
+    self.tableView = [[UITableView  alloc] initWithFrame:CGRectMake(self.view.frame.size.width-280, 0, 280, self.view.frame.size.height) style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     [self.tableView setContentInset:UIEdgeInsetsMake(20, 0, 0, 0)];
     self.tableView.delegate = self;

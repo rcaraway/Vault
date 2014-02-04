@@ -65,7 +65,7 @@
 
 +(UIColor *)browserGreen
 {
-    return [UIColor colorWithRed:0 green:178.0/255.0 blue:95.0/255.0 alpha:1];
+    return [UIColor colorWithRed:10.0/255.0 green:234.0/255.0 blue:121.0/255.0 alpha:1];
 }
 
 +(UIColor *)deleteRed
@@ -88,7 +88,7 @@
 
 +(UIColor *)aboutColor
 {
-     return [UIColor colorWithRed:0.0/255.0 green:174.0/255.0 blue:77.0/255.0 alpha:1];
+     return [UIColor colorWithRed:26.0/255.0 green:170.0/255.0 blue:144.0/255.0 alpha:1];
 }
 
 +(UIColor *)tweetColor

@@ -14,5 +14,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) RCRootViewController * rootController;
 
+-(BOOL)launchCountTriggered;
 
 @end

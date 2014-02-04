@@ -10,14 +10,10 @@
 
 @interface RCAboutViewController : UIViewController
 
-@property (strong, nonatomic) IBOutlet UINavigationBar *navbar;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UITextView *descriptionView;
 @property (strong, nonatomic) IBOutlet UIButton *followRobButton;
 @property (strong, nonatomic) IBOutlet UIButton *feedbackButton;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
+
 
 @property (strong, nonatomic) IBOutlet UIView *bannerView;
 @property (strong, nonatomic) IBOutlet UILabel *robLabel;
@@ -26,6 +22,10 @@
 @property (strong, nonatomic) IBOutlet UIButton *licensesButton;
 @property (strong, nonatomic) IBOutlet UILabel *thankyouButton;
 @property (strong, nonatomic) IBOutlet UILabel *versionLabel;
+
+@property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGesture;
+
+- (IBAction)didPan:(UIPanGestureRecognizer *)sender;
 
 
 - (IBAction)tappedWebsite:(id)sender;

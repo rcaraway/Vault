@@ -14,6 +14,9 @@
 #import "NSString+Encryption.h"
 #import "RCNetworkListener.h"
 
+#define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
+#define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
+
 @implementation RCAppDelegate
 
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -30,6 +33,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self registerLaunchCount];
+    [self incrementCount];
     self.rootController = [[RCRootViewController  alloc] initWithNibName:nil bundle:nil];
     self.window = [[UIWindow  alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:self.rootController];
@@ -62,6 +67,37 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [RCNetworkListener stopListening];
+}
+
+#pragma mark - LaunchCount
+
+-(void)registerLaunchCount
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{FIRST_LAUNCH_COUNT_KEY: @YES,
+                                                              LAUNCH_COUNT_KEY : @0}];
+}
+
+-(void)incrementCount
+{
+    NSInteger count = [[NSUserDefaults standardUserDefaults] integerForKey:LAUNCH_COUNT_KEY];
+    BOOL first = [[NSUserDefaults standardUserDefaults] integerForKey:FIRST_LAUNCH_COUNT_KEY];
+    if ((first && count > 15) || (!first && count > 25)){
+        count = 0;
+        first = NO;
+    }else {
+        count = count + 1;
+    }
+    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:LAUNCH_COUNT_KEY];
+    [[NSUserDefaults standardUserDefaults] setBool:first forKey:FIRST_LAUNCH_COUNT_KEY];
+}
+
+-(BOOL)launchCountTriggered
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:FIRST_LAUNCH_COUNT_KEY]){
+        return ([[NSUserDefaults standardUserDefaults] integerForKey:LAUNCH_COUNT_KEY] == 15);
+    }else{
+        return ([[NSUserDefaults standardUserDefaults] integerForKey:LAUNCH_COUNT_KEY] == 25);
+    }
 }
 
 @end

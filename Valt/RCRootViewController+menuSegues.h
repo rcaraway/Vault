@@ -11,9 +11,13 @@
 @interface RCRootViewController (menuSegues)
 
 -(void)segueToMenu;
--(void)dragMainToXOrigin:(CGFloat)xOrigin;
 -(void)closeMenu;
 -(void)goHome;
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color;
+
+-(void)beginDragToMenu;
+-(void)dragSideToXOrigin:(CGFloat)xOrigin;
+-(void)finishDragWithClose;
+-(void)finishDragWithSegue;
 
 @end

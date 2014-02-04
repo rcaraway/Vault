@@ -13,6 +13,7 @@
                 <outlet property="monthLabel" destination="VO5-t4-Dfg" id="14o-1J-LDb"/>
                 <outlet property="monthlyButton" destination="UIl-eP-oLc" id="sBJ-p9-CSs"/>
                 <outlet property="multiDeviceLabel" destination="Cjd-1d-T1l" id="rK0-Az-ELR"/>
+                <outlet property="panGesture" destination="ew5-Yx-dkL" id="k1x-VU-5mU"/>
                 <outlet property="restorePurchaseButton" destination="1sS-Ex-PEy" id="kGb-I2-LcB"/>
                 <outlet property="supportImageView" destination="G6L-J5-1ca" id="veb-tN-Kw5"/>
                 <outlet property="titleLabel" destination="Bp7-XX-gCn" id="NcF-Hz-0Yd"/>
@@ -139,8 +140,17 @@
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="ew5-Yx-dkL" appends="YES" id="sD6-lM-5GD"/>
+            </connections>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="ew5-Yx-dkL">
+            <connections>
+                <action selector="didPan:" destination="-1" id="7JU-wA-WgU"/>
+            </connections>
+        </panGestureRecognizer>
     </objects>
     <resources>
         <image name="backup.png" width="64" height="64"/>

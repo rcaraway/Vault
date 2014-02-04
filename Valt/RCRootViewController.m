@@ -6,26 +6,34 @@
 //  Copyright (c) 2013 Rob Caraway. All rights reserved.
 //
 
+//VCs
 #import "RCRootViewController.h"
 #import "RCPasscodeViewController.h"
 #import "RCListViewController.h"
 #import "RCSingleViewController.h"
-#import "RCPasswordManager.h"
-#import "UIColor+RCColors.h"
 #import "RCSearchViewController.h"
 #import "RCAboutViewController.h"
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
-#import <MessageUI/MessageUI.h>
-#import "RCSearchBar.h"
+#import "RCMenuViewController.h"
+
+//Model
+#import "RCPasswordManager.h"
+
+//Categories
+#import "UIColor+RCColors.h"
+#import "RCRootViewController+menuSegues.h"
 #import "RCRootViewController+passcodeSegues.h"
 #import "RCRootViewController+searchSegue.h"
 #import "UIImage+memoIcons.h"
-#import "RCMenuViewController.h"
-#import "RCRootViewController+menuSegues.h"
+
+//View
 #import "RCMessageView.h"
 
-@interface RCRootViewController () <MFMailComposeViewControllerDelegate, RCSearchBarDelegate>
+//Frameworks
+#import <MessageUI/MessageUI.h>
+
+@interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
 
 @property(nonatomic, strong) UIView * buttonView;
@@ -45,7 +53,6 @@
 {
     [super viewDidLoad];
     [self setupViewControllers];
-    [self setupSearchBar];
     [self launchPasscode];
     [self setupNavbar];
     [self setupMessageView];
@@ -125,7 +132,7 @@
 
 -(void)setupNavbar
 {
-    self.navBar = [[UINavigationBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    self.navBar = [[UINavigationBar  alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 44)];
     UINavigationItem * item = [[UINavigationItem  alloc] initWithTitle:@"Valt"];
     [self setupNavButtons];
     
@@ -229,38 +236,6 @@
 -(void)searchTapped
 {
     [self segueListToSearch];
-}
-
-
-
-
-#pragma mark - Search Bar
-
--(void)setupSearchBar
-{
-    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
-    self.searchBar.delegate =self;
-}
-
--(void)searchBarDidBeginEditing:(RCSearchBar *)searchBar
-{
-   
-}
-
--(void)searchBarDidEndEditing:(RCSearchBar *)searchBar
-{
-
-}
-
--(void)searchBar:(RCSearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [self.searchController filterSearchWithText:searchText];
-}
-
--(void)searchBarCancelTapped:(RCSearchBar *)searchBar
-{
-    [self.view endEditing:YES];
-    [self segueSearchToList];
 }
 
 

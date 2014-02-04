@@ -12,7 +12,7 @@
 
 -(void)seguePasscodeToList;
 -(void)returnToPasscodeFromList;
-
+-(void)resetToOpen;
 -(void)showPasscodeHint;
 -(void)movePasscodeToXOrigin:(CGFloat)xOrigin;
 

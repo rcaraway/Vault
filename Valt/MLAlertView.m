@@ -33,6 +33,8 @@ static UIColor * successColor;
 @property(nonatomic, strong) UIActivityIndicatorView * loader;
 @property(nonatomic, strong) UIView * titleBack;
 
+@property(nonatomic, strong) UIView * dimView;
+
 @end
 
 @implementation MLAlertView
@@ -65,15 +67,20 @@ static UIColor * successColor;
 - (void)show
 {
     self.alpha = 0.0;
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y-300, self.frame.size.width, self.frame.size.height);
+    self.dimView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.dimView setBackgroundColor:[UIColor clearColor]];
+
+    self.frame = CGRectMake(CGRectGetMidX(self.dimView.frame)-(self.frame.size.width/2.0), CGRectGetMidY(self.dimView.frame)-(self.frame.size.height/2.0)-350, self.frame.size.width, self.frame.size.height);
     if (self.loginTextField){
         [self.loginTextField becomeFirstResponder];
     }else if (self.passwordTextField){
         [self.passwordTextField becomeFirstResponder];
     }
-    [[[UIApplication sharedApplication] windows][0] addSubview:self];
+    [self.dimView addSubview:self];
+    [[[UIApplication sharedApplication] windows][0] addSubview:self.dimView];
     [UIView animateWithDuration:0.2  animations:^{
         self.alpha = 1.0;
+        [self.dimView setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.75]];
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y+310, self.frame.size.width, self.frame.size.height);
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:.14 animations:^{
@@ -87,7 +94,7 @@ static UIColor * successColor;
 - (void)dismiss
 {
     [self endEditing:YES];
-    UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:[[UIApplication sharedApplication] windows][0]];
+    UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.dimView];
     CGPoint squareCenterPoint = CGPointMake(CGRectGetMaxX(self.frame), CGRectGetMinY(self.frame));
     UIOffset attachmentPoint = UIOffsetMake(CGRectGetMinX(self.frame), CGRectGetMaxY(self.frame));
     UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self offsetFromCenter:attachmentPoint attachedToAnchor:squareCenterPoint];
@@ -97,9 +104,15 @@ static UIColor * successColor;
     gravityBeahvior.magnitude = 4;
     gravityBeahvior.angle = DEGREES_TO_RADIANS(100);
     [animator addBehavior:gravityBeahvior];
+    
     self.gravityBehavior = gravityBeahvior;
     self.animator = animator;
-    [self performSelector:@selector(removeFromSuperview) withObject:self afterDelay:0.7];
+    [UIView animateWithDuration:.7 animations:^{
+        self.dimView.backgroundColor = [UIColor clearColor];
+    }completion:^(BOOL finished) {
+        [self.dimView removeFromSuperview];
+        [self removeFromSuperview];
+    }];
 }
 
 -(void)loadWithText:(NSString *)text

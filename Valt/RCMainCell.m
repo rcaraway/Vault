@@ -10,6 +10,7 @@
 #import "UIColor+RCColors.h"
 #import "UIImage+memoIcons.h"
 
+
 static UIImage * deleteIcon;
 static UIImage * loginIcon;
 
@@ -54,7 +55,6 @@ static UIImage * loginIcon;
 -(void)setCompletelyGreen
 {
     self.contentView.backgroundColor = [UIColor browserGreen];
-    self.customLabel.backgroundColor = [UIColor browserGreen];
     self.backgroundColor = [UIColor browserGreen];
 }
 
@@ -87,17 +87,17 @@ static UIImage * loginIcon;
     } completion:nil];
 }
 
--(void)prepareForReuse
+-(void)setNormalColored
 {
     self.backgroundColor = [UIColor listBackground];
     self.contentView.backgroundColor = [UIColor mainCellColor];
-    [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
+    [self.customLabel setBackgroundColor:[UIColor clearColor]];
 }
 
 -(void)setupCustomLabel
 {
     self.customLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 15, [UIScreen mainScreen].bounds.size.width-36, 30)];
-    [self.customLabel setBackgroundColor:self.contentView.backgroundColor];
+    [self.customLabel setBackgroundColor:[UIColor clearColor]];
     [self.customLabel setNumberOfLines:1];
     UIFont * helvetica =[UIFont fontWithName:@"HelveticaNeue" size:20];
     [self.customLabel setFont:helvetica];

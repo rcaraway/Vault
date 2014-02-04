@@ -13,11 +13,13 @@
 @class RCPassword;
 @class RCTableView;
 @class RCListGestureManager;
+@class RCBackupView;
 
 @interface RCListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) RCTableView * tableView;
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
+@property(nonatomic, strong) RCBackupView * backupView;
 @property(nonatomic, strong) NSIndexPath * viewPath;
 @property(nonatomic, strong) NSIndexPath * webPath;
 

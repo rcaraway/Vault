@@ -28,6 +28,7 @@
 }
 
 @property(nonatomic, strong) LBActionSheet * actionSheet;
+@property(nonatomic, copy) NSString * currentFormURL;
 
 @property(nonatomic) BOOL usernameFilled;
 @property(nonatomic) BOOL passwordFilled;
@@ -51,6 +52,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
     self.webView.delegate = self;
     [self.doneButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1] forState:UIControlStateNormal];
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
@@ -209,7 +213,8 @@
 {
     self.firstPage = YES;
     NSURL * url = [NSURL URLWithString:self.password.urlName];
-    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [self.webView loadRequest:request];
 }
 
@@ -229,7 +234,11 @@
         self.usernameFilled = [self fillOutUsername];
     }
     if (self.usernameFilled && self.passwordFilled){
-        [self tryToSubmitForm];
+        if (self.currentFormURL && [self.currentFormURL isEqualToString:self.webView.request.mainDocumentURL.absoluteString]){
+        }else{
+             [self tryToSubmitForm];
+        }
+        self.currentFormURL = self.webView.request.mainDocumentURL.absoluteString;
         return YES;
     }else if (self.passwordFilled){
         return YES;
@@ -283,7 +292,6 @@
 
 -(void)showCredentialView
 {
-    [self tryToFillOutAllForms];
     [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.credentialView setFrame:CGRectMake(0, self.view.frame.size.height-300, 320, 44)];
     } completion:nil];
@@ -301,7 +309,6 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-
     switch (navigationType) {
         case UIWebViewNavigationTypeOther:
             if (self.usernameFilled && self.passwordFilled && ![self.webView.request.URL.absoluteString isEqualToString:request.URL.absoluteString]){

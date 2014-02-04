@@ -22,7 +22,7 @@
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.listController];
     [self.passcodeController removeFromParentViewController];
-    [[self listController].view setFrame:CGRectMake(0, 20, 320, [UIScreen mainScreen].bounds.size.height-20)];
+    [[self listController].view setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20)];
     [self.view insertSubview:[self listController].view belowSubview:[self passcodeController].view];
     [self.view insertSubview:self.navBar belowSubview:self.passcodeController.view];
     [self.view insertSubview:self.messageView belowSubview:self.passcodeController.view];
@@ -44,6 +44,16 @@
         self.passcodeController.opened = NO;
         [self.listController.view removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    }];
+}
+
+-(void)resetToOpen
+{
+    [UIView animateWithDuration:.3 animations:^{
+        [self movePasscodeToXOrigin:0];
+    } completion:^(BOOL finished) {
+        [self.passcodeController.view removeFromSuperview];
+        self.passcodeController.opened = YES;
     }];
 }
 
@@ -70,6 +80,9 @@
 -(void)movePasscodeToXOrigin:(CGFloat)xOrigin
 {
     UIView * view = [self passcodeController].view;
+    if (!view.superview){
+        [self.view addSubview:view];
+    }
     CATransform3D _3Dt = [self tranformForXOrigin:xOrigin];
     view.layer.transform =_3Dt;
 }
@@ -125,12 +138,18 @@
 -(void)openPasscodeFromOrigin:(CGFloat)xOrigin
 {
     UIView * view = [self passcodeController].view;
+    CGFloat multiplier = (IS_IPHONE?1:320.0/[UIScreen mainScreen].bounds.size.width);
     view.layer.transform = [self tranformForXOrigin:xOrigin];
     [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
-        _3Dt.m34 = 0.001f;
-        _3Dt.m14 = -0.0015f;
+        if (IS_IPHONE){
+            _3Dt.m34 = 0.001f;
+            _3Dt.m14 = -0.0015f;
+        }else{
+            _3Dt.m34 = 0.001f*multiplier;
+            _3Dt.m14 = -0.0015f*multiplier;
+        }
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
     }];
@@ -139,6 +158,7 @@
 -(void)openUpPasscodeCompletion:(void(^)())completion
 {
     UIView * view = [self passcodeController].view;
+    CGFloat multiplier = (IS_IPHONE?1:320.0/[UIScreen mainScreen].bounds.size.width);
     view.layer.anchorPoint=CGPointMake(0, .5);
     view.center = CGPointMake(0, view.center.y);
     [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
@@ -146,8 +166,8 @@
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
-        _3Dt.m34 = 0.001f;
-        _3Dt.m14 = -0.0015f;
+        _3Dt.m34 = 0.001f*multiplier;
+        _3Dt.m14 = -0.0015f*multiplier;
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
         if (finished) {

@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class RCSearchBar;
 @interface RCSearchViewController : UITableViewController
 
--(void)filterSearchWithText:(NSString *)filterstring;
+@property(nonatomic, strong) RCSearchBar * searchBar;
+
 
 @end
