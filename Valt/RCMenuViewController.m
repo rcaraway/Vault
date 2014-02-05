@@ -289,8 +289,7 @@
 -(NSString *)randomizedFeelGoodMessage
 {
     NSArray * messages = @[@"Work with Purpose",
-                           @"You'll do Great",
-                           @"Keep Going",
+                           @"Good Software is Art",
                            @"Never Give Up",
                            @"You're excellent"];
     NSString * selection = messages[rand()%messages.count];

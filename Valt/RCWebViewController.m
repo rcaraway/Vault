@@ -63,6 +63,8 @@
     [self.passwordButton addTarget:self action:@selector(passwordTapped) forControlEvents:UIControlEventTouchUpInside];
     self.topView.backgroundColor = [UIColor navColor];
     self.bottomView.backgroundColor = [UIColor navColor];
+    self.webView.backgroundColor = [UIColor listBackground];
+    self.view.backgroundColor = [UIColor listBackground];
     [self loadPasswordRequest];
 }
 

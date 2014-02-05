@@ -74,6 +74,8 @@
 		D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A718A199C200C2285D /* AboutControllerIpad.xib */; };
 		D247E98018A280B800BE719F /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E97F18A280B800BE719F /* RCTableView.m */; };
 		D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E98218A2885900BE719F /* RCSearchGestureManager.m */; };
+		D247E98518A2E55700BE719F /* PurchaseControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */; };
+		D247E98718A2EB0D00BE719F /* RCWebViewControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */; };
 		D24B84A71875C68900C37272 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B84A61875C68900C37272 /* Parse.framework */; };
 		D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24CD6DE186A343A00A47F1B /* RCSyncView.m */; };
 		D25569661896BC4200F5525D /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569651896BC4200F5525D /* about@2x.png */; };
@@ -263,6 +265,8 @@
 		D247E97F18A280B800BE719F /* RCTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableView.m; sourceTree = "<group>"; };
 		D247E98118A2885900BE719F /* RCSearchGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchGestureManager.h; sourceTree = "<group>"; };
 		D247E98218A2885900BE719F /* RCSearchGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchGestureManager.m; sourceTree = "<group>"; };
+		D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurchaseControllerIpad.xib; sourceTree = "<group>"; };
+		D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCWebViewControllerIpad.xib; sourceTree = "<group>"; };
 		D24B84A61875C68900C37272 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D24CD6DD186A343A00A47F1B /* RCSyncView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSyncView.h; sourceTree = "<group>"; };
 		D24CD6DE186A343A00A47F1B /* RCSyncView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSyncView.m; sourceTree = "<group>"; };
@@ -794,9 +798,11 @@
 		D27F4041186343D600104F1C /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
+				D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */,
 				D22D30A718A199C200C2285D /* AboutControllerIpad.xib */,
 				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 				D27F403F186343CB00104F1C /* AboutController.xib */,
+				D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */,
 				D27F403D186343BF00104F1C /* PurchaseController.xib */,
 			);
 			name = Xibs;
@@ -982,8 +988,10 @@
 				D278D3451891BCDF0062AE39 /* back@2x.png in Resources */,
 				D2254E5C18648502003590AF /* icon-success.png in Resources */,
 				D2254E5918648502003590AF /* icon-error@2x.png in Resources */,
+				D247E98718A2EB0D00BE719F /* RCWebViewControllerIpad.xib in Resources */,
 				D27F4040186343CB00104F1C /* AboutController.xib in Resources */,
 				D2254E5B18648502003590AF /* icon-info@2x.png in Resources */,
+				D247E98518A2E55700BE719F /* PurchaseControllerIpad.xib in Resources */,
 				D2254E5F18648502003590AF /* TWMessageBarManager.podspec in Resources */,
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D217181D1857727F00D687F8 /* CollapseClickCell.xib in Resources */,

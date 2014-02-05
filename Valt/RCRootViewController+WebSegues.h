@@ -10,7 +10,7 @@
 
 @interface RCRootViewController (WebSegues)
 
--(void)segueToWebFromIndexPath:(NSIndexPath *)indexPath;
+-(void)segueToWebWithPassword:(RCPassword *)password;
 -(void)closeWeb;
 
 @end

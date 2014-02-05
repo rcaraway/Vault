@@ -31,8 +31,8 @@ static NSInteger searchIndex;
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
-    [self addChildViewController:self.searchController];
     [self.listController removeFromParentViewController];
+    [self addChildViewController:self.searchController];
     [self.view insertSubview:self.searchController.view belowSubview:self.listController.view];
     [self.view insertSubview:self.searchController.searchBar belowSubview:self.navBar];
     [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -52,9 +52,11 @@ static NSInteger searchIndex;
 -(void)segueSearchToList
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    [self addChildViewController:self.listController];
     [self.searchController removeFromParentViewController];
+    [self addChildViewController:self.listController];
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
+    [self.view bringSubviewToFront:self.navBar];
+    [self.view bringSubviewToFront:self.searchController.searchBar];
     [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.searchController.searchBar.searchField resignFirstResponder];
         self.searchController.searchBar.alpha = 0;
@@ -85,10 +87,6 @@ static NSInteger searchIndex;
     [self transitionFromSingleToSearch];
 }
 
--(void)segueSearchToWebAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
 
 
 #pragma mark - Transitions
@@ -120,14 +118,15 @@ static NSInteger searchIndex;
     self.singleController.cameFromSearch = YES;
     self.navBar.alpha = 0;
     
-    [UIView animateWithDuration:2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, -64)];
         [self.searchController.tableView insertRowsAtIndexPaths:@[self.searchController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
-        [self.searchController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y)];
+        [self.searchController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y-20)];
         [self.searchController.tableView setShouldAllowMovement:NO];
         self.singleController.isTransitioningTo = NO;
-        [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationBottom];
+        [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
         [self.singleController.tableView setFrame:originalRect];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setPurpleColoed];
         self.searchController.searchBar.searchField.text = @"";
@@ -148,7 +147,7 @@ static NSInteger searchIndex;
     CGPoint offset = [self searchOffset];
     self.singleController.isTransitioningTo = YES;
     [self.searchController.tableView setShouldAllowMovement:YES];
-    [UIView animateWithDuration:2 animations:^{
+    [UIView animateWithDuration:.3 animations:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         self.navBar.alpha = 1;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
@@ -162,6 +161,7 @@ static NSInteger searchIndex;
         [self.searchController.tableView setExtendedSize:NO];
     }completion:^(BOOL finished) {
         self.singleController.view.alpha = 0;
+        [self.searchController.tableView setShouldAllowMovement:YES];
         [self.singleController.view removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
@@ -169,7 +169,30 @@ static NSInteger searchIndex;
 
 -(void)transitionPullDownFromSingleToSearch
 {
-    
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    NSIndexPath * indexPath = [self.searchController.viewPath copy];
+    self.searchController.viewPath = nil;
+    NSInteger index = searchIndex;
+    CGRect cellRect = [self rectForCellAtIndex:index];
+    CGPoint offset = [self searchOffset];
+    self.singleController.isTransitioningTo = YES;
+    [self.searchController.tableView setShouldAllowMovement:YES];
+    [UIView animateWithDuration:.3 animations:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        self.navBar.alpha = 1;
+        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, 64)];
+        [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
+        self.singleController.view.alpha = 0;
+        [self.searchController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+        [self.searchController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];
+        [self.singleController.tableView deleteRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
+        [self.searchController.tableView setContentOffset:offset];
+        [self.searchController.tableView setExtendedSize:NO];
+    }completion:^(BOOL finished) {
+        [self.singleController.view removeFromSuperview];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    }];
 }
 
 #pragma mark - Extra Properties

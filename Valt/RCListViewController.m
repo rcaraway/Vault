@@ -99,8 +99,10 @@
 -(void)reloadIfNeeded
 {
     static BOOL firstLaunch = YES;
-    if (!firstLaunch){
+    if (!firstLaunch && !self.gestureManager.webPath){
         [self.tableView reloadData];
+    }else{
+        self.gestureManager.webPath = nil;
     }
     firstLaunch = NO;
 }
@@ -197,15 +199,6 @@
     return [[RCPasswordManager defaultManager] allTitles].count;
 }
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath == self.webPath){
-        [(RCMainCell *)cell setCompletelyGreen];
-    }else{
-        [(RCMainCell *)cell setNormalColored];
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == self.addingCellIndex) {
@@ -218,15 +211,17 @@
             return cell;
         }
         
-    } if ([indexPath isEqual:self.viewPath] || [indexPath isEqual:self.webPath]){
+    } if ([indexPath isEqual:self.viewPath]){
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.customLabel.text = @"";
-        if ([indexPath isEqual:self.webPath]){
-            [cell setCompletelyGreen];
-        }else{
-            [(RCMainCell *)cell setNormalColored];
-        }
+        [(RCMainCell *)cell setNormalColored];
+        return cell;
+    }
+    else if ([indexPath isEqual:self.gestureManager.webPath]){
+        static NSString *cellIdentifier = @"MyCell";
+        RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        [cell setFinishedGreen];
         return cell;
     }
     else{
@@ -236,8 +231,6 @@
             extraIndex = self.addingCellIndex;
         }else if (self.viewPath){
             extraIndex = self.viewPath.row;
-        }else if (self.webPath){
-            extraIndex = self.webPath.row;
         }
         if (extraIndex != NSNotFound){
             if (indexPath.row < extraIndex){
@@ -270,9 +263,6 @@
 {
     if ([indexPath isEqual:self.viewPath]){
         return 188;
-    }
-    if ([indexPath isEqual:self.webPath]){
-        return self.view.frame.size.height;
     }
     return NORMAL_CELL_FINISHING_HEIGHT;
 }
@@ -377,9 +367,8 @@
     } else if (state == RCListGestureManagerPanStateRight) {
         RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
         if (password.hasValidURL){
-            RCMainCell * cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            [cell setCompletelyGreen];
-            [[APP rootController] segueToWebFromIndexPath:indexPath];
+            self.gestureManager.webPath = indexPath;
+            [[APP rootController] segueToWebWithPassword:[RCPasswordManager defaultManager].passwords[indexPath.row]];
         }else{
             //pop up, ask for a url to go to
             //save it

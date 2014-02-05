@@ -12,9 +12,6 @@
 #import "HTAutocompleteManager.h"
 
 @interface RCDropDownCell ()
-{
-    UIView * separator;
-}
 
 @property(nonatomic, strong) UILabel * label;
 
@@ -32,16 +29,6 @@
     }
     return self;
 }
-
--(void)layoutSubviews
-{
-    if (!separator){
-        separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-        separator.backgroundColor = [UIColor colorWithWhite:.85 alpha:1];
-        [self addSubview:separator];
-    }
-}
-
 
 -(void)setupTextField
 {
@@ -63,7 +50,6 @@
 -(void)setupLabel
 {
     self.label = [[UILabel alloc] initWithFrame:self.contentView.bounds];
-    [self.label setText:@"+ Add Field"];
     self.label.alpha = 0;
     [self addSubview:self.label];
 }
@@ -99,12 +85,10 @@
 -(void)prepareForReuse
 {
     self.textField.autocompleteType = RCAutocompleteTypeUsername;
-    self.textField.placeholder = @"Notes";
     self.textField.text = @"";
     self.textField.alpha = 1;
     self.textField.keyboardType = UIKeyboardTypeDefault;
     self.label.alpha = 0;
-    [self layoutSubviews];
 }
 
 

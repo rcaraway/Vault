@@ -58,6 +58,13 @@ static UIImage * loginIcon;
     self.backgroundColor = [UIColor browserGreen];
 }
 
+-(void)setFinishedGreen
+{
+    self.backgroundColor = [UIColor browserGreen];
+    [self.contentView setFrame:CGRectOffset(self.contentView.frame, self.frame.size.width, 0)];
+    self.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, self.iconView.center.y);
+}
+
 -(void)showLoginIconWithScale:(CGFloat)scale translation:(CGFloat)translation
 {
     self.iconView.alpha = 1;

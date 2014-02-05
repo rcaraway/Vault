@@ -11,9 +11,10 @@
 @interface RCSearchGestureManager : NSObject
 
 @property(nonatomic, weak) UITableView * tableView;
+@property(nonatomic, strong) NSIndexPath * webPath;
 
 -(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
-
+-(void)resetCellToCenterAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 

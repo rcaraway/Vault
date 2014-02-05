@@ -253,7 +253,11 @@
 -(RCPurchaseViewController *)purchaseController
 {
     if (!_purchaseController){
-        _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+        if (IS_IPHONE){
+             _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+        }else{
+            _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseControllerIpad" bundle:nil];
+        }
     }
     return _purchaseController;
 }
@@ -261,7 +265,11 @@
 -(RCWebViewController *)webController
 {
     if (!_webController){
-        _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewController" bundle:nil];
+        if (IS_IPHONE){
+                 _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewController" bundle:nil];
+        }else{
+                 _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewControllerIpad" bundle:nil];            
+        }
     }
     return _webController;
 }

@@ -19,6 +19,7 @@ typedef enum{
 @property(nonatomic, weak) UITableView * tableView;
 @property(nonatomic) BOOL didAddCell;
 @property(nonatomic) BOOL menuMode;
+@property(nonatomic, strong)NSIndexPath * webPath;
 
 -(id)initWithTableView:(UITableView *)tableView delegate:(id)delegate;
 -(void)reloadAllRowsExceptIndexPath:(NSIndexPath *)indexPath;

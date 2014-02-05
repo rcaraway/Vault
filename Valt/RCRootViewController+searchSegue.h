@@ -14,6 +14,5 @@
 -(void)segueSearchToList;
 -(void)segueSearchToSingleWithPassword:(RCPassword *)password indexPath:(NSIndexPath *)path;
 -(void)segueSingleToSearch;
--(void)segueSearchToWebAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -18,6 +18,7 @@
 -(void)setGreenColored;
 -(void)setCompletelyGreen;
 -(void)setNormalColored;
+-(void)setFinishedGreen;
 -(void)removeFocus;
 -(void)setRedColored;
 

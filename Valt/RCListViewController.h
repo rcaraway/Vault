@@ -21,7 +21,6 @@
 @property(nonatomic, strong) RCListGestureManager * gestureManager;
 @property(nonatomic, strong) RCBackupView * backupView;
 @property(nonatomic, strong) NSIndexPath * viewPath;
-@property(nonatomic, strong) NSIndexPath * webPath;
 
 
 -(void)removePassword:(RCPassword *)password;

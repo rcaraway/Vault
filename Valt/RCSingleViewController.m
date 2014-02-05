@@ -9,6 +9,7 @@
 #import "RCSingleViewController.h"
 #import "RCRootViewController.h"
 #import "RCListViewController.h"
+#import "RCSearchViewController.h"
 
 #import "RCAppDelegate.h"
 
@@ -128,14 +129,18 @@
     self.tableView.allowsSelection = NO;
     [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[RCDropDownCell class] forCellReuseIdentifier:@"DropDownCell"];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.rowHeight = NORMAL_SINGLE_FINISHING_HEIGHT;
     [self.view addSubview:self.tableView];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    listOffset = [APP rootController].listController.tableView.contentOffset;
+    if (!self.cameFromSearch){
+         listOffset = [APP rootController].listController.tableView.contentOffset;
+    }else{
+        listOffset = [APP rootController].searchController.tableView.contentOffset;
+    }
     singleOffset = scrollView.contentOffset;
 }
 
@@ -143,25 +148,53 @@
 {
     [self.view endEditing:YES];
     if (!self.isTransitioningTo && !self.cameFromSearch){
-        if (scrollView.contentOffset.y < 0){
-            CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
-            if (magnitude > 1)
-                magnitude = 1;
-            self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
-        }else{
-        }
-        [[APP rootController].listController.tableView setShouldAllowMovement:YES];
-        CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
-        [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
-        listOffset = [APP rootController].listController.tableView.contentOffset;
-        singleOffset = scrollView.contentOffset;
+        [self scrollListView:scrollView];
+    }else if (!self.isTransitioningTo && self.cameFromSearch){
+        [self scrollSearchView:scrollView];
     }
+}
+
+-(void)scrollListView:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y < 0){
+        CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
+        if (magnitude > 1)
+            magnitude = 1;
+        self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
+    }else{
+    }
+    [[APP rootController].listController.tableView setShouldAllowMovement:YES];
+    CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
+    [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
+    listOffset = [APP rootController].listController.tableView.contentOffset;
+    singleOffset = scrollView.contentOffset;
+
+}
+
+-(void)scrollSearchView:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y < 0){
+        CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
+        if (magnitude > 1)
+            magnitude = 1;
+        self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
+    }else{
+    }
+    [[APP rootController].searchController.tableView setShouldAllowMovement:YES];
+    CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
+    [[APP rootController].searchController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
+    listOffset = [APP rootController].searchController.tableView.contentOffset;
+    singleOffset = scrollView.contentOffset;
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView.contentOffset.y <= - 60){
-         [[APP rootController] segueSingleToList];
+        if (!self.cameFromSearch){
+          [[APP rootController] segueSingleToList];
+        }else{
+            [[APP rootController] segueSingleToSearch];
+        }
     }
 }
 

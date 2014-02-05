@@ -26,6 +26,7 @@
 #import "UIColor+RCColors.h"
 #import "RCRootViewController+passcodeSegues.h"
 #import "RCRootViewController+searchSegue.h"
+#import "RCRootViewController+WebSegues.h"
 
 
 @interface RCSearchViewController ()<RCSearchBarDelegate, RCSearchGestureManagerDelegate>
@@ -179,7 +180,10 @@
 
 -(void)gestureManagerDidFinishWithWebState:(RCSearchGestureManager *)manager atIndexPath:(NSIndexPath *)indexPath
 {
-    [[APP rootController] segueSearchToWebAtIndexPath:indexPath];
+    NSString * text = [self textForIndexPath:indexPath];
+    RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:text];
+    self.gestureManager.webPath = indexPath;
+    [[APP rootController] segueToWebWithPassword:password];
 }
 
 

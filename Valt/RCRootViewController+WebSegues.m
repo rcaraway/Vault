@@ -10,81 +10,107 @@
 
 #import "RCListViewController.h"
 #import "RCWebViewController.h"
+#import "RCSearchViewController.h"
 
 #import "RCMessageView.h"
 #import "RCMainCell.h"
 #import "RCTableView.h"
+#import "RCSearchBar.h"
 
 #import "RCPasswordManager.h"
 #import "RCPassword.h"
+#import "RCListGestureManager.h"
+#import "RCSearchGestureManager.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
+static UIColor * ogColor;
 
 @implementation RCRootViewController (WebSegues)
 
 
 #pragma mark - Segues
 
--(void)segueToWebFromIndexPath:(NSIndexPath *)indexPath
+-(void)segueToWebWithPassword:(RCPassword *)password
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    RCPassword * password = [[RCPasswordManager defaultManager] passwords][indexPath.row];
-    CGRect cellRect = [self.listController.tableView rectForRowAtIndexPath:indexPath];
+    [self.view endEditing:YES];
+    self.currentSideController = self.childViewControllers[0];
+    [self.currentSideController removeFromParentViewController];
     [self addChildViewController:self.webController];
+    [self setupSnapshotForWeb];
+    [self.view addSubview:self.snapshotView];
     self.webController.password = password;
-    [self.view insertSubview:self.webController.view belowSubview:self.listController.view];
-    [self.view insertSubview:self.webController.topView belowSubview:self.navBar];
-    [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, self.webController.bottomView.frame.size.height)];
-    self.listController.webPath = indexPath;
-    RCMainCell * cell = (RCMainCell *)[self.listController.tableView cellForRowAtIndexPath:self.listController.webPath];
-
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.listController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y)];
-        [self.listController.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.currentSideController.view removeFromSuperview];
+    if (self.currentSideController == self.listController){
+        self.navBar.alpha = 0;
+    }else{
+        self.searchController.searchBar.alpha = 0;
+    }
+    self.webController.view.alpha = 0;
+    [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -64)];
+    [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, 50)];
+    [self.view addSubview:self.webController.view];
+    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.webController.view setAlpha:1];
+        ogColor = self.view.backgroundColor;
+        self.view.backgroundColor = [UIColor blackColor];
+        [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, 64)];
+        [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, -50)];
+        CGAffineTransform transform = CGAffineTransformMakeScale(.01, .01);
+        self.snapshotView.transform = transform;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.3 animations:^{
-            self.listController.view.alpha = 0;
-            self.navBar.alpha = 0;
-            [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, -self.webController.bottomView.frame.size.height)];
-        }completion:^(BOOL finished) {
-            [self.webController.view addSubview:self.webController.topView];
-            [self.webController loadPasswordRequest];
-            [self.view bringSubviewToFront:self.webController.view];
-            [self.view bringSubviewToFront:self.messageView];
-            self.listController.view.alpha = 1;
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-        }];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
-    [cell setCompletelyGreen];
+    [self.webController loadPasswordRequest];
 }
 
 -(void)closeWeb
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self.webController removeFromParentViewController];
-    [self.webController.webView stopLoading];
-    NSIndexPath * copy = [self.listController.webPath copy];
-    self.listController.webPath = nil;
-    [self.view insertSubview:self.webController.topView belowSubview:self.navBar];
-    [UIView animateWithDuration:.3 animations:^{
-        [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, self.webController.bottomView.frame.size.height)];
-        self.webController.view.alpha = 0;;
+    [self addChildViewController:self.currentSideController];
+    self.snapshotView.transform = CGAffineTransformMakeScale(.5, .5);
+    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.snapshotView.transform = CGAffineTransformIdentity;
+        self.webController.view.alpha = 0;
+        [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -64)];
+        [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, 50)];
     }completion:^(BOOL finished) {
-        [self.webController.view removeFromSuperview];
-        [UIView animateWithDuration:.3 animations:^{
+       
+        self.view.backgroundColor = ogColor;
+        [self.view addSubview:self.currentSideController.view];
+        if (self.currentSideController == self.listController){
             self.navBar.alpha = 1;
-            [self.listController.tableView reloadRowsAtIndexPaths:@[copy] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }completion:^(BOOL finished) {
-            [self.webController.topView removeFromSuperview];
-            self.webController.webView.delegate = nil;
-            [self.webController freeAllMemory];
-            self.webController = nil;
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-        }];
+            [self.view bringSubviewToFront:self.navBar];
+        }else{
+            self.searchController.searchBar.alpha = 1;
+            [self.view bringSubviewToFront:self.searchController.searchBar];
+        }
+        [self.view bringSubviewToFront:self.messageView];
+        [self.snapshotView removeFromSuperview];
+        self.snapshotView = nil;
+        [self.webController.webView stopLoading];
+        [self.webController.view removeFromSuperview];
+        if (self.currentSideController == self.searchController){
+            [self.searchController.gestureManager resetCellToCenterAtIndexPath:self.searchController.gestureManager.webPath];
+            self.searchController.gestureManager.webPath = nil;
+        }else{
+            [self.listController.gestureManager resetCellToCenterAtIndexPath:self.listController.gestureManager.webPath];
+        }
+        [self.webController freeAllMemory];
+        self.webController = nil;
+        self.currentSideController = nil;
+
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 
-
+-(void)setupSnapshotForWeb
+{
+    self.snapshotView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
+    [self.snapshotView setFrame:[UIScreen mainScreen].bounds];
+}
 -(void)finishedGravityEffects
 {
     [self.webController.view removeFromSuperview];
