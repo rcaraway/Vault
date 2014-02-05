@@ -7,15 +7,20 @@
 //
 
 #import "RCRootViewController+passwordSegues.h"
+#import "UIColor+RCColors.h"
+
 #import "RCSingleViewController.h"
 #import "RCListViewController.h"
+
 #import "RCPassword.h"
-#import "UIColor+RCColors.h"
 #import "RCPasswordManager.h"
+
+#import "RCTableView.h"
 #import "RCTitleViewCell.h"
-#import <objc/runtime.h>
 #import "HTAutocompleteTextField.h"
 #import "RCMainCell.h"
+
+#import <objc/runtime.h>
 
 static void * OffsetKey;
 static void * ContentSizeKey;
@@ -78,8 +83,6 @@ static void * ContentSizeKey;
         self.singleController.view.alpha = 1;
     }completion:^(BOOL finished) {
         [self.listController.tableView setExtendedSize:YES];
-        //        [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
-        
         [UIView animateWithDuration:.3 animations:^{
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
             self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
@@ -92,17 +95,16 @@ static void * ContentSizeKey;
             [cell setPurpleColoed];
             [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
             [self.singleController setAllTextFieldDelegates];
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             [cell.textField becomeFirstResponder];
 
         }completion:^(BOOL finished) {
+                [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     }];
 }
 
 -(void)transitionFromSingleToList
 {
-    
     if (self.singleController.tableView.contentOffset.y == 0){
         [self transitionNormallyFromSingleToList];
     }else{
@@ -121,10 +123,10 @@ static void * ContentSizeKey;
     [self.singleController.tableView reloadData];
     [self setOriginalOffset:self.listController.tableView.contentOffset];
     [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
-    self.listController.viewPath = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:password]+1 inSection:0];
+    self.listController.viewPath = [NSIndexPath indexPathForRow:index+1 inSection:0];
     [self.view addSubview:self.singleController.view];
     [self.listController.tableView setExtendedSize:YES];
-//    [self.listController.tableView setContentSize:CGSizeMake(self.listController.tableView.contentSize.width, self.listController.tableView.contentSize.height+188)];
+
     [UIView animateWithDuration:.3 animations:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
@@ -137,9 +139,9 @@ static void * ContentSizeKey;
         [self.singleController.tableView setFrame:originalRect];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setPurpleColoed];
         UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         [field becomeFirstResponder];
     }completion:^(BOOL finished) {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
 

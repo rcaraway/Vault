@@ -9,9 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @class RCSearchBar;
-@interface RCSearchViewController : UITableViewController
+@class RCTableView;
+@class RCSearchGestureManager;
 
+@interface RCSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property(nonatomic, strong) RCTableView * tableView;
 @property(nonatomic, strong) RCSearchBar * searchBar;
+@property(nonatomic, strong) RCSearchGestureManager * gestureManager;
+@property(nonatomic, strong) NSIndexPath * viewPath;
 
 
 @end

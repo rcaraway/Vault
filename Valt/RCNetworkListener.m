@@ -9,12 +9,15 @@
 #import "RCNetworkListener.h"
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
-#import "NSIndexPath+VaultPaths.h"
-#import "RCRootViewController.h"
-#import "RCAppDelegate.h"
-#import "RCListViewController.h"
-#import "RCMessageView.h"
 
+#import "RCAppDelegate.h"
+#import "RCRootViewController.h"
+#import "RCListViewController.h"
+
+#import "RCMessageView.h"
+#import "RCTableView.h"
+
+#import "NSIndexPath+VaultPaths.h"
 
 @interface RCNetworkListener ()
 

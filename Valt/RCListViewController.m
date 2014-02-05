@@ -25,6 +25,7 @@
 #import "RCBackupView.h"
 #import "RCDropDownCell.h"
 #import "RCMainCell.h"
+#import "RCTableView.h"
 
 //Categories
 #import "UIColor+RCColors.h"
@@ -38,54 +39,6 @@
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
-
-
-
-@implementation RCTableView
-
--(id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self){
-        self.shouldAllowMovement = YES;
-        self.extendedSize = NO;
-    }
-    return self;
-}
-
--(void)setContentOffset:(CGPoint)contentOffset
-{
-    if (self.shouldAllowMovement){
-        [super setContentOffset:contentOffset];
-    }
-}
-
--(void)setContentSize:(CGSize)contentSize
-{
-    if (self.shouldAllowMovement){
-        CGFloat height = [[RCPasswordManager defaultManager] passwords].count * NORMAL_CELL_FINISHING_HEIGHT + 100;
-        if (_extendedSize){
-            height += 188;
-        }
-        [super setContentSize:CGSizeMake(self.frame.size.width, height)];         
-    }
-}
-
--(void)setExtendedSize:(BOOL)extendedSize
-{
-    _extendedSize = extendedSize;
-    [self setContentSize:CGSizeZero];
-}
-
--(void)reloadData
-{
-    [super reloadData];
-}
-
-
-@end
-
-
 
 
 @interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate, RCBackupViewDelegate>
@@ -243,7 +196,6 @@
     }
     return [[RCPasswordManager defaultManager] allTitles].count;
 }
-
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {

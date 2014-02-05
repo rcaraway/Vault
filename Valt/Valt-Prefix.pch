@@ -14,6 +14,10 @@
 #define IS_IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 #define IS_IPHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
 
+#define NORMAL_CELL_FINISHING_HEIGHT 60
+#define COMMITING_CREATE_CELL_HEIGHT 60
+
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>

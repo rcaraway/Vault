@@ -30,9 +30,3 @@
 @end
 
 
-@interface RCTableView : UITableView
-
-@property (nonatomic) BOOL shouldAllowMovement;
-@property (nonatomic) BOOL extendedSize;
-
-@end

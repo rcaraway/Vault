@@ -13,6 +13,7 @@
 
 #import "RCMessageView.h"
 #import "RCMainCell.h"
+#import "RCTableView.h"
 
 #import "RCPasswordManager.h"
 #import "RCPassword.h"

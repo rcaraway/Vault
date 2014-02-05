@@ -7,31 +7,35 @@
 //
 
 #import "RCSingleViewController.h"
-#import "JTTableViewGestureRecognizer.h"
-#import "JTTransformableTableViewCell.h"
-#import "RCPassword.h"
-#import "RCPasswordManager.h"
-#import "RCDropDownCell.h"
-#import "RCTitleViewCell.h"
-#import "UIColor+RCColors.h"
-#import "HTAutocompleteTextField.h"
-#import "UIImage+memoIcons.h"
-#import "RCAppDelegate.h"
-#import "RCCredentialGestureManager.h"
 #import "RCRootViewController.h"
-#import "HTAutocompleteManager.h"
-#import "RCNetworking.h"
 #import "RCListViewController.h"
 
+#import "RCAppDelegate.h"
+
+#import "RCCredentialGestureManager.h"
+#import "HTAutocompleteManager.h"
+#import "RCNetworking.h"
+#import "RCPassword.h"
+#import "RCPasswordManager.h"
+#import "JTTableViewGestureRecognizer.h"
+
+#import "JTTransformableTableViewCell.h"
+#import "HTAutocompleteTextField.h"
+#import "RCDropDownCell.h"
+#import "RCTitleViewCell.h"
+#import "RCTableView.h"
+
+#import "UIImage+memoIcons.h"
+#import "UIColor+RCColors.h"
 #import "RCRootViewController+passwordSegues.h"
 #import "RCRootViewController+searchSegue.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
 #define DUMMY_CELL @"Dummy"
-#define COMMITING_CREATE_CELL_HEIGHT 47
-#define NORMAL_CELL_FINISHING_HEIGHT 47
-#define TITLE_CELL_HEIGHT 60
+#define COMMIT_SINGLE_CELL_HEIGHT 47
+#define NORMAL_SINGLE_FINISHING_HEIGHT 47
+#define TITLE_CELL_HEIGHT NORMAL_CELL_FINISHING_HEIGHT
 
 
 @interface RCSingleViewController ()<RCCredentialGestureManagerDelegate, UITextFieldDelegate>
@@ -125,7 +129,7 @@
     [self.tableView registerClass:[RCTitleViewCell class] forCellReuseIdentifier:@"MyCell"];
     [self.tableView registerClass:[RCDropDownCell class] forCellReuseIdentifier:@"DropDownCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.rowHeight = NORMAL_CELL_FINISHING_HEIGHT;
+    self.tableView.rowHeight = NORMAL_SINGLE_FINISHING_HEIGHT;
     [self.view addSubview:self.tableView];
 }
 
@@ -200,7 +204,7 @@
 {
     if (indexPath.row == 0)
         return TITLE_CELL_HEIGHT;
-    return NORMAL_CELL_FINISHING_HEIGHT;
+    return NORMAL_SINGLE_FINISHING_HEIGHT;
 }
 
 
