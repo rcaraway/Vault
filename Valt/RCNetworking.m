@@ -52,8 +52,10 @@ static RCNetworking *sharedNetwork;
 
 +(void)initialize
 {
-    [PFUser logOut];
     sharedNetwork = [[RCNetworking alloc] init];
+    if ([sharedNetwork loggedIn]){
+        [PFUser logOut];
+    }
 }
 
 +(RCNetworking *)sharedNetwork
@@ -118,7 +120,7 @@ static RCNetworking *sharedNetwork;
 {
     if ([self premiumState] == RCPremiumStateCurrent && [[RCPasswordManager defaultManager] accessGranted]){
         PFQuery * query = [PFQuery queryWithClassName:PASSWORD_CLASS];
-        [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].objectId];
+        [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].username];
         query.limit = 100000;
         [query orderByAscending:PASSWORD_INDEX];
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginFetching object:nil];

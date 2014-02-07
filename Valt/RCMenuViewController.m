@@ -121,6 +121,21 @@
     [self setupFeelgoodButton];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
+        NSInteger index = [self.cellNames indexOfObject:RENEW];
+        if (index == NSNotFound){
+            index = [self.cellNames indexOfObject:UPGRADE];
+        }
+        if (index != NSNotFound){
+            [self.cellNames removeObjectAtIndex:index];
+            [self.cellImages removeObjectAtIndex:index];
+            [self.tableView reloadData];
+        }
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -219,6 +234,8 @@
         [[APP rootController] closeToNewViewController:[[APP rootController] aboutController] title:@"About" color:[UIColor aboutColor]];
     }else if ([text isEqualToString:UPGRADE]){
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum" color:[UIColor goPlatinumColor]];
+    }else if ([text isEqualToString:RENEW]){
+        [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Renew Platinum" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
     }else if ([text isEqualToString:FEEDBACK]){

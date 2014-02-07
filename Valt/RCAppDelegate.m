@@ -7,15 +7,19 @@
 //
 
 #import "RCAppDelegate.h"
+
 #import "RCRootViewController.h"
+
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
-#import <Parse/Parse.h>
-#import "NSString+Encryption.h"
 #import "RCNetworkListener.h"
+
+#import <Parse/Parse.h>
 
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
+#define RENEW_COUNT_KEY @"RENEW_COUNT_KEY"
+
 
 @implementation RCAppDelegate
 
@@ -69,12 +73,27 @@
     [RCNetworkListener stopListening];
 }
 
-#pragma mark - LaunchCount
+
+#pragma mark - User Defaults
 
 -(void)registerLaunchCount
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{FIRST_LAUNCH_COUNT_KEY: @YES,
-                                                              LAUNCH_COUNT_KEY : @0}];
+                                                              LAUNCH_COUNT_KEY : @0,
+                                                              RENEW_COUNT_KEY: @0}];
+}
+
+-(BOOL)shouldShowRenew
+{
+    static BOOL show = YES;
+    NSInteger count = [[NSUserDefaults standardUserDefaults] integerForKey:RENEW_COUNT_KEY];
+    if (show){
+        [[NSUserDefaults standardUserDefaults] setInteger:(count+1)%12 forKey:RENEW_COUNT_KEY];
+        if (count == 0){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 -(void)incrementCount

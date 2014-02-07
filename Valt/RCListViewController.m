@@ -91,8 +91,8 @@
         [self setupBackupView];
         [self performSelector:@selector(showBackup) withObject:nil afterDelay:.6];
         backupShown = YES;
-    }else if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
-        //TODO:Launch Alert View for renewing
+    }else if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired && [APP shouldShowRenew]){
+        [[APP rootController] segueToPurchaseFromList];
     }
 }
 
@@ -294,7 +294,7 @@
     if ([cell isKindOfClass:[JTTransformableTableViewCell class]]){
         BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
         if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 2){
-            if ([[RCNetworking sharedNetwork] loggedIn]){
+            if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
                 [[RCNetworking sharedNetwork] fetchFromServer];
             }else{
                 [[APP rootController] segueToPurchaseFromList];

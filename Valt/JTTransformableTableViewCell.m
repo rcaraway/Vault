@@ -150,7 +150,7 @@
                                                 lineBreakMode:NSLineBreakByClipping];
     }
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
-        if ([[RCNetworking sharedNetwork] loggedIn]){
+        if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
              self.customLabel.text = @"Release to Sync";
         }else{
              self.customLabel.text = @"Upgrade to Sync";

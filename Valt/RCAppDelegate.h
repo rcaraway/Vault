@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 @class RCRootViewController;
 
+
 @interface RCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) RCRootViewController * rootController;
 
+
 -(BOOL)launchCountTriggered;
+-(BOOL)shouldShowRenew;
+-(void)resetRenewCount;
 
 @end

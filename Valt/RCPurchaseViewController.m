@@ -51,6 +51,11 @@
     [self.restorePurchaseButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
     [self addNotifications];
     [[RCInAppPurchaser sharePurchaser] loadProducts];
+    if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
+        self.titleLabel.text = @"Renew Platinum Today?";
+        UILabel * label =  (UILabel *)[[[[APP rootController] navBar] topItem] titleView];
+        label.text = @"Renew Platinum";
+    }
     [self.loader startAnimating];
 }
 
@@ -241,7 +246,7 @@
 {
     [self.alertView dismiss];
     if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
-         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [[APP rootController] goHome];
     }
 }
 
