@@ -18,15 +18,18 @@
 #import "HTAutocompleteTextField.h"
 #import "RCRootViewController+passcodeSegues.h"
 
-@interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate>
+#import "LBActionSheet.h"
+#import "RCMessageView.h"
+
+@interface RCPasscodeViewController () <UITextFieldDelegate, MLAlertViewDelegate, LBActionSheetDelegate>
 {
     BOOL isNewUser;
     NSString * confirmString;
     NSString * loginPassword;
 }
 
-
 @property(nonatomic, strong) MLAlertView * alertView;
+@property(nonatomic, strong) LBActionSheet * actionSheet;
 
 @end
 
@@ -138,9 +141,13 @@
     isNewUser = NO;
     [self.passwordField resignFirstResponder];
     self.loginButton.alpha = 0;
-    [self.valtView openWithCompletionBlock:^{
-        [[APP rootController] seguePasscodeToList];
-    }];
+    if (loginPassword && ![loginPassword isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
+        [self showWhichPasswordActionSheet];
+    }else{
+        [self.valtView openWithCompletionBlock:^{
+            [[APP rootController] seguePasscodeToList];
+        }];
+    }
 }
 
 -(void)didFailToLogIn:(NSNotification *)notification
@@ -152,8 +159,11 @@
 
 -(void)didLogIn:(NSNotification *)notification
 {
+    loginPassword = self.alertView.passwordTextField.text;
     [self.alertView dismissWithSuccessTitle:@"Login Successful"];
-    [[RCPasswordManager defaultManager] attemptToUnlockWithCode:loginPassword];
+    [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
+    self.loginButton.alpha = 0;
+    [self.passwordField becomeFirstResponder];
 }
 
 -(void)didDenyAccess
@@ -172,6 +182,25 @@
     }];
 }
 
+
+#pragma mark - ActionSheet
+
+-(void)showWhichPasswordActionSheet
+{
+    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Would you like to change your master password to the same one as your premium account?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Update master password" otherButtonTitles:@"Don't Update", nil];
+    [self.actionSheet showInView:self.view];
+}
+
+-(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        
+    }
+        
+    [self.valtView openWithCompletionBlock:^{
+        [[APP rootController] seguePasscodeToList];
+    }];
+}
 
 
 #pragma mark - View Setup
@@ -265,7 +294,6 @@
 {
     if (buttonIndex ==1){
         [alertView loadWithText:@"Logging in"];
-        loginPassword = password;
         [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
     }
 }

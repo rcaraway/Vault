@@ -10,6 +10,7 @@
 
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
+#import "RCPasscodeViewController.h"
 
 #import "UIColor+RCColors.h"
 

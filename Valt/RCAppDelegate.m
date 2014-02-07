@@ -71,6 +71,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [RCNetworkListener stopListening];
+    [PFUser logOut];
 }
 
 

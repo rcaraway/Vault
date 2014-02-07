@@ -33,17 +33,17 @@
         [pfObject setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
         [pfObject setObject:self.title forKey:PASSWORD_TITLE];
         if (self.username.length > 0){
-             [pfObject setObject:[self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_USERNAME];
+             [pfObject setObject:[self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_USERNAME];
         }else{
              [pfObject setObject:@"" forKey:PASSWORD_USERNAME];
         }
         if (self.password.length > 0){
-             [pfObject setObject:[self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_PASSWORD];
+             [pfObject setObject:[self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_PASSWORD];
         }else{
              [pfObject setObject:@"" forKey:PASSWORD_PASSWORD];
         }
         if (self.notes.length > 0) {
-            [pfObject setObject:[self.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]] forKey:PASSWORD_EXTRA_FRIELD];
+            [pfObject setObject:[self.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_EXTRA_FRIELD];
         }else{
             [pfObject setObject:@"" forKey:PASSWORD_EXTRA_FRIELD];
         }
@@ -61,17 +61,17 @@
     NSString * notes =[object objectForKey:PASSWORD_EXTRA_FRIELD];
     password.title = [object objectForKey:PASSWORD_TITLE];
     if (passwordField.length > 0){
-         password.password = [passwordField stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+         password.password = [passwordField stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
     }else{
          password.password = @"";
     }
     if (username.length > 0){
-        password.username = [username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        password.username = [username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
     }else{
         password.username = @"";
     }
     if (notes.length > 0){
-        password.notes = [notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] masterPassword]];
+        password.notes = [notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
     }else{
         password.notes = @"";
     }

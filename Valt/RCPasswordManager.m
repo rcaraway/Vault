@@ -7,10 +7,16 @@
 //
 
 #define MASTER_PASSWORD_KEY @"kMasterPasswordKey"
+#define ACCOUNT_LOGIN_KEY @"ACCOUNT_LOGIN_KEY"
+#define ACCOUNT_PASSWORD_KEY @"ACCOUNT_PASSWORD_KEY"
 
 #import "RCPasswordManager.h"
 #import "PDKeychainBindings.h"
+#import "RCNetworking.h"
+
 #import "NSString+Encryption.h"
+
+#import <Parse/Parse.h>
 
 #define MASTER_PASSWORD_ACCESS @"AbVxHzKQHdLmBsVVJb6yk3Pq" //WARNING: DO NOT CHANGE EVER
 
@@ -156,6 +162,11 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 }
 
 
+@interface RCPasswordManager ()
+
+@property(nonatomic, copy) NSString * currentPassword;
+
+@end
 
 @implementation RCPasswordManager
 {
@@ -187,8 +198,15 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     if (self){
         keyChainQueue = dispatch_queue_create("kcQueue", DISPATCH_QUEUE_SERIAL);
         mutablePasswords = [NSMutableArray new];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:PFLogInSuccessNotification object:nil];
     }
     return self;
+}
+
+-(void)didLogin
+{
+    [[PDKeychainBindings sharedKeychainBindings] setString:[PFUser currentUser].username forKey:ACCOUNT_LOGIN_KEY];
+    [[PDKeychainBindings sharedKeychainBindings] setString:[PFUser currentUser].password forKey:ACCOUNT_PASSWORD_KEY];
 }
 
 
@@ -197,7 +215,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(void)setMasterPassword:(NSString *)masterPassword
 {
     NSString * mPw = [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
-    if (!mPw || mPw.length == 0 || allowOverridePassword){
+    if (!mPw || mPw.length == 0 || _accessGranted){
          [[PDKeychainBindings sharedKeychainBindings] setString:masterPassword forKey:MASTER_PASSWORD_KEY];
         if (!allowOverridePassword)
             [self grantPasswordAccess];
@@ -503,6 +521,21 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 }
 
 
+-(NSString *)accountLogin
+{
+    if (self.accessGranted){
+         return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_LOGIN_KEY];
+    }
+    return nil;
+}
+
+-(NSString *)accountPassword
+{
+    if (self.accessGranted){
+         return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_PASSWORD_KEY];
+    }
+    return nil;
+}
 
 #pragma mark - Keychain
 

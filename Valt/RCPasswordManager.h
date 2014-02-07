@@ -12,7 +12,9 @@
 @interface RCPasswordManager : NSObject
 
 @property(nonatomic, strong,readonly) NSArray * passwords;
-@property(nonatomic, copy) NSString * accountEmail;
+@property(nonatomic, copy, readonly) NSString * accountLogin;
+@property(nonatomic, copy ,readonly) NSString * accountPassword;
+
 @property (nonatomic, readonly) BOOL accessGranted;
 
 -(NSArray *)allTitles;

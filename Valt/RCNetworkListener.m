@@ -177,7 +177,11 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didGrantAccess
 {
-    [[RCNetworking sharedNetwork] fetchFromServer];
+    NSString * username = [RCPasswordManager defaultManager].accountLogin;
+    NSString * password = [RCPasswordManager defaultManager].accountPassword;
+    if (username && password){
+        [[RCNetworking sharedNetwork] loginWithEmail:username password:password];
+    }
 }
 
 -(void)didLock
