@@ -16,7 +16,8 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
 
 @interface HTAutocompleteTextField ()
 
-@property (nonatomic, strong) NSString *autocompleteString;
+@property(nonatomic, copy) NSString * previousText;
+@property (nonatomic, copy) NSString *autocompleteString;
 @property (nonatomic, strong) UIButton *autocompleteButton;
 
 @end
@@ -183,6 +184,7 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
 - (void)ht_textDidChange:(NSNotification*)notification
 {
     [self refreshAutocompleteText];
+    self.previousText = self.text;
 }
 
 - (void)updateAutocompleteLabel
@@ -201,7 +203,6 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
     if (!self.autocompleteDisabled)
     {
         id <HTAutocompleteDataSource> dataSource = nil;
-        
         if ([self.autocompleteDataSource respondsToSelector:@selector(textField:completionForPrefix:ignoreCase:)])
         {
             dataSource = (id <HTAutocompleteDataSource>)self.autocompleteDataSource;
@@ -213,19 +214,42 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
         
         if (dataSource)
         {
-            self.autocompleteString = [dataSource textField:self completionForPrefix:self.text ignoreCase:self.ignoreCase];
-
-            if (self.autocompleteString.length > 0)
-            {
-                if (self.text.length == 0 || self.text.length == 1)
-                {
-                    [self updateAutocompleteButtonAnimated:YES];
+            if ([self endInSpace] && self.autocompleteString.length > 0){
+                self.text = [self.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                [self commitAutocompleteText];
+            }else{
+                
+                if (![self hitBackSpace]){
+                     self.autocompleteString = [dataSource textField:self completionForPrefix:self.text ignoreCase:self.ignoreCase];
+                }else{
+                    if (self.autocompleteString.length > 0){
+                        self.text = self.previousText;
+                        self.autocompleteString = @"";
+                    }
                 }
+                    
+                if (self.autocompleteString.length > 0)
+                {
+                    if (self.text.length == 0 || self.text.length == 1)
+                    {
+                        [self updateAutocompleteButtonAnimated:YES];
+                    }
+                }
+                [self updateAutocompleteLabel];
             }
-            
-            [self updateAutocompleteLabel];
         }
     }
+}
+
+-(BOOL)endInSpace
+{
+    NSString * text = self.text;
+    return [text hasSuffix:@" "] && ![self hitBackSpace];
+}
+
+-(BOOL)hitBackSpace
+{
+    return (self.previousText.length-1 == self.text.length);
 }
 
 - (BOOL)commitAutocompleteText

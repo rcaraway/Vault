@@ -16,6 +16,8 @@
 @property(nonatomic, copy ,readonly) NSString * accountPassword;
 
 @property (nonatomic, readonly) BOOL accessGranted;
+@property (nonatomic, readonly) BOOL canLogin;
+
 
 -(NSArray *)allTitles;
 -(void)clearAllPasswordData;

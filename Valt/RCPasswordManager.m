@@ -190,6 +190,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     return manager;
 }
 
+
 #pragma mark - Initialization
 
 -(id)init
@@ -198,17 +199,31 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     if (self){
         keyChainQueue = dispatch_queue_create("kcQueue", DISPATCH_QUEUE_SERIAL);
         mutablePasswords = [NSMutableArray new];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:PFLogInSuccessNotification object:nil];
+        [self removeLoginInfo];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidLogin object:nil];
     }
     return self;
 }
 
--(void)didLogin
+-(void)didLogin:(NSNotification *)notification
 {
-    [[PDKeychainBindings sharedKeychainBindings] setString:[PFUser currentUser].username forKey:ACCOUNT_LOGIN_KEY];
-    [[PDKeychainBindings sharedKeychainBindings] setString:[PFUser currentUser].password forKey:ACCOUNT_PASSWORD_KEY];
+    NSString * string = [PFUser currentUser].username;
+    NSString * password = notification.object;
+    [[PDKeychainBindings sharedKeychainBindings] setString:string forKey:ACCOUNT_LOGIN_KEY];
+    [[PDKeychainBindings sharedKeychainBindings] setString:password forKey:ACCOUNT_PASSWORD_KEY];
 }
 
+-(BOOL)canLogin
+{
+    return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_LOGIN_KEY].length > 0
+    && [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_PASSWORD_KEY].length > 0;
+}
+
+-(void)removeLoginInfo
+{
+    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:ACCOUNT_LOGIN_KEY];
+    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:ACCOUNT_PASSWORD_KEY];
+}
 
 #pragma mark - Accessing / Master Password
 
@@ -307,13 +322,17 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(void)addPasswords:(NSArray *)passwords
 {
     if (passwords && _accessGranted){
-        [mutablePasswords addObjectsFromArray:passwords];
+        NSMutableOrderedSet * passSet = [[NSMutableOrderedSet alloc] initWithArray:passwords];
+        NSMutableOrderedSet * set = [[NSMutableOrderedSet alloc] initWithArray:mutablePasswords];
+        [passSet minusOrderedSet:set];
+        NSArray * filtered = [passSet array];
+        [mutablePasswords addObjectsFromArray:filtered];
 #ifdef TESTING_MODE
-        [self addNewPasswordsToKeychain:passwords];
+        [self addNewPasswordsToKeychain:filtered];
         setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
-            [self addNewPasswordsToKeychain:passwords];
+            [self addNewPasswordsToKeychain:filtered];
             setKeychainTotal((int)mutablePasswords.count);
         });
 #endif

@@ -106,7 +106,7 @@ static RCNetworking *sharedNetwork;
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginLoggingIn object:nil];
         [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser *user, NSError *error) {
             if (!error){
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:password];
             }else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:error.userInfo[@"error"]];
             }
@@ -242,6 +242,13 @@ static RCNetworking *sharedNetwork;
 -(BOOL)loggedIn
 {
     return [PFUser currentUser] != nil;
+}
+
+-(void)logOut
+{
+    if ([PFUser currentUser]){
+        [PFUser logOut];
+    }
 }
 
 

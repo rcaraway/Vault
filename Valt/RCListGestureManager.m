@@ -11,10 +11,13 @@
 #import "RCMainCell.h"
 
 #import "RCAppDelegate.h"
+
 #import "RCRootViewController+menuSegues.h"
 #import "RCRootViewController+passcodeSegues.h"
+
 #import "RCRootViewController.h"
 #import "RCMenuViewController.h"
+#import "RCPasscodeViewController.h"
 
 typedef enum {
     RCListGestureManagerStateNone,
@@ -186,7 +189,9 @@ typedef enum {
     }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
         if (translation <= 0){
             [[APP rootController] dragSideToXOrigin:translation];
-            [[APP rootController] resetToOpen];
+            if ([[APP rootController] passcodeController].view.superview){
+                [[[APP rootController] passcodeController].view removeFromSuperview];
+            }
         }else{
             [[APP rootController] movePasscodeToXOrigin:translation];
         }

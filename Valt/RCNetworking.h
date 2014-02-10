@@ -30,6 +30,7 @@ typedef enum {
 -(void)getUrlForTitle:(NSString *)title;
 
 -(BOOL)loggedIn;
+-(void)logOut;
 -(PFACL *)defaultACLForUser:(PFUser *)user;
 
 +(RCNetworking *)sharedNetwork;

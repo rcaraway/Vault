@@ -13,6 +13,7 @@
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
 #import "RCValtView.h"
+#import "RCAppDelegate.h"
 #import "RCMessageView.h"
 
 @implementation RCRootViewController (passcodeSegues)
@@ -35,6 +36,7 @@
 
 -(void)returnToPasscodeFromList
 {
+    [[RCNetworking sharedNetwork] logOut];
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];
@@ -111,11 +113,15 @@
     CGFloat divider =  1 - xOrigin/[UIScreen mainScreen].bounds.size.width;
     CGFloat rotateValue =3.141f*divider/2.0f;
     _3Dt =CATransform3DMakeRotation(rotateValue,0.0f,-1.0f,0.0f);
-    _3Dt.m34 = 0.001f*divider;
-    _3Dt.m14 = -0.0014f*divider;
+    if (IS_IPHONE){
+        _3Dt.m34 = 0.001f*divider;
+        _3Dt.m14 = -0.0014f*divider;
+    }else{
+        _3Dt.m34 = .001f*divider;
+        _3Dt.m14 = -.000176*divider;
+    }
     return _3Dt;
 }
-
 
 -(void)showPasscodeHint
 {
@@ -138,7 +144,6 @@
 -(void)openPasscodeFromOrigin:(CGFloat)xOrigin
 {
     UIView * view = [self passcodeController].view;
-    CGFloat multiplier = (IS_IPHONE?1:320.0/[UIScreen mainScreen].bounds.size.width);
     view.layer.transform = [self tranformForXOrigin:xOrigin];
     [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
@@ -147,8 +152,8 @@
             _3Dt.m34 = 0.001f;
             _3Dt.m14 = -0.0015f;
         }else{
-            _3Dt.m34 = 0.001f*multiplier;
-            _3Dt.m14 = -0.0015f*multiplier;
+            _3Dt.m34 = 0.001f;
+            _3Dt.m14 = -0.000176f;
         }
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
@@ -158,7 +163,6 @@
 -(void)openUpPasscodeCompletion:(void(^)())completion
 {
     UIView * view = [self passcodeController].view;
-    CGFloat multiplier = (IS_IPHONE?1:320.0/[UIScreen mainScreen].bounds.size.width);
     view.layer.anchorPoint=CGPointMake(0, .5);
     view.center = CGPointMake(0, view.center.y);
     [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
@@ -166,8 +170,13 @@
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
-        _3Dt.m34 = 0.001f*multiplier;
-        _3Dt.m14 = -0.0015f*multiplier;
+        if (IS_IPHONE){
+            _3Dt.m34 = 0.001f;
+            _3Dt.m14 = -0.0015f;
+        }else{
+            _3Dt.m34 = 0.001f;
+            _3Dt.m14 = -0.000176f;
+        }
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
         if (finished) {

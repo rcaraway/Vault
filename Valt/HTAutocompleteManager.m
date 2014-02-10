@@ -50,8 +50,8 @@ static HTAutocompleteManager *sharedManager;
     }else if (textField.autocompleteType == RCAutocompleteTypeURL){
         return [self autoFillForURLForWithPrefix:prefix];
     }else if (textField.autocompleteType == RCAutocompleteTypePassword){
-        NSArray * passwordList = [self passwordList];
-        return [self autoFilledFromList:passwordList prefix:prefix ignoreCase:NO];
+        NSArray * passwordListx = [self passwordList];
+        return [self autoFilledFromList:passwordListx prefix:prefix ignoreCase:NO];
     }
     return @"";
 }
@@ -62,10 +62,11 @@ static HTAutocompleteManager *sharedManager;
     static NSArray *autocompleteArray;
     static NSArray * usernameArray;
     BOOL ignoreCase = YES;
+    autocompleteArray = [self prefilledSites];
+    usernameArray = [self usernameList];
     dispatch_once(&onceToken, ^
                   {
-                      autocompleteArray = [self prefilledSites];
-                      usernameArray = [self usernameList];
+
                   });
     
     // Check that text field contains an @
@@ -130,6 +131,11 @@ static HTAutocompleteManager *sharedManager;
     return @"";
 }
 
+-(NSString *)autofillForEmailOnlyWithPrefix:(NSString *)prefix
+{
+    return nil;
+}
+
 -(NSString *)autoFillForURLForWithPrefix:(NSString *)prefix
 {
     static dispatch_once_t onceToken;
@@ -172,6 +178,19 @@ static HTAutocompleteManager *sharedManager;
         
     }
     return @"";
+}
+
+-(NSArray *)emailList
+{
+    NSArray * passwords = [[RCPasswordManager defaultManager] passwords];
+    NSMutableArray * usernames = [NSMutableArray arrayWithCapacity:passwords.count];
+    for (RCPassword * password in passwords) {
+        if (password.username && [self validEmail:password.username]){
+            [usernames addObject:password.username];
+        }
+    }
+    return [NSArray arrayWithArray:usernames];
+
 }
 
 -(NSArray *)usernameList
@@ -470,6 +489,13 @@ static HTAutocompleteManager *sharedManager;
               @"temple.edu",
               @"cinci.rr.com"];
 
+}
+
+-(BOOL)validEmail:(NSString *)name
+{
+    NSString *laxString = @".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", laxString];
+    return [emailTest evaluateWithObject:name];
 }
 
 @end

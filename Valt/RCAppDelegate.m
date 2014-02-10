@@ -21,6 +21,10 @@
 #define RENEW_COUNT_KEY @"RENEW_COUNT_KEY"
 
 
+@interface RCAppDelegate ()
+
+@end
+
 @implementation RCAppDelegate
 
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -119,5 +123,7 @@
         return ([[NSUserDefaults standardUserDefaults] integerForKey:LAUNCH_COUNT_KEY] == 25);
     }
 }
+
+
 
 @end

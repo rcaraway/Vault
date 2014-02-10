@@ -11,6 +11,7 @@
 
 typedef enum {
     RCAutocompleteTypeUsername, // Default
+    RCAutoCompleteTypeEmailOnly,
     RCAutocompleteTypeTitle,
     RCAutocompleteTypePassword,
     RCAutocompleteTypeURL,

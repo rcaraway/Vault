@@ -17,6 +17,7 @@
 #import "RCValtView.h"
 #import "HTAutocompleteTextField.h"
 #import "RCRootViewController+passcodeSegues.h"
+#import "RCNetworkListener.h"
 
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
@@ -30,6 +31,7 @@
 
 @property(nonatomic, strong) MLAlertView * alertView;
 @property(nonatomic, strong) LBActionSheet * actionSheet;
+@property (nonatomic) BOOL premiumLogin;
 
 @end
 
@@ -61,13 +63,14 @@
     if (![[RCNetworking sharedNetwork] loggedIn]){
         [self setupLoginButton];
     }
-    [self addNotifications];
     [self addMotionEffects];
+    [self addNotifications];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+ 
     if (self.opened){
         [self setToOpenState];
     }
@@ -133,6 +136,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToLogin object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:passwordManagerAccessGranted object:nil];
+    [[NSNotificationCenter defaultCenter ]removeObserver:self name:passwordManagerAccessFailedToGrant object:nil];
 }
 
 -(void)didSucceedEnteringPassword
@@ -152,6 +157,7 @@
 
 -(void)didFailToLogIn:(NSNotification *)notification
 {
+    self.premiumLogin = NO;
     NSString * message = notification.object;
     [self.alertView showFailWithTitle:[message capitalizedString]];
     [self.alertView.loginTextField becomeFirstResponder];
@@ -159,11 +165,14 @@
 
 -(void)didLogIn:(NSNotification *)notification
 {
-    loginPassword = self.alertView.passwordTextField.text;
-    [self.alertView dismissWithSuccessTitle:@"Login Successful"];
-    [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
-    self.loginButton.alpha = 0;
-    [self.passwordField becomeFirstResponder];
+    if (self.premiumLogin){
+        self.premiumLogin = NO;
+        loginPassword = self.alertView.passwordTextField.text;
+        [self.alertView dismissWithSuccessTitle:@"Login Successful"];
+        [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
+        self.loginButton.alpha = 0;
+        [self.passwordField becomeFirstResponder];
+    }
 }
 
 -(void)didDenyAccess
@@ -293,8 +302,10 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
     if (buttonIndex ==1){
+        self.premiumLogin = YES;
         [alertView loadWithText:@"Logging in"];
         [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
+        [RCNetworkListener setShouldMerge];
     }
 }
 

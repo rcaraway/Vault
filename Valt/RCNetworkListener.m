@@ -55,13 +55,18 @@ static RCNetworkListener * sharedQueue;
     }
 }
 
++(void)setShouldMerge
+{
+    sharedQueue.shouldMerge = YES;
+}
+
 #pragma mark - Initialization
 
 -(id)init
 {
     self = super.init;
     if (self){
-        self.shouldMerge = NO;
+        self.shouldMerge = YES;
         [self addNotifications];
     }
     return self;
@@ -107,7 +112,18 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didGrantPasswordAccess
 {
-    [[RCNetworking sharedNetwork] fetchFromServer];
+    if (![[RCNetworking sharedNetwork] loggedIn]){
+        if ([[RCPasswordManager defaultManager] canLogin]){
+            self.shouldMerge = NO;
+            NSString * email = [[RCPasswordManager defaultManager] accountLogin];
+            NSString * password = [[RCPasswordManager defaultManager] accountPassword];
+            [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
+            [self showMessage:@"Connecting..." autoDismiss:NO];
+        }
+    }else{
+        self.shouldMerge = NO;
+        [[RCNetworking sharedNetwork] fetchFromServer];
+    }
 }
 
 #pragma mark - Progress Handling
@@ -168,6 +184,7 @@ static RCNetworkListener * sharedQueue;
         [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:passwords];
     }
     [[[[APP rootController] listController] tableView] reloadData];
+    [self showMessage:@"Synced" autoDismiss:YES];
 }
 
 -(void)didSync

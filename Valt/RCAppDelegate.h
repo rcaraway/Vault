@@ -15,9 +15,10 @@
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) RCRootViewController * rootController;
 
+@property (nonatomic) CGFloat m34Value;
+@property (nonatomic) CGFloat m13Value;
 
 -(BOOL)launchCountTriggered;
 -(BOOL)shouldShowRenew;
--(void)resetRenewCount;
 
 @end

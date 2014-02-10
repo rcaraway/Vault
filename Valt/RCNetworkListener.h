@@ -15,6 +15,8 @@
 
 @interface RCNetworkListener : NSObject
 
+
++(void)setShouldMerge;
 +(void)beginListening;
 +(void)stopListening;
 +(void)setLoginAfterUse;

@@ -224,7 +224,6 @@
 
 -(void)lockTapped
 {
-    
     [self returnToPasscodeFromList];
 }
 
