@@ -20,6 +20,8 @@
 #import "UIColor+RCColors.h"
 
 #import "RCSearchBar.h"
+#import "MLAlertView.h"
+
 #import "RCNetworking.h"
 
 #import <Social/Social.h>
@@ -119,6 +121,7 @@
     [self setupCellImages];
     [self setupTableView];
     [self setupFeelgoodButton];
+    [self setupCloseSwitch];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -297,6 +300,28 @@
     [self.feelgoodButton addTarget:self action:@selector(didTapFeelGood) forControlEvents:UIControlEventTouchUpInside];
     [self.feelgoodButton.titleLabel setFont:[UIFont fontWithName:@"Verdana" size:13]];
     [self.view addSubview:self.feelgoodButton];
+}
+
+-(void)setupCloseSwitch
+{
+    self.closeSwitch = [[UISwitch  alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    self.closeSwitch.center = CGPointMake(self.view.center.x, CGRectGetMinY(self.feelgoodButton.frame) - 55);
+    [self.closeSwitch addTarget:self action:@selector(didSwitch) forControlEvents:UIControlEventValueChanged];
+    [self.closeSwitch setOn:[APP locksOnClose] animated:NO];
+    [self.view addSubview:self.closeSwitch];
+}
+
+-(void)setupSwitchLabel
+{
+    
+}
+
+-(void)didSwitch
+{
+    if (!self.closeSwitch.isOn){
+        [[[MLAlertView  alloc] initWithTitle:@"Be Careful" message:@"Keeping Valt open after leaving sacrifices security for convenience.  We recommend keeping a lock on your phone to reduce risk." cancelButtonTitle:@"Proceed" otherButtonTitles:nil] show];
+    }
+    [APP setLocksOnClose:self.closeSwitch.isOn];
 }
 
 

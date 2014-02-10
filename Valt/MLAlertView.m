@@ -352,6 +352,7 @@ static UIColor * successColor;
     self.loginTextField.delegate = self;
     self.loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
     self.loginTextField.placeholder = @"Email";
+    self.loginTextField.autocompleteType = RCAutoCompleteTypeEmailOnly;
     self.loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.loginTextField.returnKeyType = UIReturnKeyNext;

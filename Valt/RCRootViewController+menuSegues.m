@@ -156,11 +156,11 @@ static void * LatestPointKey;
     [self performSelector:@selector(finishedAnimatedGraviry:) withObject:current afterDelay:.7];
     [self setNavBarMain];
     [self.view bringSubviewToFront:self.navBar];
-
     dimview.backgroundColor = [UIColor blackColor];
     dimview.alpha = .5;
     [self.view insertSubview:dimview belowSubview:current.view];
-    [UIView animateWithDuration:.72 animations:^{
+    CGFloat duration = (IS_IPHONE?.72:1);
+    [UIView animateWithDuration:duration animations:^{
         [dimview setAlpha:0];
         self.listController.view.transform = CGAffineTransformIdentity;
     }completion:^(BOOL finished) {

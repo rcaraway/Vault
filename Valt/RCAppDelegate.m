@@ -19,6 +19,7 @@
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
 #define RENEW_COUNT_KEY @"RENEW_COUNT_KEY"
+#define LOCKS_ON_CLOSE @"LOCKS_ON_CLOSE"
 
 
 @interface RCAppDelegate ()
@@ -85,7 +86,18 @@
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{FIRST_LAUNCH_COUNT_KEY: @YES,
                                                               LAUNCH_COUNT_KEY : @0,
-                                                              RENEW_COUNT_KEY: @0}];
+                                                              RENEW_COUNT_KEY: @0,
+                                                              LOCKS_ON_CLOSE : @YES}];
+}
+
+-(BOOL)locksOnClose
+{
+     return  [[NSUserDefaults standardUserDefaults] boolForKey:LOCKS_ON_CLOSE];
+}
+
+-(void)setLocksOnClose:(BOOL)locksOnClose
+{
+    [[NSUserDefaults standardUserDefaults] setBool:locksOnClose forKey:LOCKS_ON_CLOSE];
 }
 
 -(BOOL)shouldShowRenew

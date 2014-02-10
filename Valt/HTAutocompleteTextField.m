@@ -10,6 +10,16 @@
 
 #import "HTAutocompleteTextField.h"
 
+
+typedef enum {
+    RCAutocompleteTypeUsername, // Default
+    RCAutoCompleteTypeEmailOnly,
+    RCAutocompleteTypeTitle,
+    RCAutocompleteTypePassword,
+    RCAutocompleteTypeURL,
+    RCAutoCompleteTypeNone
+} RCAutoCompleteType;
+
 #define kHTAutoCompleteButtonWidth  30
 
 static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
@@ -96,6 +106,17 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
 {
     [super setFont:font];
     [self.autocompleteLabel setFont:font];
+}
+
+-(void)setAutocompleteType:(NSUInteger)autocompleteType
+{
+    _autocompleteType = autocompleteType;
+    if (autocompleteType == RCAutoCompleteTypeEmailOnly && self.autocompleteDataSource){
+        self.autocompleteString = [self.autocompleteDataSource textField:self completionForPrefix:self.text ignoreCase:YES];
+        if (self.autocompleteString.length > 0)
+            self.placeholder = nil;
+        [self updateAutocompleteLabel];
+    }
 }
 
 #pragma mark - UIResponder

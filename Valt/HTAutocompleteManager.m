@@ -38,6 +38,8 @@ static HTAutocompleteManager *sharedManager;
     if (textField.autocompleteType == RCAutocompleteTypeUsername)
     {
         return [self usernameAutoFillWithPrefix:prefix];
+    }else if (textField.autocompleteType == RCAutoCompleteTypeEmailOnly){
+        return [self emailOnlyAutoFillWithPrefix:prefix];
     }
     else if (textField.autocompleteType == RCAutocompleteTypeTitle)
     {
@@ -130,6 +132,90 @@ static HTAutocompleteManager *sharedManager;
     }
     return @"";
 }
+
+
+-(NSString *)emailOnlyAutoFillWithPrefix:(NSString *)prefix
+{
+    static dispatch_once_t onceToken;
+    static NSArray *autocompleteArray;
+    static NSArray * usernameArray;
+    BOOL ignoreCase = YES;
+    autocompleteArray = [self prefilledSites];
+    usernameArray = [self emailList];
+    dispatch_once(&onceToken, ^
+                  {
+                      
+                  });
+    
+    if (prefix.length == 0){
+        if (usernameArray.count > 0){
+            return usernameArray[0];
+        }
+        return nil;
+    }
+    
+    // Check that text field contains an @
+    NSRange atSignRange = [prefix rangeOfString:@"@"];
+    if (atSignRange.location == NSNotFound)
+    {
+        return [self autoFilledFromList:usernameArray prefix:prefix ignoreCase:YES];
+    }
+    NSString *domainAndTLD = [prefix substringFromIndex:atSignRange.location];
+    NSRange rangeOfDot = [domainAndTLD rangeOfString:@"."];
+    if (rangeOfDot.location != NSNotFound)
+    {
+        return @"";
+    }
+    
+    // Check that there aren't two @-signs
+    NSArray *textComponents = [prefix componentsSeparatedByString:@"@"];
+    if ([textComponents count] > 2)
+    {
+        return @"";
+    }
+    
+    if ([textComponents count] > 1)
+    {
+        // If no domain is entered, use the first domain in the list
+        if ([(NSString *)textComponents[1] length] == 0)
+        {
+            return [autocompleteArray objectAtIndex:0];
+        }
+        
+        NSString *textAfterAtSign = textComponents[1];
+        
+        NSString *stringToLookFor;
+        if (ignoreCase)
+        {
+            stringToLookFor = [textAfterAtSign lowercaseString];
+        }
+        else
+        {
+            stringToLookFor = textAfterAtSign;
+        }
+        
+        for (NSString *stringFromReference in autocompleteArray)
+        {
+            NSString *stringToCompare;
+            if (ignoreCase)
+            {
+                stringToCompare = [stringFromReference lowercaseString];
+            }
+            else
+            {
+                stringToCompare = stringFromReference;
+            }
+            
+            if ([stringToCompare hasPrefix:stringToLookFor])
+            {
+                return [stringFromReference stringByReplacingCharactersInRange:[stringToCompare rangeOfString:stringToLookFor] withString:@""];
+            }
+            
+        }
+    }
+    return @"";
+}
+
 
 -(NSString *)autofillForEmailOnlyWithPrefix:(NSString *)prefix
 {

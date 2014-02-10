@@ -15,8 +15,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) RCRootViewController * rootController;
 
-@property (nonatomic) CGFloat m34Value;
-@property (nonatomic) CGFloat m13Value;
+@property(nonatomic) BOOL locksOnClose;
 
 -(BOOL)launchCountTriggered;
 -(BOOL)shouldShowRenew;

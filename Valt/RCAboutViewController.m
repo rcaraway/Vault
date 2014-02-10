@@ -204,7 +204,7 @@
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
                 NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
-                [tempDict setValue:@"TheCaraway" forKey:@"screen_name"];
+                [tempDict setValue:@"GetValt" forKey:@"screen_name"];
                 [tempDict setValue:@"true" forKey:@"follow"];
                 NSLog(@"*******tempDict %@*******",tempDict);
                 SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"https://api.twitter.com/1/friendships/create.json"] parameters:tempDict];
