@@ -487,7 +487,7 @@ typedef enum {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
         RCMainCell * cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            [UIView animateWithDuration:.2 animations:^{
+            [UIView animateWithDuration:.2 delay:0  options:UIViewAnimationOptionCurveEaseOut animations:^{
                 if (translation.x > 0){
                     self.panState = RCListGestureManagerPanStateRight;
                     [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, self.tableView.frame.size.width-translation.x, 0)];
@@ -497,6 +497,7 @@ typedef enum {
                     [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, -(self.tableView.frame.size.width + translation.x), 0)];
                     cell.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, cell.iconView.center.y);
                 }
+                
             } completion:^(BOOL finished) {
                 [self.delegate gestureManager:self didFinishWithState:self.panState forIndexPath:indexPath];
                 self.panState = RCListGestureManagerPanStateMiddle;
@@ -512,7 +513,8 @@ typedef enum {
 -(void)resetCellToCenterAtIndexPath:(NSIndexPath *)indexPath
 {
     RCMainCell *cell = (RCMainCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [UIView animateWithDuration:.22 animations:^{
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn  animations:^{
+            [cell setNormalColored];
             cell.iconView.transform = CGAffineTransformMakeScale(0, 0);
         if (cell.contentView.bounds.origin.x > cell.contentView.frame.origin.x){
             cell.iconView.center = CGPointMake(cell.frame.size.width, cell.iconView.center.y);
@@ -520,6 +522,7 @@ typedef enum {
             cell.iconView.center = CGPointMake(0, cell.iconView.center.y);
         }
         cell.contentView.frame = cell.contentView.bounds;
+    }completion:^(BOOL finished) {
     }];
 }
 

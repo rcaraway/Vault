@@ -28,6 +28,7 @@
         self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
     }completion:^(BOOL finished) {
         [self.listController.view removeFromSuperview];
+        self.listController.view.transform = CGAffineTransformIdentity;
     }];
 }
 

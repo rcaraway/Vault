@@ -121,6 +121,7 @@
     [self setupCellImages];
     [self setupTableView];
     [self setupFeelgoodButton];
+    [self setupSwitchLabel];
     [self setupCloseSwitch];
 }
 
@@ -304,16 +305,23 @@
 
 -(void)setupCloseSwitch
 {
-    self.closeSwitch = [[UISwitch  alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-    self.closeSwitch.center = CGPointMake(self.view.center.x, CGRectGetMinY(self.feelgoodButton.frame) - 55);
+    self.closeSwitch = [[UISwitch  alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.switchLabel.frame)+12, CGRectGetMinY(self.switchLabel.frame)-7, 100, 44)];
     [self.closeSwitch addTarget:self action:@selector(didSwitch) forControlEvents:UIControlEventValueChanged];
     [self.closeSwitch setOn:[APP locksOnClose] animated:NO];
+    self.closeSwitch.onTintColor = [UIColor colorWithRed:.5 green:.7 blue:.5 alpha:1];
     [self.view addSubview:self.closeSwitch];
 }
 
 -(void)setupSwitchLabel
 {
-    
+    UILabel * label = [[UILabel  alloc] initWithFrame:CGRectMake(90, self.view.frame.size.height-60, 120, 20)];
+    [label setFont:[UIFont systemFontOfSize:18]];
+    [label setNumberOfLines:1];
+    [label setText:@"Lock on close:"];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setTextColor:[UIColor colorWithWhite:.5 alpha:1]];
+    self.switchLabel = label;
+    [self.view addSubview:self.switchLabel];
 }
 
 -(void)didSwitch

@@ -43,6 +43,7 @@ static void * LatestPointKey;
     if (self.childViewControllers.count > 0){
         self.currentSideController = self.childViewControllers[0];
         [self.currentSideController removeFromParentViewController];
+        [self.currentSideController.view removeFromSuperview];
     }
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -124,6 +125,7 @@ static void * LatestPointKey;
         [self setNeedsStatusBarAppearanceUpdate];
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
+        
         [self.menuController changeFeelgoodMessage];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];

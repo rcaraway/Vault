@@ -12,6 +12,7 @@
 
 #import "RCRootViewController+WebSegues.h"
 #import "UIColor+RCColors.h"
+#import "UIImage+memoIcons.h"
 
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
@@ -56,16 +57,31 @@
     [[NSURLCache sharedURLCache] setDiskCapacity:0];
     [[NSURLCache sharedURLCache] setMemoryCapacity:0];
     self.webView.delegate = self;
-    [self.doneButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1] forState:UIControlStateNormal];
+    [self.doneButton setTitleColor:[UIColor webColor] forState:UIControlStateNormal];
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
     [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
     [self.usernameField addTarget:self action:@selector(usernameTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.passwordButton addTarget:self action:@selector(passwordTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.topView.layer addSublayer:[self separatorAtOrigin:43.0f]];
+    [self.bottomView.layer addSublayer:[self separatorAtOrigin:0.0f]];
+    [self.backButton setImage:[self.backButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.forwardButton setImage:[self.forwardButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.refreshButton setImage:[self.refreshButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.pasteButton setImage:[self.pasteButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
     self.topView.backgroundColor = [UIColor navColor];
     self.bottomView.backgroundColor = [UIColor navColor];
-    self.webView.backgroundColor = [UIColor listBackground];
-    self.view.backgroundColor = [UIColor listBackground];
+    self.webView.backgroundColor = [UIColor navColor];
+    self.view.backgroundColor = [UIColor navColor];
     [self loadPasswordRequest];
+}
+
+-(CALayer *)separatorAtOrigin:(CGFloat)yOrigin
+{
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, yOrigin, [UIScreen mainScreen].bounds.size.width, 1.0f);
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.88f
+                                                     alpha:1.0f].CGColor;
+    return bottomBorder;
 }
 
 -(void)viewWillAppear:(BOOL)animated

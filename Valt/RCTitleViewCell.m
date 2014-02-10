@@ -49,13 +49,12 @@
     } completion:nil];
 }
 
-
 -(void)setNormalColored
 {
-    self.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
-    self.contentView.backgroundColor = [UIColor colorWithRed:253.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+    self.backgroundColor = [UIColor mainCellColor];
+    self.contentView.backgroundColor = [UIColor mainCellColor];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
-    [self.textField setTextColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:65.0/255.0 alpha:1]];
+    [self.textField setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
 }
 
 -(void)setPurpleColoed

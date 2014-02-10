@@ -19,6 +19,7 @@
 +(UIColor *)passcodeForeground;
 
 +(UIColor *)valtPurple;
++(UIColor *)webColor;
 
 
 //Cell State

@@ -18,6 +18,10 @@
 }
 
 
++(UIColor *)webColor
+{
+    return [UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1];
+}
 
 +(UIColor *)navColor
 {

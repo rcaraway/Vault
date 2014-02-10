@@ -46,7 +46,7 @@
 
 -(void)launchFeedback;
 -(BOOL)canSendFeedback;
-
+-(void)launchPasscode;
 
 
 -(void)setNavBarMain;

@@ -22,6 +22,8 @@
 #import "RCListGestureManager.h"
 #import "RCSearchGestureManager.h"
 
+#import "UIColor+RCColors.h"
+
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 static UIColor * ogColor;
@@ -40,6 +42,8 @@ static UIColor * ogColor;
     [self addChildViewController:self.webController];
     [self setupSnapshotForWeb];
     [self.view addSubview:self.snapshotView];
+    UIView * backView = [[UIView  alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [backView setBackgroundColor:[UIColor lightGrayColor]];
     self.webController.password = password;
     [self.currentSideController.view removeFromSuperview];
     if (self.currentSideController == self.listController){
@@ -51,15 +55,18 @@ static UIColor * ogColor;
     [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -64)];
     [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, 50)];
     [self.view addSubview:self.webController.view];
+    [self.view insertSubview:backView  belowSubview:self.snapshotView];
+    [self.view bringSubviewToFront:self.messageView];
     [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.webController.view setAlpha:1];
         ogColor = self.view.backgroundColor;
-        self.view.backgroundColor = [UIColor blackColor];
+        self.view.backgroundColor = [UIColor lightGrayColor];
         [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, 64)];
         [self.webController.bottomView setFrame:CGRectOffset(self.webController.bottomView.frame, 0, -50)];
         CGAffineTransform transform = CGAffineTransformMakeScale(.01, .01);
         self.snapshotView.transform = transform;
     } completion:^(BOOL finished) {
+        [backView removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
     [self.webController loadPasswordRequest];
@@ -71,7 +78,7 @@ static UIColor * ogColor;
     [self.webController removeFromParentViewController];
     [self addChildViewController:self.currentSideController];
     self.snapshotView.transform = CGAffineTransformMakeScale(.5, .5);
-    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.94 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.snapshotView.transform = CGAffineTransformIdentity;
         self.webController.view.alpha = 0;
         [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -64)];

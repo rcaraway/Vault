@@ -108,17 +108,20 @@
 
 -(void)launchPasscode
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-    if (!self.passcodeController){
+    if ((self.passcodeController && ![self.childViewControllers containsObject:self.passcodeController]) || !self.passcodeController){
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+        if ([UIApplication sharedApplication].statusBarHidden){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        }
         if ([[RCPasswordManager defaultManager] masterPasswordExists]){
             self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
         }else{
             self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:YES];
         }
+        self.passcodeController.opened = NO;
+        [self addChildViewController:self.passcodeController];
+        [self.view addSubview:self.passcodeController.view];
     }
-    self.passcodeController.opened = NO;
-    [self addChildViewController:self.passcodeController];
-    [self.view addSubview:self.passcodeController.view];
 }
 
 -(void)setupViewControllers
