@@ -16,6 +16,8 @@
 #import "RCAppDelegate.h"
 #import "RCMessageView.h"
 
+static UIView * passDimView;
+
 @implementation RCRootViewController (passcodeSegues)
 
 -(void)seguePasscodeToList
@@ -85,6 +87,12 @@
     if (!view.superview){
         [self.view addSubview:view];
     }
+    if (!passDimView){
+        [self setupPassDimView];
+        passDimView.alpha = xOrigin / [UIScreen mainScreen].bounds.size.width;
+        [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
+    }else
+        passDimView.alpha = xOrigin / [UIScreen mainScreen].bounds.size.width;
     CATransform3D _3Dt = [self tranformForXOrigin:xOrigin];
     view.layer.transform =_3Dt;
 }
@@ -144,8 +152,10 @@
 -(void)openPasscodeFromOrigin:(CGFloat)xOrigin
 {
     UIView * view = [self passcodeController].view;
+    [self setupPassDimView];
+    [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
     view.layer.transform = [self tranformForXOrigin:xOrigin];
-    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
         if (IS_IPHONE){
@@ -157,19 +167,23 @@
         }
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
+        [self didFinishWithDimView];
     }];
 }
 
 -(void)openUpPasscodeCompletion:(void(^)())completion
 {
     UIView * view = [self passcodeController].view;
+    [self setupPassDimView];
+    [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
     view.layer.anchorPoint=CGPointMake(0, .5);
     view.center = CGPointMake(0, view.center.y);
-    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [self setStatusDarkContentAnimated:YES];
         view.transform = CGAffineTransformMakeTranslation(0,0);
         CATransform3D _3Dt = CATransform3DIdentity;
         _3Dt =CATransform3DMakeRotation(3.141f/2.0f,0.0f,-1.0f,0.0f);
+        passDimView.alpha = 0;
         if (IS_IPHONE){
             _3Dt.m34 = 0.001f;
             _3Dt.m14 = -0.0015f;
@@ -179,6 +193,7 @@
         }
         view.layer.transform =_3Dt;
     } completion:^(BOOL finished){
+        [self didFinishWithDimView];
         if (finished) {
             if (completion){
                 completion();
@@ -190,19 +205,37 @@
 -(void)closePasscodeCompletion:(void(^)())completion
 {
     UIView * view = [self passcodeController].view;
+    [self setupPassDimView];
+    passDimView.alpha = 0;
     [self.view addSubview:view];
+    [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
     [self.view bringSubviewToFront:view];
-    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+    [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
         CATransform3D _3Dt = CATransform3DIdentity;
         view.layer.transform =_3Dt;
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        passDimView.alpha = 1;
+        [self setStatusLightContentAnimated:YES];
     } completion:^(BOOL finished){
         if (finished) {
+            [self didFinishWithDimView];
             view.layer.anchorPoint=CGPointMake(.5, .5);
             view.center = CGPointMake(view.bounds.size.width/2.0f, view.center.y);
             completion();
         }
     }];
+}
+
+-(void)setupPassDimView
+{
+    passDimView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    passDimView.backgroundColor = [UIColor blackColor];
+
+}
+
+-(void)didFinishWithDimView
+{
+    [passDimView removeFromSuperview];
+    passDimView = nil;
 }
 
 

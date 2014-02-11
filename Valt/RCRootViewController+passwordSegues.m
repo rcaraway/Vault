@@ -73,7 +73,7 @@ static void * ContentSizeKey;
     self.singleController.view.alpha = 0;
     [self.view addSubview:self.singleController.view];
     [self.singleController.tableView reloadData];
-
+    
     RCTitleViewCell * cell = (RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     self.listController.viewPath = [NSIndexPath indexPathForRow:[[RCPasswordManager defaultManager] passwords].count inSection:0];
     NSIndexPath * addPath = [NSIndexPath indexPathForRow:[[RCPasswordManager defaultManager] passwords].count-1 inSection:0];
@@ -84,7 +84,7 @@ static void * ContentSizeKey;
     }completion:^(BOOL finished) {
         [self.listController.tableView setExtendedSize:YES];
         [UIView animateWithDuration:.3 animations:^{
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            [self setStatusLightContentAnimated:YES];
             self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
             [self.listController.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
             [self.listController.tableView setContentOffset:CGPointMake(0, bottomRect.origin.y+bottomRect.size.height+40)];
@@ -118,17 +118,18 @@ static void * ContentSizeKey;
     NSInteger index =[[[RCPasswordManager defaultManager] passwords] indexOfObject:password];
     self.singleController.view.backgroundColor = [UIColor clearColor];
     CGRect cellRect = [self rectForCellAtIndex:index];
+    CGRect cellRectAdjusted = CGRectOffset(cellRect, -self.listController.tableView.contentOffset.x, -self.listController.tableView.contentOffset.y-self.listController.tableView.contentInset.top);
     CGRect originalRect = self.singleController.tableView.frame;
     [self setOriginalSize:self.listController.tableView.contentSize];
     [self.singleController.tableView reloadData];
     [self setOriginalOffset:self.listController.tableView.contentOffset];
-    [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
+    [self.singleController.tableView setFrame:CGRectMake(0, cellRectAdjusted.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
     self.listController.viewPath = [NSIndexPath indexPathForRow:index+1 inSection:0];
     [self.view addSubview:self.singleController.view];
     [self.listController.tableView setExtendedSize:YES];
 
     [UIView animateWithDuration:.3 animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        [self setStatusLightContentAnimated:YES];
         self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
         [self.listController.tableView insertRowsAtIndexPaths:@[self.listController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
@@ -180,13 +181,14 @@ static void * ContentSizeKey;
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
     CGRect cellRect = [self rectForCellAtIndex:index];
+    CGRect cellRectAdjusted = CGRectOffset(cellRect, -[self originalOffset].x, -[self originalOffset].y-self.listController.tableView.contentInset.top);
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setStatusDarkContentAnimated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
-        [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
+        [self.singleController.tableView setFrame:CGRectMake(0, cellRectAdjusted.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         self.singleController.view.alpha = 0;
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         [self.listController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
@@ -209,13 +211,14 @@ static void * ContentSizeKey;
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
     CGRect cellRect = [self rectForCellAtIndex:index];
+     CGRect cellRectAdjusted = CGRectOffset(cellRect, -[self originalOffset].x, -[self originalOffset].y-self.listController.tableView.contentInset.top);
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3  animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setStatusDarkContentAnimated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
-        [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
+        [self.singleController.tableView setFrame:CGRectMake(0, cellRectAdjusted.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         [self.listController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];

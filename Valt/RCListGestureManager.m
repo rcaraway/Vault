@@ -185,7 +185,7 @@ typedef enum {
 {
     CGFloat translation = [self.panGesture translationInView:self.tableView].x;
     if (self.panGesture.state == UIGestureRecognizerStateBegan){
-        [[APP rootController] beginDragToMenu];
+        [[APP rootController] beginListDragToMenu];
     }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
         if (translation <= 0){
             [[APP rootController] dragSideToXOrigin:translation];

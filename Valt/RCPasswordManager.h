@@ -31,6 +31,9 @@
 -(void)updatePassword:(RCPassword *)password;
 -(RCPassword *)passwordForTitle:(NSString *)title;
 
+-(void)hideAllPasswordData;
+-(void)reshowPasswordData;
+
 -(void)attemptToUnlockWithCodeInBackground:(NSString *)password;
 -(void)attemptToUnlockWithCode:(NSString *)password;
 -(void)setMasterPassword:(NSString *)masterPassword;

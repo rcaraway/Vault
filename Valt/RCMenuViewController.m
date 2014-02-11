@@ -295,7 +295,7 @@
 -(void)setupFeelgoodButton
 {
     self.feelgoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.feelgoodButton setFrame:CGRectMake(40, self.view.frame.size.height-30, self.view.frame.size.width-40, 30)];
+    [self.feelgoodButton setFrame:CGRectMake(self.view.frame.size.width-(320-40), self.view.frame.size.height-30, 320-40, 30)];
     [self.feelgoodButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [self.feelgoodButton setTitle:[self randomizedFeelGoodMessage] forState:UIControlStateNormal];
     [self.feelgoodButton addTarget:self action:@selector(didTapFeelGood) forControlEvents:UIControlEventTouchUpInside];
@@ -314,7 +314,7 @@
 
 -(void)setupSwitchLabel
 {
-    UILabel * label = [[UILabel  alloc] initWithFrame:CGRectMake(90, self.view.frame.size.height-60, 120, 20)];
+    UILabel * label = [[UILabel  alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(320-90), [UIScreen mainScreen].bounds.size.height-60, 120, 20)];
     [label setFont:[UIFont systemFontOfSize:18]];
     [label setNumberOfLines:1];
     [label setText:@"Lock on close:"];

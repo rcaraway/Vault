@@ -35,7 +35,7 @@ static NSInteger searchIndex;
     [self addChildViewController:self.searchController];
     [self.view insertSubview:self.searchController.view belowSubview:self.listController.view];
     [self.view insertSubview:self.searchController.searchBar belowSubview:self.navBar];
-    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.listController.view.alpha = 0;
         [self.view bringSubviewToFront:(UIView*)self.messageView];
         self.navBar.alpha=0;
@@ -57,7 +57,7 @@ static NSInteger searchIndex;
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
     [self.view bringSubviewToFront:self.navBar];
     [self.view bringSubviewToFront:self.searchController.searchBar];
-    [UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1  options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.searchController.searchBar.searchField resignFirstResponder];
         self.searchController.searchBar.alpha = 0;
         self.searchController.searchBar.searchField.text = @"";
@@ -119,7 +119,7 @@ static NSInteger searchIndex;
     self.navBar.alpha = 0;
     
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        [self setStatusLightContentAnimated:YES];
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, -64)];
         [self.searchController.tableView insertRowsAtIndexPaths:@[self.searchController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
@@ -148,7 +148,7 @@ static NSInteger searchIndex;
     self.singleController.isTransitioningTo = YES;
     [self.searchController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setStatusDarkContentAnimated:YES];
         self.navBar.alpha = 1;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, 64)];
@@ -178,7 +178,7 @@ static NSInteger searchIndex;
     self.singleController.isTransitioningTo = YES;
     [self.searchController.tableView setShouldAllowMovement:YES];
     [UIView animateWithDuration:.3 animations:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setStatusDarkContentAnimated:YES];
         self.navBar.alpha = 1;
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, 64)];
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];

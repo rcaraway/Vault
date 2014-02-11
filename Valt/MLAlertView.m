@@ -78,16 +78,11 @@ static UIColor * successColor;
     }
     [self.dimView addSubview:self];
     [[[UIApplication sharedApplication] windows][0] addSubview:self.dimView];
-    [UIView animateWithDuration:0.2  animations:^{
+    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:.74 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseInOut   animations:^{
         self.alpha = 1.0;
         [self.dimView setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.75]];
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y+310, self.frame.size.width, self.frame.size.height);
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y+260, self.frame.size.width, self.frame.size.height);
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.14 animations:^{
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y-10, self.frame.size.width, self.frame.size.height);
-        }completion:^(BOOL finished) {
-            
-        }];
     }];
 }
 

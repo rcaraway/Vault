@@ -16,4 +16,6 @@
 -(void)showPasscodeHint;
 -(void)movePasscodeToXOrigin:(CGFloat)xOrigin;
 
+
+
 @end

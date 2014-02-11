@@ -88,6 +88,8 @@ static RCNetworkListener * sharedQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGrantPasswordAccess) name:passwordManagerAccessGranted object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLockPhone) name:UIApplicationProtectedDataWillBecomeUnavailable object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUnlockPhone) name:UIApplicationProtectedDataDidBecomeAvailable object:nil];
 }
 
 -(void)removeNotifications
@@ -98,9 +100,21 @@ static RCNetworkListener * sharedQueue;
 
 #pragma mark - LifeCycle handling
 
+-(void)didLockPhone
+{
+    [[RCPasswordManager defaultManager] hideAllPasswordData];
+}
+
+-(void)didUnlockPhone
+{
+    [[RCPasswordManager defaultManager] reshowPasswordData];
+}
+
 -(void)didBecomeActive
 {
-    [[RCNetworking sharedNetwork] fetchFromServer];
+    if ([[RCPasswordManager defaultManager] accessGranted]){
+         [self loginWithSavedData];
+    }
 }
 
 -(void)didEnterBackground
@@ -146,7 +160,7 @@ static RCNetworkListener * sharedQueue;
 -(void)didBeginLoggingIn
 {
     if ([[RCPasswordManager defaultManager] accessGranted]) {
-        [self showMessage:@"Logging In..." autoDismiss:NO];
+        [self showMessage:@"Connecting..." autoDismiss:NO];
     }
 }
 
@@ -194,11 +208,7 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didGrantAccess
 {
-    NSString * username = [RCPasswordManager defaultManager].accountLogin;
-    NSString * password = [RCPasswordManager defaultManager].accountPassword;
-    if (username && password){
-        [[RCNetworking sharedNetwork] loginWithEmail:username password:password];
-    }
+    [self loginWithSavedData];
 }
 
 -(void)didLock
@@ -211,6 +221,15 @@ static RCNetworkListener * sharedQueue;
     [self showMessage:@"Access Denied" autoDismiss:YES];
 }
 
+
+-(void)loginWithSavedData
+{
+    NSString * username = [RCPasswordManager defaultManager].accountLogin;
+    NSString * password = [RCPasswordManager defaultManager].accountPassword;
+    if (username && password){
+        [[RCNetworking sharedNetwork] loginWithEmail:username password:password];
+    }
+}
 
 
 @end

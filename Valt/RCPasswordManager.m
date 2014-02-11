@@ -305,6 +305,20 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     }
 }
 
+-(void)hideAllPasswordData
+{
+    saveKeychainPasswords(mutablePasswords);
+    mutablePasswords = nil;
+}
+
+-(void)reshowPasswordData
+{
+    if ([self anyLoginsExist]){
+        mutablePasswords = allKeychainPasswords();
+    }else
+        mutablePasswords = [NSMutableArray new];
+}
+
 
 #pragma mark - Password Mutation Editing
 
@@ -322,17 +336,21 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(void)addPasswords:(NSArray *)passwords
 {
     if (passwords && _accessGranted){
-        NSMutableOrderedSet * passSet = [[NSMutableOrderedSet alloc] initWithArray:passwords];
-        NSMutableOrderedSet * set = [[NSMutableOrderedSet alloc] initWithArray:mutablePasswords];
-        [passSet minusOrderedSet:set];
-        NSArray * filtered = [passSet array];
-        [mutablePasswords addObjectsFromArray:filtered];
+        NSMutableArray * mutPasswords = [passwords mutableCopy];
+        for (RCPassword * password in passwords) {
+            for (RCPassword * ogPassword in mutablePasswords) {
+                if ([password isEqual:ogPassword]){
+                    [mutPasswords removeObject:password];
+                }
+            }
+        }
+        [mutablePasswords addObjectsFromArray:mutPasswords];
 #ifdef TESTING_MODE
-        [self addNewPasswordsToKeychain:filtered];
+        [self addNewPasswordsToKeychain:mutPasswords];
         setKeychainTotal((int)mutablePasswords.count);
 #else
         dispatch_async(keyChainQueue, ^{
-            [self addNewPasswordsToKeychain:filtered];
+            [self addNewPasswordsToKeychain:mutPasswords];
             setKeychainTotal((int)mutablePasswords.count);
         });
 #endif
@@ -511,7 +529,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self lockPasswords];
-        _accessGranted = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             completion();
         });

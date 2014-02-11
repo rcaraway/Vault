@@ -68,7 +68,9 @@ NSString * const messageViewWillHide = @"messageViewWillHide";
 {
     self.messageShowing = NO;
     [UIView animateWithDuration:.2 animations:^{
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        if (![[APP rootController].childViewControllers containsObject:[APP rootController].menuController]){
+             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        }
         self.messageLabel.frame = CGRectOffset(self.messageLabel.frame, 0, 20);
     }completion:^(BOOL finished) {
         self.messageLabel.text = @"";

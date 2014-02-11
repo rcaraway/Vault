@@ -245,7 +245,7 @@
 -(void)didLogin
 {
     [self.alertView dismiss];
-    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent){
+    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent && self.parentViewController && self.isViewLoaded && self.view.window){
         [[APP rootController] goHome];
     }
 }

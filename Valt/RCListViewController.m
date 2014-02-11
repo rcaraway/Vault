@@ -82,6 +82,20 @@
     [self addNotifications];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setOffsetIfNeeded];
+}
+
+-(void)setOffsetIfNeeded
+{
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        self.tableView.contentOffset = CGPointMake(0, -44);
+    });
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

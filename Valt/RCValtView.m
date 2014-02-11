@@ -32,14 +32,14 @@
 -(void)shake
 {
     self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor redColor]];
-    [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.transform =CGAffineTransformMakeRotation(degreesToRadians(10));
+    [UIView animateWithDuration:.05 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.transform =CGAffineTransformMakeRotation(degreesToRadians(6));
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.transform =CGAffineTransformMakeRotation(degreesToRadians(-10));
+        [UIView animateWithDuration:.05 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            self.transform =CGAffineTransformMakeRotation(degreesToRadians(-6));
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                self.transform =CGAffineTransformMakeRotation(degreesToRadians(0));
+            [UIView animateWithDuration:.05 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                self.transform =CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
             }];
         }];
@@ -51,67 +51,31 @@
 
 -(void)openWithCompletionBlock:(void(^)())completion
 {
-    [UIView animateWithDuration:.12 animations:^{
-        self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
+    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
-    } completion:^(BOOL finished) {
-        CABasicAnimation* rotationAnimation;
-        rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-        rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0];
-        rotationAnimation.duration = .5;
-        rotationAnimation.cumulative = YES;
-        rotationAnimation.additive = YES;
-        rotationAnimation.repeatCount = 1.0;
-        rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-        [rotationAnimation setDelegate:self];
-        open = rotationAnimation;
-        close = nil;
-        doneBlock = completion;
-        [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+        CGAffineTransform tf = CGAffineTransformConcat(CGAffineTransformRotate(self.transform, degreesToRadians(-60)), CGAffineTransformMakeScale(1.14, 1.14));
+        self.transform = tf;
+    }completion:^(BOOL finished) {
+        completion();
     }];
 }
 
+
 -(void)openNotAnimated
 {
-    self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(-10));
     self.image = [[UIImage imageNamed:@"vault"] tintedImageWithColorOverlay:[UIColor yellowColor]];
 }
 
 -(void)lockWithCompletionBlock:(void(^)())completion
 {
-    [UIView animateWithDuration:.5 animations:^{
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         self.image = [UIImage imageNamed:@"vault"];
-    } completion:^(BOOL finished) {
+        self.transform = CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        completion();
     }];
-    CABasicAnimation* rotationAnimation;
-    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    rotationAnimation.toValue = [NSNumber numberWithFloat: -M_PI * 2.0];
-    rotationAnimation.duration = .5;
-    rotationAnimation.cumulative = YES;
-    rotationAnimation.additive = YES;
-    rotationAnimation.repeatCount = 1.0;
-    rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    [rotationAnimation setDelegate:self];
-    close = rotationAnimation;
-    open = nil;
-    doneBlock = completion;
-    [self.layer addAnimation:rotationAnimation forKey:@"lockAnimation"];
-
 }
 
--(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    [self.layer removeAllAnimations];
-    if (open){
-        doneBlock();
-    }else{
-        [UIView animateWithDuration:.08 animations:^{
-            self.transform = CGAffineTransformRotate(self.transform, degreesToRadians(10));
-        } completion:^(BOOL finished) {
-            doneBlock();
-        }];
-    }
-}
 
 
 

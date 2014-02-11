@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */; };
 		D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */; };
+		D210397B18AAD11200BE36FB /* PurchaseControllerSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = D210397A18AAD11200BE36FB /* PurchaseControllerSmall.xib */; };
 		D211105C187334790029D21D /* RCNetworkListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105B187334790029D21D /* RCNetworkListener.m */; };
 		D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D211105E1873383C0029D21D /* NSIndexPath+VaultPaths.m */; };
 		D21110631873762D0029D21D /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D21110621873762D0029D21D /* KGStatusBar.m */; };
@@ -159,6 +160,7 @@
 		D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCredentialGestureManager.m; sourceTree = "<group>"; };
 		D20E9ABA185B9C0100F56013 /* RCListGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCListGestureManager.h; sourceTree = "<group>"; };
 		D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCListGestureManager.m; sourceTree = "<group>"; };
+		D210397A18AAD11200BE36FB /* PurchaseControllerSmall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurchaseControllerSmall.xib; sourceTree = SOURCE_ROOT; };
 		D211105A187334790029D21D /* RCNetworkListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNetworkListener.h; sourceTree = "<group>"; };
 		D211105B187334790029D21D /* RCNetworkListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkListener.m; sourceTree = "<group>"; };
 		D211105D1873383C0029D21D /* NSIndexPath+VaultPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+VaultPaths.h"; sourceTree = "<group>"; };
@@ -800,6 +802,7 @@
 			children = (
 				D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */,
 				D22D30A718A199C200C2285D /* AboutControllerIpad.xib */,
+				D210397A18AAD11200BE36FB /* PurchaseControllerSmall.xib */,
 				D27F4048186383EE00104F1C /* RCWebViewController.xib */,
 				D27F403F186343CB00104F1C /* AboutController.xib */,
 				D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */,
@@ -1014,6 +1017,7 @@
 				D255696A1896BCA200F5525D /* up@2x.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 				D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */,
+				D210397B18AAD11200BE36FB /* PurchaseControllerSmall.xib in Resources */,
 				D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

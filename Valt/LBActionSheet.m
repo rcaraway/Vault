@@ -539,7 +539,7 @@ static UIWindow* blockWindow = nil;
     CGAffineTransform fromTransform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0.0f, CGRectGetHeight(self.bounds));
 
     self.transform = fromTransform;
-    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
        self.dimView.backgroundColor = [UIColor colorWithWhite:.1 alpha:.6];
         self.transform = CGAffineTransformIdentity;
         [self addCornerMask];
@@ -564,7 +564,7 @@ static UIWindow* blockWindow = nil;
 
 -(void)_dismiss:(BOOL)animated completion:(void (^)(BOOL))completion
 {
-    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.1 initialSpringVelocity:.9 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.4 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.dimView.backgroundColor = [UIColor clearColor];
         self.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, self.bounds.size.height);
     } completion:^(BOOL finished) {

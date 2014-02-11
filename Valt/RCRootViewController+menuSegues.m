@@ -25,6 +25,7 @@
 
 
 static void * LatestPointKey;
+static CGFloat velocityX;
 
 @implementation RCRootViewController (menuSegues)
 
@@ -55,6 +56,23 @@ static void * LatestPointKey;
 }
 
 -(void)beginDragToMenu
+{
+    if (!self.menuController){
+        self.menuController = [[RCMenuViewController  alloc] initWithNibName:nil bundle:nil];
+    }
+    [self setupSnapshot];
+    [self addChildViewController:self.menuController];
+    [self.view addSubview:self.menuController.view];
+    [self.menuController.view addSubview:self.snapshotView];
+    if (self.childViewControllers.count > 0){
+        self.currentSideController = self.childViewControllers[0];
+        [self.currentSideController removeFromParentViewController];
+        [self.currentSideController.view removeFromSuperview];
+    }
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
+-(void)beginListDragToMenu
 {
     if (!self.menuController){
         self.menuController = [[RCMenuViewController  alloc] initWithNibName:nil bundle:nil];
@@ -122,7 +140,6 @@ static void * LatestPointKey;
         [self.view addSubview:self.currentSideController.view];
         [self.view addSubview:self.navBar];
         self.currentSideController = nil;
-        [self setNeedsStatusBarAppearanceUpdate];
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         
@@ -155,7 +172,7 @@ static void * LatestPointKey;
     
     self.gravityBehavior = gravityBeahvior;
     self.animator = animator;
-    [self performSelector:@selector(finishedAnimatedGraviry:) withObject:current afterDelay:.7];
+
     [self setNavBarMain];
     [self.view bringSubviewToFront:self.navBar];
     dimview.backgroundColor = [UIColor blackColor];
@@ -177,9 +194,9 @@ static void * LatestPointKey;
     }];
 }
 
--(void)finishedAnimatedGraviry:(UIViewController *)controller
+-(void)didFinishGravityAnimation:(UIViewController *)controller
 {
-
+   
 }
 
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
@@ -249,6 +266,8 @@ static void * LatestPointKey;
         self.snapshotView.transform = CGAffineTransformTranslate(self.snapshotView.transform,point.x - [self latestPoint].x, 0);
     }else if (self.snapPan.state == UIGestureRecognizerStateEnded){
         CGFloat velocity = [self.snapPan velocityInView:self.snapshotView].x;
+
+        
         if (velocity >= 180.0 || self.snapshotView.transform.tx >= -80.0){
             if (self.currentSideController == self.listController)
                 [self closeMenu];
@@ -256,7 +275,7 @@ static void * LatestPointKey;
                 [self closeToSideScreen];
             }
         }else{
-            [UIView animateWithDuration:.46 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [UIView animateWithDuration:.45  delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
                 self.snapshotView.transform = tranform;
             } completion:^(BOOL finished) {

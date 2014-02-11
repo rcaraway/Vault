@@ -48,6 +48,10 @@
 -(BOOL)canSendFeedback;
 -(void)launchPasscode;
 
+-(void)removeAllChildren;
+
+-(void)setStatusLightContentAnimated:(BOOL)animated;
+-(void)setStatusDarkContentAnimated:(BOOL)animated;
 
 -(void)setNavBarMain;
 -(void)setNavBarAlternateWithTitle:(NSString *)title color:(UIColor *)color;

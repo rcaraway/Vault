@@ -23,7 +23,7 @@
     [self.purchaseController.view setFrame:CGRectOffset(self.purchaseController.view.frame, 0, [UIScreen mainScreen].bounds.size.height)];
     [self.view addSubview:self.purchaseController.view];
     
-    [UIView animateWithDuration:.4 animations:^{
+    [UIView animateWithDuration:.6  delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.purchaseController.view setFrame:CGRectOffset(self.purchaseController.view.frame, 0, -[UIScreen mainScreen].bounds.size.height)];
         self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
     }completion:^(BOOL finished) {

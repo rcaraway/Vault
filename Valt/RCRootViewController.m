@@ -53,9 +53,9 @@
 {
     [super viewDidLoad];
     [self setupViewControllers];
-    [self launchPasscode];
     [self setupNavbar];
     [self setupMessageView];
+    [self launchPasscode];
     [self addNotifications];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
 }
@@ -104,24 +104,82 @@
 }
 
 
+
 #pragma mark - State Handling
 
 -(void)launchPasscode
 {
-    if ((self.passcodeController && ![self.childViewControllers containsObject:self.passcodeController]) || !self.passcodeController){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-        if ([UIApplication sharedApplication].statusBarHidden){
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        }
-        if ([[RCPasswordManager defaultManager] masterPasswordExists]){
-            self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
-        }else{
-            self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:YES];
-        }
-        self.passcodeController.opened = NO;
-        [self addChildViewController:self.passcodeController];
-        [self.view addSubview:self.passcodeController.view];
+    if (self.passcodeController.isViewLoaded){
+        [self.passcodeController.view removeFromSuperview];
+        self.passcodeController = nil;
     }
+    [self removeAllChildren];
+    
+
+    [self setStatusLightContentAnimated:NO];
+    if ([UIApplication sharedApplication].statusBarHidden){
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    }
+    
+    if ([[RCPasswordManager defaultManager] masterPasswordExists]){
+        self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:NO];
+    }else{
+        self.passcodeController = [[RCPasscodeViewController  alloc] initWithNewUser:YES];
+    }
+    self.passcodeController.opened = NO;
+    [self addChildViewController:self.passcodeController];
+    [self.view addSubview:self.passcodeController.view];
+    [self.view addSubview:self.messageView];
+
+}
+
+-(void)removeAllChildren
+{
+    if (self.snapshotView){
+        [self.snapshotView removeFromSuperview];
+        self.snapshotView = nil;
+    }
+    if (self.childViewControllers.count > 0){
+        NSMutableArray * children = [self.childViewControllers mutableCopy];
+        for (UIViewController * vc in children) {
+            if (vc.isViewLoaded){
+                [vc.view removeFromSuperview];
+                [vc removeFromParentViewController];
+            }
+        }
+    }
+}
+
+-(void)setStatusLightContentAnimated:(BOOL)animated
+{
+    void (^messageChange)() = ^(){
+        self.messageView.backgroundColor = [UIColor clearColor];
+        self.messageView.messageLabel.textColor = [UIColor whiteColor];
+    };
+    if (animated){
+        [UIView animateWithDuration:.2 animations:^{
+            messageChange();
+        }];
+    }else{
+        messageChange();
+    }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:animated];
+}
+
+-(void)setStatusDarkContentAnimated:(BOOL)animated
+{
+    void (^messageChange)() = ^(){
+        self.messageView.backgroundColor = [UIColor navColor];
+        self.messageView.messageLabel.textColor = [UIColor blackColor];
+    };
+    if (animated){
+        [UIView animateWithDuration:.2 animations:^{
+            messageChange();
+        }];
+    }else{
+        messageChange();
+    }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 }
 
 -(void)setupViewControllers
@@ -220,6 +278,9 @@
     [self.navBar pushNavigationItem:item animated:NO];
 }
 
+
+#pragma mark - Event Handling
+
 -(void)closeTapped
 {
     [self goHome];
@@ -241,7 +302,6 @@
 }
 
 
-
 #pragma mark - Properties
 
 -(RCAboutViewController *)aboutController
@@ -256,7 +316,11 @@
 {
     if (!_purchaseController){
         if (IS_IPHONE){
-             _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+            if (IS_IPHONE_5){
+                  _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
+            }else{
+                  _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseControllerSmall" bundle:nil];
+            }
         }else{
             _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseControllerIpad" bundle:nil];
         }

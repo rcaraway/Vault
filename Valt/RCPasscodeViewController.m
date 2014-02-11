@@ -32,6 +32,7 @@
 @property(nonatomic, strong) MLAlertView * alertView;
 @property(nonatomic, strong) LBActionSheet * actionSheet;
 @property (nonatomic) BOOL premiumLogin;
+@property (nonatomic) BOOL valtLogin;
 
 @end
 
@@ -117,7 +118,8 @@
 {
     UIView * view = [[touches anyObject] view];
     if (view == self.valtView){
-        [self.valtView shake];
+        self.valtLogin = YES;
+        [self didFinishTypingPassword];
     }
 }
 
@@ -144,6 +146,7 @@
 {
     self.fieldBackView.alpha = 0;
     isNewUser = NO;
+    self.valtLogin = NO;
     [self.passwordField resignFirstResponder];
     self.loginButton.alpha = 0;
     if (loginPassword && ![loginPassword isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
@@ -177,18 +180,23 @@
 
 -(void)didDenyAccess
 {
-    [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x+20, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+    if (self.valtLogin){
+         [self.valtView shake];
+        self.valtLogin = NO;
+    }else{
+        [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+                [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x+20, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
             } completion:^(BOOL finished) {
+                [UIView animateWithDuration:.08 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    [self.fieldBackView setFrame:CGRectMake(self.fieldBackView.frame.origin.x-10, self.fieldBackView.frame.origin.y, self.fieldBackView.frame.size.width, self.fieldBackView.frame.size.height)];
+                } completion:^(BOOL finished) {
+                }];
             }];
         }];
-    }];
+    }
 }
 
 
@@ -395,6 +403,17 @@
     self.passwordField.text = @"";
 }
 
+-(void)didFinishTypingPassword
+{
+    if (isNewUser && self.passwordField.text.length > 0){
+        confirmString = self.passwordField.text;
+        self.alertView = [[MLAlertView  alloc] initWithTextfieldWithPlaceholder:@"Retype Password" title:@"Confirm Password" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Confirm"];
+        [self.alertView show];
+    }else{
+        [[RCPasswordManager defaultManager] attemptToUnlockWithCodeInBackground:self.passwordField.text];
+    }
+}
+
 #pragma mark - TextField Delegate
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -410,15 +429,10 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (isNewUser && textField.text.length > 0){
-        confirmString = textField.text;
-        self.alertView = [[MLAlertView  alloc] initWithTextfieldWithPlaceholder:@"Retype Password" title:@"Confirm Password" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Confirm"];
-        [self.alertView show];
-    }else{
-        [[RCPasswordManager defaultManager] attemptToUnlockWithCodeInBackground:textField.text];
-    }
+    [self didFinishTypingPassword];
     return YES;
 }
+
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {

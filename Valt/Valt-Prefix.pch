@@ -13,6 +13,7 @@
 #define APP (RCAppDelegate *)[[UIApplication sharedApplication] delegate]
 #define IS_IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 #define IS_IPHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
+#define IS_IPHONE_5 [UIScreen mainScreen].bounds.size.height > 500
 
 #define NORMAL_CELL_FINISHING_HEIGHT 60
 #define COMMITING_CREATE_CELL_HEIGHT 60
