@@ -16,6 +16,8 @@
 @property(nonatomic, strong) RCRootViewController * rootController;
 
 @property(nonatomic) BOOL locksOnClose;
+@property (nonatomic) BOOL swipeRightHint;
+@property (nonatomic) BOOL autofillHints;
 
 -(BOOL)launchCountTriggered;
 -(BOOL)shouldShowRenew;

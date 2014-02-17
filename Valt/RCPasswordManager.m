@@ -199,7 +199,13 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     if (self){
         keyChainQueue = dispatch_queue_create("kcQueue", DISPATCH_QUEUE_SERIAL);
         mutablePasswords = [NSMutableArray new];
+#ifdef NEW_USER_MODE
+        [self clearAllPasswordData];
         [self removeLoginInfo];
+#endif
+#ifdef LOGGED_OUT_MODE
+        [self removeLoginInfo];
+#endif
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidLogin object:nil];
     }
     return self;

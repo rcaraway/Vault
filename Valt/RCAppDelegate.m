@@ -20,6 +20,8 @@
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
 #define RENEW_COUNT_KEY @"RENEW_COUNT_KEY"
 #define LOCKS_ON_CLOSE @"LOCKS_ON_CLOSE"
+#define SWIPE_RIGHT_TUTORIAL @"SWIPE_RIGHT_TUTORIAL"
+#define AUTOFILL_TUTORIAL @"AUTOFILL_TUTORIAL"
 
 
 @interface RCAppDelegate ()
@@ -42,7 +44,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self registerLaunchCount];
+    [self registerDefaults];
     [self incrementCount];
     self.rootController = [[RCRootViewController  alloc] initWithNibName:nil bundle:nil];
     self.window = [[UIWindow  alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -53,9 +55,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
- 
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -89,12 +89,23 @@
 
 #pragma mark - User Defaults
 
--(void)registerLaunchCount
+-(void)registerDefaults
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{FIRST_LAUNCH_COUNT_KEY: @YES,
                                                               LAUNCH_COUNT_KEY : @0,
                                                               RENEW_COUNT_KEY: @0,
-                                                              LOCKS_ON_CLOSE : @YES}];
+                                                              LOCKS_ON_CLOSE : @YES,
+                                                              SWIPE_RIGHT_TUTORIAL: @YES,
+                                                              AUTOFILL_TUTORIAL: @YES}];
+#ifdef NEW_USER_MODE
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SWIPE_RIGHT_TUTORIAL];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AUTOFILL_TUTORIAL];
+#endif
+}
+
+-(BOOL)swipeRightHint
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:SWIPE_RIGHT_TUTORIAL];
 }
 
 -(BOOL)locksOnClose
@@ -102,9 +113,24 @@
      return  [[NSUserDefaults standardUserDefaults] boolForKey:LOCKS_ON_CLOSE];
 }
 
+-(BOOL)autofillHints
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:AUTOFILL_TUTORIAL];
+}
+
+-(void)setSwipeRightHint:(BOOL)swipeRightHint
+{
+    [[NSUserDefaults standardUserDefaults] setBool:swipeRightHint forKey:SWIPE_RIGHT_TUTORIAL];
+}
+
 -(void)setLocksOnClose:(BOOL)locksOnClose
 {
     [[NSUserDefaults standardUserDefaults] setBool:locksOnClose forKey:LOCKS_ON_CLOSE];
+}
+
+-(void)setAutofillHints:(BOOL)autofillHints
+{
+    [[NSUserDefaults standardUserDefaults] setBool:autofillHints forKey:AUTOFILL_TUTORIAL];
 }
 
 -(BOOL)shouldShowRenew
@@ -119,6 +145,8 @@
     }
     return NO;
 }
+
+
 
 -(void)incrementCount
 {

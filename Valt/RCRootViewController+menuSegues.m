@@ -67,23 +67,6 @@ static CGFloat velocityX;
     if (self.childViewControllers.count > 0){
         self.currentSideController = self.childViewControllers[0];
         [self.currentSideController removeFromParentViewController];
-        [self.currentSideController.view removeFromSuperview];
-    }
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-}
-
--(void)beginListDragToMenu
-{
-    if (!self.menuController){
-        self.menuController = [[RCMenuViewController  alloc] initWithNibName:nil bundle:nil];
-    }
-    [self setupSnapshot];
-    [self addChildViewController:self.menuController];
-    [self.view addSubview:self.menuController.view];
-    [self.menuController.view addSubview:self.snapshotView];
-    if (self.childViewControllers.count > 0){
-        self.currentSideController = self.childViewControllers[0];
-        [self.currentSideController removeFromParentViewController];
     }
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }

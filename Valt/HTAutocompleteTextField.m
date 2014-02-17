@@ -20,6 +20,8 @@ typedef enum {
     RCAutoCompleteTypeNone
 } RCAutoCompleteType;
 
+NSString * const htAutoCompleteLabelDidUpdate = @"htAutoCompleteLabelDidUpdate";
+
 #define kHTAutoCompleteButtonWidth  30
 
 static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
@@ -213,7 +215,7 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
     [self.autocompleteLabel setText:self.autocompleteString];
     [self.autocompleteLabel sizeToFit];
     [self.autocompleteLabel setFrame: [self autocompleteRectForBounds:self.bounds]];
-	
+	[[NSNotificationCenter defaultCenter] postNotificationName:htAutoCompleteLabelDidUpdate object:self];
 	if ([self.autoCompleteTextFieldDelegate respondsToSelector:@selector(autocompleteTextField:didChangeAutocompleteText:)]) {
 		[self.autoCompleteTextFieldDelegate autocompleteTextField:self didChangeAutocompleteText:self.autocompleteString];
 	}
@@ -244,7 +246,8 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
                      self.autocompleteString = [dataSource textField:self completionForPrefix:self.text ignoreCase:self.ignoreCase];
                 }else{
                     if (self.autocompleteString.length > 0){
-                        self.text = self.previousText;
+                        if (self.previousText)
+                            self.text = self.previousText;
                         self.autocompleteString = @"";
                     }
                 }
@@ -279,7 +282,8 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
     if ([self.autocompleteString isEqualToString:@""] == NO
         && self.autocompleteDisabled == NO)
     {
-        self.text = [NSString stringWithFormat:@"%@%@", self.text, self.autocompleteString];
+        if (currentText && self.autocompleteString)
+            self.text = [NSString stringWithFormat:@"%@%@", self.text, self.autocompleteString];
         
         self.autocompleteString = @"";
         [self updateAutocompleteLabel];

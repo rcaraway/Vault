@@ -9,16 +9,19 @@
 #import "RCPasscodeViewController.h"
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
+
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
-#import "MLAlertView.h"
-#import "UIColor+RCColors.h"
-#import "UIView+QuartzEffects.h"
-#import "RCValtView.h"
-#import "HTAutocompleteTextField.h"
-#import "RCRootViewController+passcodeSegues.h"
 #import "RCNetworkListener.h"
 
+#import "UIColor+RCColors.h"
+#import "UIView+QuartzEffects.h"
+#import "RCRootViewController+passcodeSegues.h"
+#import "UIImage+memoIcons.h"
+
+#import "MLAlertView.h"
+#import "RCValtView.h"
+#import "HTAutocompleteTextField.h"
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
 
@@ -31,6 +34,7 @@
 
 @property(nonatomic, strong) MLAlertView * alertView;
 @property(nonatomic, strong) LBActionSheet * actionSheet;
+@property(nonatomic, strong) UIImageView * hintArrowView;
 @property (nonatomic) BOOL premiumLogin;
 @property (nonatomic) BOOL valtLogin;
 
@@ -71,7 +75,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
- 
+    if (isNewUser){
+        [self showHintView];
+    }
     if (self.opened){
         [self setToOpenState];
     }
@@ -147,8 +153,14 @@
     self.fieldBackView.alpha = 0;
     isNewUser = NO;
     self.valtLogin = NO;
+    self.hintArrowView.alpha = 0;
+    [self.hintArrowView removeFromSuperview];
+    self.hintArrowView = nil;
     [self.passwordField resignFirstResponder];
     self.loginButton.alpha = 0;
+    self.passwordField.placeholder = @"Master Password";
+    self.passwordField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
+    
     if (loginPassword && ![loginPassword isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
         [self showWhichPasswordActionSheet];
     }else{
@@ -174,7 +186,12 @@
         [self.alertView dismissWithSuccessTitle:@"Login Successful"];
         [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
         self.loginButton.alpha = 0;
-        [self.passwordField becomeFirstResponder];
+        if (!isNewUser){
+             [self.passwordField becomeFirstResponder];
+        }else{
+            [[RCPasswordManager defaultManager] setMasterPassword:loginPassword];
+            [self didSucceedEnteringPassword];
+        }
     }
 }
 
@@ -322,7 +339,7 @@
     if ([confirmString isEqualToString:text]){
         [self.alertView dismiss];
         [[RCPasswordManager defaultManager] setMasterPassword:text];
-        [self didSucceedEnteringPassword];
+        [self performSelector:@selector(didSucceedEnteringPassword) withObject:nil afterDelay:.6];
     }else{
         [self.alertView showFailWithTitle:@"Passwords don't match"];
         [self.alertView clearText];
@@ -347,37 +364,30 @@
     [self.valtView openNotAnimated];
 }
 
--(void)didTapButton
+-(void)showHintView
 {
-    if (isNewUser && !confirmString){
-
-    }else{
-        if (confirmString && [confirmString isEqualToString:self.passwordField.text]){
-            [self didEnterCorrectData];
-        }else if (confirmString && ![confirmString isEqualToString:self.passwordField.text]){
-            [self didFailConfirmation];
-        }else{
-            if ([[[RCPasswordManager defaultManager] masterPassword] isEqualToString:self.passwordField.text]){
-                [self didEnterCorrectData];
-            }else{
-                [self didEnterIncorrectPassword];
-            }
-        }
-    }
+    self.hintArrowView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"down"] tintedIconWithColor:[UIColor yellowColor]]];
+    [self.hintArrowView setFrame:CGRectMake(12, CGRectGetMinY(self.fieldBackView.frame)-82, 64, 64)];
+    [self.view addSubview:self.hintArrowView];
+    [self animateHintView];
 }
 
--(void)didEnterCorrectData
+-(void)animateHintView
 {
-    if (isNewUser){
-        [[RCPasswordManager defaultManager] setMasterPassword:self.passwordField.text];
-    }
-   //TODO: rewrite to use attemptToAccessPasswords
+    [UIView animateWithDuration:.4 animations:^{
+        [self.hintArrowView setFrame:CGRectMake(12, CGRectGetMinY(self.fieldBackView.frame)-68, 64, 64)];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.4 animations:^{
+             [self.hintArrowView setFrame:CGRectMake(12, CGRectGetMinY(self.fieldBackView.frame)-82, 64, 64)];
+        } completion:^(BOOL finished) {
+            [self animateHintView];
+        }];
+    }];
 }
 
--(void)launchConfirmField
-{
-    
-}
+
+
+
 
 #pragma mark - Event Handling
 
@@ -408,6 +418,7 @@
     if (isNewUser && self.passwordField.text.length > 0){
         confirmString = self.passwordField.text;
         self.alertView = [[MLAlertView  alloc] initWithTextfieldWithPlaceholder:@"Retype Password" title:@"Confirm Password" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Confirm"];
+        self.alertView.passwordTextField.keyboardAppearance = UIKeyboardAppearanceDark;
         [self.alertView show];
     }else{
         [[RCPasswordManager defaultManager] attemptToUnlockWithCodeInBackground:self.passwordField.text];

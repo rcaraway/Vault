@@ -26,6 +26,8 @@
 #import "RCDropDownCell.h"
 #import "RCMainCell.h"
 #import "RCTableView.h"
+#import "RCMessageView.h"
+#import "MLAlertView.h"
 
 //Categories
 #import "UIColor+RCColors.h"
@@ -41,15 +43,18 @@
 #define DUMMY_CELL @"Dummy"
 
 
-@interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate, RCBackupViewDelegate>
+@interface RCListViewController ()<RCListGestureManagerDelegate, LBActionSheetDelegate, RCBackupViewDelegate, MLAlertViewDelegate>
 
 
 @property(nonatomic) NSInteger addingCellIndex;
 @property(nonatomic) NSInteger dummyCellIndex;
 @property(nonatomic, strong) NSIndexPath * deletionPath;
+@property(nonatomic, strong) UIImageView * hintImageView;
+@property(nonatomic, strong) UILabel * hintLabel;
 
 @property (nonatomic, strong) id grabbedObject;
 @property(nonatomic, strong) LBActionSheet * actionSheet;
+@property(nonatomic, strong) MLAlertView * alertView;
 
 @end
 
@@ -80,6 +85,9 @@
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor listBackground];
     [self addNotifications];
+    if ([RCPasswordManager defaultManager].passwords.count == 0){
+        [self showPullDownViews];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -88,12 +96,9 @@
     [self setOffsetIfNeeded];
 }
 
--(void)setOffsetIfNeeded
+-(void)viewWillDisappear:(BOOL)animated
 {
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        self.tableView.contentOffset = CGPointMake(0, -44);
-    });
+    [super viewWillDisappear:animated];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -108,17 +113,6 @@
     }else if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired && [APP shouldShowRenew]){
         [[APP rootController] segueToPurchaseFromList];
     }
-}
-
--(void)reloadIfNeeded
-{
-    static BOOL firstLaunch = YES;
-    if (!firstLaunch && !self.gestureManager.webPath){
-        [self.tableView reloadData];
-    }else{
-        self.gestureManager.webPath = nil;
-    }
-    firstLaunch = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -159,8 +153,90 @@
 
 -(void)didPurchaseSubscription
 {
+    
 }
 
+
+#pragma mark - State Handling
+
+-(void)showPullDownViews
+{
+    if (!self.hintImageView){
+        [self setupPullDownView];
+    }
+    if (self.hintImageView.alpha == 1){
+          self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
+        [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 0, 80)];
+        } completion:^(BOOL finished) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self];
+            [self performSelector:@selector(showPullDownViews) withObject:nil afterDelay:1.4];
+        }];
+    }
+}
+
+-(void)showSwipeRightViews
+{
+    if (!self.hintImageView){
+        [self setupSwipeRightViews];
+    }
+    [self.hintImageView setFrame:CGRectMake(12, 60, 128, 128)];
+    [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 100, 0)];
+    } completion:^(BOOL finished) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(showSwipeRightViews) withObject:nil afterDelay:1.4];
+    }];
+}
+
+-(void)hideHintLabels
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [UIView animateWithDuration:.2 animations:^{
+        self.hintImageView.alpha = 0;
+        self.hintLabel.alpha = 0;
+    }completion:^(BOOL finished) {
+        [self.hintLabel removeFromSuperview];
+        [self.hintImageView removeFromSuperview];
+        self.hintImageView = nil;
+        self.hintLabel = nil;
+    }];
+}
+
+-(void)setHintsHidden
+{
+    [UIView animateWithDuration:.3 animations:^{
+        self.hintImageView.alpha = 0;
+        self.hintLabel.alpha = 0;
+    }];
+}
+
+-(void)reshowHints
+{
+    [UIView animateWithDuration:.3 animations:^{
+        self.hintImageView.alpha = 1;
+        self.hintLabel.alpha = 1;
+    }];
+}
+
+-(void)setOffsetIfNeeded
+{
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        self.tableView.contentOffset = CGPointMake(0, -44);
+    });
+}
+
+-(void)reloadIfNeeded
+{
+    static BOOL firstLaunch = YES;
+    if (!firstLaunch && !self.gestureManager.webPath){
+        [self.tableView reloadData];
+    }else{
+        self.gestureManager.webPath = nil;
+    }
+    firstLaunch = NO;
+}
 
 #pragma mark - View Setup
 
@@ -189,6 +265,39 @@
     self.backupView = [[RCBackupView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 60)];
     self.backupView.delegate = self;
     [self.view addSubview:self.backupView];
+}
+
+-(void)setupPullDownView
+{
+    self.hintImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"Swipe_Down"] tintedImageWithColorOverlay:[UIColor darkGrayColor]]];
+    [self.hintImageView setFrame:CGRectMake(0, 0, 128, 128)];
+    self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
+    [self.view addSubview:self.hintImageView];
+    [self setupHintLabelWithText:@"Pull down to create"];
+}
+
+-(void)setupHintLabelWithText:(NSString *)text
+{
+    UILabel * label = [[UILabel  alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    label.center =CGPointMake(160, self.view.center.y+140);
+    label.backgroundColor = [UIColor clearColor];
+    label.numberOfLines = 1;
+    label.text = text;
+    label.font = [UIFont systemFontOfSize:17];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor lightGrayColor];
+    self.hintLabel= label;
+    [self.view addSubview:label];
+}
+
+-(void)setupSwipeRightViews
+{
+    UIImageView * imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"Swipe_Right"] tintedImageWithColorOverlay:[UIColor darkGrayColor]]];
+    [imageView setFrame:CGRectMake(12, 44, 128, 128)];
+    [imageView setUserInteractionEnabled:NO];
+    self.hintImageView = imageView;
+    [self.view addSubview:imageView];
+    [self setupHintLabelWithText:@"Swipe Item Right To Login"];
 }
 
 
@@ -384,9 +493,9 @@
             self.gestureManager.webPath = indexPath;
             [[APP rootController] segueToWebWithPassword:[RCPasswordManager defaultManager].passwords[indexPath.row]];
         }else{
-            //pop up, ask for a url to go to
-            //save it
-            //then go
+            self.gestureManager.webPath = indexPath;
+            self.alertView = [[MLAlertView alloc] initWithTextfieldWithPlaceholder:@"URL" title:@"Enter valid URL" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Go"];
+            [self.alertView show];
         }
         
     } else {
@@ -394,7 +503,6 @@
         [self.gestureManager reloadAllRowsExceptIndexPath:indexPath];
     }
 }
-
 
 
 -(void)removePassword:(RCPassword *)password
@@ -424,6 +532,33 @@
     self.grabbedObject = nil;
 }
 
+
+#pragma mark - Alert View
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text
+{
+    if (buttonIndex == 1){
+        RCPassword * password = [RCPasswordManager defaultManager].passwords[self.gestureManager.webPath.row];
+        password.urlName = text;
+        if (password.hasValidURL){
+            [[APP rootController] segueToWebWithPassword:password];
+        }else{
+            [self.alertView showFailWithTitle:@"Invalid URL"];
+        }
+    }
+
+}
+
+-(void)alertViewTappedCancel:(MLAlertView *)alertView
+{
+    [self.gestureManager resetCellToCenterAtIndexPath:self.gestureManager.webPath];
+    self.gestureManager.webPath = nil;
+}
+
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+}
 
 #pragma mark - Backup View
 
@@ -466,7 +601,14 @@
         [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationMiddle];
         [[RCNetworking sharedNetwork] sync];
+        if (self.hintImageView){
+            [self hideHintLabels];
+        }
+        if ([RCPasswordManager defaultManager].passwords.count == 0){
+            [self showPullDownViews];
+        }
     }else{
+        [self reshowHints];
         [self.gestureManager resetCellToCenterAtIndexPath:self.deletionPath];
     }
     self.deletionPath = nil;

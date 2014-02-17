@@ -23,6 +23,11 @@
 @property(nonatomic, strong) NSIndexPath * viewPath;
 
 
+-(void)showPullDownViews;
+-(void)showSwipeRightViews;
+-(void)hideHintLabels;
+-(void)setHintsHidden;
+-(void)reshowHints;
 -(void)removePassword:(RCPassword *)password;
 
 

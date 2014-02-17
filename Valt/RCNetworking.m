@@ -187,6 +187,12 @@ static RCNetworking *sharedNetwork;
 
 -(RCPremiumState)premiumState
 {
+#ifdef RENEW_MODE
+    if ([self loggedIn]){
+        return RCPremiumStateExpired;
+    }
+    return RCPremiumStateNone;
+#endif
 #ifdef TESTING_MODE
     return RCPremiumStateCurrent;
 #else

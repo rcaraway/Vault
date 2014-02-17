@@ -19,6 +19,7 @@
 
 #import "RCPasswordManager.h"
 #import "RCPassword.h"
+#import "RCAppDelegate.h"
 #import "RCListGestureManager.h"
 #import "RCSearchGestureManager.h"
 
@@ -57,6 +58,8 @@ static UIColor * ogColor;
     [self.view addSubview:self.webController.view];
     [self.view insertSubview:backView  belowSubview:self.snapshotView];
     [self.view bringSubviewToFront:self.messageView];
+    [self.listController hideHintLabels];
+    [APP setSwipeRightHint:NO];
     [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.webController.view setAlpha:1];
         ogColor = self.view.backgroundColor;

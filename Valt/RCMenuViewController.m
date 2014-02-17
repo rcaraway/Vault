@@ -327,7 +327,8 @@
 -(void)didSwitch
 {
     if (!self.closeSwitch.isOn){
-        [[[MLAlertView  alloc] initWithTitle:@"Be Careful" message:@"Keeping Valt open after leaving sacrifices security for convenience.  We recommend keeping a lock on your phone to reduce risk." cancelButtonTitle:@"Proceed" otherButtonTitles:nil] show];
+        //You Sure? Keeping Valt open massively reduces security, but is more convenient.  Proceed with extreme caution.
+        [[[MLAlertView  alloc] initWithTitle:@"Warning" message:@"Keeping Valt open massively reduces security, but is more convenient.  Proceed with extreme caution." cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     [APP setLocksOnClose:self.closeSwitch.isOn];
 }

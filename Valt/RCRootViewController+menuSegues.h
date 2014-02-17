@@ -15,7 +15,7 @@
 -(void)goHome;
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color;
 
--(void)beginListDragToMenu;
+
 -(void)beginDragToMenu;
 -(void)dragSideToXOrigin:(CGFloat)xOrigin;
 -(void)finishDragWithClose;

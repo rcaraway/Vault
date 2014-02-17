@@ -17,6 +17,7 @@
 
 #import "RCRootViewController.h"
 #import "RCMenuViewController.h"
+#import "RCListViewController.h"
 #import "RCPasscodeViewController.h"
 
 typedef enum {
@@ -151,6 +152,7 @@ typedef enum {
          || self.panGesture.state == UIGestureRecognizerStateChanged)
         && [self.panGesture numberOfTouches] > 0) {
          NSIndexPath * indexPath = [self panGesturePath];
+        [[[APP rootController] listController] setHintsHidden];
         self.state = RCListGestureManagerStatePanning;
         if (indexPath){
             [self translateCellAtIndexPath:indexPath];
@@ -185,7 +187,7 @@ typedef enum {
 {
     CGFloat translation = [self.panGesture translationInView:self.tableView].x;
     if (self.panGesture.state == UIGestureRecognizerStateBegan){
-        [[APP rootController] beginListDragToMenu];
+        [[APP rootController] beginDragToMenu];
     }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
         if (translation <= 0){
             [[APP rootController] dragSideToXOrigin:translation];
@@ -504,6 +506,7 @@ typedef enum {
                 self.state = RCListGestureManagerStateNone;
             }];
     }else{
+        [[[APP rootController] listController] reshowHints];
         [self resetCellToCenterAtIndexPath:indexPath];
         self.panState = RCListGestureManagerPanStateMiddle;
         self.state = RCListGestureManagerStateNone;

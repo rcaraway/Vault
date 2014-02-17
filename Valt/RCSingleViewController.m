@@ -25,6 +25,7 @@
 #import "RCDropDownCell.h"
 #import "RCTitleViewCell.h"
 #import "RCTableView.h"
+#import "RCMessageView.h"
 
 #import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.h"
@@ -98,7 +99,14 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didType:) name:htAutoCompleteLabelDidUpdate object:nil];
     [self setAllTextFieldDelegates];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:htAutoCompleteLabelDidUpdate object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -116,7 +124,17 @@
     self.view = nil;
 }
 
-
+-(void)didType:(NSNotification *)notification
+{
+    if ([APP autofillHints]){
+        HTAutocompleteTextField * field = notification.object;
+        if (field.autocompleteLabel.text.length > 0){
+            [[[APP rootController] messageView] showMessage:@"Tap 'space' or 'Next' to autofill" autoDismiss:NO];
+        }else{
+            [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
+        }
+    }
+}
 
 #pragma mark - View Setup
 
@@ -158,8 +176,15 @@
 {
     if (scrollView.contentOffset.y < 0){
         CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
-        if (magnitude > 1)
+        if (magnitude >= 1){
             magnitude = 1;
+            if ([APP autofillHints])
+                [[[APP rootController] messageView] showMessage:@"Release to Go Back" autoDismiss:NO];
+        }else{
+            if ([APP autofillHints])
+                [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
+        }
+        
         self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
     }else{
     }
@@ -190,6 +215,7 @@
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView.contentOffset.y <= - 60){
+        [self publishChangesToPassword];
         if (!self.cameFromSearch){
           [[APP rootController] segueSingleToList];
         }else{
@@ -365,7 +391,10 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSInteger index = [self.textFields indexOfObject:textField];
-     HTAutocompleteTextField * acTextfield = (HTAutocompleteTextField *)textField;
+    HTAutocompleteTextField * acTextfield = (HTAutocompleteTextField *)textField;
+    if ([APP autofillHints]){
+            [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
+    }
     if (index <= 2){
         if (index == 0){
             [self attemptToAutofillURLBasedOnTitleForTextField:acTextfield];
@@ -413,6 +442,13 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     dataChanged = YES;
+    NSString * searchText ;
+    if (range.length == 0 && string.length > 0){
+        searchText = [NSString stringWithFormat:@"%@%@", textField.text, string];
+    }else{
+        searchText =[textField.text stringByReplacingCharactersInRange:range withString:@""];
+    }
+    
     return YES;
 }
 

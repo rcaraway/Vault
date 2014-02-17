@@ -12,9 +12,11 @@
 #import "RCSingleViewController.h"
 #import "RCListViewController.h"
 
+#import "RCAppDelegate.h"
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 
+#import "RCMessageView.h"
 #import "RCTableView.h"
 #import "RCTitleViewCell.h"
 #import "HTAutocompleteTextField.h"
@@ -44,6 +46,7 @@ static void * ContentSizeKey;
     self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
     [self addChildViewController:self.singleController];
     [self.listController removeFromParentViewController];
+    [self.listController hideHintLabels];
     [self transitionFromListToSingleWithPassword:password];
 }
 
@@ -53,6 +56,7 @@ static void * ContentSizeKey;
     [[RCPasswordManager defaultManager] addPassword:password];
     self.singleController = [[RCSingleViewController alloc] initWithPassword:password];
     [self addChildViewController:self.singleController];
+    [self.listController hideHintLabels];
     [self.listController removeFromParentViewController];
     [self transitionToSingleWithNewCellAtLocation:location];
 }
@@ -96,8 +100,11 @@ static void * ContentSizeKey;
             [self.singleController.tableView insertRowsAtIndexPaths:[self dropDownPaths] withRowAnimation:UITableViewRowAnimationFade];
             [self.singleController setAllTextFieldDelegates];
             [cell.textField becomeFirstResponder];
-
+            [[APP rootController].view bringSubviewToFront:self.messageView];
         }completion:^(BOOL finished) {
+            if ([APP autofillHints]){
+                [[[APP rootController] messageView] showMessage:@"Begin Typing..." autoDismiss:NO];
+            }
                 [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     }];
@@ -141,7 +148,11 @@ static void * ContentSizeKey;
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setPurpleColoed];
         UITextField * field = (UITextField *)[(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField];
         [field becomeFirstResponder];
+        [[APP rootController].view bringSubviewToFront:self.messageView];
     }completion:^(BOOL finished) {
+        if ([APP autofillHints]){
+            [[[APP rootController] messageView] showMessage:@"Begin Typing..." autoDismiss:NO];
+        }
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
@@ -185,6 +196,7 @@ static void * ContentSizeKey;
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
+    [self removeHintsIfNeeded];
     [UIView animateWithDuration:.3 animations:^{
         [self setStatusDarkContentAnimated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
@@ -215,6 +227,7 @@ static void * ContentSizeKey;
     CGPoint offset = [self originalOffset];
     self.singleController.isTransitioningTo = YES;
     [self.listController.tableView setShouldAllowMovement:YES];
+    [self removeHintsIfNeeded];
     [UIView animateWithDuration:.3  animations:^{
         [self setStatusDarkContentAnimated:YES];
         self.navBar.transform = CGAffineTransformIdentity;
@@ -241,6 +254,22 @@ static void * ContentSizeKey;
         NSIndexPath * indexPath = [NSIndexPath indexPathForRow:[[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password] inSection:0];
         [[RCPasswordManager defaultManager] removePassword:self.singleController.password];
         [self.listController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        if ([RCPasswordManager defaultManager].passwords.count == 0){
+            [self.listController showPullDownViews];
+        }
+    }else if ([APP swipeRightHint]){
+        [self.listController hideHintLabels];
+        [self.listController showSwipeRightViews];
+    }
+}
+
+-(void)removeHintsIfNeeded
+{
+    if ([APP autofillHints]){
+        if (![self.singleController.password isEmpty]){
+            [APP setAutofillHints:NO];
+            [self.messageView hideMessage];
+        }
     }
 }
 

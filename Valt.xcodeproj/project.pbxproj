@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7618B262BE00155145 /* Swipe_Down.png */; };
+		D20BBB7918B2716800155145 /* Swipe_Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7818B2716800155145 /* Swipe_Right.png */; };
 		D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */; };
 		D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */; };
 		D210397B18AAD11200BE36FB /* PurchaseControllerSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = D210397A18AAD11200BE36FB /* PurchaseControllerSmall.xib */; };
@@ -128,6 +130,7 @@
 		D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */; };
 		D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
+		D29D662618B2543D0029179A /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D29D662518B2543D0029179A /* down@2x.png */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
 		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
 		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
@@ -156,6 +159,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D20BBB7618B262BE00155145 /* Swipe_Down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Down.png; sourceTree = "<group>"; };
+		D20BBB7818B2716800155145 /* Swipe_Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Right.png; sourceTree = "<group>"; };
 		D20E9AB7185B4E4E00F56013 /* RCCredentialGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCredentialGestureManager.h; sourceTree = "<group>"; };
 		D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCredentialGestureManager.m; sourceTree = "<group>"; };
 		D20E9ABA185B9C0100F56013 /* RCListGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCListGestureManager.h; sourceTree = "<group>"; };
@@ -343,6 +348,7 @@
 		D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		D29D662518B2543D0029179A /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
 		D2A307601891589200DB1A15 /* RCRootViewController+WebSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+WebSegues.h"; sourceTree = "<group>"; };
 		D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+WebSegues.m"; sourceTree = "<group>"; };
 		D2B5EF971885E533002A50A3 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
@@ -780,6 +786,7 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D29D662718B259080029179A /* Hints */,
 				D2C85F00189C41CD00D4DFB1 /* cross@2x.png */,
 				D2C85F02189C41F600D4DFB1 /* login@2x.png */,
 				D2C85EF5189BE7D300D4DFB1 /* Purchase */,
@@ -849,6 +856,16 @@
 				D27F40801868F57300104F1C /* NSData+Base64.m */,
 			);
 			name = Base64;
+			sourceTree = "<group>";
+		};
+		D29D662718B259080029179A /* Hints */ = {
+			isa = PBXGroup;
+			children = (
+				D20BBB7818B2716800155145 /* Swipe_Right.png */,
+				D20BBB7618B262BE00155145 /* Swipe_Down.png */,
+				D29D662518B2543D0029179A /* down@2x.png */,
+			);
+			name = Hints;
 			sourceTree = "<group>";
 		};
 		D2C85EF5189BE7D300D4DFB1 /* Purchase */ = {
@@ -991,6 +1008,7 @@
 				D278D3451891BCDF0062AE39 /* back@2x.png in Resources */,
 				D2254E5C18648502003590AF /* icon-success.png in Resources */,
 				D2254E5918648502003590AF /* icon-error@2x.png in Resources */,
+				D20BBB7918B2716800155145 /* Swipe_Right.png in Resources */,
 				D247E98718A2EB0D00BE719F /* RCWebViewControllerIpad.xib in Resources */,
 				D27F4040186343CB00104F1C /* AboutController.xib in Resources */,
 				D2254E5B18648502003590AF /* icon-info@2x.png in Resources */,
@@ -1005,9 +1023,11 @@
 				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
 				D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */,
+				D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */,
 				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,
 				D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */,
 				D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */,
+				D29D662618B2543D0029179A /* down@2x.png in Resources */,
 				D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */,
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,

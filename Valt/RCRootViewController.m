@@ -153,7 +153,7 @@
 -(void)setStatusLightContentAnimated:(BOOL)animated
 {
     void (^messageChange)() = ^(){
-        self.messageView.backgroundColor = [UIColor clearColor];
+        self.messageView.backgroundColor = [UIColor passcodeBackground];
         self.messageView.messageLabel.textColor = [UIColor whiteColor];
     };
     if (animated){

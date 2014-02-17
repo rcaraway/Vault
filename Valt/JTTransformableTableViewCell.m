@@ -170,7 +170,7 @@
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
         self.customLabel.textColor = [UIColor whiteColor];
-        self.contentView.backgroundColor =         [UIColor colorWithRed:195.0/255.0 green:98.0/255.0 blue:240.0/255.0 alpha:1];
+        self.contentView.backgroundColor =  [UIColor goPlatinumColor];
     }else{
         self.contentView.backgroundColor =[UIColor mainCellColor];
     }

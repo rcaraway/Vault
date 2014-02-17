@@ -38,6 +38,7 @@
 /*
  * Autocomplete behavior
  */
+
 @property (nonatomic, assign) NSUInteger autocompleteType; // Can be used by the dataSource to provide different types of autocomplete behavior
 @property (nonatomic, assign) BOOL autocompleteDisabled;
 @property (nonatomic, assign) BOOL ignoreCase;
@@ -70,3 +71,5 @@
 - (void)forceRefreshAutocompleteText;
 
 @end
+
+extern NSString * const htAutoCompleteLabelDidUpdate;
