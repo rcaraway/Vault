@@ -7,9 +7,13 @@
  */
 
 #import "JTTransformableTableViewCell.h"
-#import "UIColor+JTGestureBasedTableViewHelper.h"
+
 #import <QuartzCore/QuartzCore.h>
+
+#import "UIColor+JTGestureBasedTableViewHelper.h"
+#import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.m"
+
 #import "RCNetworking.h"
 
 #define FONT_NAME @"HelveticaNeue"
@@ -126,8 +130,6 @@
     CGFloat fraction = (self.frame.size.height / self.finishedHeight);
     fraction = MAX(MIN(1, fraction), 0);
     
-    UIColor * color = [self colorForFraction:fraction];
-    
     CGSize contentViewSize = self.contentView.frame.size;
     
     
@@ -152,16 +154,21 @@
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
         if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
              self.customLabel.text = @"Release to Sync";
+
         }else{
              self.customLabel.text = @"Upgrade to Sync";
+
         }
+        self.imageView.image = [[UIImage imageNamed:@"sync"] tintedIconWithColor:[UIColor whiteColor]];
         self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
     }
     else if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT){
         self.customLabel.text = @"Release to Add Item";
+        self.imageView.image = [[UIImage imageNamed:@"plus"] tintedIconWithColor:[UIColor valtPurple]];
         self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
     }else{
         self.customLabel.text = @"Pull Down to Create Item";
+        self.imageView.image = nil;
     }
     CGRect labelRect = CGRectMake(18, fraction * 15, [UIScreen mainScreen].bounds.size.width-36, 30 * fraction);
     CGFloat fontSize = fraction * 20;

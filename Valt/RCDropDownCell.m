@@ -23,7 +23,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:245.0/255.0 blue:254.0/255.0 alpha:1];
+        self.backgroundColor = [UIColor colorWithWhite:.97 alpha:1];
         [self setupTextField];
         [self setupLabel];
     }
@@ -36,7 +36,7 @@
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
     self.textField.autocompleteType = RCAutocompleteTypeUsername;
     self.textField.font = [UIFont fontWithName:@"HelveticaNeue" size:16];
-    self.textField.textColor = [UIColor colorWithRed:92.0/255.0 green:92.0/255.0 blue:90.0/255.0 alpha:1];
+    self.textField.textColor = [UIColor colorWithWhite:.2 alpha:1];
     [self.textField setBackgroundColor:self.contentView.backgroundColor];
     self.textField.returnKeyType = UIReturnKeyNext;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;

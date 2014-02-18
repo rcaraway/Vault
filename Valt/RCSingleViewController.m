@@ -131,7 +131,7 @@
         if (field.autocompleteLabel.text.length > 0){
             [[[APP rootController] messageView] showMessage:@"Tap 'space' or 'Next' to autofill" autoDismiss:NO];
         }else{
-            [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
+            [[[APP rootController] messageView] hideMessage];
         }
     }
 }
@@ -180,9 +180,6 @@
             magnitude = 1;
             if ([APP autofillHints])
                 [[[APP rootController] messageView] showMessage:@"Release to Go Back" autoDismiss:NO];
-        }else{
-            if ([APP autofillHints])
-                [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
         }
         
         self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
@@ -392,9 +389,7 @@
 {
     NSInteger index = [self.textFields indexOfObject:textField];
     HTAutocompleteTextField * acTextfield = (HTAutocompleteTextField *)textField;
-    if ([APP autofillHints]){
-            [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
-    }
+   
     if (index <= 2){
         if (index == 0){
             [self attemptToAutofillURLBasedOnTitleForTextField:acTextfield];
@@ -464,6 +459,11 @@
     NSInteger index = [self.textFields indexOfObject:textField];
     if (index >= 0 && index < self.credentials.count){
          [self.credentials replaceObjectAtIndex:index withObject:textField.text];
+    }
+    if (index == 2){
+        if ([APP autofillHints]){
+            [[[APP rootController] messageView] showMessage:@"Pull down when completely finished" autoDismiss:NO];
+        }
     }
 }
 

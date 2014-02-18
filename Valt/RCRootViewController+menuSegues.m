@@ -90,6 +90,7 @@ static CGFloat velocityX;
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
     }];
+   [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 -(void)finishDragWithSegue
@@ -98,8 +99,11 @@ static CGFloat velocityX;
         CGAffineTransform tranform =CGAffineTransformTranslate(CGAffineTransformIdentity, -280, 0);
         self.snapshotView.transform = tranform;
     } completion:^(BOOL finished) {
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        if (self.currentSideController != self.listController){
+            [self.currentSideController.view removeFromSuperview];
+        }
     }];
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 -(void)closeMenu

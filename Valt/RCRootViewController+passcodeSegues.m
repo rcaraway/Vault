@@ -90,9 +90,9 @@ static UIView * passDimView;
     if (!passDimView){
         [self setupPassDimView];
         passDimView.alpha = xOrigin / [UIScreen mainScreen].bounds.size.width;
-        [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
     }else
         passDimView.alpha = xOrigin / [UIScreen mainScreen].bounds.size.width;
+    [self.view insertSubview:passDimView belowSubview:self.passcodeController.view];
     CATransform3D _3Dt = [self tranformForXOrigin:xOrigin];
     view.layer.transform =_3Dt;
 }

@@ -161,46 +161,51 @@
 
 -(void)showPullDownViews
 {
-    if (!self.hintImageView){
-        [self setupPullDownView];
-    }
-    if (self.hintImageView.alpha == 1){
-          self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
-        [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 0, 80)];
-        } completion:^(BOOL finished) {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self];
-            [self performSelector:@selector(showPullDownViews) withObject:nil afterDelay:1.4];
-        }];
+    if ([RCPasswordManager defaultManager].passwords.count == 0){
+        if (!self.hintImageView){
+            [self setupPullDownView];
+        }
+        if (self.hintImageView.alpha == 1){
+            self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
+            [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 0, 80)];
+            } completion:^(BOOL finished) {
+                [NSObject cancelPreviousPerformRequestsWithTarget:self];
+                [self performSelector:@selector(showPullDownViews) withObject:nil afterDelay:1.4];
+            }];
+        }
+    }else{
+        [self hideHintLabels];
     }
 }
 
 -(void)showSwipeRightViews
 {
-    if (!self.hintImageView){
-        [self setupSwipeRightViews];
+    if ([APP swipeRightHint]){
+        if (!self.hintImageView){
+            [self setupSwipeRightViews];
+        }
+        [self.hintImageView setFrame:CGRectMake(12, 60, 128, 128)];
+        [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 100, 0)];
+        } completion:^(BOOL finished) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self];
+            [self performSelector:@selector(showSwipeRightViews) withObject:nil afterDelay:1.4];
+        }];
+    }else{
+        [self hideHintLabels];
     }
-    [self.hintImageView setFrame:CGRectMake(12, 60, 128, 128)];
-    [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 100, 0)];
-    } completion:^(BOOL finished) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        [self performSelector:@selector(showSwipeRightViews) withObject:nil afterDelay:1.4];
-    }];
 }
 
 -(void)hideHintLabels
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [UIView animateWithDuration:.2 animations:^{
-        self.hintImageView.alpha = 0;
-        self.hintLabel.alpha = 0;
-    }completion:^(BOOL finished) {
-        [self.hintLabel removeFromSuperview];
-        [self.hintImageView removeFromSuperview];
-        self.hintImageView = nil;
-        self.hintLabel = nil;
-    }];
+    self.hintImageView.alpha = 0;
+    self.hintLabel.alpha = 0;
+    [self.hintLabel removeFromSuperview];
+    [self.hintImageView removeFromSuperview];
+    self.hintImageView = nil;
+    self.hintLabel = nil;
 }
 
 -(void)setHintsHidden
@@ -373,7 +378,8 @@
         cell.customLabel.text = (NSString *)object;
         [cell setNormalColored];
         if (indexPath.row == self.dummyCellIndex){
-                cell.customLabel.text = @"";
+             cell.customLabel.text = @"";
+             cell.contentView.backgroundColor = [UIColor listBackground];
         }
         return cell;
     }

@@ -91,7 +91,7 @@ static void * ContentSizeKey;
             [self setStatusLightContentAnimated:YES];
             self.navBar.transform = CGAffineTransformTranslate(self.navBar.transform, 0, -64);
             [self.listController.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
-            [self.listController.tableView setContentOffset:CGPointMake(0, bottomRect.origin.y+bottomRect.size.height+40)];
+            [self.listController.tableView setContentOffset:CGPointMake(0, bottomRect.origin.y+bottomRect.size.height)];
             self.singleController.isTransitioningTo = NO;
             [self.listController.tableView setShouldAllowMovement:NO];
             self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];

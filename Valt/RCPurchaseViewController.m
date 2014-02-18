@@ -245,8 +245,14 @@
 -(void)didLogin
 {
     [self.alertView dismiss];
+    [APP setSwipeRightHint:NO];
+    [APP setAutofillHints:NO];
     if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent && self.parentViewController && self.isViewLoaded && self.view.window){
         [[APP rootController] goHome];
+    }else if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
+        self.titleLabel.text = @"Renew Platinum Today?";
+        UILabel * label =  (UILabel *)[[[[APP rootController] navBar] topItem] titleView];
+        label.text = @"Renew Platinum";
     }
 }
 
@@ -358,9 +364,11 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
     if (![alertView.titleLabel.text isEqualToString:@"Login"]){
+        [self.alertView loadWithText:@"Signing Up"];
         [self signupWithEmail:email password:password];
     }else{
         [self loginWithEmail:email password:password];
+        [self.alertView loadWithText:@"Logging In"];
     }
 }
 

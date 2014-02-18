@@ -152,9 +152,10 @@ typedef enum {
          || self.panGesture.state == UIGestureRecognizerStateChanged)
         && [self.panGesture numberOfTouches] > 0) {
          NSIndexPath * indexPath = [self panGesturePath];
-        [[[APP rootController] listController] setHintsHidden];
+
         self.state = RCListGestureManagerStatePanning;
         if (indexPath){
+            [[[APP rootController] listController] setHintsHidden];
             [self translateCellAtIndexPath:indexPath];
             [self determinePanStateForIndexPath:indexPath];
         }else{
@@ -204,9 +205,9 @@ typedef enum {
 {
     CGFloat translation = [self.panGesture translationInView:self.tableView].x;
     CGFloat velocity = [self.panGesture velocityInView:self.tableView].x;
-    if (translation <= -160.0 || velocity <= -180.0){
+    if (translation <= -160.0 || (velocity <= -300.0 && translation < -20)){
         [[APP rootController] finishDragWithSegue];
-    }else if (translation >= 160.0 || velocity >= 180.0){
+    }else if (translation >= 160.0 || (velocity >= 240.0 && translation > 20)){
         [[APP rootController].view addSubview:[[APP rootController] currentSideController].view];
         [[APP rootController].view bringSubviewToFront:(UIView *)[APP rootController].messageView];
         [[APP rootController].view bringSubviewToFront:[APP rootController].navBar];
@@ -256,9 +257,8 @@ typedef enum {
     NSIndexPath *indexPath  = [self.tableView indexPathForRowAtPoint:location];
     if (indexPath && ![indexPath isEqual:self.pendingPath]){
         [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.pendingPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.delegate gestureManager:self needsRowMovedAtIndexPath:self.pendingPath toIndexPath:indexPath];
+        [self.tableView moveRowAtIndexPath:indexPath toIndexPath:self.pendingPath];
         self.pendingPath = indexPath;
         [self.tableView endUpdates];
     }
@@ -357,10 +357,10 @@ typedef enum {
 
 -(void)adjustTableYOffset
 {
-    CGPoint currentOffset = self.tableView.contentOffset;
+    CGPoint currentOffset =  self.tableView.contentOffset;
     CGPoint adjustedOffset = CGPointMake(currentOffset.x, currentOffset.y+self.scrollRate);
-    if (adjustedOffset.y < 0){
-        adjustedOffset.y = 0;
+    if (adjustedOffset.y < -TOP_INSET){
+        adjustedOffset.y = -TOP_INSET;
     }else if (self.tableView.contentSize.height < self.tableView.frame.size.height){
         adjustedOffset = currentOffset;
     }else if (adjustedOffset.y > self.tableView.contentSize.height - self.tableView.frame.size.height){

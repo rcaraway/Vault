@@ -52,6 +52,11 @@ static UIImage * loginIcon;
     } completion:nil];
 }
 
+-(void)setDummyStyle
+{
+    self.contentView.backgroundColor = [UIColor listBackground];
+}
+
 -(void)setCompletelyGreen
 {
     self.contentView.backgroundColor = [UIColor browserGreen];

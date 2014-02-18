@@ -221,6 +221,11 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
 	}
 }
 
+-(void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+}
+
 - (void)refreshAutocompleteText
 {
     if (!self.autocompleteDisabled)

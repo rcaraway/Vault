@@ -70,7 +70,7 @@
         [self highlightImageWithColor:color];
     }else{
         if ([self.textLabel.text isEqualToString:HOME]){
-            self.imageView.image = [[UIImage imageNamed:@"valtSmall"] tintedIconWithColor:[UIColor myValtColor]];
+            self.imageView.image = [[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]];
         }else if ([self.textLabel.text isEqualToString:ABOUT_NAME]){
             self.imageView.image = [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]];
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
@@ -268,7 +268,7 @@
 
 -(void)setupCellImages
 {
-    self.cellImages = [@[[[UIImage imageNamed:@"valtSmall"] tintedImageWithColorOverlay:[UIColor myValtColor]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
+    self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
         [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:1];
     }

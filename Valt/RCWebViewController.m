@@ -69,6 +69,8 @@
     [self.refreshButton setImage:[self.refreshButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
     [self.pasteButton setImage:[self.pasteButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
     self.topView.backgroundColor = [UIColor navColor];
+    self.titleLabel.textColor = [UIColor webColor];
+    self.urlLabel.textColor = [UIColor webColor];
     self.bottomView.backgroundColor = [UIColor navColor];
     self.webView.backgroundColor = [UIColor navColor];
     self.view.backgroundColor = [UIColor navColor];
@@ -79,7 +81,7 @@
 {
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, yOrigin, [UIScreen mainScreen].bounds.size.width, 1.0f);
-    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.88f
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.83f
                                                      alpha:1.0f].CGColor;
     return bottomBorder;
 }

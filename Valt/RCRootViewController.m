@@ -246,7 +246,7 @@
 -(UIButton *)navHomeIconWithColor:(UIColor *)color
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[UIImage imageNamed:@"valtSmall"] tintedImageWithColorOverlay:color] forState:UIControlStateNormal];
+    [button setImage:[[UIImage imageNamed:@"home"] tintedIconWithColor:color] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
     [button setFrame:CGRectMake(0, 0, 44, 44)];
     return button;
@@ -332,7 +332,12 @@
 {
     if (!_webController){
         if (IS_IPHONE){
+            if (IS_IPHONE_5){
                  _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewController" bundle:nil];
+            }else{
+                 _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewControllerSmall" bundle:nil];
+            }
+            
         }else{
                  _webController = [[RCWebViewController  alloc] initWithNibName:@"RCWebViewControllerIpad" bundle:nil];            
         }

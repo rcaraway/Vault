@@ -45,7 +45,11 @@
 -(id)init
 {
     if (IS_IPHONE){
-         self = [super initWithNibName:@"AboutController" bundle:nil];
+        if (IS_IPHONE_5){
+              self = [super initWithNibName:@"AboutController" bundle:nil];
+        }else{
+              self = [super initWithNibName:@"AboutControllerSmall" bundle:nil];
+        }
     }else{
          self = [super initWithNibName:@"AboutControllerIpad" bundle:nil];
     }

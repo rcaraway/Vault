@@ -7,8 +7,13 @@
 //
 
 #import "RCSearchGestureManager.h"
+#import "RCAppDelegate.h"
+
+#import "RCRootViewController.h"
+#import "RCSearchViewController.h"
 
 #import "RCMainCell.h"
+#import "RCSearchBar.h"
 
 #define PAN_COMMIT_LENGTH 70
 #define CELL_SNAPSHOT_TAG 100000
@@ -137,6 +142,7 @@
         [UIView animateWithDuration:.2 animations:^{
             [cell.contentView setFrame:CGRectOffset(cell.contentView.frame, self.tableView.frame.size.width-translation.x, 0)];
             cell.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, cell.iconView.center.y);
+            [[APP rootController].searchController.searchBar.searchField resignFirstResponder];
         } completion:^(BOOL finished) {
             if (self.delegate && [self.delegate respondsToSelector:@selector(gestureManagerDidFinishWithWebState:atIndexPath:)]){
                 [self.delegate gestureManagerDidFinishWithWebState:self atIndexPath:indexPath];

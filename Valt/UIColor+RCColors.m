@@ -20,7 +20,7 @@
 
 +(UIColor *)webColor
 {
-    return [UIColor colorWithRed:18.0/255.0 green:214.0/255.0 blue:78.0/255.0 alpha:1];
+    return [UIColor colorWithRed:94.0/255.0 green:208.0/255.0 blue:115.0/255.0 alpha:1];
 }
 
 +(UIColor *)navColor
@@ -88,7 +88,6 @@
 {
     return [UIColor colorWithRed:255.0/255.0 green:70.0/255.0 blue:0.0/255.0 alpha:1];
 }
-
 
 +(UIColor *)aboutColor
 {

@@ -65,7 +65,7 @@
     [self setupFieldBackView];
     [self setupValtView];
     [self setupNumberField];
-    if (![[RCNetworking sharedNetwork] loggedIn]){
+    if (![[RCPasswordManager defaultManager] canLogin]){
         [self setupLoginButton];
     }
     [self addMotionEffects];
@@ -183,7 +183,9 @@
     if (self.premiumLogin){
         self.premiumLogin = NO;
         loginPassword = self.alertView.passwordTextField.text;
-        [self.alertView dismissWithSuccessTitle:@"Login Successful"];
+        [self.alertView dismiss];
+        [APP setSwipeRightHint:NO];
+        [APP setAutofillHints:NO];
         [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
         self.loginButton.alpha = 0;
         if (!isNewUser){
