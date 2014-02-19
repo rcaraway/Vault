@@ -26,6 +26,8 @@
 
 @interface RCAppDelegate ()
 
+@property(nonatomic, strong) UIView *hideView;
+
 @end
 
 @implementation RCAppDelegate
@@ -55,8 +57,18 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    
+    self.hideView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.hideView setBackgroundColor:[UIColor blackColor]];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:self.hideView];
 }
+
+-(void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [self.hideView removeFromSuperview];
+    self.hideView = nil;
+}
+
+
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
@@ -77,11 +89,6 @@
     if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
     }
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

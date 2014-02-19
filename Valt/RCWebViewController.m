@@ -47,6 +47,9 @@
     self = [super initWithNibName:@"RCWebViewController" bundle:nil];
     if (self){
         self.password = password;
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+        [[NSURLCache sharedURLCache] setDiskCapacity:0];
+        [[NSURLCache sharedURLCache] setMemoryCapacity:0];
     }
     return self;
 }
@@ -54,9 +57,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    [[NSURLCache sharedURLCache] setDiskCapacity:0];
-    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     self.webView.delegate = self;
     [self.doneButton setTitleColor:[UIColor webColor] forState:UIControlStateNormal];
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
@@ -79,8 +80,19 @@
     [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
     self.webView.backgroundColor = [UIColor navColor];
     self.view.backgroundColor = [UIColor navColor];
-   [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
+    [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
     [self loadPasswordRequest];
+}
+
+-(void)deleteAllCookies
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSHTTPCookie *cookie;
+        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        for (cookie in [storage cookies]) {
+            [storage deleteCookie:cookie];
+        }
+    });
 }
 
 -(CALayer *)separatorAtOrigin:(CGFloat)yOrigin
@@ -107,6 +119,7 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self deleteAllCookies];
 }
 
 
@@ -290,23 +303,25 @@
     NSString *loadPasswordJS =[NSString stringWithFormat:@"var passFields = document.querySelectorAll(\"input[type='password']\"); \
                                for (var i = passFields.length>>> 0; i--;) { passFields[i].value ='%@';}", self.password.password];
     NSString * password = [self.webView stringByEvaluatingJavaScriptFromString:loadPasswordJS];
-    NSLog(@"PASSWORD %@", password);
     return  ([password isEqualToString:self.password.password]);
 }
 
 -(BOOL)fillOutUsername
 {
+    [self printHTML];
     NSString *loadEmailJS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[type*='email']\"); \
                              for (var i = inputFields.length >>> 0; i--;) { inputFields[i].value = '%@';}", self.password.username];
-    
     NSString *loadUsernameJS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[type*='text']\"); \
                                 for (var i = inputFields.length >>> 0; i--;) { inputFields[i].value = '%@';}", self.password.username];
     NSString *loadUsername2JS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[name*='User']\"); \
                                  for (var i = inputFields.length >>> 0; i--;) { inputFields[i].value = '%@';}", self.password.username];
+    NSString *loadUsername3JS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[name*='user']\"); \
+                                 for (var i = inputFields.length >>> 0; i--;) { inputFields[i].value = '%@';}", self.password.username];
     NSString * email = [self.webView stringByEvaluatingJavaScriptFromString:loadEmailJS];
     NSString * username = [self.webView stringByEvaluatingJavaScriptFromString:loadUsernameJS];
     NSString * username2 = [self.webView stringByEvaluatingJavaScriptFromString:loadUsername2JS];
-    return ([email isEqualToString:self.password.username] || [username isEqualToString:self.password.username] || [username2 isEqualToString:self.password.username]);
+    NSString * username3 = [self.webView stringByEvaluatingJavaScriptFromString:loadUsername3JS];
+    return ([email isEqualToString:self.password.username] || [username isEqualToString:self.password.username] || [username2 isEqualToString:self.password.username]||[username3 isEqualToString:self.password.username]);
 }
 
 -(void)tryToSubmitForm
