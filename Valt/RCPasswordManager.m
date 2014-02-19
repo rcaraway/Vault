@@ -313,7 +313,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)hideAllPasswordData
 {
-    saveKeychainPasswords(mutablePasswords);
     mutablePasswords = nil;
 }
 
@@ -543,7 +542,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)lockPasswords
 {
-    saveKeychainPasswords(mutablePasswords);
+    self.currentPassword = nil;
     _accessGranted = NO;
     mutablePasswords = nil;
 }

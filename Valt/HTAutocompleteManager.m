@@ -288,7 +288,14 @@ static HTAutocompleteManager *sharedManager;
              [usernames addObject:password.username];   
         }
     }
-    return [NSArray arrayWithArray:usernames];
+    return [[NSArray arrayWithArray:usernames]  sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 length] < [obj2 length]){
+            return NSOrderedAscending;
+        }
+        if ([obj1 length] > [obj2 length])
+            return NSOrderedDescending;
+        return NSOrderedSame;
+    }];;
 }
 
 -(NSArray *)passwordList
@@ -298,7 +305,14 @@ static HTAutocompleteManager *sharedManager;
     for (RCPassword * password in passwords) {
         [usernames addObject:password.password];
     }
-    return [NSArray arrayWithArray:usernames];
+    return [[NSArray arrayWithArray:usernames] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 length] < [obj2 length]){
+            return NSOrderedAscending;
+        }
+        if ([obj1 length] > [obj2 length])
+            return NSOrderedDescending;
+        return NSOrderedSame;
+    }];;
 }
 
 -(NSArray *)prefilledURLs
@@ -443,7 +457,7 @@ static HTAutocompleteManager *sharedManager;
 
 -(NSArray *)prefilledTitles
 {
-    return [[self titleUrlPairs] allKeys];
+    return [[[self titleUrlPairs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
 
 

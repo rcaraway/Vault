@@ -102,12 +102,14 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didLockPhone
 {
-    [[RCPasswordManager defaultManager] hideAllPasswordData];
+    if ([[RCPasswordManager defaultManager] accessGranted])
+        [[RCPasswordManager defaultManager] hideAllPasswordData];
 }
 
 -(void)didUnlockPhone
 {
-    [[RCPasswordManager defaultManager] reshowPasswordData];
+    if ([[RCPasswordManager defaultManager] accessGranted])
+        [[RCPasswordManager defaultManager] reshowPasswordData];
 }
 
 -(void)didBecomeActive
@@ -119,8 +121,8 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didEnterBackground
 {
-    if ([[RCNetworking sharedNetwork] loggedIn] && [[RCPasswordManager defaultManager] accessGranted]){
-//        [[RCNetworking sharedNetwork] sync];
+    if ([[RCPasswordManager defaultManager] accessGranted]){
+        
     }
 }
 

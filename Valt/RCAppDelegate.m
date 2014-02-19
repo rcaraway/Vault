@@ -64,6 +64,8 @@
         [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
         }];
         [self.rootController launchPasscode];
+    }else{
+        [[RCPasswordManager defaultManager] hideAllPasswordData];
     }
     if ([PFUser currentUser]){
          [PFUser logOut];
@@ -72,7 +74,9 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    if ([[RCPasswordManager defaultManager] accessGranted]){
+        [[RCPasswordManager defaultManager] reshowPasswordData];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

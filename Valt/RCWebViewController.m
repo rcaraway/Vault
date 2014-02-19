@@ -70,11 +70,16 @@
     [self.refreshButton setImage:[self.refreshButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
     [self.pasteButton setImage:[self.pasteButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
     self.topView.backgroundColor = [UIColor navColor];
+    self.credentialView.backgroundColor = [UIColor navColor];
+    [self.credentialView.layer addSublayer:[self separatorAtOrigin:43.0f]];
     self.titleLabel.textColor = [UIColor webColor];
     self.urlLabel.textColor = [UIColor webColor];
     self.bottomView.backgroundColor = [UIColor navColor];
+    [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
+    [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
     self.webView.backgroundColor = [UIColor navColor];
     self.view.backgroundColor = [UIColor navColor];
+   [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
     [self loadPasswordRequest];
 }
 
@@ -93,7 +98,17 @@
     self.titleLabel.backgroundColor = [UIColor navColor];
     self.doneButton.backgroundColor = [UIColor navColor];
     self.bottomView.backgroundColor = [UIColor navColor];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCredentialView) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideCredentialView) name:UIKeyboardWillHideNotification object:nil];
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
 
 -(BOOL)shouldAutorotate
 {
@@ -109,18 +124,6 @@
 -(void)printURLLog
 {
     NSLog(@"URL %@", self.webView.request.URL.absoluteString);
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [self.credentialView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height+100, 320, 44)];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCredentialView) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideCredentialView) name:UIKeyboardWillHideNotification object:nil];
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -312,19 +315,33 @@
     [self.webView stringByEvaluatingJavaScriptFromString:submit];
 }
 
+
 -(void)showCredentialView
 {
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.credentialView setFrame:CGRectMake(0, self.view.frame.size.height-300, 320, 44)];
+    [self.view addSubview:self.credentialView];
+        self.credentialView.alpha =1;
+    self.topView.clipsToBounds = YES;
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.credentialView setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 44)];
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(0, 44);
+        self.titleLabel.transform = transform;
+        self.urlLabel.transform = transform;
+        self.doneButton.transform = transform;
     } completion:nil];
 }
 
 -(void)hideCredentialView
 {
-    [UIView animateWithDuration:.26 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.credentialView setFrame:CGRectMake(0, self.view.frame.size.height+100, 320, 44)];
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        self.titleLabel.transform = transform;
+        self.urlLabel.transform = transform;
+        self.doneButton.transform = transform;
+
     } completion:nil];
 }
+
 
 
 #pragma mark - Webview Delegate
@@ -374,7 +391,7 @@
     self.titleLabel.alpha = 1;
     self.urlLabel.alpha =1;
     self.urlButton.enabled = YES;
-    [self tryToFillOutAllForms];
+    [self performSelector:@selector(tryToFillOutAllForms) withObject:nil afterDelay:.24];
     self.firstPage = NO;
 }
 

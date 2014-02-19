@@ -10,10 +10,13 @@
 #import "RCListViewController.h"
 #import "RCPasscodeViewController.h"
 #import "RCSearchViewController.h"
+
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
-#import "RCValtView.h"
 #import "RCAppDelegate.h"
+
+#import "RCValtView.h"
+#import "RCTableView.h"
 #import "RCMessageView.h"
 
 static UIView * passDimView;
@@ -43,6 +46,7 @@ static UIView * passDimView;
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];
     [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
+        [self.listController.tableView reloadData];
     }];
     [self transitionBackToPasscodeCompletion:^{
         self.passcodeController.opened = NO;

@@ -32,6 +32,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *urlButton;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loader;
 
+
 - (IBAction)forwardTapped:(id)sender;
 - (IBAction)refreshTapped:(id)sender;
 - (IBAction)doneTapped:(id)sender;

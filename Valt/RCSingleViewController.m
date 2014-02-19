@@ -280,7 +280,7 @@
         static NSString *cellIdentifier = @"MyCell";
         RCTitleViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.textField.text = (NSString *)object;
-        cell.textField.placeholder = @"Title";
+        cell.textField.placeholder = @"Title (ex: Facebook)";
         return cell;
     }else{
         static NSString * cellId = @"DropDownCell";
@@ -483,9 +483,6 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == self.textFields[0]){
-         [textField setFrame:CGRectMake(12, 0, 320, 60)];
-    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
