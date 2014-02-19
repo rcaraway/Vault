@@ -20,6 +20,7 @@
 #import "TWMessageBarManager.h"
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
+#import "RCNetworking.h"
 
 
 
@@ -213,14 +214,15 @@
 -(void)actionSheet:(LBActionSheet *)actionSheet clickedButtonAtIndex:(NSUInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.numberOfButtons-1){
-    if ([actionSheet.title isEqualToString:@"Copy to Clipboard:"]){
-        UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        [pb setString:[actionSheet buttonTitleAtIndex:buttonIndex]];
-        [[[APP rootController] messageView] showMessage:@"Copied to Clipboard" autoDismiss:YES];
-    }else{
+        if ([actionSheet.title isEqualToString:@"Copy to Clipboard:"]){
+            UIPasteboard *pb = [UIPasteboard generalPasteboard];
+            [pb setString:[actionSheet buttonTitleAtIndex:buttonIndex]];
+            [[[APP rootController] messageView] showMessage:@"Copied to Clipboard" autoDismiss:YES];
+        }else{
             [[[APP rootController] messageView] showMessage:@"Updated URL" autoDismiss:YES];
             self.password.urlName = self.urlLabel.text;
             [[RCPasswordManager defaultManager] updatePassword:self.password];
+            [[RCNetworking sharedNetwork] sync];
         }
     }
 }

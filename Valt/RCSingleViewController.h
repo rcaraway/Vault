@@ -13,6 +13,7 @@
 
 @property(nonatomic, strong) UITableView * tableView;
 @property(nonatomic, strong) RCPassword * password;
+
 @property (nonatomic) BOOL mayDeleteCell;
 @property(nonatomic) BOOL isTransitioningTo;
 @property(nonatomic) BOOL cameFromSearch;

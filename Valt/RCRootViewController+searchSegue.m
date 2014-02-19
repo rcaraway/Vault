@@ -33,18 +33,26 @@ static NSInteger searchIndex;
     self.searchController = [[RCSearchViewController alloc] initWithNibName:nil bundle:nil];
     [self.listController removeFromParentViewController];
     [self addChildViewController:self.searchController];
-    [self.view insertSubview:self.searchController.view belowSubview:self.listController.view];
-    [self.view insertSubview:self.searchController.searchBar belowSubview:self.navBar];
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.listController.view.alpha = 0;
+    UIView * dimview = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [dimview setBackgroundColor:[UIColor clearColor]];
+    [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, [UIScreen mainScreen].bounds.size.width, 0)];
+    [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, [UIScreen mainScreen].bounds.size.width, 0)];
+    [self.view insertSubview:self.searchController.view aboveSubview:self.listController.view];
+    [self.view insertSubview:dimview aboveSubview:self.listController.view];
+    [self.view insertSubview:self.searchController.searchBar aboveSubview:self.navBar];
+    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveLinear animations:^{
+        [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, -[UIScreen mainScreen].bounds.size.width, 0)];
+        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, -[UIScreen mainScreen].bounds.size.width, 0)];
+        [dimview setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.7]];
+        self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
         [self.view bringSubviewToFront:(UIView*)self.messageView];
-        self.navBar.alpha=0;
-    } completion:^(BOOL finished) {
-        [self.listController.view removeFromSuperview];
-        [self.view bringSubviewToFront:self.searchController.searchBar];
-        self.navBar.alpha = 1;
-        self.listController.view.alpha = 1;
         [self.searchController.searchBar.searchField becomeFirstResponder];
+    } completion:^(BOOL finished) {
+        [dimview removeFromSuperview];
+        [self.listController.view removeFromSuperview];
+        self.listController.view.transform = CGAffineTransformIdentity;
+        [self.view bringSubviewToFront:self.searchController.searchBar];
+
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }
@@ -54,20 +62,23 @@ static NSInteger searchIndex;
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self.searchController removeFromParentViewController];
     [self addChildViewController:self.listController];
+    UIView * dimview = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [dimview setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.7]];
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
-    [self.view bringSubviewToFront:self.navBar];
-    [self.view bringSubviewToFront:self.searchController.searchBar];
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.677 initialSpringVelocity:.1  options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
+    [self.view insertSubview:dimview aboveSubview:self.listController.view];
+    [UIView animateWithDuration:.24 delay:0   options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.searchController.searchBar.searchField resignFirstResponder];
-        self.searchController.searchBar.alpha = 0;
+        [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, [UIScreen mainScreen].bounds.size.width, 0)];
+        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, [UIScreen mainScreen].bounds.size.width, 0)];
         self.searchController.searchBar.searchField.text = @"";
-        self.searchController.view.alpha = 0;
+        self.listController.view.transform = CGAffineTransformIdentity;
+        [dimview setBackgroundColor:[UIColor clearColor]];
         [self.view bringSubviewToFront:(UIView*)self.messageView];
     } completion:^(BOOL finished) {
         [self.searchController.view removeFromSuperview];
         [self.searchController.searchBar removeFromSuperview];
-        self.searchController.view.alpha = 1;
-        self.searchController.searchBar.alpha = 1;
+        [dimview removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }

@@ -158,6 +158,7 @@ static RCNetworking *sharedNetwork;
     }
 }
 
+
 -(void)extendPremiumToDate:(NSDate *)date
 {
     if ([self loggedIn]){

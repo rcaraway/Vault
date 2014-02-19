@@ -197,7 +197,7 @@ static RCNetworkListener * sharedQueue;
     }else{
         [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:passwords];
     }
-    [[[[APP rootController] listController] tableView] reloadData];
+     [[[[APP rootController] listController] tableView] reloadData];
     [self showMessage:@"Synced" autoDismiss:YES];
 }
 

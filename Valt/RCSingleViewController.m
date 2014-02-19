@@ -51,6 +51,7 @@
 @property(nonatomic, strong) NSMutableArray * credentials;
 @property(nonatomic, strong) NSMutableArray * textFields;
 @property(nonatomic) NSInteger dummyCellIndex;
+@property (nonatomic, assign) NSInteger passwordIndex;
 
 @property (nonatomic, strong) id grabbedObject;
 
@@ -71,6 +72,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.password = password;
+        self.passwordIndex = [[RCPasswordManager defaultManager].passwords indexOfObject:self.password];
         self.isTransitioningTo = YES;
         self.dummyCellIndex = NSNotFound;
         self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
@@ -99,14 +101,14 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didType:) name:htAutoCompleteLabelDidUpdate object:nil];
+    [self addNotifications];
     [self setAllTextFieldDelegates];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:htAutoCompleteLabelDidUpdate object:nil];
+    [self removeNotifications];
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,6 +124,39 @@
     self.tableView = nil;
     self.gestureManager = nil;
     self.view = nil;
+}
+
+
+#pragma mark - NSNotifications
+
+-(void)addNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didType:) name:htAutoCompleteLabelDidUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetchPasswords) name:networkingDidFetchCredentials object:nil];
+}
+
+-(void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:htAutoCompleteLabelDidUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFetchCredentials object:nil];
+}
+
+-(void)didFetchPasswords
+{
+    RCPassword * password = [[RCPasswordManager defaultManager] passwordForTitle:self.password.title];
+    if (!password){
+        if ([RCPasswordManager defaultManager].passwords.count > self.passwordIndex){
+             password = [RCPasswordManager defaultManager].passwords[self.passwordIndex];
+        }else{
+            [[RCPasswordManager defaultManager] addPassword:self.password];
+        }
+    }
+    if (password){
+        self.password = password;
+        self.credentials = [NSMutableArray arrayWithArray:[self.password allFields]];
+    }
+   [self.tableView reloadData];
+    
 }
 
 -(void)didType:(NSNotification *)notification
@@ -190,7 +225,6 @@
     [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
     listOffset = [APP rootController].listController.tableView.contentOffset;
     singleOffset = scrollView.contentOffset;
-
 }
 
 -(void)scrollSearchView:(UIScrollView *)scrollView

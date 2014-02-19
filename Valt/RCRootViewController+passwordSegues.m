@@ -222,6 +222,8 @@ static void * ContentSizeKey;
     NSIndexPath * indexPath = [self.listController.viewPath copy];
     self.listController.viewPath = nil;
     NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self.singleController.password];
+    if (index == NSNotFound)
+        index = 0;
     CGRect cellRect = [self rectForCellAtIndex:index];
      CGRect cellRectAdjusted = CGRectOffset(cellRect, -[self originalOffset].x, -[self originalOffset].y-self.listController.tableView.contentInset.top);
     CGPoint offset = [self originalOffset];
