@@ -151,13 +151,17 @@
                                             constrainedToSize:contentViewSize
                                                 lineBreakMode:NSLineBreakByClipping];
     }
+    if (self.frame.size.height >= [UIScreen mainScreen].bounds.size.height-70){
+        self.customLabel.text = @"Furthest Drag Ever";
+        self.imageView.image = [[UIImage imageNamed:@"sync"] tintedIconWithColor:[UIColor whiteColor]];
+        self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
+    }
+    else
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
         if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
              self.customLabel.text = @"Release to Sync";
-
         }else{
              self.customLabel.text = @"Upgrade to Sync";
-
         }
         self.imageView.image = [[UIImage imageNamed:@"sync"] tintedIconWithColor:[UIColor whiteColor]];
         self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);

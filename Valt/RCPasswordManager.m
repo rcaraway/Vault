@@ -165,6 +165,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 @interface RCPasswordManager ()
 
 @property(nonatomic, copy) NSString * currentPassword;
+@property(atomic, assign) BOOL accessGranted;
 
 @end
 
@@ -207,6 +208,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         [self removeLoginInfo];
 #endif
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidLogin object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidSignup object:nil];
     }
     return self;
 }
@@ -236,7 +238,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(void)setMasterPassword:(NSString *)masterPassword
 {
     NSString * mPw = [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
-    if (!mPw || mPw.length == 0 || _accessGranted){
+    if (!mPw || mPw.length == 0 || self.accessGranted){
          [[PDKeychainBindings sharedKeychainBindings] setString:masterPassword forKey:MASTER_PASSWORD_KEY];
         if (!allowOverridePassword)
             [self grantPasswordAccess];
@@ -258,7 +260,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
     }
     return randomKey;
 #else
-    if (_accessGranted){
+    if (self.accessGranted){
         return [[PDKeychainBindings sharedKeychainBindings] stringForKey:MASTER_PASSWORD_KEY];
     }
 #endif
@@ -282,12 +284,12 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         if ([password isEqualToString:mPw]){
             [self grantPasswordAccess];
             dispatch_async(dispatch_get_main_queue(), ^{
-                _accessGranted = YES;
+                self.accessGranted = YES;
                 [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerAccessGranted object:nil];
             });
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                _accessGranted = NO;
+                self.accessGranted = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:passwordManagerAccessFailedToGrant object:nil];
             });
         }
@@ -329,7 +331,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)addPassword:(RCPassword *)password
 {
-    if (password && _accessGranted){
+    if (password && self.accessGranted){
         [mutablePasswords addObject:password];
         dispatch_async(keyChainQueue, ^{
             [self addNewPasswordToKeychain:password]; //correct, should just add to end, +1 to total
@@ -340,7 +342,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)addPasswords:(NSArray *)passwords
 {
-    if (passwords && _accessGranted){
+    if (passwords && self.accessGranted){
         NSMutableArray * mutPasswords = [passwords mutableCopy];
         for (RCPassword * password in passwords) {
             for (RCPassword * ogPassword in mutablePasswords) {
@@ -364,7 +366,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)replaceAllPasswordsWithPasswords:(NSArray *)passwords
 {
-    if (passwords && _accessGranted){
+    if (passwords && self.accessGranted){
         [mutablePasswords removeAllObjects];
         [mutablePasswords addObjectsFromArray:passwords];
 #ifdef TESTING_MODE
@@ -381,7 +383,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)removePassword:(RCPassword *)password
 {
-    if (password && _accessGranted){
+    if (password && self.accessGranted){
         NSUInteger index = [mutablePasswords indexOfObject:password];
         [mutablePasswords removeObject:password];
 #ifdef TESTING_MODE
@@ -406,7 +408,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)removePasswordAtIndex:(NSInteger)index
 {
-    if (mutablePasswords.count > index && _accessGranted){
+    if (mutablePasswords.count > index && self.accessGranted){
         [mutablePasswords removeObjectAtIndex:index];
 #ifdef TESTING_MODE
         if (index == mutablePasswords.count)
@@ -430,7 +432,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)addPassword:(RCPassword *)password atIndex:(NSInteger)index
 {
-    if (password && _accessGranted){
+    if (password && self.accessGranted){
         if (index == mutablePasswords.count){
             [mutablePasswords addObject:password];
 #ifdef TESTING_MODE
@@ -462,7 +464,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex
 {
-    if (_accessGranted && passwordIndex != newIndex && newIndex < mutablePasswords.count){
+    if (self.accessGranted && passwordIndex != newIndex && newIndex < mutablePasswords.count){
         RCPassword * password = [mutablePasswords objectAtIndex:passwordIndex];
         [mutablePasswords removeObjectAtIndex:passwordIndex];
         [mutablePasswords insertObject:password atIndex:newIndex];
@@ -478,7 +480,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)updatePassword:(RCPassword *)password
 {
-    if (password && _accessGranted){
+    if (password && self.accessGranted){
 #ifdef TESTING_MODE
         updateKeychain(password, (int)([mutablePasswords indexOfObject:password]));
 #else
@@ -494,14 +496,14 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(NSArray *)passwords
 {
-    if (_accessGranted && mutablePasswords)
+    if (self.accessGranted && mutablePasswords)
         return [NSArray arrayWithArray:mutablePasswords];
     return nil;
 }
 
 -(NSArray *)allTitles
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         NSMutableArray * titles = [NSMutableArray new];
         for (RCPassword * password in self.passwords) {
             if (password.title)
@@ -517,7 +519,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(RCPassword *)passwordForTitle:(NSString *)title
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         for (RCPassword * singlePass in mutablePasswords) {
             if ([singlePass.title isEqualToString:title]){
                 return singlePass;
@@ -543,13 +545,13 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(void)lockPasswords
 {
     self.currentPassword = nil;
-    _accessGranted = NO;
+    self.accessGranted = NO;
     mutablePasswords = nil;
 }
 
 -(void)grantPasswordAccess
 {
-    _accessGranted = YES;
+    self.accessGranted = YES;
     if ([self anyLoginsExist]){
         mutablePasswords = allKeychainPasswords();
     }else
@@ -573,7 +575,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 -(NSString *)accountPassword
 {
     if (self.accessGranted){
-         return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_PASSWORD_KEY];
+        return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_PASSWORD_KEY];
     }
     return nil;
 }
@@ -583,7 +585,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)addNewPasswordToKeychain:(RCPassword *)password
 {
-    if (_accessGranted && password){
+    if (self.accessGranted && password){
         NSInteger index = mutablePasswords.count-1;
         setKeychainPassword(password, (int)index);
     }
@@ -591,7 +593,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)addNewPasswordsToKeychain:(NSArray *)passwords
 {
-    if (_accessGranted && passwords){
+    if (self.accessGranted && passwords){
         NSUInteger startIndex = mutablePasswords.count-passwords.count;
         for (RCPassword * password in passwords) {
             setKeychainPassword(password, (int)startIndex);
@@ -602,7 +604,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)replaceKeychainPasswordsWith:(NSArray *)passwords
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         NSUInteger keyChainCount = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
         NSUInteger count = (passwords.count >= keyChainCount)?passwords.count:keyChainCount;
         for (int i = 0; i < count; i++) {
@@ -618,7 +620,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)moveKeychainPasswordAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         RCPassword * password = keychainPassword((int)fromIndex);
         if (fromIndex == mutablePasswords.count){
             deleteKeychainPassword((int)fromIndex);
@@ -632,7 +634,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)incrementKeychainValuesStartingAtIndex:(NSInteger)index
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         NSInteger i = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue]-1;
         while (i >= index) {
             RCPassword * password = keychainPassword((int)i);
@@ -644,7 +646,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)decrementKeychainValuesStartingAtIndex:(NSUInteger)index
 {
-    if (_accessGranted){
+    if (self.accessGranted){
         NSInteger startIndex = index+1;
         NSInteger keychainCount = [[[PDKeychainBindings sharedKeychainBindings] stringForKey:STORED_TITLE_COUNT] integerValue];
         for (int i = startIndex; i < keychainCount; i++) {

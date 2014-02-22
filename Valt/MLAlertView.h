@@ -30,7 +30,7 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 @property (nonatomic, copy) MLAlertTapButtonBlock buttonDidTappedBlock;
 @property(nonatomic, strong) HTAutocompleteTextField * loginTextField;
 @property(nonatomic, strong) UILabel * titleLabel;
-@property(nonatomic, strong) UITextField * passwordTextField;
+@property(nonatomic, strong) HTAutocompleteTextField * passwordTextField;
 
 
 
@@ -44,7 +44,8 @@ typedef void (^MLAlertTapButtonBlock)(MLAlertView *alertView, NSInteger buttonIn
 -(void)show;
 -(void)dismiss;
 -(void)loadWithText:(NSString *)text;
--(void)dismissWithSuccessTitle:(NSString *)title;
+-(void)dismissWithSuccess;
+-(void)dismissWithSuccessCompletion:(void(^)())completion;
 -(void)showFailWithTitle:(NSString *)title;
 
 @end

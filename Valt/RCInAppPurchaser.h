@@ -30,5 +30,6 @@ extern NSString * purchaserDidPayYearly;
 extern NSString * purchaserDidFail;
 extern NSString * purchaserDidPayMonthly;
 extern NSString * purchaseDidLoadProducts;
+extern NSString * const purchaserDidFailToLoadProducts;
 
 

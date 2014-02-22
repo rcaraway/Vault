@@ -16,6 +16,7 @@
 #import "RCListGestureManager.h"
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
+#import "HTAutocompleteManager.h"
 
 //Views
 #import "JTTransformableTableViewCell.h"
@@ -105,13 +106,16 @@
 {
     [super viewDidAppear:animated];
     [self reloadIfNeeded];
+    [self showBackupViewIfNeeded];
+}
+
+-(void)showBackupViewIfNeeded
+{
     static BOOL backupShown = NO;
-    if ([APP launchCountTriggered] && [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && !backupShown){
+    if ([APP launchCountTriggered] &&  [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && ![[RCPasswordManager defaultManager] canLogin] && !backupShown){
         [self setupBackupView];
         [self performSelector:@selector(showBackup) withObject:nil afterDelay:.6];
         backupShown = YES;
-    }else if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired && [APP shouldShowRenew]){
-        [[APP rootController] segueToPurchaseFromList];
     }
 }
 
@@ -501,6 +505,9 @@
         }else{
             self.gestureManager.webPath = indexPath;
             self.alertView = [[MLAlertView alloc] initWithTextfieldWithPlaceholder:@"URL" title:@"Enter valid URL" delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Go"];
+            self.alertView.passwordTextField.autocorrectionType = RCAutocompleteTypeURL;
+            self.alertView.passwordTextField.secureTextEntry = NO;
+            
             [self.alertView show];
         }
         
@@ -532,7 +539,7 @@
 -(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.dummyCellIndex != indexPath.row){
-        [[RCNetworking sharedNetwork] sync];
+        [[RCNetworking sharedNetwork] saveToCloud];
     }
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
@@ -547,7 +554,13 @@
         RCPassword * password = [RCPasswordManager defaultManager].passwords[self.gestureManager.webPath.row];
         password.urlName = text;
         if (password.hasValidURL){
-            [[APP rootController] segueToWebWithPassword:password];
+            [[RCPasswordManager defaultManager] updatePassword:password];
+            if ([[RCNetworking sharedNetwork] loggedIn]){
+                [[RCNetworking sharedNetwork] saveToCloud];
+            }
+            [self.alertView dismissWithSuccessCompletion:^{
+                   [[APP rootController] segueToWebWithPassword:password];
+            }];
         }else{
             [self.alertView showFailWithTitle:@"Invalid URL"];
         }
@@ -570,7 +583,7 @@
 
 -(void)showBackup
 {
-    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.2 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.8 delay:0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.backupView setFrame:CGRectOffset(self.backupView.frame, 0, -60)];
     } completion:^(BOOL finished) {
         
@@ -606,7 +619,7 @@
     if (buttonIndex == 0){
         [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationMiddle];
-        [[RCNetworking sharedNetwork] sync];
+        [[RCNetworking sharedNetwork] saveToCloud];
         if (self.hintImageView){
             [self hideHintLabels];
         }

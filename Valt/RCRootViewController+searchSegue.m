@@ -40,7 +40,7 @@ static NSInteger searchIndex;
     [self.view insertSubview:self.searchController.view aboveSubview:self.listController.view];
     [self.view insertSubview:dimview aboveSubview:self.listController.view];
     [self.view insertSubview:self.searchController.searchBar aboveSubview:self.navBar];
-    [UIView animateWithDuration:.6 delay:0 usingSpringWithDamping:.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveLinear animations:^{
+    [UIView animateWithDuration:.45 delay:0 usingSpringWithDamping:.87 initialSpringVelocity:1 options:UIViewAnimationOptionCurveLinear animations:^{
         [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, -[UIScreen mainScreen].bounds.size.width, 0)];
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, -[UIScreen mainScreen].bounds.size.width, 0)];
         [dimview setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.7]];
@@ -52,7 +52,6 @@ static NSInteger searchIndex;
         [self.listController.view removeFromSuperview];
         self.listController.view.transform = CGAffineTransformIdentity;
         [self.view bringSubviewToFront:self.searchController.searchBar];
-
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 }

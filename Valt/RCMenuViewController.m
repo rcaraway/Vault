@@ -123,6 +123,7 @@
     [self setupFeelgoodButton];
     [self setupSwitchLabel];
     [self setupCloseSwitch];
+    [self setupHiddenLabel];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -221,11 +222,14 @@
 }
 
 
+
+
 #pragma mark - Event Handling
 
 -(void)didTapFeelGood
 {
-    
+    NSURL * url = [NSURL URLWithString:[[self feelGoodPairs] valueForKey:self.feelgoodButton.titleLabel.text]];
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 -(void)handleTapForIndexPath:(NSIndexPath * )indexPath
@@ -300,7 +304,23 @@
     [self.feelgoodButton setTitle:[self randomizedFeelGoodMessage] forState:UIControlStateNormal];
     [self.feelgoodButton addTarget:self action:@selector(didTapFeelGood) forControlEvents:UIControlEventTouchUpInside];
     [self.feelgoodButton.titleLabel setFont:[UIFont fontWithName:@"Verdana" size:13]];
+    self.feelgoodButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:self.feelgoodButton];
+}
+
+
+-(void)setupHiddenLabel
+{
+    self.hiddenLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, 40)];
+    [self.hiddenLabel setBackgroundColor:[UIColor clearColor]];
+    [self.hiddenLabel setText:[self randomizedHiddenMessage]];
+    [self.hiddenLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.hiddenLabel setTextColor:[UIColor colorWithWhite:.4 alpha:1]];
+    self.hiddenLabel.numberOfLines = 1;
+    [self.hiddenLabel setFont:[UIFont fontWithName:@"Verdana" size:13]];
+    [self.hiddenLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2.0)];
+    self.hiddenLabel.center = CGPointMake(8, CGRectGetMidY(self.view.frame));
+    [self.view addSubview:self.hiddenLabel];
 }
 
 -(void)setupCloseSwitch
@@ -339,12 +359,41 @@
 
 -(NSString *)randomizedFeelGoodMessage
 {
-    NSArray * messages = @[@"Work with Purpose",
-                           @"Good Software is Art",
-                           @"Never Give Up",
-                           @"You're excellent"];
-    NSString * selection = messages[rand()%messages.count];
+    NSArray * messages = [[self feelGoodPairs] allKeys];
+    NSString * selection = messages[arc4random()%messages.count];
     return selection;
+}
+
+-(NSString *)randomizedHiddenMessage
+{
+    NSArray * array = @[@"You found me.", @"You weren't supposed to see this.", @"Pic a boo", @"Sshhh I'm hiding"];
+    return array[arc4random()%(array.count)];
+}
+
+-(NSDictionary *)feelGoodPairs
+{
+    return @{@"Zeds Dead - \"You and I\"" : @"http://www.youtube.com/watch?v=WWHInsHJ_EA",
+             @"CHVRCHES - \"The Mother We Share\"" : @"http://www.youtube.com/watch?v=_mTRvJ9fugM",
+             @"Deap Vally - \"Gonna Make My Own Money\"" : @"http://www.youtube.com/watch?v=PWXsTaBoD7A",
+             @"Little Hurricane - \"give em hell\"" : @"http://www.youtube.com/watch?v=AFKgipi4Tc4",
+             @"Santigold - \"Disparate Youth\"" : @"http://www.youtube.com/watch?v=mIMMZQJ1H6E",
+             @"Youth Lagoon - \"Mute\"" : @"http://www.youtube.com/watch?v=mSXyr6im7kk",
+             @"Miami Horror - \"Real Slow (Gold Flumes Remix)\"" : @"http://www.youtube.com/watch?v=CSDTg-tBVSA",
+             @"Crystal Castles - \"Baptism\"" : @"http://www.youtube.com/watch?v=vStjmYxetY0",
+             @"The Asteroids Galaxy Tour - \"The Golden Age\"" : @"http://www.youtube.com/watch?v=xFihi5cPqqE",
+             @"The Snake The Cross The Crown - \"Behold the River\"" : @"http://www.youtube.com/watch?v=ruznqiBMQq4",
+             @"Meiko - \"Leave the Lights On\"" : @"http://www.youtube.com/watch?v=UvAi53lynSc",
+             @"Alina Baraz & Galimatias - \"Pretty Thoughts\"" : @"http://www.youtube.com/watch?v=JrHw9BDa3OE",
+             @"Macklemore - \"Ten Thousand Hours\"" : @"http://www.youtube.com/watch?v=iEr5H4E4r3I",
+             @"Wild Flag - \"Romance\"" : @"http://www.youtube.com/watch?v=8J8n9R8rnB8",
+             @"Childish Gambino - \"Heartbeat\"" : @"http://www.youtube.com/watch?v=dFVxGRekRSg",
+             @"Daft Punk - \"End of Line\"" : @"http://www.youtube.com/watch?v=AHGvaQMClEo",
+             @"Odesza - \"My Friends Never Die\"" : @"http://www.youtube.com/watch?v=NyPtlOoCmV4",
+             @"Mt. Eden - \"Still Alive\"" : @"http://www.youtube.com/watch?v=FDYIdBZUl2Y",
+             @"The Temper Trap - \"Fader\"" : @"http://www.youtube.com/watch?v=5xQF0gerTtM",
+             @"As Cities Burn - \"Into the Sea\"" : @"http://www.youtube.com/watch?v=cNGugM6WpYQ",
+             @"Lydia - \"Hospital\"" : @"http://www.youtube.com/watch?v=iwsBzKtS-fU",
+             @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU"};
 }
 
 

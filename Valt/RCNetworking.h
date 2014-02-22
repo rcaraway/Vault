@@ -26,7 +26,7 @@ typedef enum {
 
 -(void)extendPremiumToDate:(NSDate *)date;
 -(void)fetchFromServer;
--(void)sync;
+-(void)saveToCloud;
 -(void)getUrlForTitle:(NSString *)title;
 
 -(BOOL)loggedIn;

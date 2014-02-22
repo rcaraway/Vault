@@ -12,9 +12,11 @@
 
 @property(nonatomic, strong) UITableView * tableView;
 @property(nonatomic, strong) UIButton * feelgoodButton;
+@property(nonatomic, strong) UILabel * hiddenLabel;
 @property(nonatomic, strong) UISwitch * closeSwitch;
 @property(nonatomic, strong) UILabel * switchLabel;
 
 -(void)changeFeelgoodMessage;
+
 
 @end

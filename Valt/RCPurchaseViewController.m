@@ -14,6 +14,7 @@
 
 #import "MLAlertView.h"
 #import "HTAutocompleteTextField.h"
+#import "RCMessageView.h"
 
 #import "UIView+QuartzEffects.h"
 #import "UIColor+RCColors.h"
@@ -222,6 +223,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToPurchase) name:purchaserDidFail object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayMonthly object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(didSucceedPurchasingProduct) name:purchaserDidPayYearly object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToGetProducts) name:purchaserDidFailToLoadProducts object:nil];
 }
 
 -(void)removeNotifications
@@ -235,6 +237,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToSignup object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidBeginSigningUp object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayMonthly object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayYearly object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidFailToLoadProducts object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidFail object:nil];
+}
+
+-(void)didFailToGetProducts
+{
+    [self.loader stopAnimating];
+    [[[APP rootController] messageView] showMessage:@"Could not get upgrades" autoDismiss:YES];
 }
 
 -(void)didBeginLoggingIn
@@ -244,7 +256,7 @@
 
 -(void)didLogin
 {
-    [self.alertView dismiss];
+    [self.alertView dismissWithSuccess];
     [APP setSwipeRightHint:NO];
     [APP setAutofillHints:NO];
     if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateCurrent && self.parentViewController && self.isViewLoaded && self.view.window){
@@ -263,13 +275,11 @@
 
 -(void)didBeginPurchasing
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 -(void)didSucceedPurchasingProduct
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [[APP rootController] goHome];
 }
 
 -(void)didFailToPurchase
@@ -287,7 +297,8 @@
 
 -(void)didSignup
 {
-    [self.alertView dismiss];
+    [self.alertView dismissWithSuccess];
+    
     if (self.wantsFullYear){
         [self payForYear];
     }else{

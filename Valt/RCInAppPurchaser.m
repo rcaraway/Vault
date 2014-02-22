@@ -19,6 +19,7 @@ NSString * purchaserDidBeginUpgrading = @"purchaserDidBeginUpgrading";
 NSString * purchaserDidPayYearly = @"purchaserDidPayYearly";
 NSString * purchaserDidPayMonthly = @"purchaserDidPayMonthly";
 NSString * purchaseDidLoadProducts = @"purchaseDidLoadProducts";
+NSString * const purchaserDidFailToLoadProducts = @"purchaserDidFailToLoadProducts";
 
 static RCInAppPurchaser * sharedPurchaser;
 
@@ -92,7 +93,6 @@ static RCInAppPurchaser * sharedPurchaser;
     NSArray * products = response.products;
     [self setProducts:products];
     _loadingProducts = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:purchaseDidLoadProducts object:nil];
 }
 
 
@@ -134,21 +134,19 @@ static RCInAppPurchaser * sharedPurchaser;
 
 -(void)setProducts:(NSArray *)array
 {
-    if (array.count > 0){
-        NSString * productId = [array[0] productIdentifier];
-        if ([productId isEqualToString:YEARLY_ID]){
+    if (array.count == 2){
+        NSString * firstId = [array[0] productIdentifier];
+        if ([firstId isEqualToString:YEARLY_ID]){
             self.yearlyProduct = array[0];
+            self.monthlyProduct = array[1];
         }else{
             self.monthlyProduct = array[0];
-        }
-    }
-    if (array.count > 1){
-        NSString * productId = [array[1] productIdentifier];
-        if ([productId isEqualToString:YEARLY_ID]){
             self.yearlyProduct = array[1];
-        }else{
-            self.monthlyProduct = array[1];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:purchaseDidLoadProducts object:nil];
+    }else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:purchaserDidFailToLoadProducts object:nil];
     }
 }
 

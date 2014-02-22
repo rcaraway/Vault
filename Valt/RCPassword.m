@@ -16,9 +16,9 @@
 
 @end
 
+
+
 @implementation RCPassword
-
-
 
 -(PFObject *)convertedObject
 {
@@ -61,17 +61,23 @@
     NSString * notes =[object objectForKey:PASSWORD_EXTRA_FRIELD];
     password.title = [object objectForKey:PASSWORD_TITLE];
     if (passwordField.length > 0){
-         password.password = [passwordField stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        if ([[RCPasswordManager defaultManager] accessGranted]){
+              password.password = [passwordField stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        }else return nil;
     }else{
          password.password = @"";
     }
     if (username.length > 0){
-        password.username = [username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        if ([[RCPasswordManager defaultManager] accessGranted]){
+            password.username = [username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        }else return nil;
     }else{
         password.username = @"";
     }
     if (notes.length > 0){
-        password.notes = [notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        if ([[RCPasswordManager defaultManager] accessGranted]){
+            password.notes = [notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
+        }else return nil;
     }else{
         password.notes = @"";
     }

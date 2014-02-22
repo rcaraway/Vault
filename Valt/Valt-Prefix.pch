@@ -16,7 +16,7 @@
 #define IS_IPHONE_5 [UIScreen mainScreen].bounds.size.height > 500
 
 //#define NEW_USER_MODE 12
-//#define LOGGED_OUT_MODE 12
+#define LOGGED_OUT_MODE 12
 //#define RENEW_MODE 12
 
 #define NORMAL_CELL_FINISHING_HEIGHT 60
