@@ -41,7 +41,7 @@
                     <color key="textColor" white="0.25065579380000003" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Get access to additional support features." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="bRl-7p-Ql5">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="For continued support and development." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="bRl-7p-Ql5">
                     <rect key="frame" x="116" y="415" width="177" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -108,8 +108,8 @@
                     </subviews>
                     <color key="backgroundColor" red="0.66380294699979658" green="0.23148470719812697" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Better Support" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVg-Vi-c8j">
-                    <rect key="frame" x="116" y="396" width="133" height="23"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Support Tapsmith" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVg-Vi-c8j">
+                    <rect key="frame" x="116" y="396" width="141" height="23"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
                     <nil key="highlightedColor"/>
@@ -134,7 +134,7 @@
                     <rect key="frame" x="28" y="306" width="64" height="64"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="moreSupport.png" translatesAutoresizingMaskIntoConstraints="NO" id="G6L-J5-1ca">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="developer.png" translatesAutoresizingMaskIntoConstraints="NO" id="G6L-J5-1ca">
                     <rect key="frame" x="28" y="396" width="64" height="64"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -154,7 +154,7 @@
     </objects>
     <resources>
         <image name="backup.png" width="64" height="64"/>
-        <image name="moreSupport.png" width="64" height="64"/>
+        <image name="developer.png" width="64" height="64"/>
         <image name="multiDevice.png" width="64" height="64"/>
     </resources>
 </document>

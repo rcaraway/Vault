@@ -368,7 +368,7 @@
     }
     [[RCPasswordManager defaultManager] updatePassword:self.password];
     if (dataChanged && ![self textfieldsEmpty]){
-        [[RCNetworking sharedNetwork] sync];
+        [[RCNetworking sharedNetwork] saveToCloud];
     }
 }
 

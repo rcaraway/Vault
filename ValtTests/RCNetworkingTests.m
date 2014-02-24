@@ -60,7 +60,7 @@
         [[RCPasswordManager defaultManager] addPasswords:self.passwords];
         self.shouldStop = NO;
         NSDate * untilDate;
-        [[RCNetworking sharedNetwork] sync];
+        [[RCNetworking sharedNetwork] saveToCloud];
         while (!self.shouldStop) {
             untilDate = [NSDate dateWithTimeIntervalSinceNow:0.3];
             [[NSRunLoop currentRunLoop] runUntilDate:untilDate];

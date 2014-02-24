@@ -148,6 +148,9 @@
 
 -(BOOL)shouldShowRenew
 {
+#ifdef RENEW_MODE
+    return YES;
+#endif
     static BOOL show = YES;
     NSInteger count = [[NSUserDefaults standardUserDefaults] integerForKey:RENEW_COUNT_KEY];
     if (show){
@@ -158,8 +161,6 @@
     }
     return NO;
 }
-
-
 
 -(void)incrementCount
 {
@@ -201,6 +202,7 @@
                                                            label:nil
                                                            value:nil] build]];
 }
+
 
 
 

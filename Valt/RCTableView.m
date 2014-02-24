@@ -7,7 +7,6 @@
 //
 
 #import "RCTableView.h"
-
 #import "RCPasswordManager.h"
 
 @implementation RCTableView
@@ -17,6 +16,7 @@
     self = [super initWithFrame:frame];
     if (self){
         self.shouldAllowMovement = YES;
+        self.shouldAllowResize = YES;
         self.extendedSize = NO;
     }
     return self;
@@ -31,7 +31,7 @@
 
 -(void)setContentSize:(CGSize)contentSize
 {
-    if (self.shouldAllowMovement){
+    if (self.shouldAllowMovement && self.shouldAllowResize){
         CGFloat height = [[RCPasswordManager defaultManager] passwords].count * NORMAL_CELL_FINISHING_HEIGHT + 100;
         if (_extendedSize){
             height += 188;
@@ -40,10 +40,27 @@
     }
 }
 
+-(void)setContentInset:(UIEdgeInsets)contentInset
+{
+    [super setContentInset:contentInset];
+}
+
 -(void)setExtendedSize:(BOOL)extendedSize
 {
     _extendedSize = extendedSize;
     [self setContentSize:CGSizeZero];
+}
+
+-(void)setBounds:(CGRect)bounds
+{
+    if (self.shouldAllowResize){
+        [super setBounds:bounds];
+    }
+}
+
+-(void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
 }
 
 -(void)reloadData

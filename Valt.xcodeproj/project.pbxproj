@@ -69,6 +69,7 @@
 		D255696A1896BCA200F5525D /* up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569691896BCA200F5525D /* up@2x.png */; };
 		D255696C1896BCD800F5525D /* support1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D255696B1896BCD800F5525D /* support1@2x.png */; };
 		D25569721896C53600F5525D /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569711896C53600F5525D /* lock@2x.png */; };
+		D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26429ED18B80BBD009706D0 /* developer@2x.png */; };
 		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
 		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
@@ -125,7 +126,6 @@
 		D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */; };
 		D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */; };
 		D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */; };
-		D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */; };
 		D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F00189C41CD00D4DFB1 /* cross@2x.png */; };
 		D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F02189C41F600D4DFB1 /* login@2x.png */; };
 		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
@@ -242,6 +242,7 @@
 		D25569691896BCA200F5525D /* up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up@2x.png"; sourceTree = "<group>"; };
 		D255696B1896BCD800F5525D /* support1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support1@2x.png"; sourceTree = "<group>"; };
 		D25569711896C53600F5525D /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
+		D26429ED18B80BBD009706D0 /* developer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "developer@2x.png"; sourceTree = "<group>"; };
 		D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+QuartzEffects.h"; sourceTree = "<group>"; };
 		D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+QuartzEffects.m"; sourceTree = "<group>"; };
 		D2660B6D1884959000E1B964 /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
@@ -325,7 +326,6 @@
 		D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passwordSegues.m"; sourceTree = "<group>"; };
 		D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup@2x.png"; sourceTree = "<group>"; };
 		D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multiDevice@2x.png"; sourceTree = "<group>"; };
-		D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreSupport@2x.png"; sourceTree = "<group>"; };
 		D2C85F00189C41CD00D4DFB1 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
 		D2C85F02189C41F600D4DFB1 /* login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login@2x.png"; sourceTree = "<group>"; };
 		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
@@ -779,7 +779,7 @@
 		D2C85EF5189BE7D300D4DFB1 /* Purchase */ = {
 			isa = PBXGroup;
 			children = (
-				D2C85EFC189BE82000D4DFB1 /* moreSupport@2x.png */,
+				D26429ED18B80BBD009706D0 /* developer@2x.png */,
 				D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */,
 				D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */,
 			);
@@ -933,11 +933,11 @@
 				D2673A4318B3B75600AAEBBF /* AboutControllerSmall.xib in Resources */,
 				D26E1F2918B406E600E1D567 /* plus@2x.png in Resources */,
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
+				D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */,
 				D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
-				D2C85EFD189BE82000D4DFB1 /* moreSupport@2x.png in Resources */,
 				D2673A4118B3AFC300AAEBBF /* home@2x.png in Resources */,
 				D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */,
 				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,

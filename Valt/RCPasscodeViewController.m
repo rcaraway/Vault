@@ -183,16 +183,18 @@
     if (self.premiumLogin){
         self.premiumLogin = NO;
         loginPassword = self.alertView.passwordTextField.text;
-        [self.alertView dismiss];
         [APP setSwipeRightHint:NO];
         [APP setAutofillHints:NO];
-        [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
         self.loginButton.alpha = 0;
-        if (!isNewUser){
-             [self.passwordField becomeFirstResponder];
+        if (isNewUser){
+            [self.alertView dismissWithSuccessCompletion:^{
+                [[RCPasswordManager defaultManager] setMasterPassword:loginPassword];
+                [self didSucceedEnteringPassword];
+            }];
         }else{
-            [[RCPasswordManager defaultManager] setMasterPassword:loginPassword];
-            [self didSucceedEnteringPassword];
+             [self.passwordField becomeFirstResponder];
+            [self.alertView dismissWithSuccess];
+            [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
         }
     }
 }
@@ -339,9 +341,10 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text
 {
     if ([confirmString isEqualToString:text]){
-        [self.alertView dismiss];
-        [[RCPasswordManager defaultManager] setMasterPassword:text];
-        [self performSelector:@selector(didSucceedEnteringPassword) withObject:nil afterDelay:.6];
+        [self.alertView dismissWithSuccessCompletion:^{
+            [[RCPasswordManager defaultManager] setMasterPassword:text];
+            [self didSucceedEnteringPassword];
+        }];
     }else{
         [self.alertView showFailWithTitle:@"Passwords don't match"];
         [self.alertView clearText];

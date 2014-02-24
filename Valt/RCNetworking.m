@@ -7,9 +7,16 @@
 //
 
 #import "RCNetworking.h"
-#import <Parse/Parse.h>
 #import "RCPasswordManager.h"
+
+#import "RCAppDelegate.h"
+#import "RCRootViewController.h"
+
+#import "RCMessageView.h"
+
 #import "NSString+Encryption.h"
+
+#import <Parse/Parse.h>
 
 #define PASSWORDS_KEY @"PASSWORDS_KEY"
 #define EXPIRATION_KEY @"ExpirationDate"
@@ -40,6 +47,12 @@ NSString * const networkingDidDenyFetch = @"networkingDidDenyFetch";
 NSString * const networkingDidDenySync = @"networkingDidDenySync";
 NSString * const networkingDidFailToGetURL = @"networkingDidFailToGetURL";
 
+
+@interface RCNetworking ()
+
+@property(nonatomic, strong) PFQuery * fetchQuery;
+
+@end
 
 static RCNetworking *sharedNetwork;
 
@@ -78,9 +91,9 @@ static RCNetworking *sharedNetwork;
             [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error){
                     [user setACL:[self defaultACLForUser:user]];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSignup object:password];
                 }else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSignup object:error.userInfo[@"error"]];
+                    [self postErrorWithNotification:networkingDidFailToSignup error:error object:error.userInfo[@"error"]];
                 }
             }];
         }else{
@@ -108,7 +121,7 @@ static RCNetworking *sharedNetwork;
             if (!error){
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidLogin object:password];
             }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToLogin object:error.userInfo[@"error"]];
+                [self postErrorWithNotification:networkingDidFailToLogin error:error object:error.userInfo[@"error"]];
             }
         }];
     }else{
@@ -123,14 +136,20 @@ static RCNetworking *sharedNetwork;
         [query whereKey:PASSWORD_OWNER equalTo:[PFUser currentUser].username];
         query.limit = 100000;
         [query orderByAscending:PASSWORD_INDEX];
+        self.fetchQuery = query;
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginFetching object:nil];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            self.fetchQuery = nil;
             if (!error){
-                [self pfObjectsToRCPasswords:objects completion:^(NSArray *passwords) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFetchCredentials object:passwords];
+               [self pfObjectsToRCPasswords:objects completion:^(NSArray *passwords) {
+                   if (passwords){
+                       [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFetchCredentials object:passwords];
+                   }else{
+                       [[[APP rootController] messageView] showMessage:@"Sync Cancelled" autoDismiss:YES];
+                   }
                 }];
             }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToFetchCredentials object:nil];
+                [self postErrorWithNotification:networkingDidFailToFetchCredentials error:error object:nil];
             }
         }];
     }else if ([self premiumState] == RCPremiumStateNone || [self premiumState] == RCPremiumStateExpired){
@@ -138,26 +157,29 @@ static RCNetworking *sharedNetwork;
     }
 }
 
--(void)sync
+-(void)saveToCloud
 {
     if ([self premiumState] == RCPremiumStateCurrent && [[RCPasswordManager defaultManager] accessGranted]){
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginSyncing object:nil];
         [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
-            [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
-            [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (!error){
-                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
-                }else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToSync object:nil];
-                }
-            }];
+            if (objects != nil && [self loggedIn]){
+                [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
+                [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (!error){
+                        [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
+                    }else{
+                        [self postErrorWithNotification:networkingDidFailToSync error:error object:nil];
+                    }
+                }];
+            }else{
+                [[[APP rootController] messageView] showMessage:@"Saving Cancelled" autoDismiss:YES];
+            }
         }];
     }else if ([self premiumState] == RCPremiumStateNone || [self premiumState] == RCPremiumStateExpired)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidDenySync object:nil];
     }
 }
-
 
 -(void)extendPremiumToDate:(NSDate *)date
 {
@@ -168,7 +190,7 @@ static RCNetworking *sharedNetwork;
             if (!error){
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidGoPremium object:nil];
             }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidFailToGoPremium object:nil];
+                [self postErrorWithNotification:networkingDidFailToGoPremium error:error object:nil];
             }
         }];
     }
@@ -189,7 +211,7 @@ static RCNetworking *sharedNetwork;
 -(RCPremiumState)premiumState
 {
 #ifdef RENEW_MODE
-    if ([self loggedIn]){
+    if ([[RCPasswordManager defaultManager] canLogin]){
         return RCPremiumStateExpired;
     }
     return RCPremiumStateNone;
@@ -208,6 +230,8 @@ static RCNetworking *sharedNetwork;
             }else{
                 return RCPremiumStateCurrent;
             }
+        }else{
+            return RCPremiumStateExpired;
         }
     }
     return RCPremiumStateNone;
@@ -222,8 +246,23 @@ static RCNetworking *sharedNetwork;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray * array = [NSMutableArray new];
         for (PFObject * object in pfObjects) {
-            RCPassword * password = [RCPassword passwordFromPFObject:object];
-            [array addObject:password];
+            if ([[RCPasswordManager defaultManager] accessGranted]){
+                RCPassword * password = [RCPassword passwordFromPFObject:object];
+                if (password){
+                    if (![array containsObject:password]){
+                         [array addObject:password];
+                    }
+                }
+                else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil);
+                    });
+                }
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil);
+                });
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidDecrypt object:nil];
@@ -237,8 +276,16 @@ static RCNetworking *sharedNetwork;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray * array = [NSMutableArray new];
         for (RCPassword *password in rcPasswords) {
-            PFObject * object =[password convertedObject];
-            [array addObject:object];
+            if ([[RCPasswordManager defaultManager] accessGranted]){
+                PFObject * object = [password convertedObject];
+                if (object){
+                     [array addObject:object];
+                }
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil);
+                });
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(array);
@@ -255,6 +302,19 @@ static RCNetworking *sharedNetwork;
 {
     if ([PFUser currentUser]){
         [PFUser logOut];
+        if (self.fetchQuery){
+            [self.fetchQuery cancel];
+        }
+    }
+}
+
+-(void)postErrorWithNotification:(NSString * )notification error:(NSError *)error object:(id)obj
+{
+    NSString * message =error.userInfo[@"error"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:notification object:obj];
+    NSLog(@"Failure Message %@", message);
+    if ([message rangeOfString:@"timeout"].location != NSNotFound){
+        [[[APP rootController] messageView] showMessage:@"Request timed out" autoDismiss:YES];
     }
 }
 

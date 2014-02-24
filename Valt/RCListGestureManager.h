@@ -14,9 +14,11 @@ typedef enum{
     RCListGestureManagerPanStateRight
 } RCListGestureManagerPanState;
 
+@class RCTableView;
+
 @interface RCListGestureManager : NSObject <UITableViewDelegate>
 
-@property(nonatomic, weak) UITableView * tableView;
+@property(nonatomic, weak) RCTableView * tableView;
 @property(nonatomic) BOOL didAddCell;
 @property(nonatomic) BOOL menuMode;
 @property(nonatomic, strong)NSIndexPath * webPath;

@@ -193,9 +193,10 @@
 
 - (IBAction)pasteTapped:(id)sender
 {
-    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Copy to Clipboard:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:self.password.username, self.password.password, nil];
     if (self.password.notes.length > 0){
-        [self.actionSheet addButtonWithTitle:self.password.notes];
+        self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Copy to Clipboard:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:self.password.username, self.password.password, self.password.notes, nil];
+    }else{
+        self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Copy to Clipboard:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:self.password.username, self.password.password, nil];
     }
     [self.actionSheet showInView:self.view];
 }
@@ -236,7 +237,7 @@
             [[[APP rootController] messageView] showMessage:@"Updated URL" autoDismiss:YES];
             self.password.urlName = self.urlLabel.text;
             [[RCPasswordManager defaultManager] updatePassword:self.password];
-            [[RCNetworking sharedNetwork] sync];
+            [[RCNetworking sharedNetwork] saveToCloud];
         }
     }
 }
@@ -306,7 +307,6 @@
 
 -(BOOL)fillOutUsername
 {
-    [self printHTML];
     NSString *loadEmailJS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[type*='email']\"); \
                              for (var i = inputFields.length >>> 0; i--;) { inputFields[i].value = '%@';}", self.password.username];
     NSString *loadUsernameJS = [NSString stringWithFormat:@"var inputFields = document.querySelectorAll(\"input[type*='text']\"); \

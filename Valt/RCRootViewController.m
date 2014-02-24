@@ -36,7 +36,6 @@
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
 
-@property(nonatomic, strong) UIView * buttonView;
 @property(nonatomic, strong) UIButton * searchButton;
 @property(nonatomic, strong) UIButton * menuButton;
 @property(nonatomic, strong) UIButton * menuButton2;
@@ -197,7 +196,7 @@
     UINavigationItem * item = [[UINavigationItem  alloc] initWithTitle:@"Valt"];
     [self setupNavButtons];
     
-    [item setRightBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.buttonView]];
+    [item setRightBarButtonItems:@[[[UIBarButtonItem  alloc] initWithCustomView:self.menuButton], [[UIBarButtonItem  alloc] initWithCustomView:self.searchButton]]];
     [item setLeftBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.lockButton]];
     [item setTitleView:[self navLabelWithTitle:@"Logins" color:[UIColor valtPurple]]];
     CALayer *bottomBorder = [CALayer layer];
@@ -212,24 +211,21 @@
 
 -(void)setupNavButtons
 {
-    self.buttonView = [[UIView  alloc] initWithFrame:CGRectMake(0, 0, 88, 44)];
     self.searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.menuButton setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     self.lockButton= [UIButton buttonWithType:UIButtonTypeCustom];
     [self.lockButton setImage:[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     [self.searchButton setImage:[[UIImage imageNamed:@"search"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
-    [self.searchButton setFrame:CGRectMake(0, 0, 44, 44)];
+    [self.searchButton setFrame:CGRectMake(0, 0, 35, 44)];
     [self.lockButton setFrame:CGRectMake(0, 0, 44, 44)];
-    [self.menuButton setFrame:CGRectMake(50, 0, 44, 44)];
-    [self.menuButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.searchButton setImageEdgeInsets:UIEdgeInsetsMake(11, 22, 11, 0)];
+    [self.menuButton setFrame:CGRectMake(50, 0, 35, 44)];
+    [self.menuButton setImageEdgeInsets:UIEdgeInsetsMake(0, 14, 0, 0)];
+    [self.searchButton setImageEdgeInsets:UIEdgeInsetsMake(11, 13, 11, 0)];
     [self.lockButton setImageEdgeInsets:UIEdgeInsetsMake(11, 0, 11, 22)];
     [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.searchButton addTarget:self action:@selector(searchTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonView addSubview:self.searchButton];
-    [self.buttonView addSubview:self.menuButton];
 }
 
 -(UILabel *)navLabelWithTitle:(NSString *)title color:(UIColor *)color
@@ -248,7 +244,8 @@
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[[UIImage imageNamed:@"home"] tintedIconWithColor:color] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
-    [button setFrame:CGRectMake(0, 0, 44, 44)];
+    [button setFrame:CGRectMake(0, 0, 60, 44)];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 35)];
     return button;
 }
 
@@ -263,10 +260,11 @@
 {
     if (!self.menuButton2){
         self.menuButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.menuButton2 setFrame:CGRectMake(0, 0, 30, 44)];
+        [self.menuButton2 setFrame:CGRectMake(0, 0, 60, 44)];
         [self.menuButton2 addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     }
     [self.menuButton2 setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:color] forState:UIControlStateNormal];
+    [self.menuButton2 setImageEdgeInsets:UIEdgeInsetsMake(0, 39, 0, 0)];
     UINavigationItem * item = [[UINavigationItem alloc] initWithTitle:title];
     UIBarButtonItem * close = [[UIBarButtonItem alloc] initWithCustomView:[self navHomeIconWithColor:color]];
     [item setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.menuButton2]];

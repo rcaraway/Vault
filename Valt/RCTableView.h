@@ -12,5 +12,6 @@
 
 @property (nonatomic) BOOL shouldAllowMovement;
 @property (nonatomic) BOOL extendedSize;
+@property (nonatomic) BOOL shouldAllowResize;
 
 @end

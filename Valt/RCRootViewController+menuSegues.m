@@ -122,7 +122,9 @@ static CGFloat velocityX;
     } completion:^(BOOL finished) {
         [self.menuController removeFromParentViewController];
         [self.menuController.view removeFromSuperview];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        if (![self.messageView messageShowing]){
+             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
         [self addChildViewController:self.currentSideController];
         [self.view addSubview:self.currentSideController.view];
         [self.view addSubview:self.navBar];
@@ -205,7 +207,9 @@ static CGFloat velocityX;
         [self.view addSubview:self.currentSideController.view];
         [self.view bringSubviewToFront:self.navBar];
         self.currentSideController = nil;
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        if (![self.messageView messageShowing]){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         [self.menuController changeFeelgoodMessage];

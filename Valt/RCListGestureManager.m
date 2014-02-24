@@ -9,6 +9,7 @@
 #import "RCListGestureManager.h"
 
 #import "RCMainCell.h"
+#import "RCTableView.h"
 
 #import "RCAppDelegate.h"
 
@@ -67,7 +68,7 @@ typedef enum {
 {
     self = super.init;
     if (self){
-        self.tableView = tableView;
+        self.tableView = (RCTableView*)tableView;
         self.delegate = delegate;
         self.tableViewDelegate = tableView.delegate;
         tableView.delegate = self;
@@ -240,7 +241,7 @@ typedef enum {
     CGPoint location = [self.longPress locationInView:self.tableView];
     if (location.y >= 0) {
         UIImageView *cellSnapshotView = (id)[self.tableView viewWithTag:CELL_SNAPSHOT_TAG];
-        cellSnapshotView.center = CGPointMake(self.tableView.center.x, location.y);
+        cellSnapshotView.center = CGPointMake(location.x, location.y);
     }
     [self determinePendingPathForCurrentTouchLocation];
 }
@@ -361,12 +362,17 @@ typedef enum {
     CGPoint adjustedOffset = CGPointMake(currentOffset.x, currentOffset.y+self.scrollRate);
     if (adjustedOffset.y < -TOP_INSET){
         adjustedOffset.y = -TOP_INSET;
+    
     }else if (self.tableView.contentSize.height < self.tableView.frame.size.height){
         adjustedOffset = currentOffset;
     }else if (adjustedOffset.y > self.tableView.contentSize.height - self.tableView.frame.size.height){
-        adjustedOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height;
+        adjustedOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height - TOP_INSET;
     }
-    [self.tableView setContentOffset:adjustedOffset];
+    if (adjustedOffset.y != currentOffset.y){
+        [self.tableView setShouldAllowResize:YES];
+         [self.tableView setContentOffset:adjustedOffset];
+        [self.tableView setShouldAllowResize:NO];
+    }
 }
 
 -(void)createCellFromPendingPath
@@ -387,7 +393,7 @@ typedef enum {
 {
     CGPoint location = [self.longPress locationInView:self.tableView];
     UIImageView *snapShotView = (UIImageView *)[self.tableView viewWithTag:CELL_SNAPSHOT_TAG];
-    snapShotView.center = CGPointMake(self.tableView.center.x, location.y);
+    snapShotView.center = CGPointMake(location.x, location.y);
     [self determinePendingPathForCurrentTouchLocation];
     [self determineScrollRateDuringPress];
 }
@@ -397,15 +403,15 @@ typedef enum {
     UIImageView *snapShotView = (UIImageView *)[self.tableView viewWithTag:CELL_SNAPSHOT_TAG];
     NSIndexPath * indexPath = self.pendingPath;
     [self removeTimer];
-    [UIView animateWithDuration:.26
-                     animations:^{
-                         CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
-                         snapShotView.transform = CGAffineTransformIdentity;
-                         snapShotView.frame = CGRectOffset(snapShotView.bounds, rect.origin.x, rect.origin.y);
-                     } completion:^(BOOL finished) {
-                         [snapShotView removeFromSuperview];
-                         [self reshowAtIndexPath:indexPath];
-                     }];
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.4 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn  animations:^{
+        CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
+        snapShotView.transform = CGAffineTransformIdentity;
+        snapShotView.frame = CGRectOffset(snapShotView.bounds, rect.origin.x, rect.origin.y);
+     } completion:^(BOOL finished) {
+         [self reshowAtIndexPath:indexPath];
+         [snapShotView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.14];
+         [self.tableView setShouldAllowResize:YES];
+     }];
 }
 
 -(void)removeTimer
@@ -448,12 +454,16 @@ typedef enum {
     CGPoint location = [self.longPress locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
     self.state = RCListGestureManagerStateMoving;
+    [self.tableView setShouldAllowResize:NO];
     UIImage * cellImage = [self imageOfCellAtIndexPath:indexPath];
     UIImageView * picView = [self fakeCellViewForImage:cellImage atIndexPath:indexPath];
-    [UIView animateWithDuration:.2 animations:^{
+    [UIView animateWithDuration:.35 delay:0 usingSpringWithDamping:.4 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn  animations:^{
         picView.transform = CGAffineTransformMakeScale(1.1, 1.1);
         picView.center = CGPointMake(self.tableView.center.x, location.y);
+    }completion:^(BOOL finished) {
+        
     }];
+
     [self.delegate gestureManager:self needsPlaceholderRowAtIndexPath:indexPath];
     [self.tableView reloadData];
     self.pendingPath = indexPath;

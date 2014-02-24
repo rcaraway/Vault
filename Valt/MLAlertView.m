@@ -8,7 +8,10 @@
 
 #import "MLAlertView.h"
 #import "HTAutocompleteManager.h"
+
 #import "HTAutocompleteTextField.h"
+
+#import "UIColor+RCColors.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
@@ -44,7 +47,7 @@ static UIColor * successColor;
     standardFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:19];
     standardColor = [UIColor colorWithRed:237.0/255.0 green:237.0/255.0 blue:239.0/255.0 alpha:1.000];
     loadingColor = [UIColor purpleColor];
-    successColor = [UIColor greenColor];
+    successColor = [UIColor webColor];
     failureColor = [UIColor redColor];
 }
 
@@ -110,6 +113,33 @@ static UIColor * successColor;
     }];
 }
 
+-(void)dismissWithSuccess
+{
+    [self dismissWithSuccessCompletion:nil];
+}
+
+-(void)dismissWithSuccessCompletion:(void(^)())completion
+{
+    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.dimView.backgroundColor = [UIColor clearColor];
+        if ([self.passwordTextField isFirstResponder]){
+            [self.passwordTextField resignFirstResponder];
+        }
+        if ([self.loginTextField isFirstResponder]){
+            [self.loginTextField resignFirstResponder];
+        }
+        self.frame = CGRectOffset(self.frame, 0, -(self.frame.size.height+self.frame.origin.y));
+        self.titleBack.backgroundColor = successColor;
+    } completion:^(BOOL finished) {
+        [self.dimView removeFromSuperview];
+        [self removeFromSuperview];
+        if (completion){
+            completion();
+        }
+    }];
+}
+
+
 -(void)loadWithText:(NSString *)text
 {
     if (!self.loader){
@@ -130,17 +160,6 @@ static UIColor * successColor;
     [self.loader setCenter:CGPointMake(CGRectGetWidth(self.frame)-20, 20)];
     [self.loader setAlpha:0];
     [self addSubview:self.loader];
-}
-
--(void)dismissWithSuccessTitle:(NSString *)title
-{
-    [UIView animateWithDuration:.3 animations:^{
-        [self.titleBack setBackgroundColor:successColor];
-        self.titleLabel.text = title;
-        self.loader.alpha = 0;
-        [self.loader stopAnimating];
-    }];
-    [self performSelector:@selector(dismiss) withObject:nil afterDelay:.6];
 }
 
 -(void)showFailWithTitle:(NSString *)title
@@ -356,9 +375,10 @@ static UIColor * successColor;
 
 -(void)setupPasswordField
 {
-    self.passwordTextField = [[UITextField  alloc] initWithFrame:CGRectMake(22, (self.loginTextField!=nil ? 88:44), 280-44, 44)];
+    self.passwordTextField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(22, (self.loginTextField!=nil ? 88:44), 280-44, 44)];
     self.passwordTextField.delegate = self;
     self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passwordTextField.autocompleteType = RCAutocompleteTypePassword;
     self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.passwordTextField.placeholder = @"Master Password";
     self.passwordTextField.font = standardFont;
