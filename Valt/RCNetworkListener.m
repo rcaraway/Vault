@@ -198,11 +198,13 @@ static RCNetworkListener * sharedQueue;
 -(void)didPayForMonth
 {
     [self showMessage:@"Month Purchased" autoDismiss:YES];
+    [APP trackEvent:@"Purchased" action:@"Month"];
 }
 
 -(void)didPayForYear
 {
     [self showMessage:@"Year Purchased" autoDismiss:YES];
+    [APP trackEvent:@"Purchased" action:@"Year"];
 }
 
 -(void)didUpdatePasswords

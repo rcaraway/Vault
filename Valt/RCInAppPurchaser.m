@@ -14,6 +14,8 @@
 #define MONTHLY_ID @"month199"
 #define LOCAL_EXPIRATION @"localExpiration"
 
+
+
 NSString * purchaserDidFail = @"purchaserDidFail";
 NSString * purchaserDidBeginUpgrading = @"purchaserDidBeginUpgrading";
 NSString * purchaserDidPayYearly = @"purchaserDidPayYearly";
@@ -45,6 +47,20 @@ static RCInAppPurchaser * sharedPurchaser;
 +(RCInAppPurchaser *)sharePurchaser
 {
     return sharedPurchaser;
+}
+
+
+-(id)init
+{
+    self = super.init;
+    if (self)
+    {
+        NSDate * date =[[NSUserDefaults standardUserDefaults] objectForKey:LOCAL_EXPIRATION];
+        if (date){
+            [[RCNetworking sharedNetwork] extendPremiumToDate:date];
+        }
+    }
+    return self;
 }
 
 
@@ -208,6 +224,12 @@ static RCInAppPurchaser * sharedPurchaser;
 {
     NSDate * localExpire = [self dateForId:transaction.payment.productIdentifier];
     [[NSUserDefaults standardUserDefaults] setObject:localExpire forKey:LOCAL_EXPIRATION];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void)clearLocalDateCache
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:LOCAL_EXPIRATION];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

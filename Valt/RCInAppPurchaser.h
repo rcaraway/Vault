@@ -20,6 +20,7 @@
 -(void)loadProducts;
 -(void)purchaseMonth;
 -(void)purchaseYear;
+-(void)clearLocalDateCache;
 
 +(RCInAppPurchaser *)sharePurchaser;
 

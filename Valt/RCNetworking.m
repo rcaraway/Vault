@@ -9,6 +9,7 @@
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
 
+#import "RCInAppPurchaser.h"
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
 
@@ -20,6 +21,7 @@
 
 #define PASSWORDS_KEY @"PASSWORDS_KEY"
 #define EXPIRATION_KEY @"ExpirationDate"
+
 
 
 NSString * const networkingDidBeginLoggingIn = @"networkingDidBeginLoggingIn";
@@ -188,6 +190,7 @@ static RCNetworking *sharedNetwork;
         [[PFUser currentUser] setObject:date forKey:EXPIRATION_KEY];
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error){
+                [[RCInAppPurchaser sharePurchaser] clearLocalDateCache];
                 [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidGoPremium object:nil];
             }else{
                 [self postErrorWithNotification:networkingDidFailToGoPremium error:error object:nil];
