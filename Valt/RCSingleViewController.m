@@ -460,11 +460,14 @@
 - (void)appendURLSchemeIfNeededForTextField:(HTAutocompleteTextField *)textField
 {
     NSString* urlString = textField.text;
-    NSURL* url = [NSURL URLWithString:self.password.urlName];
-    if(!url.scheme)
+    NSURL* url = [NSURL URLWithString:urlString];
+    if(!url.scheme && [url.absoluteString rangeOfString:@"https://"].location == NSNotFound
+       && [url.absoluteString rangeOfString:@"http://"].location == NSNotFound)
     {
         NSString* modifiedURLString = [NSString stringWithFormat:@"http://%@", urlString];
         self.password.urlName = modifiedURLString;
+        self.credentials[3] = modifiedURLString;
+        textField.text =modifiedURLString;
     }
 }
 

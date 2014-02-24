@@ -15,8 +15,13 @@
 #define IS_IPHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
 #define IS_IPHONE_5 [UIScreen mainScreen].bounds.size.height > 500
 
+#define GANALYTICS_ID @"UA-24077633-5"
+#define TESTFLIGHT_ID @"2121e6b6-423c-4690-9928-20cd780c973a"
+#define LOOKBACK_ID @"Dc6si5rF7LWAXSm7o"
+
+
 //#define NEW_USER_MODE 12
-//#define LOGGED_OUT_MODE 12
+#define LOGGED_OUT_MODE 12
 //#define RENEW_MODE 12
 
 #define NORMAL_CELL_FINISHING_HEIGHT 60

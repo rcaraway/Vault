@@ -15,6 +15,8 @@
 #import "RCNetworkListener.h"
 
 #import <Parse/Parse.h>
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
 
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
@@ -47,6 +49,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self registerDefaults];
+    [self setupAnalytics];
     [self incrementCount];
     self.rootController = [[RCRootViewController  alloc] initWithNibName:nil bundle:nil];
     self.window = [[UIWindow  alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -68,9 +71,7 @@
     self.hideView = nil;
 }
 
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
+-(void)applicationDidEnterBackground:(UIApplication *)application
 {
     if (self.locksOnClose){
         [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
@@ -86,6 +87,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [self trackEvent:@"App" action:@"Opened"];
     if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
     }
@@ -181,6 +183,25 @@
         return ([[NSUserDefaults standardUserDefaults] integerForKey:LAUNCH_COUNT_KEY] == 25);
     }
 }
+
+
+#pragma mark - Analytics
+
+-(void)setupAnalytics
+{
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [[GAI sharedInstance] trackerWithTrackingId:GANALYTICS_ID];
+}
+
+-(void)trackEvent:(NSString *)event action:(NSString *)action
+{
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:event
+                                                          action:action
+                                                           label:nil
+                                                           value:nil] build]];
+}
+
 
 
 

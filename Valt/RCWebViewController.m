@@ -17,7 +17,6 @@
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
 
-#import "TWMessageBarManager.h"
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
@@ -173,7 +172,6 @@
 
 -(void)didFailFillingBothFields
 {
-    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Could not fill out forms" description:@"Tell the developer and he'll get it working in a future update." type:TWMessageBarMessageTypeError];
 }
 
 - (IBAction)forwardTapped:(id)sender
