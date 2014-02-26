@@ -537,7 +537,6 @@ static UIWindow* blockWindow = nil;
     
     self.visible = YES;
     CGAffineTransform fromTransform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0.0f, CGRectGetHeight(self.bounds));
-
     self.transform = fromTransform;
     [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
        self.dimView.backgroundColor = [UIColor colorWithWhite:.1 alpha:.6];
