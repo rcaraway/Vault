@@ -78,8 +78,19 @@
 
 #pragma mark - Settings
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    if (IS_IPAD){
+        return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown);
+    }else
+        return UIInterfaceOrientationMaskPortrait;
+}
+
 -(BOOL)shouldAutorotate
 {
+    if (IS_IPAD){
+        return YES;
+    }
     return NO;
 }
 

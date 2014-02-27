@@ -210,15 +210,13 @@
                 NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
                 [tempDict setValue:@"GetValt" forKey:@"screen_name"];
                 [tempDict setValue:@"true" forKey:@"follow"];
-                NSLog(@"*******tempDict %@*******",tempDict);
                 SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"https://api.twitter.com/1/friendships/create.json"] parameters:tempDict];
                 [postRequest setAccount:twitterAccount];
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     if (!error){
                         
                     }else{
-                        NSString *output = [NSString stringWithFormat:@"HTTP response status: %i Error %d", [urlResponse statusCode],error.code];
-                        NSLog(@"%@error %@", output,error.description);
+//                        NSString *output = [NSString stringWithFormat:@"HTTP response status: %i Error %d", [urlResponse statusCode],error.code];
                     }
                 }];
             }

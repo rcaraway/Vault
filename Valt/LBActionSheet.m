@@ -43,8 +43,6 @@ static UIWindow* blockWindow = nil;
 
 -(UIButton *)_buttonWithTitle:(NSString*)title orImage:(UIImage*)image type:(LBActionSheetButtonType)type;
 
--(void)_setButtonBackgroundImage:(UIImage*)image forState:(UIControlState)state type:(LBActionSheetButtonType)type;
--(UIImage *)_buttonBackgroundImageForState:(UIControlState)state type:(LBActionSheetButtonType)type;
 
 -(void)_buttonWasPressed:(UIButton*)sender;
 -(void)_applicationWillTerminate:(NSNotification*)notification;
@@ -448,25 +446,6 @@ static UIWindow* blockWindow = nil;
 
 -(UIButton *)buttonAtIndex:(NSUInteger)buttonIndex {
     return self.controls[buttonIndex];
-}
-
--(void)_setButtonBackgroundImage:(UIImage *)image forState:(UIControlState)state type:(LBActionSheetButtonType)type {
-    NSNumber* typeKey = @(type);
-    NSNumber* stateKey = @(state);
-    
-    NSMutableDictionary* newButtonBackroundImages = self.buttonBackgroundImages.mutableCopy ?: [NSMutableDictionary new];
-    NSMutableDictionary* newTypeInfo = [newButtonBackroundImages[typeKey] mutableCopy] ?: [NSMutableDictionary new];
-    [newTypeInfo setObject:image forKey:stateKey];
-    [newButtonBackroundImages setObject:newTypeInfo forKey:typeKey];
-    
-    self.buttonBackgroundImages = newButtonBackroundImages;
-    
-    [self.controls enumerateObjectsUsingBlock:^(UIButton* obj, NSUInteger idx, BOOL *stop) {
-        if (obj.tag != LBActionSheetCustomButtonType && [obj isKindOfClass:[UIButton class]]) {
-            [obj setBackgroundImage:[self _buttonBackgroundImageForState:UIControlStateNormal type:obj.tag] forState:UIControlStateNormal];
-            [obj setBackgroundImage:[self _buttonBackgroundImageForState:UIControlStateHighlighted type:obj.tag] forState:UIControlStateHighlighted];
-        }
-    }];
 }
 
 -(void)layoutSubviews

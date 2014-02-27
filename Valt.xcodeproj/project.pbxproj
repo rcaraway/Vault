@@ -54,6 +54,7 @@
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A118A1870C00C2285D /* checker@2x.jpg */; };
 		D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A718A199C200C2285D /* AboutControllerIpad.xib */; };
+		D245697B18BFCE6800C5A53C /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */; };
 		D247E98018A280B800BE719F /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E97F18A280B800BE719F /* RCTableView.m */; };
 		D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E98218A2885900BE719F /* RCSearchGestureManager.m */; };
 		D247E98518A2E55700BE719F /* PurchaseControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */; };
@@ -131,7 +132,6 @@
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
 		D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */; };
-		D2DEA88718BBEA1F00DCF073 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88618BBEA1F00DCF073 /* libGoogleAnalyticsServices.a */; };
 		D2DEA88A18BBEB4000DCF073 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88818BBEB4000DCF073 /* AdSupport.framework */; };
 		D2DEA88B18BBEB4000DCF073 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88918BBEB4000DCF073 /* libz.dylib */; };
 		D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E91E0F187AFC90004D3558 /* LBActionSheet.m */; };
@@ -228,6 +228,7 @@
 		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
 		D22D30A118A1870C00C2285D /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D22D30A718A199C200C2285D /* AboutControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutControllerIpad.xib; sourceTree = "<group>"; };
+		D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		D247E97E18A280B800BE719F /* RCTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableView.h; sourceTree = "<group>"; };
 		D247E97F18A280B800BE719F /* RCTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableView.m; sourceTree = "<group>"; };
 		D247E98118A2885900BE719F /* RCSearchGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchGestureManager.h; sourceTree = "<group>"; };
@@ -345,7 +346,6 @@
 		D2DEA88318BBEA0A00DCF073 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
 		D2DEA88418BBEA0A00DCF073 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		D2DEA88518BBEA0A00DCF073 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
-		D2DEA88618BBEA1F00DCF073 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		D2DEA88818BBEB4000DCF073 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		D2DEA88918BBEB4000DCF073 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D2E91E0E187AFC90004D3558 /* LBActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActionSheet.h; sourceTree = "<group>"; };
@@ -384,7 +384,7 @@
 				D27F404518635E7100104F1C /* Accounts.framework in Frameworks */,
 				D27F404318635E6700104F1C /* MessageUI.framework in Frameworks */,
 				D27F40341863310300104F1C /* Social.framework in Frameworks */,
-				D2DEA88718BBEA1F00DCF073 /* libGoogleAnalyticsServices.a in Frameworks */,
+				D245697B18BFCE6800C5A53C /* libGoogleAnalyticsServices.a in Frameworks */,
 				D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */,
 				D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */,
 			);
@@ -832,7 +832,7 @@
 		D2DEA87D18BBE94D00DCF073 /* Google Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				D2DEA88618BBEA1F00DCF073 /* libGoogleAnalyticsServices.a */,
+				D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */,
 				D2DEA88018BBEA0A00DCF073 /* GAI.h */,
 				D2DEA88118BBEA0A00DCF073 /* GAIDictionaryBuilder.h */,
 				D2DEA88218BBEA0A00DCF073 /* GAIFields.h */,
@@ -1200,6 +1200,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/robbor911/Documents/Vault/Valt,
+					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;
@@ -1228,6 +1229,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/robbor911/Documents/Vault/Valt,
+					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;
@@ -1341,6 +1343,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/robbor911/Documents/Vault/Valt,
+					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;

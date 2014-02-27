@@ -474,7 +474,6 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
         }
     } else if (gestureRecognizer == self.pinchRecognizer) {
         if ( ! [self.delegate conformsToProtocol:@protocol(JTTableViewGestureAddingRowDelegate)]) {
-            NSLog(@"Should not begin pinch");
             return NO;
         }
 
@@ -486,7 +485,6 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
 
         // #16 Crash on pinch fix
         if ([indexPaths count] < 2) {
-            NSLog(@"Should not begin pinch");
             return NO;
         }
 
@@ -502,7 +500,6 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
         }
 
         if ( ! self.addingIndexPath) {
-            NSLog(@"Should not begin pinch");
             return NO;
         }
 

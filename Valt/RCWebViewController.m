@@ -80,6 +80,8 @@
     self.webView.backgroundColor = [UIColor navColor];
     self.view.backgroundColor = [UIColor navColor];
     [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
+    [self.usernameField setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
+    [self.passwordButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2.0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
     [self loadPasswordRequest];
 }
 

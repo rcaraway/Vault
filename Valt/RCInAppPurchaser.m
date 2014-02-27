@@ -265,7 +265,6 @@ static RCInAppPurchaser * sharedPurchaser;
 - (void)finishTransaction:(SKPaymentTransaction *)transaction wasSuccessful:(BOOL)wasSuccessful
 {
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:transaction, @"transaction" , nil];
     if (wasSuccessful)
     {
         if ([transaction.payment.productIdentifier isEqualToString:MONTHLY_ID]){
