@@ -71,7 +71,6 @@
 		D25569721896C53600F5525D /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569711896C53600F5525D /* lock@2x.png */; };
 		D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26429ED18B80BBD009706D0 /* developer@2x.png */; };
 		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
-		D2660B6E1884959000E1B964 /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = D2660B6D1884959000E1B964 /* vault.png */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
 		D2673A4118B3AFC300AAEBBF /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2673A4018B3AFC300AAEBBF /* home@2x.png */; };
 		D2673A4318B3B75600AAEBBF /* AboutControllerSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2673A4218B3B75600AAEBBF /* AboutControllerSmall.xib */; };
@@ -136,6 +135,11 @@
 		D2DEA88A18BBEB4000DCF073 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88818BBEB4000DCF073 /* AdSupport.framework */; };
 		D2DEA88B18BBEB4000DCF073 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88918BBEB4000DCF073 /* libz.dylib */; };
 		D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E91E0F187AFC90004D3558 /* LBActionSheet.m */; };
+		D2F92F5218BE4091002EA5B9 /* LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */; };
+		D2F92F5318BE4091002EA5B9 /* UIColor+YUVSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */; };
+		D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */; };
+		D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6218BE7F17002EA5B9 /* valtClosed.png */; };
+		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -245,7 +249,6 @@
 		D26429ED18B80BBD009706D0 /* developer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "developer@2x.png"; sourceTree = "<group>"; };
 		D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+QuartzEffects.h"; sourceTree = "<group>"; };
 		D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+QuartzEffects.m"; sourceTree = "<group>"; };
-		D2660B6D1884959000E1B964 /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
 		D2660B6F1884964300E1B964 /* RCValtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCValtView.h; sourceTree = "<group>"; };
 		D2660B701884964300E1B964 /* RCValtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCValtView.m; sourceTree = "<group>"; };
 		D2673A4018B3AFC300AAEBBF /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
@@ -347,6 +350,13 @@
 		D2DEA88918BBEB4000DCF073 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D2E91E0E187AFC90004D3558 /* LBActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActionSheet.h; sourceTree = "<group>"; };
 		D2E91E0F187AFC90004D3558 /* LBActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBActionSheet.m; sourceTree = "<group>"; };
+		D2F92F4E18BE4090002EA5B9 /* LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEColorPicker.h; sourceTree = "<group>"; };
+		D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LEColorPicker.m; sourceTree = "<group>"; };
+		D2F92F5018BE4091002EA5B9 /* UIColor+YUVSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YUVSpace.h"; sourceTree = "<group>"; };
+		D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YUVSpace.m"; sourceTree = "<group>"; };
+		D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backValt@2x.png"; sourceTree = "<group>"; };
+		D2F92F6218BE7F17002EA5B9 /* valtClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtClosed.png; sourceTree = "<group>"; };
+		D2F92F6418BE82CB002EA5B9 /* valtOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtOpen.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -511,6 +521,7 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				D2F92F4A18BE3F75002EA5B9 /* ColorPicker */,
 				D2DEA87D18BBE94D00DCF073 /* Google Analytics */,
 				D27F407E1868F56500104F1C /* Base64 */,
 				D27F40671868ECC200104F1C /* RNCryptor */,
@@ -690,6 +701,9 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D2F92F6418BE82CB002EA5B9 /* valtOpen.png */,
+				D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */,
+				D2F92F6218BE7F17002EA5B9 /* valtClosed.png */,
 				D26E1F2A18B406FF00E1D567 /* sync@2x.png */,
 				D26E1F2818B406E600E1D567 /* plus@2x.png */,
 				D29D662718B259080029179A /* Hints */,
@@ -705,7 +719,6 @@
 				D278D3421891BCDF0062AE39 /* copyPaste@2x.png */,
 				D278D3431891BCDF0062AE39 /* forward@2x.png */,
 				D278D3441891BCDF0062AE39 /* refresh@2x.png */,
-				D2660B6D1884959000E1B964 /* vault.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -830,6 +843,17 @@
 			name = "Google Analytics";
 			sourceTree = "<group>";
 		};
+		D2F92F4A18BE3F75002EA5B9 /* ColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				D2F92F4E18BE4090002EA5B9 /* LEColorPicker.h */,
+				D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */,
+				D2F92F5018BE4091002EA5B9 /* UIColor+YUVSpace.h */,
+				D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */,
+			);
+			name = ColorPicker;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -939,7 +963,9 @@
 				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
 				D2673A4118B3AFC300AAEBBF /* home@2x.png in Resources */,
+				D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */,
 				D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */,
+				D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */,
 				D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */,
 				D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */,
 				D26E1F2B18B406FF00E1D567 /* sync@2x.png in Resources */,
@@ -950,12 +976,12 @@
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
 				D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */,
 				D255696C1896BCD800F5525D /* support1@2x.png in Resources */,
-				D2660B6E1884959000E1B964 /* vault.png in Resources */,
 				D255696A1896BCA200F5525D /* up@2x.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
 				D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */,
 				D210397B18AAD11200BE36FB /* PurchaseControllerSmall.xib in Resources */,
 				D2673A4518B3B99E00AAEBBF /* RCWebViewControllerSmall.xib in Resources */,
+				D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */,
 				D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -975,6 +1001,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2F92F5318BE4091002EA5B9 /* UIColor+YUVSpace.m in Sources */,
 				D21717C618576B6500D687F8 /* Valt.xcdatamodeld in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
@@ -1033,6 +1060,7 @@
 				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
+				D2F92F5218BE4091002EA5B9 /* LEColorPicker.m in Sources */,
 				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717EF1857710700D687F8 /* UIColor+JTGestureBasedTableViewHelper.m in Sources */,

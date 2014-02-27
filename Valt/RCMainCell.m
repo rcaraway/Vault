@@ -7,6 +7,9 @@
 //
 
 #import "RCMainCell.h"
+
+#import "RCPassword.h"
+
 #import "UIColor+RCColors.h"
 #import "UIImage+memoIcons.h"
 
@@ -33,10 +36,28 @@ static UIImage * loginIcon;
         self.contentView.backgroundColor = [UIColor mainCellColor];
         [self setupCustomLabel];
         [self setupIconView];
+        [self setupColorView];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetWebColor:) name:passwordDidGrabWebColor object:nil];
     }
     return self;
 }
 
+-(void)didGetWebColor:(NSNotification *)notification
+{
+    RCPassword * password = notification.object;
+    if ([password isEqual:self.password]){
+        [UIView animateWithDuration:.3 animations:^{
+          [self.colorView setBackgroundColor:password.webColor];
+        }];
+    }
+}
+
+-(void)setupColorView
+{
+    self.colorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 6, 60)];
+    [self.colorView setBackgroundColor:[UIColor clearColor]];
+    [self.contentView addSubview:self.colorView];
+}
 
 -(void)setRedColored
 {
@@ -68,6 +89,12 @@ static UIImage * loginIcon;
     self.backgroundColor = [UIColor browserGreen];
     [self.contentView setFrame:CGRectOffset(self.contentView.frame, self.frame.size.width, 0)];
     self.iconView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, self.iconView.center.y);
+}
+
+-(void)setPassword:(RCPassword *)password
+{
+    _password = password;
+    [self.customLabel setText:password.title];
 }
 
 -(void)showLoginIconWithScale:(CGFloat)scale translation:(CGFloat)translation

@@ -351,7 +351,6 @@
         self.titleLabel.transform = transform;
         self.urlLabel.transform = transform;
         self.doneButton.transform = transform;
-
     } completion:nil];
 }
 

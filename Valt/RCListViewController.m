@@ -17,6 +17,7 @@
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
 #import "HTAutocompleteManager.h"
+#import "LEColorPicker.h"
 
 //Views
 #import "JTTransformableTableViewCell.h"
@@ -170,7 +171,7 @@
             [self setupPullDownView];
         }
         if (self.hintImageView.alpha == 1){
-            self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
+            self.hintImageView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, self.view.center.y-100);
             [UIView animateWithDuration:.8 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 [self.hintImageView setFrame:CGRectOffset(self.hintImageView.frame, 0, 80)];
             } completion:^(BOOL finished) {
@@ -280,7 +281,7 @@
 {
     self.hintImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"Swipe_Down"] tintedImageWithColorOverlay:[UIColor darkGrayColor]]];
     [self.hintImageView setFrame:CGRectMake(0, 0, 128, 128)];
-    self.hintImageView.center = CGPointMake(160, self.view.center.y-100);
+    self.hintImageView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, self.view.center.y-100);
     [self.view addSubview:self.hintImageView];
     [self setupHintLabelWithText:@"Pull down to create"];
 }
@@ -288,7 +289,7 @@
 -(void)setupHintLabelWithText:(NSString *)text
 {
     UILabel * label = [[UILabel  alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    label.center =CGPointMake(160, self.view.center.y+140);
+    label.center =CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, self.view.center.y+140);
     label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 1;
     label.text = text;
@@ -357,7 +358,7 @@
         return cell;
     }
     else{
-        NSString *object;
+        RCPassword * password;
         NSInteger extraIndex = NSNotFound;
         if (self.addingCellIndex != NSNotFound){
             extraIndex = self.addingCellIndex;
@@ -366,21 +367,22 @@
         }
         if (extraIndex != NSNotFound){
             if (indexPath.row < extraIndex){
-                object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];
+                password =[[RCPasswordManager defaultManager] passwords][indexPath.row];
             }else{
-                object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row-1];
+                password =[[RCPasswordManager defaultManager] passwords][indexPath.row-1];
             }
         }
         else{
             if ([[RCPasswordManager defaultManager] allTitles].count > indexPath.row){
-                 object =  [[RCPasswordManager defaultManager] allTitles][indexPath.row];   
+                password =[[RCPasswordManager defaultManager] passwords][indexPath.row];
             }
         }
         
         static NSString *cellIdentifier = @"MyCell";
         RCMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.customLabel.text = (NSString *)object;
+        [cell setPassword:password];
         [cell setNormalColored];
+       
         if (indexPath.row == self.dummyCellIndex){
              cell.customLabel.text = @"";
              cell.contentView.backgroundColor = [UIColor listBackground];
@@ -426,7 +428,7 @@
     JTTransformableTableViewCell * cell = (JTTransformableTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[JTTransformableTableViewCell class]]){
         BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
-        if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 2){
+        if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 3){
             if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
                 [[RCNetworking sharedNetwork] fetchFromServer];
             }else{
