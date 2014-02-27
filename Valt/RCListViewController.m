@@ -579,6 +579,11 @@
     
 }
 
+-(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
+{
+    
+}
+
 #pragma mark - Backup View
 
 -(void)showBackup

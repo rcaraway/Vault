@@ -673,8 +673,6 @@ typedef enum {
 -(BOOL)panGestureInAllowedDraggingArea
 {
     CGPoint point = [self.panGesture translationInView:self.tableView];
-    CGPoint location = [self.panGesture locationInView:self.tableView];
-    NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
     if (fabsf(point.y) > fabsf(point.x)) {
         return NO;
     }

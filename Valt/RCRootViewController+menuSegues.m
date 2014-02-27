@@ -25,7 +25,7 @@
 
 
 static void * LatestPointKey;
-static CGFloat velocityX;
+
 
 @implementation RCRootViewController (menuSegues)
 

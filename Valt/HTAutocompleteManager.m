@@ -228,7 +228,7 @@ static HTAutocompleteManager *sharedManager;
     static NSArray *autocompleteArray;
     static NSArray * prefixes;
     static NSArray * postFixes;
-    BOOL ignoreCase = YES;
+
     dispatch_once(&onceToken, ^
                   {
                       autocompleteArray = [self prefilledURLs];

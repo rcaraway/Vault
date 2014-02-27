@@ -226,6 +226,16 @@ static NSObject<HTAutocompleteDataSource> *DefaultAutocompleteDataSource = nil;
     [super setFrame:frame];
 }
 
+-(void)setTransform:(CGAffineTransform)transform
+{
+    [super setTransform:transform];
+}
+
+-(void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+}
+
 - (void)refreshAutocompleteText
 {
     if (!self.autocompleteDisabled)

@@ -10,4 +10,21 @@
 
 @implementation NSIndexPath (VaultPaths)
 
+
++(NSArray *)insertedIndexPathsForFetchedResults:(NSArray *)passwords
+{
+    return nil;
+}
+
++(NSArray *)removedIndexPathsForFetchedResults:(NSArray *)passwords
+{
+    return nil;
+}
+
++(NSArray *)insertedIndexPathsForMergedResults:(NSArray *)passwords
+{
+    return nil;
+}
+
+
 @end

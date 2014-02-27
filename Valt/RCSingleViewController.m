@@ -249,7 +249,6 @@
     CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
     [[APP rootController].searchController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
     CGFloat updatedOffset =[[APP rootController].searchController.tableView contentOffset].y;
-    NSLog(@"Offset %f", updatedOffset);
     if (updatedOffset <= -20 && updatedOffset >= -64){
         [APP rootController].searchController.searchBar.transform = CGAffineTransformMakeTranslation(0, (-64 + fabsf(updatedOffset)));
     }else if (updatedOffset < -44){
@@ -298,7 +297,7 @@
         static NSString *cellIdentifier = @"MyCell";
         RCTitleViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.textField.text = (NSString *)object;
-        cell.textField.placeholder = @"Title (ex: Facebook)";
+        cell.textField.placeholder = @"Title (ex: Chase Bank)";
         return cell;
     }else{
         static NSString * cellId = @"DropDownCell";
