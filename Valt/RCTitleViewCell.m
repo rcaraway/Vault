@@ -15,9 +15,6 @@
 
 
 @implementation RCTitleViewCell
-{
-    UIView * separator;
-}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -26,22 +23,9 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self setupTextField];
         [self setNormalColored];
-        separator = [[UIView  alloc] initWithFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-        separator.backgroundColor = [UIColor colorWithWhite:.85 alpha:1];
-        [self addSubview:separator];
     }
     return self;
 }
-
--(void)didMoveToSuperview
-{
-    [separator setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-}
-
--(void)layoutSubviews
-{
-    [super layoutSubviews];
- }
 
 -(void)setRedColored
 {
