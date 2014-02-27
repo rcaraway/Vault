@@ -134,7 +134,6 @@ typedef enum {
     }
 }
 
-
 -(void)didTap
 {
     if (self.menuMode){
