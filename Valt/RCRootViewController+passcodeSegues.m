@@ -224,6 +224,7 @@ static UIView * passDimView;
     } completion:^(BOOL finished){
         if (finished) {
             [self didFinishWithDimView];
+            [self.view bringSubviewToFront:self.messageView];
             view.layer.anchorPoint=CGPointMake(.5, .5);
             view.center = CGPointMake(view.bounds.size.width/2.0f, view.center.y);
             completion();

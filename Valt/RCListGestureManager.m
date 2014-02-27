@@ -37,6 +37,7 @@ typedef enum {
 @interface RCListGestureManager () <UIGestureRecognizerDelegate>
 {
     CGPoint lastPinchOrigin;
+
 }
 
 
@@ -55,6 +56,9 @@ typedef enum {
 @property(nonatomic, strong) NSTimer * scrollTimer;
 @property (nonatomic) CGFloat pendingRowHeight;
 @property (nonatomic) CGFloat scrollRate;
+
+@property (nonatomic) BOOL dragBegan;
+@property(nonatomic) BOOL dragRight;
 
 @end
 
@@ -149,12 +153,15 @@ typedef enum {
 
 -(void)didPan
 {
-    if ((self.panGesture.state == UIGestureRecognizerStateBegan
-         || self.panGesture.state == UIGestureRecognizerStateChanged)
-        && [self.panGesture numberOfTouches] > 0) {
-         NSIndexPath * indexPath = [self panGesturePath];
-
+    if (self.panGesture.state == UIGestureRecognizerStateBegan){
+        NSIndexPath * indexPath = [self panGesturePath];
         self.state = RCListGestureManagerStatePanning;
+        if (!indexPath){
+            [[APP rootController] beginDragToMenu];
+            self.dragBegan= YES;
+        }
+    }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
+        NSIndexPath * indexPath = self.pendingPath;
         if (indexPath){
             [[[APP rootController] listController] setHintsHidden];
             [self translateCellAtIndexPath:indexPath];
@@ -188,17 +195,21 @@ typedef enum {
 -(void)handlePanningForBelowCells
 {
     CGFloat translation = [self.panGesture translationInView:self.tableView].x;
-    if (self.panGesture.state == UIGestureRecognizerStateBegan){
-        [[APP rootController] beginDragToMenu];
-    }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
+    if (self.dragBegan){
         if (translation <= 0){
-            [[APP rootController] dragSideToXOrigin:translation];
-            if ([[APP rootController] passcodeController].view.superview){
-                [[[APP rootController] passcodeController].view removeFromSuperview];
-            }
+            self.dragRight = YES;
         }else{
-            [[APP rootController] movePasscodeToXOrigin:translation];
+            self.dragRight = NO;
         }
+           self.dragBegan = NO;
+    }
+    if (translation <= 0 && self.dragRight){
+        [[APP rootController] dragSideToXOrigin:translation];
+        if ([[APP rootController] passcodeController].view.superview){
+            [[[APP rootController] passcodeController].view removeFromSuperview];
+        }
+    }else if (translation >= 0 && !self.dragRight){
+        [[APP rootController] movePasscodeToXOrigin:translation];
     }
 }
 
@@ -206,9 +217,9 @@ typedef enum {
 {
     CGFloat translation = [self.panGesture translationInView:self.tableView].x;
     CGFloat velocity = [self.panGesture velocityInView:self.tableView].x;
-    if (translation <= -160.0 || (velocity <= -300.0 && translation < -20)){
+    if ((translation <= -160.0 || (velocity <= -300.0 && translation < -20)) && self.dragRight){
         [[APP rootController] finishDragWithSegue];
-    }else if (translation >= 160.0 || (velocity >= 240.0 && translation > 20)){
+    }else if ((translation >= 160.0 || (velocity >= 240.0 && translation > 20)) && !self.dragRight){
         [[APP rootController].view addSubview:[[APP rootController] currentSideController].view];
         [[APP rootController].view bringSubviewToFront:(UIView *)[APP rootController].messageView];
         [[APP rootController].view bringSubviewToFront:[APP rootController].navBar];
@@ -403,6 +414,7 @@ typedef enum {
     UIImageView *snapShotView = (UIImageView *)[self.tableView viewWithTag:CELL_SNAPSHOT_TAG];
     NSIndexPath * indexPath = self.pendingPath;
     [self removeTimer];
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.4 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn  animations:^{
         CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
         snapShotView.transform = CGAffineTransformIdentity;
@@ -411,6 +423,7 @@ typedef enum {
          [self reshowAtIndexPath:indexPath];
          [snapShotView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.14];
          [self.tableView setShouldAllowResize:YES];
+         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
      }];
 }
 
@@ -536,6 +549,7 @@ typedef enum {
         }
         cell.contentView.frame = cell.contentView.bounds;
     }completion:^(BOOL finished) {
+
     }];
 }
 

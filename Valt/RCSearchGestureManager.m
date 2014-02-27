@@ -76,7 +76,10 @@
         [self translateCellAtIndexPath:path];
     }else if (self.panGesture.state == UIGestureRecognizerStateEnded)
     {
-        [self handleFinalStateForIndexPath:self.panningPath];
+        NSIndexPath * path = [self panGesturePath];
+        if (path){
+             [self handleFinalStateForIndexPath:self.panningPath];   
+        }
     }
 }
 

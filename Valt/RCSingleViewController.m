@@ -26,6 +26,7 @@
 #import "RCTitleViewCell.h"
 #import "RCTableView.h"
 #import "RCMessageView.h"
+#import "RCSearchBar.h"
 
 #import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.h"
@@ -223,6 +224,14 @@
     [[APP rootController].listController.tableView setShouldAllowMovement:YES];
     CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
     [[APP rootController].listController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
+    CGFloat updatedOffset =[[APP rootController].listController.tableView contentOffset].y;
+    if (updatedOffset < 0 && updatedOffset >= -44){
+        [APP rootController].navBar.transform = CGAffineTransformMakeTranslation(0, (-64 + fabsf(updatedOffset)+20));
+    }else if (updatedOffset < -44){
+        [APP rootController].navBar.transform = CGAffineTransformIdentity;
+    }else{
+        [APP rootController].navBar.transform = CGAffineTransformMakeTranslation(0, -64);
+    }
     listOffset = [APP rootController].listController.tableView.contentOffset;
     singleOffset = scrollView.contentOffset;
 }
@@ -239,6 +248,15 @@
     [[APP rootController].searchController.tableView setShouldAllowMovement:YES];
     CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
     [[APP rootController].searchController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
+    CGFloat updatedOffset =[[APP rootController].searchController.tableView contentOffset].y;
+    NSLog(@"Offset %f", updatedOffset);
+    if (updatedOffset <= -20 && updatedOffset >= -64){
+        [APP rootController].searchController.searchBar.transform = CGAffineTransformMakeTranslation(0, (-64 + fabsf(updatedOffset)));
+    }else if (updatedOffset < -44){
+        [APP rootController].searchController.searchBar.transform = CGAffineTransformIdentity;
+    }else{
+        [APP rootController].searchController.searchBar.transform = CGAffineTransformMakeTranslation(0, -64);
+    }
     listOffset = [APP rootController].searchController.tableView.contentOffset;
     singleOffset = scrollView.contentOffset;
 }

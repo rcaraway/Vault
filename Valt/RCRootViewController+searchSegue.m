@@ -66,8 +66,10 @@ static NSInteger searchIndex;
     [self.view insertSubview:self.listController.view belowSubview:self.searchController.view];
     self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
     [self.view insertSubview:dimview aboveSubview:self.listController.view];
-    [UIView animateWithDuration:.24 delay:0   options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [self.view insertSubview:self.navBar belowSubview:self.searchController.searchBar];
+    [UIView animateWithDuration:.3 delay:0   options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.searchController.searchBar.searchField resignFirstResponder];
+        self.navBar.alpha = 1;
         [self.searchController.view setFrame:CGRectOffset(self.searchController.view.frame, [UIScreen mainScreen].bounds.size.width, 0)];
         [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, [UIScreen mainScreen].bounds.size.width, 0)];
         self.searchController.searchBar.searchField.text = @"";
@@ -130,7 +132,8 @@ static NSInteger searchIndex;
     
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self setStatusLightContentAnimated:YES];
-        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, -64)];
+        [self.searchController.searchBar setTransform:CGAffineTransformMakeTranslation(0, -64)];
+
         [self.searchController.tableView insertRowsAtIndexPaths:@[self.searchController.viewPath] withRowAnimation:UITableViewRowAnimationFade];
         self.singleController.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:.75];
         [self.searchController.tableView setContentOffset:CGPointMake(0, cellRect.origin.y-20)];
@@ -161,7 +164,7 @@ static NSInteger searchIndex;
         [self setStatusDarkContentAnimated:YES];
         self.navBar.alpha = 1;
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+64, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
-        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, 64)];
+        [self.searchController.searchBar setTransform:CGAffineTransformIdentity];
         [self.searchController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         [self.searchController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         [(RCTitleViewCell *)[self.singleController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] setNormalColored];
@@ -190,7 +193,7 @@ static NSInteger searchIndex;
     [UIView animateWithDuration:.3 animations:^{
         [self setStatusDarkContentAnimated:YES];
         self.navBar.alpha = 1;
-        [self.searchController.searchBar setFrame:CGRectOffset(self.searchController.searchBar.frame, 0, 64)];
+        [self.searchController.searchBar setTransform:CGAffineTransformIdentity];
         [self.singleController.tableView setFrame:CGRectMake(0, cellRect.origin.y+57, self.singleController.tableView.frame.size.width, self.singleController.tableView.frame.size.height)];
         self.singleController.view.alpha = 0;
         [self.searchController.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
