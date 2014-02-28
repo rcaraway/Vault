@@ -89,6 +89,7 @@ static void * LatestPointKey;
         [self.view addSubview:self.messageView];
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
+        [self.menuController.view removeFromSuperview];
     }];
    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }

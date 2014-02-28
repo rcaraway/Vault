@@ -11,7 +11,7 @@
 #import "RCNetworking.h"
 
 #define YEARLY_ID @"year699"
-#define MONTHLY_ID @"month199"
+#define MONTHLY_ID @"month99"
 #define LOCAL_EXPIRATION @"localExpiration"
 
 

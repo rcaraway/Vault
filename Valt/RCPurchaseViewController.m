@@ -45,6 +45,7 @@
     self.yearlyButton.alpha = 0;
     self.yearLabel.alpha = 0;
     self.monthLabel.alpha = 0;
+
     [self.bannerView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage imageNamed:@"checker.jpg"] tintedImageWithColorOverlay:[UIColor colorWithRed:1 green:0 blue:0 alpha:.7]]]];
     [self.cancelButton addTarget:self action:@selector(didTapCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.monthlyButton addTarget:self action:@selector(didTapMonthlyPurchase) forControlEvents:UIControlEventTouchUpInside];
@@ -58,6 +59,7 @@
         label.text = @"Renew Platinum";
     }
     [self.loader startAnimating];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
