@@ -391,7 +391,6 @@
              @"Odesza - \"My Friends Never Die\"" : @"http://www.youtube.com/watch?v=NyPtlOoCmV4",
              @"Mt. Eden - \"Still Alive\"" : @"http://www.youtube.com/watch?v=FDYIdBZUl2Y",
              @"The Temper Trap - \"Fader\"" : @"http://www.youtube.com/watch?v=5xQF0gerTtM",
-             @"As Cities Burn - \"Into the Sea\"" : @"http://www.youtube.com/watch?v=cNGugM6WpYQ",
              @"Lydia - \"Hospital\"" : @"http://www.youtube.com/watch?v=iwsBzKtS-fU",
              @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU",
              @"The National - \"I Should Live in Salt\"" : @"http://www.youtube.com/watch?v=JK-EF9fAHIY&feature=kp"};

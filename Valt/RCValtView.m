@@ -59,9 +59,9 @@
 
 -(void)openWithCompletionBlock:(void(^)())completion
 {
-    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveLinear  animations:^{
         self.handleView.image = [UIImage imageNamed:@"valtOpen"];
-        CGAffineTransform transform = CGAffineTransformConcat(CGAffineTransformRotate(self.transform, degreesToRadians(-60)), CGAffineTransformMakeScale(1.08, 1.08));
+        CGAffineTransform transform = CGAffineTransformRotate(self.transform, degreesToRadians(-60));
         self.handleView.transform = transform;
     }completion:^(BOOL finished) {
         completion();

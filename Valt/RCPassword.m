@@ -52,6 +52,7 @@ NSString * const passwordDidGrabWebColor = @"passwordDidGrabWebColor";
             [pfObject setObject:@"" forKey:PASSWORD_EXTRA_FRIELD];
         }
         [pfObject setObject:self.urlName forKey:PASSWORD_URLNAME];
+        [pfObject setACL:[PFACL ACLWithUser:[PFUser currentUser]]];
         return pfObject;
     }
     return nil;
