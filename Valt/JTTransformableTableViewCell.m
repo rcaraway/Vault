@@ -157,7 +157,7 @@
         self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
     }
     else
-    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*3){
         if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
              self.customLabel.text = @"Release to Sync";
         }else{
@@ -179,7 +179,7 @@
     self.customLabel.frame = labelRect;
     self.customLabel.textColor = [self  textColorForFraction:fraction];
     self.customLabel.font = [UIFont fontWithName:FONT_NAME size:fontSize];
-    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*2){
+    if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*3){
         self.customLabel.textColor = [UIColor whiteColor];
         self.contentView.backgroundColor =  [UIColor goPlatinumColor];
     }else{

@@ -21,6 +21,8 @@
 #import "RCRootViewController+menuSegues.h"
 #import "UIImage+memoIcons.h"
 
+#import "RCMessageView.h"
+
 //VC
 #import "RCRootViewController.h"
 
@@ -214,9 +216,15 @@
                 [postRequest setAccount:twitterAccount];
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     if (!error){
-                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[APP rootController].view bringSubviewToFront:[APP rootController].messageView];
+                            [[[APP rootController] messageView] showMessage:@"Followed Valt" autoDismiss:YES];
+                        });
                     }else{
-//                        NSString *output = [NSString stringWithFormat:@"HTTP response status: %i Error %d", [urlResponse statusCode],error.code];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[APP rootController].view bringSubviewToFront:[APP rootController].messageView];
+                            [[[APP rootController] messageView] showMessage:@"Could Not Follow Valt" autoDismiss:YES];
+                        });
                     }
                 }];
             }

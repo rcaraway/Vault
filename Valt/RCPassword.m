@@ -8,9 +8,13 @@
 
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
-#import <Parse/Parse.h>
+#import "LEColorPicker.h"
+
 #import "NSString+Encryption.h"
-#import <objc/runtime.h>
+
+#import <Parse/Parse.h>
+
+NSString * const passwordDidGrabWebColor = @"passwordDidGrabWebColor";
 
 @interface RCPassword ()
 
@@ -189,6 +193,42 @@
         return YES;
     }
     return NO;
+}
+
+
+-(UIColor *)webColor
+{
+    if (_webColor)
+        return _webColor;
+    if (self.urlName){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImage * favicon = [self faviconImage];
+            LEColorPicker * picker = [[LEColorPicker alloc] init];
+            LEColorScheme *colorScheme = [picker colorSchemeFromImage:favicon];
+            _webColor = [colorScheme backgroundColor];
+            [[NSNotificationCenter defaultCenter] postNotificationName:passwordDidGrabWebColor object:self];
+        });
+    }
+    return nil;
+}
+
+-(UIImage *)faviconImage
+{
+    NSString * faviconURL = [self favIconFromUrl];
+    if (faviconURL){
+        NSURL * url = [NSURL URLWithString:faviconURL];
+        NSData * imageData = [NSData dataWithContentsOfURL:url];
+        UIImage * favicon = [UIImage imageWithData:imageData];
+        return favicon;
+    }
+    return nil;
+}
+
+-(NSString*)favIconFromUrl
+{
+    NSURL * url = [NSURL URLWithString:self.urlName];
+    NSString * faviconPath = [NSString stringWithFormat:@"http://www.google.com/s2/favicons?domain=%@://%@", [url scheme], [url host]];
+	return faviconPath;
 }
 
 @end

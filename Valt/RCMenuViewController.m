@@ -211,7 +211,7 @@
 -(void)launchTweetMessenger
 {
     self.tweetController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-    [self.tweetController setInitialText:@"Check out this pasword keeper @getValt"];
+    [self.tweetController setInitialText:@"Great App: @getValt"];
     [[APP rootController] presentViewController:self.tweetController animated:YES completion:nil];
 }
 
@@ -366,7 +366,7 @@
 
 -(NSString *)randomizedHiddenMessage
 {
-    NSArray * array = @[@"You found me.", @"You weren't supposed to see this.", @"Pic a boo", @"Sshhh I'm hiding"];
+    NSArray * array = @[@"You found me.", @"You weren't supposed to see this.", @"Well hello there.", @"This is not the text you were looking for."];
     return array[arc4random()%(array.count)];
 }
 
@@ -393,7 +393,8 @@
              @"The Temper Trap - \"Fader\"" : @"http://www.youtube.com/watch?v=5xQF0gerTtM",
              @"As Cities Burn - \"Into the Sea\"" : @"http://www.youtube.com/watch?v=cNGugM6WpYQ",
              @"Lydia - \"Hospital\"" : @"http://www.youtube.com/watch?v=iwsBzKtS-fU",
-             @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU"};
+             @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU",
+             @"The National - \"I Should Live in Salt\"" : @"http://www.youtube.com/watch?v=JK-EF9fAHIY&feature=kp"};
 }
 
 

@@ -28,18 +28,17 @@
 @property(nonatomic, strong) NSString * urlName;
 @property(nonatomic, strong) NSString * notes;
 
+@property(nonatomic, strong) UIColor * webColor;
 
 -(BOOL)isEmpty;
-
 -(void)encrypt;
 -(void)decrypt;
-
 -(NSArray *)allFields;
-
 -(PFObject *)convertedObject;
 +(RCPassword *)passwordFromPFObject:(PFObject *)object;
-
-
-
 -(BOOL)hasValidURL;
+
 @end
+
+
+extern NSString * const passwordDidGrabWebColor;

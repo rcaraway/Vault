@@ -28,7 +28,7 @@
 
 @interface RCAppDelegate ()
 
-@property(nonatomic, strong) UIView *hideView;
+@property(nonatomic, strong) UIImageView *hideView;
 
 @end
 
@@ -60,8 +60,9 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    self.hideView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    [self.hideView setBackgroundColor:[UIColor blackColor]];
+    self.hideView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.hideView setImage:[UIImage imageNamed:@"LaunchImage-568h@2x"]];
+    [self.hideView setBackgroundColor:[UIColor whiteColor]];
     [[[UIApplication sharedApplication] keyWindow] addSubview:self.hideView];
 }
 
