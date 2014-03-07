@@ -231,8 +231,7 @@
 
 -(void)setOffsetIfNeeded
 {
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
+    dispatch_once(&onceToken, ^{
         self.tableView.contentOffset = CGPointMake(0, -44);
     });
 }

@@ -114,9 +114,6 @@
 		D27F40781868ED3F00104F1C /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406C1868ED3F00104F1C /* RNCryptorEngine.m */; };
 		D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406E1868ED3F00104F1C /* RNDecryptor.m */; };
 		D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40701868ED3F00104F1C /* RNEncryptor.m */; };
-		D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */; };
-		D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */; };
-		D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D29D662618B2543D0029179A /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D29D662518B2543D0029179A /* down@2x.png */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
@@ -309,12 +306,6 @@
 		D27F406E1868ED3F00104F1C /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
 		D27F406F1868ED3F00104F1C /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
 		D27F40701868ED3F00104F1C /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
-		D27F40711868ED3F00104F1C /* RNOpenSSLCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLCryptor.h; sourceTree = "<group>"; };
-		D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLCryptor.m; sourceTree = "<group>"; };
-		D27F40731868ED3F00104F1C /* RNOpenSSLDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLDecryptor.h; sourceTree = "<group>"; };
-		D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLDecryptor.m; sourceTree = "<group>"; };
-		D27F40751868ED3F00104F1C /* RNOpenSSLEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLEncryptor.h; sourceTree = "<group>"; };
-		D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		D29D662518B2543D0029179A /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
@@ -760,12 +751,6 @@
 				D27F406E1868ED3F00104F1C /* RNDecryptor.m */,
 				D27F406F1868ED3F00104F1C /* RNEncryptor.h */,
 				D27F40701868ED3F00104F1C /* RNEncryptor.m */,
-				D27F40711868ED3F00104F1C /* RNOpenSSLCryptor.h */,
-				D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */,
-				D27F40731868ED3F00104F1C /* RNOpenSSLDecryptor.h */,
-				D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */,
-				D27F40751868ED3F00104F1C /* RNOpenSSLEncryptor.h */,
-				D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */,
 			);
 			name = RNCryptor;
 			sourceTree = "<group>";
@@ -1005,7 +990,6 @@
 				D21717C618576B6500D687F8 /* Valt.xcdatamodeld in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
-				D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */,
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D2773721189AB01D0048F641 /* RCMessageView.m in Sources */,
@@ -1027,7 +1011,6 @@
 				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
-				D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */,
 				D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */,
 				D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */,
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
@@ -1056,7 +1039,6 @@
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
-				D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */,
 				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,

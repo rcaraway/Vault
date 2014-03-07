@@ -29,6 +29,7 @@
 
 //View
 #import "RCMessageView.h"
+#import "RCTableView.h"
 
 //Frameworks
 #import <MessageUI/MessageUI.h>
@@ -140,7 +141,22 @@
     [self addChildViewController:self.passcodeController];
     [self.view addSubview:self.passcodeController.view];
     [self.view addSubview:self.messageView];
+}
 
+-(void)resetViewsForPasscode
+{
+    if (self.listController.isViewLoaded){
+        [self.listController.view removeFromSuperview];
+        self.listController = nil;
+        self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
+    }
+    if (self.singleController.isViewLoaded){
+        [self.singleController.view removeFromSuperview];
+        self.singleController = nil;
+    }
+    [self setNavBarMain];
+    self.navBar.alpha = 1;
+    self.navBar.transform = CGAffineTransformIdentity;
 }
 
 -(void)removeAllChildren

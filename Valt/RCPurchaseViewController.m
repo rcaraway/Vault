@@ -59,7 +59,6 @@
         label.text = @"Renew Platinum";
     }
     [self.loader startAnimating];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated

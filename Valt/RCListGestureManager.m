@@ -228,8 +228,11 @@ typedef enum {
         [[APP rootController] returnToPasscodeFromList];
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }else{
-        [[APP rootController] finishDragWithClose];
-        [[APP rootController] resetToOpen];
+        if (self.dragRight){
+             [[APP rootController] finishDragWithClose];
+        }else{
+             [[APP rootController] resetToOpen];   
+        }
     }
     self.panState = RCListGestureManagerPanStateMiddle;
     self.state = RCListGestureManagerStateNone;
