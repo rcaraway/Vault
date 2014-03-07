@@ -250,7 +250,11 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didGrantAccess
 {
-    [self loginWithSavedData];
+    if (![[RCNetworking sharedNetwork] loggedIn]){
+         [self loginWithSavedData];
+    }else{
+        [[RCNetworking sharedNetwork] fetchFromServer];
+    }
 }
 
 -(void)didLock

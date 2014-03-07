@@ -156,8 +156,9 @@ typedef enum {
         NSIndexPath * indexPath = [self panGesturePath];
         self.state = RCListGestureManagerStatePanning;
         if (!indexPath){
-            [[APP rootController] beginDragToMenu];
             self.dragBegan= YES;
+            [[APP rootController] beginDragToMenu];
+            
         }
     }else if (self.panGesture.state == UIGestureRecognizerStateChanged){
         NSIndexPath * indexPath = self.pendingPath;
@@ -231,6 +232,7 @@ typedef enum {
         if (self.dragRight){
              [[APP rootController] finishDragWithClose];
         }else{
+             [[APP rootController] finishDragWithClose];
              [[APP rootController] resetToOpen];
         }
     }

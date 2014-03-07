@@ -348,7 +348,7 @@
 {
     if (!self.closeSwitch.isOn){
         //You Sure? Keeping Valt open massively reduces security, but is more convenient.  Proceed with extreme caution.
-        [[[MLAlertView  alloc] initWithTitle:@"Warning" message:@"Keeping Valt open massively reduces security, but is more convenient.  Proceed with extreme caution." cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [[[MLAlertView  alloc] initWithTitle:@"Warning" message:@"This sacrifices security for convenience. Be very careful." cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     [APP setLocksOnClose:self.closeSwitch.isOn];
 }

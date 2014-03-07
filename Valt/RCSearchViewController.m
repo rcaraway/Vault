@@ -132,7 +132,7 @@
 
 -(void)setupSearchBar
 {
-    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    self.searchBar = [[RCSearchBar  alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 44)];
     self.searchBar.delegate =self;
     [self.view addSubview:self.searchBar];
 }

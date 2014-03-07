@@ -151,6 +151,9 @@
 -(void)didSucceedEnteringPassword
 {
     self.fieldBackView.alpha = 0;
+    if (isNewUser && [[RCNetworking sharedNetwork] loggedIn]){
+        [[RCNetworking sharedNetwork] fetchFromServer];
+    }
     isNewUser = NO;
     self.valtLogin = NO;
     self.hintArrowView.alpha = 0;
