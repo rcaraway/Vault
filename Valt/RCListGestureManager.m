@@ -231,7 +231,7 @@ typedef enum {
         if (self.dragRight){
              [[APP rootController] finishDragWithClose];
         }else{
-             [[APP rootController] resetToOpen];   
+             [[APP rootController] resetToOpen];
         }
     }
     self.panState = RCListGestureManagerPanStateMiddle;
