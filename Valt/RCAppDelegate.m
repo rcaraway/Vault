@@ -61,42 +61,12 @@
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     self.hideView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
     [self.hideView setImage:[UIImage imageNamed:[self launchImageString]]];
     [self.hideView setBackgroundColor:[UIColor whiteColor]];
     [[[UIApplication sharedApplication] keyWindow] addSubview:self.hideView];
 }
 
--(NSString *)launchImageString
-{
-    static NSString * launchImage;
-    if (!launchImage){
-        if (IS_IPHONE){
-            if (IS_IPHONE_5){
-                launchImage = @"LaunchImage-700-568h";
-            }else{
-                launchImage= @"LaunchImage-700@2x.png";
-            }
-        }else{
-            if ([self isRetina]){
-                launchImage= @"LaunchImage-700-Portrait@2x~ipad.png";
-            }else{
-                launchImage = @"LaunchImage-700-Portrait~ipad.png";
-            }
-        }
-    }
-    return launchImage;
-}
 
--(BOOL)isRetina
-{
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
-        ([UIScreen mainScreen].scale == 2.0)) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
 
 -(void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -109,6 +79,7 @@
     if (self.locksOnClose){
         [[RCPasswordManager defaultManager] lockPasswordsCompletion:^{
         }];
+        [self.rootController resetViewsForPasscode];
         [self.rootController launchPasscode];
     }else{
         [[RCPasswordManager defaultManager] hideAllPasswordData];
@@ -237,7 +208,38 @@
 }
 
 
+#pragma mark - Convenience
 
+-(NSString *)launchImageString
+{
+    static NSString * launchImage;
+    if (!launchImage){
+        if (IS_IPHONE){
+            if (IS_IPHONE_5){
+                launchImage = @"LaunchImage-700-568h";
+            }else{
+                launchImage= @"LaunchImage-700@2x.png";
+            }
+        }else{
+            if ([self isRetina]){
+                launchImage= @"LaunchImage-700-Portrait@2x~ipad.png";
+            }else{
+                launchImage = @"LaunchImage-700-Portrait~ipad.png";
+            }
+        }
+    }
+    return launchImage;
+}
+
+-(BOOL)isRetina
+{
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
+        ([UIScreen mainScreen].scale == 2.0)) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 
 @end

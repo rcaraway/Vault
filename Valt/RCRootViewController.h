@@ -49,6 +49,7 @@
 -(void)launchPasscode;
 
 -(void)removeAllChildren;
+-(void)resetViewsForPasscode;
 
 -(void)setStatusLightContentAnimated:(BOOL)animated;
 -(void)setStatusDarkContentAnimated:(BOOL)animated;
