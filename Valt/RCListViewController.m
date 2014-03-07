@@ -17,7 +17,6 @@
 #import "RCNetworking.h"
 #import "RCInAppPurchaser.h"
 #import "HTAutocompleteManager.h"
-#import "LEColorPicker.h"
 
 //Views
 #import "JTTransformableTableViewCell.h"

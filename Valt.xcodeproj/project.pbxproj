@@ -114,9 +114,6 @@
 		D27F40781868ED3F00104F1C /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406C1868ED3F00104F1C /* RNCryptorEngine.m */; };
 		D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406E1868ED3F00104F1C /* RNDecryptor.m */; };
 		D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40701868ED3F00104F1C /* RNEncryptor.m */; };
-		D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */; };
-		D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */; };
-		D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D29D662618B2543D0029179A /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D29D662518B2543D0029179A /* down@2x.png */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
@@ -135,8 +132,6 @@
 		D2DEA88A18BBEB4000DCF073 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88818BBEB4000DCF073 /* AdSupport.framework */; };
 		D2DEA88B18BBEB4000DCF073 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DEA88918BBEB4000DCF073 /* libz.dylib */; };
 		D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E91E0F187AFC90004D3558 /* LBActionSheet.m */; };
-		D2F92F5218BE4091002EA5B9 /* LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */; };
-		D2F92F5318BE4091002EA5B9 /* UIColor+YUVSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */; };
 		D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */; };
 		D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6218BE7F17002EA5B9 /* valtClosed.png */; };
 		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
@@ -309,12 +304,6 @@
 		D27F406E1868ED3F00104F1C /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
 		D27F406F1868ED3F00104F1C /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
 		D27F40701868ED3F00104F1C /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
-		D27F40711868ED3F00104F1C /* RNOpenSSLCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLCryptor.h; sourceTree = "<group>"; };
-		D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLCryptor.m; sourceTree = "<group>"; };
-		D27F40731868ED3F00104F1C /* RNOpenSSLDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLDecryptor.h; sourceTree = "<group>"; };
-		D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLDecryptor.m; sourceTree = "<group>"; };
-		D27F40751868ED3F00104F1C /* RNOpenSSLEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLEncryptor.h; sourceTree = "<group>"; };
-		D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		D29D662518B2543D0029179A /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
@@ -350,10 +339,6 @@
 		D2DEA88918BBEB4000DCF073 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D2E91E0E187AFC90004D3558 /* LBActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActionSheet.h; sourceTree = "<group>"; };
 		D2E91E0F187AFC90004D3558 /* LBActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBActionSheet.m; sourceTree = "<group>"; };
-		D2F92F4E18BE4090002EA5B9 /* LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEColorPicker.h; sourceTree = "<group>"; };
-		D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LEColorPicker.m; sourceTree = "<group>"; };
-		D2F92F5018BE4091002EA5B9 /* UIColor+YUVSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YUVSpace.h"; sourceTree = "<group>"; };
-		D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YUVSpace.m"; sourceTree = "<group>"; };
 		D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backValt@2x.png"; sourceTree = "<group>"; };
 		D2F92F6218BE7F17002EA5B9 /* valtClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtClosed.png; sourceTree = "<group>"; };
 		D2F92F6418BE82CB002EA5B9 /* valtOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtOpen.png; sourceTree = "<group>"; };
@@ -521,7 +506,6 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				D2F92F4A18BE3F75002EA5B9 /* ColorPicker */,
 				D2DEA87D18BBE94D00DCF073 /* Google Analytics */,
 				D27F407E1868F56500104F1C /* Base64 */,
 				D27F40671868ECC200104F1C /* RNCryptor */,
@@ -760,12 +744,6 @@
 				D27F406E1868ED3F00104F1C /* RNDecryptor.m */,
 				D27F406F1868ED3F00104F1C /* RNEncryptor.h */,
 				D27F40701868ED3F00104F1C /* RNEncryptor.m */,
-				D27F40711868ED3F00104F1C /* RNOpenSSLCryptor.h */,
-				D27F40721868ED3F00104F1C /* RNOpenSSLCryptor.m */,
-				D27F40731868ED3F00104F1C /* RNOpenSSLDecryptor.h */,
-				D27F40741868ED3F00104F1C /* RNOpenSSLDecryptor.m */,
-				D27F40751868ED3F00104F1C /* RNOpenSSLEncryptor.h */,
-				D27F40761868ED3F00104F1C /* RNOpenSSLEncryptor.m */,
 			);
 			name = RNCryptor;
 			sourceTree = "<group>";
@@ -841,17 +819,6 @@
 				D2DEA88518BBEA0A00DCF073 /* GAITracker.h */,
 			);
 			name = "Google Analytics";
-			sourceTree = "<group>";
-		};
-		D2F92F4A18BE3F75002EA5B9 /* ColorPicker */ = {
-			isa = PBXGroup;
-			children = (
-				D2F92F4E18BE4090002EA5B9 /* LEColorPicker.h */,
-				D2F92F4F18BE4090002EA5B9 /* LEColorPicker.m */,
-				D2F92F5018BE4091002EA5B9 /* UIColor+YUVSpace.h */,
-				D2F92F5118BE4091002EA5B9 /* UIColor+YUVSpace.m */,
-			);
-			name = ColorPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1001,11 +968,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2F92F5318BE4091002EA5B9 /* UIColor+YUVSpace.m in Sources */,
 				D21717C618576B6500D687F8 /* Valt.xcdatamodeld in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
-				D27F407D1868ED3F00104F1C /* RNOpenSSLEncryptor.m in Sources */,
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D2773721189AB01D0048F641 /* RCMessageView.m in Sources */,
@@ -1027,7 +992,6 @@
 				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
-				D27F407B1868ED3F00104F1C /* RNOpenSSLCryptor.m in Sources */,
 				D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */,
 				D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */,
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
@@ -1056,11 +1020,9 @@
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
-				D27F407C1868ED3F00104F1C /* RNOpenSSLDecryptor.m in Sources */,
 				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
-				D2F92F5218BE4091002EA5B9 /* LEColorPicker.m in Sources */,
 				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717EF1857710700D687F8 /* UIColor+JTGestureBasedTableViewHelper.m in Sources */,
@@ -1197,11 +1159,7 @@
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/robbor911/Documents/Vault/Valt,
-					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
@@ -1226,11 +1184,7 @@
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/robbor911/Documents/Vault/Valt,
-					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
@@ -1340,11 +1294,7 @@
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/robbor911/Documents/Vault/Valt,
-					/Users/robbor911/Documents/Work/codespace/Valt/Valt,
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";

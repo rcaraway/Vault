@@ -8,7 +8,6 @@
 
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
-#import "LEColorPicker.h"
 
 #import "NSString+Encryption.h"
 
@@ -197,21 +196,7 @@ NSString * const passwordDidGrabWebColor = @"passwordDidGrabWebColor";
 }
 
 
--(UIColor *)webColor
-{
-    if (_webColor)
-        return _webColor;
-    if (self.urlName){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage * favicon = [self faviconImage];
-            LEColorPicker * picker = [[LEColorPicker alloc] init];
-            LEColorScheme *colorScheme = [picker colorSchemeFromImage:favicon];
-            _webColor = [colorScheme backgroundColor];
-            [[NSNotificationCenter defaultCenter] postNotificationName:passwordDidGrabWebColor object:self];
-        });
-    }
-    return nil;
-}
+
 
 -(UIImage *)faviconImage
 {
