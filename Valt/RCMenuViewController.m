@@ -378,7 +378,7 @@
              @"Little Hurricane - \"give em hell\"" : @"http://www.youtube.com/watch?v=AFKgipi4Tc4",
              @"Santigold - \"Disparate Youth\"" : @"http://www.youtube.com/watch?v=mIMMZQJ1H6E",
              @"Youth Lagoon - \"Mute\"" : @"http://www.youtube.com/watch?v=mSXyr6im7kk",
-             @"Miami Horror - \"Real Slow (Gold Flumes Remix)\"" : @"http://www.youtube.com/watch?v=CSDTg-tBVSA",
+             @"Miami Horror - \"Real Slow (Gold Fields Remix)\"" : @"http://www.youtube.com/watch?v=CSDTg-tBVSA",
              @"Crystal Castles - \"Baptism\"" : @"http://www.youtube.com/watch?v=vStjmYxetY0",
              @"The Asteroids Galaxy Tour - \"The Golden Age\"" : @"http://www.youtube.com/watch?v=xFihi5cPqqE",
              @"The Snake The Cross The Crown - \"Behold the River\"" : @"http://www.youtube.com/watch?v=ruznqiBMQq4",
@@ -387,11 +387,9 @@
              @"Macklemore - \"Ten Thousand Hours\"" : @"http://www.youtube.com/watch?v=iEr5H4E4r3I",
              @"Wild Flag - \"Romance\"" : @"http://www.youtube.com/watch?v=8J8n9R8rnB8",
              @"Childish Gambino - \"Heartbeat\"" : @"http://www.youtube.com/watch?v=dFVxGRekRSg",
-             @"Daft Punk - \"End of Line\"" : @"http://www.youtube.com/watch?v=AHGvaQMClEo",
              @"Odesza - \"My Friends Never Die\"" : @"http://www.youtube.com/watch?v=NyPtlOoCmV4",
              @"Mt. Eden - \"Still Alive\"" : @"http://www.youtube.com/watch?v=FDYIdBZUl2Y",
              @"The Temper Trap - \"Fader\"" : @"http://www.youtube.com/watch?v=5xQF0gerTtM",
-             @"Lydia - \"Hospital\"" : @"http://www.youtube.com/watch?v=iwsBzKtS-fU",
              @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU",
              @"The National - \"I Should Live in Salt\"" : @"http://www.youtube.com/watch?v=JK-EF9fAHIY&feature=kp"};
 }

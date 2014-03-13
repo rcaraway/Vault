@@ -35,7 +35,7 @@
 @property(nonatomic, strong) MLAlertView * alertView;
 @property(nonatomic, strong) LBActionSheet * actionSheet;
 @property(nonatomic, strong) UIImageView * hintArrowView;
-@property (nonatomic) BOOL premiumLogin;
+@property (nonatomic) BOOL platinumLogin;
 @property (nonatomic) BOOL valtLogin;
 
 @end
@@ -151,7 +151,7 @@
     else
         self.fieldBackView.frame =  CGRectMake(11, bounds.size.height-352-12-50, bounds.size.width-22, 50);
     self.passwordField.frame =  CGRectMake(24, 3, bounds.size.width-60, 44);
-    CGFloat width = [@"Premium User? Log in here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(bounds.size.height, 44)].width;
+    CGFloat width = [@"Platinum User? Log in here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(bounds.size.height, 44)].width;
     [self.loginButton setFrame:CGRectMake(bounds.size.width/2.0, CGRectGetMinY(self.fieldBackView.frame)-9-26, bounds.size.width-width-20, 44)];
     self.valtView.frame = CGRectMake(bounds.size.width/2.0-55, CGRectGetMinY(self.fieldBackView.frame)/2.0-(98/2.0), 110, 110);
 }
@@ -201,7 +201,7 @@
 
 -(void)didFailToLogIn:(NSNotification *)notification
 {
-    self.premiumLogin = NO;
+    self.platinumLogin = NO;
     NSString * message = notification.object;
     [self.alertView showFailWithTitle:[message capitalizedString]];
     [self.alertView.loginTextField becomeFirstResponder];
@@ -209,8 +209,8 @@
 
 -(void)didLogIn:(NSNotification *)notification
 {
-    if (self.premiumLogin){
-        self.premiumLogin = NO;
+    if (self.platinumLogin){
+        self.platinumLogin = NO;
         loginPassword = self.alertView.passwordTextField.text;
         [APP setSwipeRightHint:NO];
         [APP setAutofillHints:NO];
@@ -254,7 +254,7 @@
 
 -(void)showWhichPasswordActionSheet
 {
-    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Would you like to change your master password to the same one as your premium account?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Update master password" otherButtonTitles:@"Don't Update", nil];
+    self.actionSheet = [[LBActionSheet  alloc] initWithTitle:@"Would you like to change your master password to the same one as your Platinum account?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Update master password" otherButtonTitles:@"Don't Update", nil];
     [self.actionSheet showInView:self.view];
 }
 
@@ -314,9 +314,9 @@
 -(void)setupLoginButton
 {
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = [@"Premium User? Log in here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(self.view.frame.size.height, 44)].width;
+    CGFloat width = [@"Platinum User? Tap here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(self.view.frame.size.height, 44)].width;
     [self.loginButton setFrame:CGRectMake(self.view.frame.size.width/2.0, CGRectGetMinY(self.fieldBackView.frame)-9-26, self.view.frame.size.width-width-20, 44)];
-    [self.loginButton setTitle:@"Premium User? Tap here." forState:UIControlStateNormal];
+    [self.loginButton setTitle:@"Platinum User? Tap here." forState:UIControlStateNormal];
     self.loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
     [self.loginButton.titleLabel setTextAlignment:NSTextAlignmentRight];
     [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
@@ -360,7 +360,7 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
 {
     if (buttonIndex ==1){
-        self.premiumLogin = YES;
+        self.platinumLogin = YES;
         [alertView loadWithText:@"Logging in"];
         [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
         [RCNetworkListener setShouldMerge];
@@ -427,7 +427,7 @@
 
 -(void)didTapLogin
 {
-    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Premium Login" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
+    self.alertView = [[MLAlertView  alloc] initWithTitle:@"Platinum Login" textFields:YES delegate:self cancelButtonTitle:@"Cancel" confirmButtonTitle:@"Login"];
     self.alertView.loginTextField.keyboardAppearance = UIKeyboardAppearanceDark;
     self.alertView.passwordTextField.keyboardAppearance = UIKeyboardAppearanceDark;
     [self.alertView show];
@@ -477,7 +477,6 @@
     [self didFinishTypingPassword];
     return YES;
 }
-
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {

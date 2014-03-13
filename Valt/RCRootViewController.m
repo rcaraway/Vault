@@ -34,6 +34,7 @@
 //Frameworks
 #import <MessageUI/MessageUI.h>
 
+
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
 
@@ -114,7 +115,13 @@
 
 -(void)fitViewsToBoundsWithNewOrientation:(UIInterfaceOrientation)orientation
 {
-    CGRect bounds = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+    CGRect bounds;
+    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
+         bounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    }else{
+         bounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    self.view.frame = CGRectMake(0,0, bounds.size.width, bounds.size.height);
     [self.messageView setFrame:CGRectMake(0, 0, bounds.size.width, 20)];
     [self.navBar setFrame:CGRectMake(0, 20, bounds.size.width, 44)];
 }

@@ -115,7 +115,8 @@
 -(void)showBackupViewIfNeeded
 {
     static BOOL backupShown = NO;
-    if ([APP launchCountTriggered] &&  [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && ![[RCPasswordManager defaultManager] canLogin] && !backupShown){
+    if ([APP launchCountTriggered] &&  [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && ![[RCPasswordManager defaultManager] canLogin] && !backupShown)
+    {
         [self setupBackupView];
         [self performSelector:@selector(showBackup) withObject:nil afterDelay:.6];
         backupShown = YES;
@@ -147,7 +148,6 @@
 #pragma mark - Orientation
 
 
-
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (IS_IPAD){
@@ -159,8 +159,16 @@
 
 -(void)fitViewsToBoundsWithNewOrientation:(UIInterfaceOrientation)orientation
 {
-    CGRect bounds = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
-    self.tableView.frame = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
+    CGRect bounds;
+    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
+        bounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    }else{
+        bounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, bounds.size.width-self.view.frame.origin.x, bounds.size.height-self.view.frame.origin.y);
+    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.height, self.tableView.frame.size.width);
+    self.hintLabel.frame = CGRectMake(0, 0, bounds.size.width, 40);
+    self.hintLabel.center =CGPointMake(bounds.size.width/2.0, self.view.center.y+140);
     self.backupView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, 60);
     [self.hintImageView setFrame:CGRectMake(0, 0, 128, 128)];
 }
