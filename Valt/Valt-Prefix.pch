@@ -19,7 +19,7 @@
 #define TESTFLIGHT_ID @"2121e6b6-423c-4690-9928-20cd780c973a"
 #define LOOKBACK_ID @"Dc6si5rF7LWAXSm7o"
 
-//#define NEW_USER_MODE 12
+#define NEW_USER_MODE 12
 //#define LOGGED_OUT_MODE 12
 //#define RENEW_MODE 12
 

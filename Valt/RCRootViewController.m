@@ -58,6 +58,9 @@
     [self launchPasscode];
     [self addNotifications];
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight || self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)){
+        [self fitViewsToBoundsWithNewOrientation:self.interfaceOrientation];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,14 +80,19 @@
 }
 
 
-#pragma mark - Settings
+#pragma mark - Orientation
 
 -(NSUInteger)supportedInterfaceOrientations
 {
     if (IS_IPAD){
-        return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown);
+        return UIInterfaceOrientationMaskAll;
     }else
         return UIInterfaceOrientationMaskPortrait;
+}
+
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 
 -(BOOL)shouldAutorotate
@@ -93,6 +101,22 @@
         return YES;
     }
     return NO;
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (IS_IPAD){
+        [UIView animateWithDuration:.3 animations:^{
+            [self fitViewsToBoundsWithNewOrientation:toInterfaceOrientation];
+        }];
+    }
+}
+
+-(void)fitViewsToBoundsWithNewOrientation:(UIInterfaceOrientation)orientation
+{
+    CGRect bounds = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+    [self.messageView setFrame:CGRectMake(0, 0, bounds.size.width, 20)];
+    [self.navBar setFrame:CGRectMake(0, 20, bounds.size.width, 44)];
 }
 
 -(void)setupMessageView

@@ -70,9 +70,16 @@ static UIColor * successColor;
 - (void)show
 {
     self.alpha = 0.0;
-    self.dimView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    CGRect bounds;
+    if (orientation == 0 || orientation == UIInterfaceOrientationPortrait){
+        bounds = [UIScreen mainScreen].bounds;
+    }else{
+        bounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    self.dimView = [[UIView alloc] initWithFrame:bounds];
     [self.dimView setBackgroundColor:[UIColor clearColor]];
-
+    self.dimView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.frame = CGRectMake(CGRectGetMidX(self.dimView.frame)-(self.frame.size.width/2.0), CGRectGetMidY(self.dimView.frame)-(self.frame.size.height/2.0)-350, self.frame.size.width, self.frame.size.height);
     if (self.loginTextField){
         [self.loginTextField becomeFirstResponder];
@@ -80,7 +87,7 @@ static UIColor * successColor;
         [self.passwordTextField becomeFirstResponder];
     }
     [self.dimView addSubview:self];
-    [[[UIApplication sharedApplication] windows][0] addSubview:self.dimView];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController].view addSubview:self.dimView];
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:.74 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseInOut   animations:^{
         self.alpha = 1.0;
         [self.dimView setBackgroundColor:[UIColor colorWithWhite:.2 alpha:.75]];

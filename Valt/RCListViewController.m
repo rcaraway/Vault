@@ -89,6 +89,9 @@
     if ([RCPasswordManager defaultManager].passwords.count == 0){
         [self showPullDownViews];
     }
+    if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight || self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)){
+        [self fitViewsToBoundsWithNewOrientation:self.interfaceOrientation];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -139,6 +142,29 @@
 {
     [self freeAllMemory];
 }
+
+
+#pragma mark - Orientation
+
+
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (IS_IPAD){
+        [UIView animateWithDuration:.3 animations:^{
+            [self fitViewsToBoundsWithNewOrientation:toInterfaceOrientation];
+        }];
+    }
+}
+
+-(void)fitViewsToBoundsWithNewOrientation:(UIInterfaceOrientation)orientation
+{
+    CGRect bounds = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+    self.tableView.frame = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
+    self.backupView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, 60);
+    [self.hintImageView setFrame:CGRectMake(0, 0, 128, 128)];
+}
+
 
 
 #pragma mark - NSNotifications Event Handling
