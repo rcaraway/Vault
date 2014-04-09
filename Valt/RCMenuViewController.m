@@ -34,7 +34,7 @@
 #define UPGRADE @"Go Platinum"
 #define RENEW @"Renew Platinum"
 #define SPREAD_VALT @"Tweet about Valt"
-
+#define NOTES @"Secure Notes"
 
 
 @interface RCMenuCell : UITableViewCell
@@ -62,7 +62,10 @@
             color = [UIColor aboutColor];
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
             color = [UIColor contactSupportColor];
-        }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
+        }else if ([self.textLabel.text isEqualToString:NOTES]){
+            color = [UIColor colorWithWhite:.6 alpha:1];
+        }
+        else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             color = [UIColor goPlatinumColor];
         }else{
             color = [UIColor tweetColor];
@@ -75,6 +78,8 @@
             self.imageView.image = [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]];
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
             self.imageView.image = [[UIImage imageNamed:@"support1"] tintedIconWithColor:[UIColor contactSupportColor]];
+        }else if ([self.textLabel.text isEqualToString:NOTES]){
+            self.imageView.image = [[UIImage imageNamed:@"document"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]];
         }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             self.imageView.image = [[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]];
         }else{
@@ -244,6 +249,8 @@
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:RENEW]){
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Renew Platinum" color:[UIColor goPlatinumColor]];
+    }else if ([text isEqualToString:NOTES]){
+        [[APP rootController] closeToNewViewController:[[APP rootController] notesController] title:@"Secure Notes" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
     }else if ([text isEqualToString:FEEDBACK]){
@@ -256,11 +263,11 @@
 
 -(void)setupCellNames
 {
-    self.cellNames = [@[HOME,ABOUT_NAME] mutableCopy];
+    self.cellNames = [@[HOME, NOTES, ABOUT_NAME] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateNone){
-        [self.cellNames insertObject:UPGRADE atIndex:1];
+        [self.cellNames insertObject:UPGRADE atIndex:2];
     }else if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
-        [self.cellNames insertObject:RENEW atIndex:1];
+        [self.cellNames insertObject:RENEW atIndex:2];
     }
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
         [self.cellNames addObject:SPREAD_VALT];
@@ -272,9 +279,9 @@
 
 -(void)setupCellImages
 {
-    self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
+    self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"document"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
-        [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:1];
+        [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:2];
     }
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
         [self.cellImages addObject:[[UIImage imageNamed:@"tweet"] tintedIconWithColor:[UIColor tweetColor]]];

@@ -135,6 +135,9 @@
 		D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */; };
 		D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6218BE7F17002EA5B9 /* valtClosed.png */; };
 		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
+		D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */; };
+		D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */; };
+		D2FEE1FF18F5E7BC00BD454F /* document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FE18F5E7BC00BD454F /* document@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -342,6 +345,10 @@
 		D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backValt@2x.png"; sourceTree = "<group>"; };
 		D2F92F6218BE7F17002EA5B9 /* valtClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtClosed.png; sourceTree = "<group>"; };
 		D2F92F6418BE82CB002EA5B9 /* valtOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtOpen.png; sourceTree = "<group>"; };
+		D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotesViewController.h; sourceTree = "<group>"; };
+		D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotesViewController.m; sourceTree = "<group>"; };
+		D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNotesViewController.xib; sourceTree = "<group>"; };
+		D2FEE1FE18F5E7BC00BD454F /* document@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -564,6 +571,8 @@
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
 				D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */,
 				D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */,
+				D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */,
+				D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -672,6 +681,7 @@
 		D25569621896BBC900F5525D /* MenuOg */ = {
 			isa = PBXGroup;
 			children = (
+				D2FEE1FE18F5E7BC00BD454F /* document@2x.png */,
 				D2673A4018B3AFC300AAEBBF /* home@2x.png */,
 				D25569711896C53600F5525D /* lock@2x.png */,
 				D255696B1896BCD800F5525D /* support1@2x.png */,
@@ -719,6 +729,7 @@
 				D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */,
 				D2673A4418B3B99E00AAEBBF /* RCWebViewControllerSmall.xib */,
 				D27F403D186343BF00104F1C /* PurchaseController.xib */,
+				D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -926,6 +937,7 @@
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */,
 				D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */,
+				D2FEE1FF18F5E7BC00BD454F /* document@2x.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
@@ -942,6 +954,7 @@
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
 				D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */,
+				D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */,
 				D255696C1896BCD800F5525D /* support1@2x.png in Resources */,
 				D255696A1896BCA200F5525D /* up@2x.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
@@ -1021,6 +1034,7 @@
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
+				D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
 				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,

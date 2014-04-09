@@ -16,6 +16,7 @@
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import "RCMenuViewController.h"
+#import "RCNotesViewController.h"
 
 //Model
 #import "RCPasswordManager.h"
@@ -359,6 +360,15 @@
 
 
 #pragma mark - Properties
+
+-(RCNotesViewController *)notesController
+{
+    if (!_notesController){
+        _notesController = [[RCNotesViewController alloc] init];
+    }
+    return _notesController;
+}
+
 
 -(RCAboutViewController *)aboutController
 {
