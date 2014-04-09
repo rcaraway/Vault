@@ -558,7 +558,7 @@
             return @"URL";
             break;
         default:
-            return [NSString stringWithFormat:@"Notes %d", indexPath.row];
+            return @"Notes";
             break;
     }
 }

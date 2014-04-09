@@ -446,6 +446,8 @@ static HTAutocompleteManager *sharedManager;
              @"DirectTV" : @"http://www.directv.com/",
              @"Dish Network" : @"http://www.mydish.com/",
              @"Cox" : @"http://ww2.cox.com/residential/home.cox",
+             @"Bitly" : @"https://bitly.com/",
+             @"iTunes Connect" : @"https://itunesconnect.apple.com",
              @"Time Warner Cable" : @"http://www.timewarnercable.com/",
              @"Sky Network" : @"http://www.skytv.co.nz/",
              @"Shaw Communications" : @"https://www.shaw.ca/store/",
