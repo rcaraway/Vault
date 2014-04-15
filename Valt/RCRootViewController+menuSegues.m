@@ -245,8 +245,12 @@ static void * LatestPointKey;
 {
     if (self.currentSideController == self.purchaseController)
         [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor goPlatinumColor]];
-    else
+    else if (self.currentSideController == self.aboutController){
         [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor aboutColor]];
+    }else{
+        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor darkGrayColor]];
+    }
+    
 }
 
 -(void)snapShotPanned

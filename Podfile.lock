@@ -1,0 +1,10 @@
+PODS:
+  - SAMTextView (0.2.1)
+
+DEPENDENCIES:
+  - SAMTextView (~> 0.2.1)
+
+SPEC CHECKSUMS:
+  SAMTextView: f0dae9662a7cc45e890eb2b24aa1769148ea2933
+
+COCOAPODS: 0.29.0

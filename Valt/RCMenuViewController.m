@@ -250,7 +250,7 @@
     }else if ([text isEqualToString:RENEW]){
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Renew Platinum" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:NOTES]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] notesController] title:@"Secure Notes" color:[UIColor goPlatinumColor]];
+        [[APP rootController] closeToNewViewController:(UIViewController *)[[APP rootController] notesController] title:@"Secure Notes" color:[UIColor darkGrayColor]];
     }else if ([text isEqualToString:SPREAD_VALT]){
         [self launchTweetMessenger];
     }else if ([text isEqualToString:FEEDBACK]){
