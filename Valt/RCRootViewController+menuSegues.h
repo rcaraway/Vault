@@ -19,6 +19,7 @@
 -(void)beginDragToMenu;
 -(void)dragSideToXOrigin:(CGFloat)xOrigin;
 -(void)finishDragWithClose;
+-(void)finishDragWithCloseCompletion:(void(^)())completion;
 -(void)finishDragWithSegue;
 
 @end

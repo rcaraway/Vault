@@ -95,6 +95,25 @@ static void * LatestPointKey;
    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
+-(void)finishDragWithCloseCompletion:(void(^)())completion
+{
+    [UIView animateWithDuration:.34 animations:^{
+        self.snapshotView.transform = CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        [self.menuController removeFromParentViewController];
+        [self addChildViewController:self.currentSideController];
+        [self.view addSubview:self.currentSideController.view];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        [self.view addSubview:self.messageView];
+        [self.view addSubview:self.navBar];
+        [self.snapshotView removeFromSuperview];
+        [self.menuController.view removeFromSuperview];
+        if (completion)
+            completion();
+    }];
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+}
+
 -(void)finishDragWithSegue
 {
     [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -141,6 +160,7 @@ static void * LatestPointKey;
 
 -(void)goHome
 {
+    [self.view endEditing:YES]; 
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     UIViewController * current = self.childViewControllers[0];
     [current removeFromParentViewController];

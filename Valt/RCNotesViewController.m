@@ -17,6 +17,7 @@
 #import "RCSecureNoteFiller.h"
 
 #import "UIView+QuartzEffects.h"
+#import "RCRootViewController+menuSegues.h"
 #import "UIColor+RCColors.h"
 
 #import <SAMTextView/SAMTextView.h>
@@ -26,6 +27,7 @@
 @property(nonatomic, assign)NSRange latestRange;
 @property(nonatomic, copy) NSString * latestText;
 @property (nonatomic, copy) NSString * originalNotes;
+@property(nonatomic, strong) UIPanGestureRecognizer * panGesture;
 
 @end
 
@@ -42,17 +44,15 @@
 }
 
 
+#pragma mark - LifeCycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    CALayer * layer = [self separatorAtOrigin:0];
-    [self.autofillView.layer addSublayer:layer];
-    self.autofillView.backgroundColor = [UIColor navColor];
-    [self.tipView setCornerRadius:10];
-    [self.autofillButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [self setupExtraViewInfo];
+    [self setupPanGesture];
     [self setupNotesView];
-    self.tipView.alpha = 0;
-    [[[APP rootController] view] bringSubviewToFront:[[APP rootController] messageView]];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -71,11 +71,6 @@
     }else{
         [self.view sendSubviewToBack:self.tipView];
     }
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -136,7 +131,6 @@
 
 #pragma mark - TextView
 
-
 -(void)setupNotesView
 {
     self.notesView = [[SAMTextView alloc] initWithFrame:CGRectMake(20, 74, [UIScreen mainScreen].bounds.size.width-40, [UIScreen mainScreen].bounds.size.height-340)];
@@ -196,7 +190,53 @@
     return 8;
 }
 
+
+#pragma mark - Pan Gesture
+
+
+-(void)setupPanGesture
+{
+    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
+    [self.view addGestureRecognizer:self.panGesture];
+}
+
+- (IBAction)didPan:(UIPanGestureRecognizer *)sender
+{
+    CGFloat translation =[sender translationInView:self.view].x;
+    if (sender.state == UIGestureRecognizerStateBegan){
+        [[APP rootController] beginDragToMenu];
+        [self hideKeyboard];
+    }else if (sender.state == UIGestureRecognizerStateChanged){
+        
+        if (translation <= 20){
+            [[APP rootController] dragSideToXOrigin:translation];
+        }
+    }else if (sender.state == UIGestureRecognizerStateEnded){
+        CGFloat velocity = [sender velocityInView:self.view].x;
+        if (velocity <= -180.0 || translation <= -160.0){
+            [[APP rootController] finishDragWithSegue];
+        }else{
+            [[APP rootController] finishDragWithCloseCompletion:^{
+                [self reshowKeyboard];
+            }];
+        }
+    }
+}
+
+
 #pragma mark - Convenience
+
+
+-(void)setupExtraViewInfo
+{
+    CALayer * layer = [self separatorAtOrigin:0];
+    [self.autofillView.layer addSublayer:layer];
+    self.autofillView.backgroundColor = [UIColor navColor];
+    [self.autofillButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [self.tipView setCornerRadius:10];
+    self.tipView.alpha = 0;
+    [[[APP rootController] view] bringSubviewToFront:[[APP rootController] messageView]];
+}
 
 -(void)showFillView
 {
@@ -227,5 +267,18 @@
     return bottomBorder;
 }
 
+-(void)hideKeyboard
+{
+    [UIView animateWithDuration:0 animations:^{
+        [self.notesView resignFirstResponder];
+    }];
+}
+
+-(void)reshowKeyboard
+{
+    [UIView animateWithDuration:0 animations:^{
+        [self.notesView becomeFirstResponder];
+    }];
+}
 
 @end
