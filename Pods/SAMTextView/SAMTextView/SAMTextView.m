@@ -31,6 +31,11 @@
 	[self setNeedsDisplay];
 }
 
+- (CGRect)caretRectForPosition:(UITextPosition *)position {
+    CGRect originalRect = [super caretRectForPosition:position];
+    originalRect.size.height = 18;
+    return originalRect;
+}
 
 - (void)setPlaceholder:(NSString *)string {
 	if ([string isEqualToString:self.attributedPlaceholder.string]) {

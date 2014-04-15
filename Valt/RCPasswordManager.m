@@ -36,9 +36,10 @@ NSString * const passwordManagerDidLock = @"passwordManagerDidLock";
 NSString * const passwordManagerDidCreateMasterPassword = @"passwordManagerDidCreateMasterPassword";
 NSString * const passwordManagerDidChangeMasterPassword = @"passwordManagerDidChangeMasterPassword";
 NSString * const passwordManagerDidFailToChangeMasterPassword = @"passwordManagerDidFailToChangeMasterPassword";
+NSString * const passwordManagerDidSaveNotes = @"passwordManagerDidSaveNotes";
+
 
 static RCPasswordManager * manager;
-
 
 #pragma mark - C functions
 

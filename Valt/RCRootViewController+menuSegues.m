@@ -16,6 +16,7 @@
 #import "RCMenuViewController.h"
 #import "RCPurchaseViewController.h"
 #import "RCAboutViewController.h"
+#import "RCNotesViewController.h"
 
 #import "RCMessageView.h"
 
@@ -192,6 +193,9 @@ static void * LatestPointKey;
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    if ([controller isMemberOfClass:[RCNotesViewController class]]){
+        [controller.view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    }
     self.currentSideController = controller;
     UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
     [subSnapView setFrame:controller.view.frame];

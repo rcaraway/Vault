@@ -85,21 +85,27 @@ static RCSecureNoteFiller * sharedFiller;
 
 -(NSArray *)titleAutofills
 {
-    return @[@"Social Security #:",
-             @"SSN :",
-             @"Bank Account: ",
-             @"Credit Card #: ",
-             @"Debit Card #: ",
-             @"Email: ",
-             @"Birthday: ",
-             @"Savings Account #: ",
-             @"Zip Code: ",
-             @"Billing Address : ",
-             @"Home Address :",
-             @"Address : ",
-             @"State : ",
-             @"Country : ",
-             @"Age : "];
+    return @[@"Social Security #",
+             @"SSN",
+             @"Bank Account",
+             @"Credit Card #",
+             @"Debit Card #",
+             @"Email",
+             @"Birthday",
+             @"Savings Account #",
+             @"Zip Code",
+             @"Billing Address",
+             @"Home Address",
+             @"Address",
+             @"State",
+             @"Country",
+             @"Age",
+             @"Bank",
+             @"Credit Card Expiration",
+             @"Debit Card Expiration",
+             @"Visa Card",
+             @"Mobile Number",
+             @"Phone Number"];
 }
 
 @end

@@ -103,6 +103,7 @@ static RCNetworkListener * sharedQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPayForYear) name:purchaserDidPayYearly object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginUpgrading) name:purchaserDidBeginUpgrading object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailUpgrading) name:purchaserDidFail object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSaveNotes) name:passwordManagerDidSaveNotes object:nil];
 }
 
 -(void)removeNotifications
@@ -151,6 +152,8 @@ static RCNetworkListener * sharedQueue;
         [[RCNetworking sharedNetwork] fetchFromServer];
     }
 }
+
+
 
 #pragma mark - Progress Handling
 
@@ -289,6 +292,9 @@ static RCNetworkListener * sharedQueue;
 {
     [self showMessage:@"Failed To Purchase" autoDismiss:YES];
 }
+
+
+#pragma mark - Convenience
 
 
 @end
