@@ -25,4 +25,7 @@
 - (IBAction)infoTapped:(UIButton *)sender;
 - (IBAction)autoFillTapped:(UIButton *)sender;
 
+-(void)reshowKeyboard;
+
+
 @end

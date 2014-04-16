@@ -63,7 +63,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self.notesView becomeFirstResponder];
     if ([APP secureNoteTip]){
         [UIView animateWithDuration:.24 animations:^{
             self.tipView.alpha = 1;
@@ -133,7 +132,7 @@
 
 -(void)setupNotesView
 {
-    self.notesView = [[SAMTextView alloc] initWithFrame:CGRectMake(20, 74, [UIScreen mainScreen].bounds.size.width-40, [UIScreen mainScreen].bounds.size.height-340)];
+    self.notesView = [[SAMTextView alloc] initWithFrame:CGRectMake(11, 54, [UIScreen mainScreen].bounds.size.width-22, [UIScreen mainScreen].bounds.size.height-340)];
     self.notesView.delegate = self;
     self.notesView.font = [UIFont systemFontOfSize:16];
     self.notesView.layoutManager.delegate = self;

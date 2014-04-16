@@ -20,6 +20,7 @@
 
 #import "RCMessageView.h"
 
+#import <SAMTextView/SAMTextView.h>
 #import <objc/runtime.h>
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -91,7 +92,13 @@ static void * LatestPointKey;
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
         [self.menuController.view removeFromSuperview];
+        if (self.currentSideController == self.notesController){
+            [UIView setAnimationsEnabled:NO];
+            [self.notesController reshowKeyboard];
+            [UIView setAnimationsEnabled:YES];
+        }
     }];
+
    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
@@ -160,7 +167,64 @@ static void * LatestPointKey;
 
 -(void)goHome
 {
-    [self.view endEditing:YES]; 
+    [self.view endEditing:YES];
+    if (self.childViewControllers[0] == self.notesController){
+        [self goHomeWithForce];
+    }else{
+        [self goHomeWithNaturalGravity];
+    }
+}
+
+
+-(void)didFinishGravityAnimation:(UIViewController *)controller
+{
+   
+}
+
+-(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
+{
+    if (self.currentSideController == controller){
+        [self finishDragWithClose];
+    }else{
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+        if ([controller isMemberOfClass:[RCNotesViewController class]]){
+            [controller.view setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20)];
+        }
+        self.currentSideController = controller;
+        UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
+        [subSnapView setFrame:controller.view.frame];
+        [self.snapshotView addSubview:subSnapView];
+        [self setNavBarAlternateWithTitle:title color:color];
+        [self.snapshotView addSubview:self.navBar];
+        [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            self.snapshotView.transform =CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            [self.menuController removeFromParentViewController];
+            [self.menuController.view removeFromSuperview];
+            [self addChildViewController:self.currentSideController];
+            [self.view addSubview:self.navBar];
+            [self.view addSubview:self.currentSideController.view];
+            [self.view bringSubviewToFront:self.navBar];
+            self.currentSideController = nil;
+            if (![self.messageView messageShowing]){
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+            }
+            [self.snapshotView removeFromSuperview];
+            self.snapshotView = nil;
+            [self.menuController changeFeelgoodMessage];
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            if (controller == self.notesController){
+                [self.notesController.notesView becomeFirstResponder];
+            }
+        }];
+
+    }
+}
+
+#pragma mark - GO HOME
+
+-(void)goHomeWithNaturalGravity
+{
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     UIViewController * current = self.childViewControllers[0];
     [current removeFromParentViewController];
@@ -183,11 +247,11 @@ static void * LatestPointKey;
     
     self.gravityBehavior = gravityBeahvior;
     self.animator = animator;
-
+    
     [self setNavBarMain];
     [self.view bringSubviewToFront:self.navBar];
     dimview.backgroundColor = [UIColor blackColor];
-    dimview.alpha = .5;
+    dimview.alpha = .75;
     [self.view insertSubview:dimview belowSubview:current.view];
     CGFloat duration = (IS_IPHONE?.72:1);
     [UIView animateWithDuration:duration animations:^{
@@ -205,43 +269,34 @@ static void * LatestPointKey;
     }];
 }
 
--(void)didFinishGravityAnimation:(UIViewController *)controller
-{
-   
-}
-
--(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
+-(void)goHomeWithForce
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    if ([controller isMemberOfClass:[RCNotesViewController class]]){
-        [controller.view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    }
-    self.currentSideController = controller;
-    UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
-    [subSnapView setFrame:controller.view.frame];
-    [self.snapshotView addSubview:subSnapView];
-    [self setNavBarAlternateWithTitle:title color:color];
-    [self.snapshotView addSubview:self.navBar];
-    [UIView animateWithDuration:.34 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:.8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.snapshotView.transform =CGAffineTransformIdentity;
-    } completion:^(BOOL finished) {
-        [self.menuController removeFromParentViewController];
-        [self.menuController.view removeFromSuperview];
-        [self addChildViewController:self.currentSideController];
-        [self.view addSubview:self.navBar];
-        [self.view addSubview:self.currentSideController.view];
-        [self.view bringSubviewToFront:self.navBar];
-        self.currentSideController = nil;
-        if (![self.messageView messageShowing]){
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-        }
-        [self.snapshotView removeFromSuperview];
-        self.snapshotView = nil;
-        [self.menuController changeFeelgoodMessage];
+    UIViewController * current = self.childViewControllers[0];
+    [current removeFromParentViewController];
+    [self addChildViewController:self.listController];
+    CGRect rect = current.view.frame;
+    UIView * dimview = [[UIView alloc] initWithFrame:self.listController.view.frame];
+    [self.view insertSubview:self.listController.view belowSubview:current.view];
+    self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
+    [self setNavBarMain];
+    [self.view bringSubviewToFront:self.navBar];
+    dimview.backgroundColor = [UIColor blackColor];
+    dimview.alpha = .75;
+    [self.view insertSubview:dimview belowSubview:current.view];
+    [UIView animateWithDuration:.42 animations:^{
+        [dimview setAlpha:0];
+        [current.view setFrame:CGRectOffset(current.view.frame, 0, [UIScreen mainScreen].bounds.size.height)];
+        self.listController.view.transform = CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        current.view.transform = CGAffineTransformIdentity;
+        [current.view removeFromSuperview];
+        current.view.frame = rect;
+        [dimview removeFromSuperview];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
-}
 
+}
 
 #pragma mark - Snapshot
 
@@ -267,13 +322,14 @@ static void * LatestPointKey;
 
 -(void)closeToSideScreen
 {
-    if (self.currentSideController == self.purchaseController)
-        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor goPlatinumColor]];
-    else if (self.currentSideController == self.aboutController){
-        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor aboutColor]];
-    }else{
-        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor darkGrayColor]];
-    }
+    [self finishDragWithClose];
+//    if (self.currentSideController == self.purchaseController)
+//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor goPlatinumColor]];
+//    else if (self.currentSideController == self.aboutController){
+//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor aboutColor]];
+//    }else{
+//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor darkGrayColor]];
+//    }
     
 }
 
