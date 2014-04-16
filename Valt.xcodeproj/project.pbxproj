@@ -136,6 +136,8 @@
 		D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */; };
 		D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6218BE7F17002EA5B9 /* valtClosed.png */; };
 		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
+		D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */; };
+		D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */; };
 		D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */; };
 		D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */; };
 		D2FEE1FF18F5E7BC00BD454F /* document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FE18F5E7BC00BD454F /* document@2x.png */; };
@@ -343,6 +345,10 @@
 		D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backValt@2x.png"; sourceTree = "<group>"; };
 		D2F92F6218BE7F17002EA5B9 /* valtClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtClosed.png; sourceTree = "<group>"; };
 		D2F92F6418BE82CB002EA5B9 /* valtOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtOpen.png; sourceTree = "<group>"; };
+		D2FE849D18FEFCA8008F1A56 /* RCAutofillCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAutofillCollectionView.h; sourceTree = "<group>"; };
+		D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCollectionView.m; sourceTree = "<group>"; };
+		D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAutofillCell.h; sourceTree = "<group>"; };
+		D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCell.m; sourceTree = "<group>"; };
 		D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotesViewController.h; sourceTree = "<group>"; };
 		D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotesViewController.m; sourceTree = "<group>"; };
 		D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNotesViewController.xib; sourceTree = "<group>"; };
@@ -654,6 +660,8 @@
 				D2D87C951860C05300FD8FE9 /* RCMainCell.m */,
 				D247E98118A2885900BE719F /* RCSearchGestureManager.h */,
 				D247E98218A2885900BE719F /* RCSearchGestureManager.m */,
+				D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */,
+				D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -675,6 +683,8 @@
 				D267E01718A01B5200339143 /* RCBackupView.m */,
 				D247E97E18A280B800BE719F /* RCTableView.h */,
 				D247E97F18A280B800BE719F /* RCTableView.m */,
+				D2FE849D18FEFCA8008F1A56 /* RCAutofillCollectionView.h */,
+				D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1005,6 +1015,7 @@
 			files = (
 				D21717C618576B6500D687F8 /* Valt.xcdatamodeld in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
+				D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
@@ -1025,6 +1036,7 @@
 				D21718311857789E00D687F8 /* PDKeychainBindings.m in Sources */,
 				D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */,
 				D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */,
+				D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */,
 				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,

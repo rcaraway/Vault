@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class RCPassword;
+@class RCAutofillCollectionView;
 
 @interface RCWebViewController : UIViewController
 
@@ -23,7 +24,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *refreshButton;
 @property (strong, nonatomic) IBOutlet UIButton *pasteButton;
-
+@property(nonatomic, strong) RCAutofillCollectionView * collectionView;
 
 @property (strong, nonatomic) IBOutlet UIView *topView;
 @property (strong, nonatomic) IBOutlet UIButton *doneButton;

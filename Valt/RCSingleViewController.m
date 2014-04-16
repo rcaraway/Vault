@@ -558,7 +558,7 @@
             return @"URL";
             break;
         default:
-            return @"Notes";
+            return @"Notes (Separate by comma)";
             break;
     }
 }

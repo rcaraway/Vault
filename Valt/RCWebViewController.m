@@ -16,6 +16,8 @@
 
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
+#import "RCAutofillCell.h"
+#import "RCAutofillCollectionView.h"
 
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
@@ -83,6 +85,7 @@
     [self.usernameField setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
     [self.passwordButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2.0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
     [self loadPasswordRequest];
+    [self setupAutofillCollectionView];
 }
 
 -(void)deleteAllCookies
@@ -333,10 +336,11 @@
 
 -(void)showCredentialView
 {
+    [self.collectionView filterWithString:@""];
     [self.view addSubview:self.credentialView];
         self.credentialView.alpha =1;
     self.topView.clipsToBounds = YES;
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.credentialView setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 44)];
         CGAffineTransform transform = CGAffineTransformMakeTranslation(0, 44);
         self.titleLabel.transform = transform;
@@ -347,7 +351,7 @@
 
 -(void)hideCredentialView
 {
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
         CGAffineTransform transform = CGAffineTransformIdentity;
         self.titleLabel.transform = transform;
@@ -356,6 +360,15 @@
     } completion:nil];
 }
 
+
+#pragma mark - Autofill Collection View
+
+-(void)setupAutofillCollectionView
+{
+    RCAutofillCollectionView * collectionView = [[RCAutofillCollectionView  alloc] initWithPassword:self.password];
+    self.collectionView = collectionView;
+    [self.credentialView addSubview:collectionView];
+}
 
 
 #pragma mark - Webview Delegate

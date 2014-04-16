@@ -14,7 +14,6 @@ static RCSecureNoteFiller * sharedFiller;
 @interface RCSecureNoteFiller ()
 
 @property(nonatomic, strong) NSArray * lineNotes;
-@property(nonatomic, strong) NSMutableArray * nonPasswordNotes;
 @property(nonatomic, strong) NSMutableDictionary * autofillPairs;
 
 @end
@@ -49,17 +48,8 @@ static RCSecureNoteFiller * sharedFiller;
 {
     NSString * secureNotes = [[RCPasswordManager defaultManager] secureNotes];
     NSArray * lines =  [secureNotes componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    self.nonPasswordNotes = [lines mutableCopy];
-}
-
--(NSArray *)lineNotes
-{
-    NSMutableArray * array = [self.nonPasswordNotes mutableCopy];
-    if (self.appendedPassword){
-        NSArray * lines = [self.appendedPassword.notes componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        [array addObjectsFromArray:lines];
-    }
-    return array;
+    //TODO: divide by colon
+    self.lineNotes = lines;
 }
 
 -(void)autoFillForString:(NSString *)string completion:(void(^)(NSArray *))completion

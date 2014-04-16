@@ -52,7 +52,7 @@
     [self setupExtraViewInfo];
     [self setupPanGesture];
     [self setupNotesView];
-
+    [self adjustForDevice];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -220,6 +220,36 @@
             }];
         }
     }
+}
+
+
+#pragma mark - Screen adjustments
+
+
+-(void)adjustForDevice
+{
+    if (IS_IPAD){
+        [self adjustForIPad];
+    }else if (IS_IPHONE){
+        if (IS_IPHONE_5){
+        }else{
+            [self adjustForSmalliPhones];
+        }
+    }
+}
+
+-(void)adjustForIPad
+{
+    [self.autofillView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-330, [UIScreen mainScreen].bounds.size.width, self.autofillView.frame.size.height)];
+    [self.infoButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 140, self.autofillButton.frame.origin.y, self.autofillButton.frame.size.width, self.autofillButton.frame.size.height)];
+    self.tipView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, [UIScreen mainScreen].bounds.size.height/2.0-100);
+}
+
+-(void)adjustForSmalliPhones
+{
+    [self.autofillView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-(216+70), [UIScreen mainScreen].bounds.size.width, self.autofillView.frame.size.height)];
+    [self.infoButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 170, self.autofillButton.frame.origin.y, self.autofillButton.frame.size.width, self.autofillButton.frame.size.height)];
+    self.tipView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, [UIScreen mainScreen].bounds.size.height/2.0-50);
 }
 
 

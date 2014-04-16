@@ -12,8 +12,6 @@
 @class RCPassword;
 @interface RCSecureNoteFiller : NSObject
 
-@property(nonatomic, strong) RCPassword * appendedPassword;
-
 +(RCSecureNoteFiller *)sharedFiller;
 
 -(void)updateSecureNotesFill;
