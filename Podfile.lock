@@ -3,7 +3,7 @@ PODS:
   - SAMTextView (0.2.1)
 
 DEPENDENCIES:
-  - Mixpanel (~> 2.3.4)
+  - Mixpanel (~> 2.2)
   - SAMTextView (~> 0.2.1)
 
 SPEC CHECKSUMS:

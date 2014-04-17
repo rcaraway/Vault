@@ -90,6 +90,7 @@
 		D2773721189AB01D0048F641 /* RCMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2773720189AB01D0048F641 /* RCMessageView.m */; };
 		D277406419000A740095BF37 /* dice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D277406319000A740095BF37 /* dice@2x.png */; };
 		D2774066190030190095BF37 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2774065190030190095BF37 /* CoreTelephony.framework */; };
+		D2774069190039310095BF37 /* RCFacebookWorkaround.m in Sources */ = {isa = PBXBuildFile; fileRef = D2774068190039310095BF37 /* RCFacebookWorkaround.m */; };
 		D278D3451891BCDF0062AE39 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3411891BCDF0062AE39 /* back@2x.png */; };
 		D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3421891BCDF0062AE39 /* copyPaste@2x.png */; };
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
@@ -280,6 +281,7 @@
 		D2773720189AB01D0048F641 /* RCMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMessageView.m; sourceTree = "<group>"; };
 		D277406319000A740095BF37 /* dice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dice@2x.png"; sourceTree = "<group>"; };
 		D2774065190030190095BF37 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		D2774068190039310095BF37 /* RCFacebookWorkaround.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFacebookWorkaround.m; sourceTree = "<group>"; };
 		D278D3411891BCDF0062AE39 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D278D3421891BCDF0062AE39 /* copyPaste@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copyPaste@2x.png"; sourceTree = "<group>"; };
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				D21717E518576F7200D687F8 /* Vendor */,
 				D21717B918576B6500D687F8 /* Supporting Files */,
 				D27F403B186341EA00104F1C /* RCStoryboard.storyboard */,
+				D2774068190039310095BF37 /* RCFacebookWorkaround.m */,
 			);
 			path = Valt;
 			sourceTree = "<group>";
@@ -1028,6 +1031,7 @@
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D2773721189AB01D0048F641 /* RCMessageView.m in Sources */,
+				D2774069190039310095BF37 /* RCFacebookWorkaround.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
 				D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */,
 				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
@@ -1218,9 +1222,9 @@
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5B7838FB-4EA9-4088-80EF-E8E6601F4226";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1232,8 +1236,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tapsmith LLC (J546F75L53)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
@@ -1244,9 +1248,9 @@
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5B7838FB-4EA9-4088-80EF-E8E6601F4226";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1343,8 +1347,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/**",
@@ -1355,9 +1359,9 @@
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/**";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Valt;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5B7838FB-4EA9-4088-80EF-E8E6601F4226";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

@@ -75,7 +75,7 @@ NSString * const didTapAutofillForWeb = @"didTapAutofillForWeb";
         [array addObjectsFromArray:trimmedLines];
     }
     [array addObjectsFromArray:autofills];
-    if (self.filterString){
+    if (self.filterString.length > 0){
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", self.filterString];
         [array filterUsingPredicate:predicate];
     }
@@ -113,15 +113,10 @@ NSString * const didTapAutofillForWeb = @"didTapAutofillForWeb";
 
 -(void)filterWithString:(NSString *)string
 {
-    if (string.length > 0){
-        self.filterString = string;
-        [[RCSecureNoteFiller sharedFiller] autoFillForString:string completion:^(NSArray * array) {
-            self.autofills = array;
-        }];
-    }else{
-        self.filterString = nil;
-        self.autofills = @[];
-    }
+    self.filterString = string;
+    [[RCSecureNoteFiller sharedFiller] autoFillForString:string completion:^(NSArray * array) {
+        self.autofills = array;
+    }];
 }
 
 

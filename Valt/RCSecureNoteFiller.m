@@ -85,8 +85,13 @@ static RCSecureNoteFiller * sharedFiller;
 -(void)autoFillForString:(NSString *)string completion:(void(^)(NSArray *))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", string];
-        NSArray * array = [self.lineNotes filteredArrayUsingPredicate:predicate];
+        NSArray * array;
+        if (string.length > 0){
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", string];
+            array = [self.lineNotes filteredArrayUsingPredicate:predicate];
+        }else{
+            array = self.lineNotes;
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(array);
         });
