@@ -87,7 +87,9 @@ static void * LatestPointKey;
         [self.menuController removeFromParentViewController];
         [self addChildViewController:self.currentSideController];
         [self.view addSubview:self.currentSideController.view];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        if (!self.messageView.messageShowing){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
         [self.view addSubview:self.messageView];
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
@@ -110,7 +112,10 @@ static void * LatestPointKey;
         [self.menuController removeFromParentViewController];
         [self addChildViewController:self.currentSideController];
         [self.view addSubview:self.currentSideController.view];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        if (!self.messageView.messageShowing){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
+
         [self.view addSubview:self.messageView];
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
@@ -272,27 +277,23 @@ static void * LatestPointKey;
 -(void)goHomeWithForce
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    UIViewController * current = self.childViewControllers[0];
+    RCNotesViewController * current = self.childViewControllers[0];
     [current removeFromParentViewController];
     [self addChildViewController:self.listController];
     CGRect rect = current.view.frame;
-    UIView * dimview = [[UIView alloc] initWithFrame:self.listController.view.frame];
     [self.view insertSubview:self.listController.view belowSubview:current.view];
-    self.listController.view.transform = CGAffineTransformMakeScale(.97, .97);
+    self.listController.view.transform = CGAffineTransformMakeTranslation(-[UIScreen mainScreen].bounds.size.width, 0);
     [self setNavBarMain];
     [self.view bringSubviewToFront:self.navBar];
-    dimview.backgroundColor = [UIColor blackColor];
-    dimview.alpha = .75;
-    [self.view insertSubview:dimview belowSubview:current.view];
     [UIView animateWithDuration:.42 animations:^{
-        [dimview setAlpha:0];
-        [current.view setFrame:CGRectOffset(current.view.frame, 0, [UIScreen mainScreen].bounds.size.height)];
+        current.autofillView.alpha = 0;
+        [current.view setFrame:CGRectOffset(current.view.frame, [UIScreen mainScreen].bounds.size.width, 0)];
         self.listController.view.transform = CGAffineTransformIdentity;
     }completion:^(BOOL finished) {
         current.view.transform = CGAffineTransformIdentity;
         [current.view removeFromSuperview];
         current.view.frame = rect;
-        [dimview removeFromSuperview];
+        current.autofillView.alpha = 1;
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
 

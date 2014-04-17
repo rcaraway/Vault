@@ -703,6 +703,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         deleteKeychainPassword(i);
     }
     [[PDKeychainBindings sharedKeychainBindings] setString:@"0" forKey:STORED_TITLE_COUNT];
+    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:SECURE_NOTES];
     [self removeMasterPassword];
     if (mutablePasswords){
         [mutablePasswords removeAllObjects];

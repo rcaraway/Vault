@@ -10,6 +10,7 @@
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
 #import "RCInAppPurchaser.h"
+#import "RCSecureNoteFiller.h"
 
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
@@ -103,7 +104,6 @@ static RCNetworkListener * sharedQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPayForYear) name:purchaserDidPayYearly object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginUpgrading) name:purchaserDidBeginUpgrading object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailUpgrading) name:purchaserDidFail object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSaveNotes) name:passwordManagerDidSaveNotes object:nil];
 }
 
 -(void)removeNotifications
@@ -116,27 +116,34 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didLockPhone
 {
-    if ([[RCPasswordManager defaultManager] accessGranted])
+    if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] hideAllPasswordData];
+        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
+    }
+    
 }
 
 -(void)didUnlockPhone
 {
-    if ([[RCPasswordManager defaultManager] accessGranted])
+    if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
+        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
+    }
+    
 }
 
 -(void)didBecomeActive
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
          [self loginWithSavedData];
+        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
     }
 }
 
 -(void)didEnterBackground
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
-        
+        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
     }
 }
 
@@ -262,7 +269,7 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didLock
 {
-    
+    [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
 }
 
 -(void)didDenyAccess

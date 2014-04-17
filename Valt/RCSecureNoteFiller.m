@@ -39,6 +39,7 @@ static RCSecureNoteFiller * sharedFiller;
 {
     self = super.init;
     if (self){
+
         [self updateSecureNotesFill];
     }
     return self;
@@ -46,10 +47,39 @@ static RCSecureNoteFiller * sharedFiller;
 
 -(void)updateSecureNotesFill
 {
-    NSString * secureNotes = [[RCPasswordManager defaultManager] secureNotes];
-    NSArray * lines =  [secureNotes componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    //TODO: divide by colon
-    self.lineNotes = lines;
+    if ([[RCPasswordManager defaultManager] accessGranted]){
+        NSString * secureNotes = [[RCPasswordManager defaultManager] secureNotes];
+        NSMutableArray * allWords = [NSMutableArray new];
+        self.autofillPairs = [NSMutableDictionary new];
+        NSArray * lines =  [secureNotes componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        for (NSString * line in lines) {
+            NSArray * subLines = [line componentsSeparatedByString:@":"];
+            if (subLines.count == 2){
+                NSString * subLineOne = [subLines[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                NSString * subLineTwo = [subLines[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                [self.autofillPairs setObject:subLineTwo forKey:subLineOne];
+                [allWords addObject:subLineOne];
+                [allWords addObject:subLineTwo];
+            }else{
+                [allWords addObject:line];
+            }
+        }
+        self.lineNotes = [allWords copy];
+    }else{
+        self.lineNotes = nil;
+        self.autofillPairs = nil;
+    }
+}
+
+-(void)hideNotesFilling
+{
+    self.lineNotes = nil;
+    self.autofillPairs = nil;
+}
+
+-(NSString *)autoFillForKey:(NSString *)key
+{
+    return [self.autofillPairs objectForKey:key];
 }
 
 -(void)autoFillForString:(NSString *)string completion:(void(^)(NSArray *))completion
@@ -95,7 +125,17 @@ static RCSecureNoteFiller * sharedFiller;
              @"Debit Card Expiration",
              @"Visa Card",
              @"Mobile Number",
-             @"Phone Number"];
+             @"Phone Number",
+             @"Website",
+             @"Name",
+             @"Passport number",
+             @"Driver's license ID",
+             @"Savings Account",
+             @"Checking Account",
+             @"Business Account",
+             @"American Express:",
+             @"MasterCard",
+             @""];
 }
 
 @end

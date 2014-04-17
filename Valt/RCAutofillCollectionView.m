@@ -14,6 +14,8 @@
 #import "RCPassword.h"
 #import "RCSecureNoteFiller.h"
 
+NSString * const didTapAutofillForWeb = @"didTapAutofillForWeb";
+
 @interface RCAutofillCollectionView () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @property(nonatomic, strong) NSArray * autofills;
@@ -73,8 +75,10 @@
         [array addObjectsFromArray:trimmedLines];
     }
     [array addObjectsFromArray:autofills];
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", self.filterString];
-    [array filterUsingPredicate:predicate];
+    if (self.filterString){
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", self.filterString];
+        [array filterUsingPredicate:predicate];
+    }
     _autofills = [array copy];
     [self reloadData];
 }
@@ -83,7 +87,7 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+     [[NSNotificationCenter defaultCenter] postNotificationName:didTapAutofillForWeb object:self.autofills[indexPath.row]];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -109,11 +113,15 @@
 
 -(void)filterWithString:(NSString *)string
 {
-    self.filterString = string;
-    [[RCSecureNoteFiller sharedFiller] autoFillForString:string completion:^(NSArray * array) {
-        self.autofills = array;
-    }];
-    
+    if (string.length > 0){
+        self.filterString = string;
+        [[RCSecureNoteFiller sharedFiller] autoFillForString:string completion:^(NSArray * array) {
+            self.autofills = array;
+        }];
+    }else{
+        self.filterString = nil;
+        self.autofills = @[];
+    }
 }
 
 

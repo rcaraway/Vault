@@ -175,6 +175,7 @@
 {
     if (![self.notesView.text isEqualToString:self.originalNotes]){
         [[RCPasswordManager defaultManager] saveSecureNotes:self.notesView.text];
+        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
         [[RCNetworking sharedNetwork] saveToCloud];
     }
 }
@@ -225,7 +226,6 @@
 
 #pragma mark - Screen adjustments
 
-
 -(void)adjustForDevice
 {
     if (IS_IPAD){
@@ -247,9 +247,10 @@
 
 -(void)adjustForSmalliPhones
 {
-    [self.autofillView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-(216+70), [UIScreen mainScreen].bounds.size.width, self.autofillView.frame.size.height)];
-    [self.infoButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 170, self.autofillButton.frame.origin.y, self.autofillButton.frame.size.width, self.autofillButton.frame.size.height)];
-    self.tipView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, [UIScreen mainScreen].bounds.size.height/2.0-50);
+    [self.autofillView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-(216+64), [UIScreen mainScreen].bounds.size.width, self.autofillView.frame.size.height)];
+    [self.infoButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 140, self.autofillButton.frame.origin.y, self.autofillButton.frame.size.width, self.autofillButton.frame.size.height)];
+    self.tipView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2.0, [UIScreen mainScreen].bounds.size.height/2.0-100);
+    [self.notesView setFrame:CGRectMake(11, 44, [UIScreen mainScreen].bounds.size.width-22, [UIScreen mainScreen].bounds.size.height-324)];
 }
 
 

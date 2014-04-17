@@ -18,3 +18,5 @@
 -(void)filterWithString:(NSString *)string;
 
 @end
+
+extern NSString * const didTapAutofillForWeb;

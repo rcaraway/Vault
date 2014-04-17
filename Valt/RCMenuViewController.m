@@ -70,7 +70,11 @@
         }else{
             color = [UIColor tweetColor];
         }
-        [self highlightImageWithColor:color];
+        if ([self.textLabel.text isEqualToString:NOTES]){
+            self.imageView.image = [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.8 alpha:1]];
+        }else{
+            [self highlightImageWithColor:color];
+        }
     }else{
         if ([self.textLabel.text isEqualToString:HOME]){
             self.imageView.image = [[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]];
@@ -79,7 +83,7 @@
         }else if ([self.textLabel.text isEqualToString:FEEDBACK]){
             self.imageView.image = [[UIImage imageNamed:@"support1"] tintedIconWithColor:[UIColor contactSupportColor]];
         }else if ([self.textLabel.text isEqualToString:NOTES]){
-            self.imageView.image = [[UIImage imageNamed:@"document"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]];
+            self.imageView.image = [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]];
         }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             self.imageView.image = [[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]];
         }else{
@@ -279,7 +283,7 @@
 
 -(void)setupCellImages
 {
-    self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"document"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
+    self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
         [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:2];
     }
@@ -354,7 +358,6 @@
 -(void)didSwitch
 {
     if (!self.closeSwitch.isOn){
-        //You Sure? Keeping Valt open massively reduces security, but is more convenient.  Proceed with extreme caution.
         [[[MLAlertView  alloc] initWithTitle:@"Warning" message:@"This sacrifices security for convenience. Be very careful." cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     [APP setLocksOnClose:self.closeSwitch.isOn];
@@ -373,7 +376,7 @@
 
 -(NSString *)randomizedHiddenMessage
 {
-    NSArray * array = @[@"You found me.", @"You weren't supposed to see this.", @"Well hello there.", @"This is not the text you were looking for."];
+    NSArray * array = @[@"You found me.", @"Hello there.", @"This is not the text you were looking for."];
     return array[arc4random()%(array.count)];
 }
 
@@ -386,7 +389,7 @@
              @"Santigold - \"Disparate Youth\"" : @"http://www.youtube.com/watch?v=mIMMZQJ1H6E",
              @"Youth Lagoon - \"Mute\"" : @"http://www.youtube.com/watch?v=mSXyr6im7kk",
              @"Miami Horror - \"Real Slow (Gold Fields Remix)\"" : @"http://www.youtube.com/watch?v=CSDTg-tBVSA",
-             @"Crystal Castles - \"Baptism\"" : @"http://www.youtube.com/watch?v=vStjmYxetY0",
+             @"Crystal Castles - \"Knights\"" : @"https://www.youtube.com/watch?v=_O2y2n4HfMY",
              @"The Asteroids Galaxy Tour - \"The Golden Age\"" : @"http://www.youtube.com/watch?v=xFihi5cPqqE",
              @"The Snake The Cross The Crown - \"Behold the River\"" : @"http://www.youtube.com/watch?v=ruznqiBMQq4",
              @"Meiko - \"Leave the Lights On\"" : @"http://www.youtube.com/watch?v=UvAi53lynSc",
@@ -394,7 +397,6 @@
              @"Macklemore - \"Ten Thousand Hours\"" : @"http://www.youtube.com/watch?v=iEr5H4E4r3I",
              @"Wild Flag - \"Romance\"" : @"http://www.youtube.com/watch?v=8J8n9R8rnB8",
              @"Childish Gambino - \"Heartbeat\"" : @"http://www.youtube.com/watch?v=dFVxGRekRSg",
-             @"Odesza - \"My Friends Never Die\"" : @"http://www.youtube.com/watch?v=NyPtlOoCmV4",
              @"Mt. Eden - \"Still Alive\"" : @"http://www.youtube.com/watch?v=FDYIdBZUl2Y",
              @"The Temper Trap - \"Fader\"" : @"http://www.youtube.com/watch?v=5xQF0gerTtM",
              @"Brand New - \"Daisy\"" : @"http://www.youtube.com/watch?v=mV6FMXClArU",

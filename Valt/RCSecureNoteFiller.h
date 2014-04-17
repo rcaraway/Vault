@@ -17,6 +17,7 @@
 -(void)updateSecureNotesFill;
 -(void)autoFillForString:(NSString *)string completion:(void(^)(NSArray *))completion;
 -(NSString *)autoFilledTitleForLine:(NSString *)line;
-
+-(NSString *)autoFillForKey:(NSString *)key;
+-(void)hideNotesFilling;
 
 @end

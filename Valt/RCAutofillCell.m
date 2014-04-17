@@ -44,6 +44,8 @@
 -(void)setAutofillText:(NSString *)autofillText
 {
     _autofillText = [autofillText copy];
+    CGFloat width = [autofillText sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15]}].width;
+    [self.autofillLabel setFrame:CGRectMake(0, 0, width+22, 43)];
     self.autofillLabel.text = self.autofillText;
 }
 
