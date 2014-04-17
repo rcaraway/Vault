@@ -15,8 +15,6 @@
 #import "RCNetworkListener.h"
 
 #import <Parse/Parse.h>
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
 
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
@@ -24,7 +22,7 @@
 #define LOCKS_ON_CLOSE @"LOCKS_ON_CLOSE"
 #define SWIPE_RIGHT_TUTORIAL @"SWIPE_RIGHT_TUTORIAL"
 #define AUTOFILL_TUTORIAL @"AUTOFILL_TUTORIAL"
-
+#define SECURE_NOTE_TIP @"SECURE_NOTE_TIP"
 
 @interface RCAppDelegate ()
 
@@ -113,11 +111,18 @@
                                                               RENEW_COUNT_KEY: @0,
                                                               LOCKS_ON_CLOSE : @YES,
                                                               SWIPE_RIGHT_TUTORIAL: @YES,
-                                                              AUTOFILL_TUTORIAL: @YES}];
+                                                              AUTOFILL_TUTORIAL: @YES,
+                                                              SECURE_NOTE_TIP : @YES}];
 #ifdef NEW_USER_MODE
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SWIPE_RIGHT_TUTORIAL];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AUTOFILL_TUTORIAL];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SECURE_NOTE_TIP];
 #endif
+}
+
+-(BOOL)secureNoteTip
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:SECURE_NOTE_TIP];
 }
 
 -(BOOL)swipeRightHint
@@ -133,6 +138,11 @@
 -(BOOL)autofillHints
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:AUTOFILL_TUTORIAL];
+}
+
+-(void)setSecureNoteTip:(BOOL)secureNoteTip
+{
+    [[NSUserDefaults standardUserDefaults] setBool:secureNoteTip forKey:SECURE_NOTE_TIP];
 }
 
 -(void)setSwipeRightHint:(BOOL)swipeRightHint
@@ -194,17 +204,12 @@
 
 -(void)setupAnalytics
 {
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [[GAI sharedInstance] trackerWithTrackingId:GANALYTICS_ID];
+
+
 }
 
 -(void)trackEvent:(NSString *)event action:(NSString *)action
 {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:event
-                                                          action:action
-                                                           label:nil
-                                                           value:nil] build]];
 }
 
 

@@ -53,6 +53,7 @@
 @property(nonatomic, strong) NSMutableArray * textFields;
 @property(nonatomic) NSInteger dummyCellIndex;
 @property (nonatomic, assign) NSInteger passwordIndex;
+@property(nonatomic, strong) UIButton * passwordButton;
 
 @property (nonatomic, strong) id grabbedObject;
 
@@ -90,6 +91,7 @@
     view.backgroundColor = [UIColor clearColor];
     self.view = view;
     [self setupTableView];
+    [self setupPasswordButton];
 }
 
 - (void)viewDidLoad
@@ -188,6 +190,31 @@
     [self.view addSubview:self.tableView];
 }
 
+-(void)setupPasswordButton
+{
+    self.passwordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.passwordButton setImage:[[UIImage imageNamed:@"dice"] tintedIconWithColor:[UIColor colorWithWhite:.8 alpha:1]] forState:UIControlStateNormal];
+    [self.passwordButton addTarget:self action:@selector(didTapPasswordGeneration) forControlEvents:UIControlEventTouchUpInside];
+    [self.passwordButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width-50, 2, 44, 44)];
+}
+
+-(void)didTapPasswordGeneration
+{
+    NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSUInteger len = 10 + (arc4random()%15);
+    NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
+    for (int i=0; i<len; i++) {
+        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random() % [letters length]]];
+    }
+    self.password.password = [randomString copy];
+    self.credentials[2] = self.password.password;
+    dataChanged = YES;
+    [self.tableView reloadData];
+}
+
+
+#pragma mark - Scroll Handling
+
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     if (!self.cameFromSearch){
@@ -274,6 +301,16 @@
 
 
 #pragma mark - TableView Delegate/DataSource
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isMemberOfClass:[RCDropDownCell class]]){
+        RCDropDownCell * ddCell = (RCDropDownCell *)cell;
+        if ([ddCell.textField.placeholder isEqualToString:@"Password"]){
+            [ddCell.contentView addSubview:self.passwordButton];
+        }
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -558,7 +595,7 @@
             return @"URL";
             break;
         default:
-            return @"Notes";
+            return @"Notes (Separated by commas)";
             break;
     }
 }

@@ -16,6 +16,7 @@
 #import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import "RCMenuViewController.h"
+#import "RCNotesViewController.h"
 
 //Model
 #import "RCPasswordManager.h"
@@ -85,9 +86,9 @@
 
 -(NSUInteger)supportedInterfaceOrientations
 {
-    if (IS_IPAD){
-        return UIInterfaceOrientationMaskAll;
-    }else
+//    if (IS_IPAD){
+//        return UIInterfaceOrientationMaskAll;
+//    }else
         return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -98,9 +99,9 @@
 
 -(BOOL)shouldAutorotate
 {
-    if (IS_IPAD){
-        return YES;
-    }
+//    if (IS_IPAD){
+//        return YES;
+//    }
     return NO;
 }
 
@@ -359,6 +360,15 @@
 
 
 #pragma mark - Properties
+
+-(RCNotesViewController *)notesController
+{
+    if (!_notesController){
+        _notesController = [[RCNotesViewController alloc] init];
+    }
+    return _notesController;
+}
+
 
 -(RCAboutViewController *)aboutController
 {

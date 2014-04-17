@@ -32,7 +32,7 @@
 
 -(void)setupTextField
 {
-    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(18, 0, 320, 47)];
+    self.textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(18, 0, [UIScreen mainScreen].bounds.size.width, 47)];
     self.textField.autocompleteDataSource = [HTAutocompleteManager sharedManager];
     self.textField.autocompleteType = RCAutocompleteTypeUsername;
     self.textField.font = [UIFont fontWithName:@"HelveticaNeue" size:16];

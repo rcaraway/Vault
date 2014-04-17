@@ -27,6 +27,7 @@
 #define STORED_URL_PREFIX "STORED_URL_"
 #define STORED_NOTES_PREFIX "STORED_NOTES_"
 
+#define SECURE_NOTES @"SECURE_NOTES"
 
 NSString * const passwordManagerAccessGranted = @"passwordManagerAccessGranted";
 NSString * const passwordManagerAccessFailedToGrant = @"passwordManagerAccessFailedToGrant";
@@ -35,9 +36,10 @@ NSString * const passwordManagerDidLock = @"passwordManagerDidLock";
 NSString * const passwordManagerDidCreateMasterPassword = @"passwordManagerDidCreateMasterPassword";
 NSString * const passwordManagerDidChangeMasterPassword = @"passwordManagerDidChangeMasterPassword";
 NSString * const passwordManagerDidFailToChangeMasterPassword = @"passwordManagerDidFailToChangeMasterPassword";
+NSString * const passwordManagerDidSaveNotes = @"passwordManagerDidSaveNotes";
+
 
 static RCPasswordManager * manager;
-
 
 #pragma mark - C functions
 
@@ -492,7 +494,45 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 }
 
 
+#pragma mark - Secure Notes
+
+-(void)saveSecureNotes:(NSString *)notes
+{
+    if (self.accessGranted){
+         [[PDKeychainBindings sharedKeychainBindings] setObject:notes forKey:SECURE_NOTES];
+    }
+}
+
+-(NSString *)secureNotes
+{
+    if (self.accessGranted){
+        return [[PDKeychainBindings sharedKeychainBindings] objectForKey:SECURE_NOTES];
+    }
+    return nil;
+}
+
+-(PFObject *)passwordFromSecureNotes
+{
+    if (self.accessGranted && [PFUser currentUser]){
+        NSString * secureNotes = self.secureNotes;
+        if (secureNotes && secureNotes.length > 0){
+            PFObject * password = [PFObject objectWithClassName:PASSWORD_CLASS];
+            [password setObject:[PFUser currentUser].username forKey:PASSWORD_OWNER];
+            [password setObject:@(-1) forKey:PASSWORD_INDEX];
+            [password setObject:SECURE_NOTES  forKey:PASSWORD_TITLE];
+            [password setObject:[secureNotes stringByEncryptingWithKey:self.accountPassword] forKey:PASSWORD_EXTRA_FRIELD];
+            [password setACL:[PFACL ACLWithUser:[PFUser currentUser]]];
+            return password;
+        }
+    }
+    return nil;
+}
+
+
+
 #pragma mark - Properties Accessors
+
+
 
 -(NSArray *)passwords
 {
@@ -663,6 +703,7 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
         deleteKeychainPassword(i);
     }
     [[PDKeychainBindings sharedKeychainBindings] setString:@"0" forKey:STORED_TITLE_COUNT];
+    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:SECURE_NOTES];
     [self removeMasterPassword];
     if (mutablePasswords){
         [mutablePasswords removeAllObjects];

@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "RCPassword.h"
 
+
 @interface RCPasswordManager : NSObject
 
 @property(nonatomic, strong,readonly) NSArray * passwords;
 @property(nonatomic, copy, readonly) NSString * accountLogin;
 @property(nonatomic, copy ,readonly) NSString * accountPassword;
+@property(nonatomic, copy, readonly) NSString * secureNotes;
 
 @property (atomic, readonly) BOOL accessGranted;
 @property (nonatomic, readonly) BOOL canLogin;
@@ -29,6 +31,8 @@
 -(void)removePasswordAtIndex:(NSInteger )index;
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
 -(void)updatePassword:(RCPassword *)password;
+-(void)saveSecureNotes:(NSString *)notes;
+-(PFObject *)passwordFromSecureNotes;
 -(RCPassword *)passwordForTitle:(NSString *)title;
 
 -(void)hideAllPasswordData;
@@ -54,4 +58,5 @@ extern NSString * const passwordManagerAccessFailedToGrant;
 extern NSString * const passwordManagerAccessDenied;
 extern NSString * const passwordManagerDidLock;
 extern NSString * const passwordManagerDidFailToChangeMasterPassword;
+extern NSString * const passwordManagerDidSaveNotes;
 

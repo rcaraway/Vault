@@ -16,10 +16,13 @@
 
 #import "LBActionSheet.h"
 #import "RCMessageView.h"
+#import "RCAutofillCell.h"
+#import "RCAutofillCollectionView.h"
 
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCNetworking.h"
+#import "RCSecureNoteFiller.h"
 
 
 
@@ -29,8 +32,11 @@
 }
 
 @property(nonatomic, strong) LBActionSheet * actionSheet;
+@property(nonatomic, strong) NSTimer * autoFillTimer;
 @property(nonatomic, copy) NSString * currentFormURL;
+@property(nonatomic, copy) NSString * currentFormString;
 
+@property (nonatomic) BOOL stopCallingUpdate;
 @property(nonatomic) BOOL usernameFilled;
 @property(nonatomic) BOOL passwordFilled;
 @property(nonatomic) BOOL firstPage;
@@ -58,51 +64,11 @@
     [super viewDidLoad];
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.webView.delegate = self;
-    [self.doneButton setTitleColor:[UIColor webColor] forState:UIControlStateNormal];
-    [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
-    [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
     [self.usernameField addTarget:self action:@selector(usernameTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.passwordButton addTarget:self action:@selector(passwordTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.topView.layer addSublayer:[self separatorAtOrigin:43.0f]];
-    [self.bottomView.layer addSublayer:[self separatorAtOrigin:0.0f]];
-    [self.backButton setImage:[self.backButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
-    [self.forwardButton setImage:[self.forwardButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
-    [self.refreshButton setImage:[self.refreshButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
-    [self.pasteButton setImage:[self.pasteButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
-    self.topView.backgroundColor = [UIColor navColor];
-    self.credentialView.backgroundColor = [UIColor navColor];
-    [self.credentialView.layer addSublayer:[self separatorAtOrigin:43.0f]];
-    self.titleLabel.textColor = [UIColor webColor];
-    self.urlLabel.textColor = [UIColor webColor];
-    self.bottomView.backgroundColor = [UIColor navColor];
-    [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
-    [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
-    self.webView.backgroundColor = [UIColor navColor];
-    self.view.backgroundColor = [UIColor navColor];
-    [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
-    [self.usernameField setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
-    [self.passwordButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2.0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
     [self loadPasswordRequest];
-}
-
--(void)deleteAllCookies
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSHTTPCookie *cookie;
-        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (cookie in [storage cookies]) {
-            [storage deleteCookie:cookie];
-        }
-    });
-}
-
--(CALayer *)separatorAtOrigin:(CGFloat)yOrigin
-{
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, yOrigin, [UIScreen mainScreen].bounds.size.width, 1.0f);
-    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.83f
-                                                     alpha:1.0f].CGColor;
-    return bottomBorder;
+    [self setupViews];
+    [self setupAutofillCollectionView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -111,6 +77,7 @@
     self.titleLabel.backgroundColor = [UIColor navColor];
     self.doneButton.backgroundColor = [UIColor navColor];
     self.bottomView.backgroundColor = [UIColor navColor];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didTapAutoFill:) name:didTapAutofillForWeb object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCredentialView) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideCredentialView) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -118,6 +85,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:didTapAutofillForWeb object:nil];
     [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter ]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [self deleteAllCookies];
@@ -171,6 +139,19 @@
 }
 
 #pragma mark - Event Hanlding
+
+-(void)didTapAutoFill:(NSNotification *)notification
+{
+    self.stopCallingUpdate = YES;
+    NSString * autofill = notification.object;
+    NSString * value = [[RCSecureNoteFiller sharedFiller] autoFillForKey:autofill];
+    if (value){
+        [self fillSelectedFormWithText:value];
+    }else{
+        [self fillSelectedFormWithText:autofill];
+    }
+    self.stopCallingUpdate = NO;
+}
 
 -(void)didFailFillingBothFields
 {
@@ -248,6 +229,18 @@
 
 #pragma mark - State Handling
 
+
+-(void)deleteAllCookies
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSHTTPCookie *cookie;
+        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        for (cookie in [storage cookies]) {
+            [storage deleteCookie:cookie];
+        }
+    });
+}
+
 -(void)loadPasswordRequest
 {
     self.firstPage = YES;
@@ -290,13 +283,45 @@
 
 -(BOOL)fillSelectedFormWithText:(NSString *)text
 {
+    NSString * jsReady = [self javascriptReadyString:text];
     NSString *js = [NSString stringWithFormat:@"var field = document.activeElement;\
-                    field.value ='%@'", text];
-   NSString * string =  [self.webView stringByEvaluatingJavaScriptFromString:js];
+                    field.value ='%@'", jsReady];
+    NSString * string =  [self.webView stringByEvaluatingJavaScriptFromString:js];
+    NSLog(@"stringsss %@", string);
     if (!string){
         return NO;
     }
     return YES;
+}
+
+
+-(NSString *)javascriptReadyString:(NSString *)autofillString
+{
+    NSString * string = autofillString;
+    string = [string stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
+    string = [string stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    string = [string stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
+    string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+    string = [string stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
+    string = [string stringByReplacingOccurrencesOfString:@"\f" withString:@"\\f"];
+    string = [string stringByReplacingOccurrencesOfString:@"\f" withString:@"\\f"];
+    return string;
+}
+
+-(void)updateAutofill
+{
+    if (!self.stopCallingUpdate){
+        NSString *js = @"document.activeElement.value.toString();";
+        NSString * string =  [self.webView stringByEvaluatingJavaScriptFromString:js];
+        if (![string isEqualToString:self.currentFormString]){
+            self.currentFormString = string;
+            if (self.currentFormString){
+                [self.collectionView filterWithString:string];
+            }else{
+                [self.collectionView filterWithString:nil];
+            }
+        }
+    }
 }
 
 -(BOOL)fillOutPassword
@@ -333,10 +358,11 @@
 
 -(void)showCredentialView
 {
+    self.autoFillTimer = [NSTimer scheduledTimerWithTimeInterval:.14 target:self selector:@selector(updateAutofill) userInfo:nil repeats:YES];
     [self.view addSubview:self.credentialView];
         self.credentialView.alpha =1;
     self.topView.clipsToBounds = YES;
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.credentialView setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 44)];
         CGAffineTransform transform = CGAffineTransformMakeTranslation(0, 44);
         self.titleLabel.transform = transform;
@@ -347,7 +373,9 @@
 
 -(void)hideCredentialView
 {
-    [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:.7 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [self.autoFillTimer invalidate];
+    self.autoFillTimer = nil;
+    [UIView animateWithDuration:.26 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
         CGAffineTransform transform = CGAffineTransformIdentity;
         self.titleLabel.transform = transform;
@@ -356,6 +384,15 @@
     } completion:nil];
 }
 
+
+#pragma mark - Autofill Collection View
+
+-(void)setupAutofillCollectionView
+{
+    RCAutofillCollectionView * collectionView = [[RCAutofillCollectionView  alloc] initWithPassword:self.password];
+    self.collectionView = collectionView;
+    [self.credentialView addSubview:collectionView];
+}
 
 
 #pragma mark - Webview Delegate
@@ -420,5 +457,42 @@
     self.urlButton.enabled = YES;
 }
 
+
+#pragma mark - Convenience
+
+-(void)setupViews
+{
+    [self.topView.layer addSublayer:[self separatorAtOrigin:43.0f]];
+    [self.bottomView.layer addSublayer:[self separatorAtOrigin:0.0f]];
+    [self.backButton setImage:[self.backButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.forwardButton setImage:[self.forwardButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.refreshButton setImage:[self.refreshButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    [self.pasteButton setImage:[self.pasteButton.imageView.image tintedIconWithColor:[UIColor webColor]] forState:UIControlStateNormal];
+    self.topView.backgroundColor = [UIColor navColor];
+    self.credentialView.backgroundColor = [UIColor navColor];
+    [self.credentialView.layer addSublayer:[self separatorAtOrigin:43.0f]];
+    self.titleLabel.textColor = [UIColor webColor];
+    self.urlLabel.textColor = [UIColor webColor];
+    self.bottomView.backgroundColor = [UIColor navColor];
+    [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
+    [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
+    self.webView.backgroundColor = [UIColor navColor];
+    self.view.backgroundColor = [UIColor navColor];
+    [self.credentialView setFrame:CGRectMake(0, -44, [UIScreen mainScreen].bounds.size.width, 44)];
+    [self.usernameField setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
+    [self.passwordButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2.0, 0, [UIScreen mainScreen].bounds.size.width/2.0, 44)];
+    [self.doneButton setTitleColor:[UIColor webColor] forState:UIControlStateNormal];
+    [self.usernameField setTitle:self.password.username forState:UIControlStateNormal];
+    [self.passwordButton setTitle:self.password.password forState:UIControlStateNormal];
+}
+
+-(CALayer *)separatorAtOrigin:(CGFloat)yOrigin
+{
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, yOrigin, [UIScreen mainScreen].bounds.size.width, 1.0f);
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.83f
+                                                     alpha:1.0f].CGColor;
+    return bottomBorder;
+}
 
 @end

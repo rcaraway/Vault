@@ -186,7 +186,8 @@
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
 }
 
-- (IBAction)tappedBlog:(id)sender {
+- (IBAction)tappedBlog:(id)sender
+{
     NSString * url = @"http://robcaraway.com";
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
 }

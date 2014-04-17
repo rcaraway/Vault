@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) RCRootViewController * rootController;
 
+@property (nonatomic) BOOL secureNoteTip;
 @property(nonatomic) BOOL locksOnClose;
 @property (nonatomic) BOOL swipeRightHint;
 @property (nonatomic) BOOL autofillHints;

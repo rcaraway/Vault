@@ -18,6 +18,7 @@
 @class RCPurchaseViewController;
 @class RCWebViewController;
 @class RCMessageView;
+@class RCNotesViewController;
 
 @interface RCRootViewController : RCViewController 
 
@@ -31,6 +32,7 @@
 @property(nonatomic, strong) RCAboutViewController * aboutController;
 @property(nonatomic, strong) RCPurchaseViewController * purchaseController;
 @property(nonatomic, strong) RCWebViewController * webController;
+@property(nonatomic, strong) RCNotesViewController * notesController;
 @property(nonatomic, strong) UINavigationBar * navBar;
 @property(nonatomic, strong) UIView * snapshotView;
 @property(nonatomic, strong) RCMessageView * messageView;

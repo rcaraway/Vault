@@ -165,7 +165,12 @@ static RCNetworking *sharedNetwork;
         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidBeginSyncing object:nil];
         [self RCPasswordsToPFObjects:[[RCPasswordManager defaultManager] passwords] completion:^(NSArray *objects) {
             if (objects != nil && [self loggedIn]){
-                [[PFUser currentUser] setObject:objects forKey:PASSWORDS_KEY];
+                NSMutableArray * mutable = [objects mutableCopy];
+                if ([[RCPasswordManager defaultManager] secureNotes].length > 0){
+                    PFObject * notes = [[RCPasswordManager defaultManager] passwordFromSecureNotes];
+                    [mutable addObject:notes];
+                }
+                [[PFUser currentUser] setObject:mutable forKey:PASSWORDS_KEY];
                 [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     if (!error){
                         [[NSNotificationCenter defaultCenter] postNotificationName:networkingDidSync object:nil];
@@ -250,16 +255,24 @@ static RCNetworking *sharedNetwork;
         NSMutableArray * array = [NSMutableArray new];
         for (PFObject * object in pfObjects) {
             if ([[RCPasswordManager defaultManager] accessGranted]){
-                RCPassword * password = [RCPassword passwordFromPFObject:object];
-                if (password){
-                    if (![array containsObject:password]){
-                         [array addObject:password];
+                if ([self objectIsSecureNotes:object]){
+                    RCPassword * password = [RCPassword passwordFromPFObject:object];
+                    if (password){
+                        NSString * notes = password.notes;
+                        [[RCPasswordManager defaultManager] saveSecureNotes:notes];
                     }
-                }
-                else{
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(nil);
-                    });
+                }else{
+                    RCPassword * password = [RCPassword passwordFromPFObject:object];
+                    if (password){
+                        if (![array containsObject:password]){
+                            [array addObject:password];
+                        }
+                    }
+                    else{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(nil);
+                        });
+                    }
                 }
             }else{
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -272,6 +285,15 @@ static RCNetworking *sharedNetwork;
             completion(array);
         });
     });
+}
+
+-(BOOL)objectIsSecureNotes:(PFObject *)object
+{
+    NSInteger index = [[object objectForKey:PASSWORD_INDEX] integerValue];
+    if (index == -1){
+        return YES;
+    }
+    return NO;
 }
 
 -(void)RCPasswordsToPFObjects:(NSArray *)rcPasswords completion:(void (^)(NSArray * objects))completion

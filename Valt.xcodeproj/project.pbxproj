@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BCB160CEC97498787646A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 851FF9FD858643BAB534D5B8 /* libPods.a */; };
 		D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7618B262BE00155145 /* Swipe_Down.png */; };
 		D20BBB7918B2716800155145 /* Swipe_Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7818B2716800155145 /* Swipe_Right.png */; };
 		D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */; };
@@ -54,7 +55,6 @@
 		D227A9F1186CB5B600361DEB /* RCEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */; };
 		D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A118A1870C00C2285D /* checker@2x.jpg */; };
 		D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A718A199C200C2285D /* AboutControllerIpad.xib */; };
-		D245697B18BFCE6800C5A53C /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */; };
 		D247E98018A280B800BE719F /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E97F18A280B800BE719F /* RCTableView.m */; };
 		D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E98218A2885900BE719F /* RCSearchGestureManager.m */; };
 		D247E98518A2E55700BE719F /* PurchaseControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */; };
@@ -70,6 +70,7 @@
 		D255696A1896BCA200F5525D /* up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569691896BCA200F5525D /* up@2x.png */; };
 		D255696C1896BCD800F5525D /* support1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D255696B1896BCD800F5525D /* support1@2x.png */; };
 		D25569721896C53600F5525D /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25569711896C53600F5525D /* lock@2x.png */; };
+		D263004618FC00E100D04F06 /* RCSecureNoteFiller.m in Sources */ = {isa = PBXBuildFile; fileRef = D263004518FC00E100D04F06 /* RCSecureNoteFiller.m */; };
 		D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26429ED18B80BBD009706D0 /* developer@2x.png */; };
 		D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */; };
 		D2660B711884964300E1B964 /* RCValtView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2660B701884964300E1B964 /* RCValtView.m */; };
@@ -87,6 +88,7 @@
 		D26E1F2918B406E600E1D567 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26E1F2818B406E600E1D567 /* plus@2x.png */; };
 		D26E1F2B18B406FF00E1D567 /* sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26E1F2A18B406FF00E1D567 /* sync@2x.png */; };
 		D2773721189AB01D0048F641 /* RCMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2773720189AB01D0048F641 /* RCMessageView.m */; };
+		D277406419000A740095BF37 /* dice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D277406319000A740095BF37 /* dice@2x.png */; };
 		D278D3451891BCDF0062AE39 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3411891BCDF0062AE39 /* back@2x.png */; };
 		D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3421891BCDF0062AE39 /* copyPaste@2x.png */; };
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
@@ -135,6 +137,11 @@
 		D2F92F5C18BE7927002EA5B9 /* backValt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */; };
 		D2F92F6318BE7F17002EA5B9 /* valtClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6218BE7F17002EA5B9 /* valtClosed.png */; };
 		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
+		D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */; };
+		D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */; };
+		D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */; };
+		D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */; };
+		D2FEE1FF18F5E7BC00BD454F /* secureNotes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FE18F5E7BC00BD454F /* secureNotes@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +155,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		851FF9FD858643BAB534D5B8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B92DB3EAA33147A58522CBB3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		D20BBB7618B262BE00155145 /* Swipe_Down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Down.png; sourceTree = "<group>"; };
 		D20BBB7818B2716800155145 /* Swipe_Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Right.png; sourceTree = "<group>"; };
 		D20E9AB7185B4E4E00F56013 /* RCCredentialGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCredentialGestureManager.h; sourceTree = "<group>"; };
@@ -223,7 +232,6 @@
 		D227A9F0186CB5B600361DEB /* RCEncryptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEncryptionTests.m; sourceTree = "<group>"; };
 		D22D30A118A1870C00C2285D /* checker@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "checker@2x.jpg"; sourceTree = "<group>"; };
 		D22D30A718A199C200C2285D /* AboutControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutControllerIpad.xib; sourceTree = "<group>"; };
-		D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		D247E97E18A280B800BE719F /* RCTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableView.h; sourceTree = "<group>"; };
 		D247E97F18A280B800BE719F /* RCTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableView.m; sourceTree = "<group>"; };
 		D247E98118A2885900BE719F /* RCSearchGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchGestureManager.h; sourceTree = "<group>"; };
@@ -242,6 +250,8 @@
 		D25569691896BCA200F5525D /* up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up@2x.png"; sourceTree = "<group>"; };
 		D255696B1896BCD800F5525D /* support1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support1@2x.png"; sourceTree = "<group>"; };
 		D25569711896C53600F5525D /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
+		D263004418FC00E100D04F06 /* RCSecureNoteFiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSecureNoteFiller.h; sourceTree = "<group>"; };
+		D263004518FC00E100D04F06 /* RCSecureNoteFiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSecureNoteFiller.m; sourceTree = "<group>"; };
 		D26429ED18B80BBD009706D0 /* developer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "developer@2x.png"; sourceTree = "<group>"; };
 		D2660B6918847FA500E1B964 /* UIView+QuartzEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+QuartzEffects.h"; sourceTree = "<group>"; };
 		D2660B6A18847FA500E1B964 /* UIView+QuartzEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+QuartzEffects.m"; sourceTree = "<group>"; };
@@ -267,6 +277,7 @@
 		D26E1F2A18B406FF00E1D567 /* sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync@2x.png"; sourceTree = "<group>"; };
 		D277371F189AB01D0048F641 /* RCMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMessageView.h; sourceTree = "<group>"; };
 		D2773720189AB01D0048F641 /* RCMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMessageView.m; sourceTree = "<group>"; };
+		D277406319000A740095BF37 /* dice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dice@2x.png"; sourceTree = "<group>"; };
 		D278D3411891BCDF0062AE39 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D278D3421891BCDF0062AE39 /* copyPaste@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copyPaste@2x.png"; sourceTree = "<group>"; };
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
@@ -329,12 +340,6 @@
 		D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteTextField.m; sourceTree = "<group>"; };
 		D2D87C9B18620F0000FD8FE9 /* HTAutocompleteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteManager.h; sourceTree = "<group>"; };
 		D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteManager.m; sourceTree = "<group>"; };
-		D2DEA88018BBEA0A00DCF073 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
-		D2DEA88118BBEA0A00DCF073 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
-		D2DEA88218BBEA0A00DCF073 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
-		D2DEA88318BBEA0A00DCF073 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
-		D2DEA88418BBEA0A00DCF073 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
-		D2DEA88518BBEA0A00DCF073 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		D2DEA88818BBEB4000DCF073 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		D2DEA88918BBEB4000DCF073 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D2E91E0E187AFC90004D3558 /* LBActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActionSheet.h; sourceTree = "<group>"; };
@@ -342,6 +347,14 @@
 		D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backValt@2x.png"; sourceTree = "<group>"; };
 		D2F92F6218BE7F17002EA5B9 /* valtClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtClosed.png; sourceTree = "<group>"; };
 		D2F92F6418BE82CB002EA5B9 /* valtOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valtOpen.png; sourceTree = "<group>"; };
+		D2FE849D18FEFCA8008F1A56 /* RCAutofillCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAutofillCollectionView.h; sourceTree = "<group>"; };
+		D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCollectionView.m; sourceTree = "<group>"; };
+		D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAutofillCell.h; sourceTree = "<group>"; };
+		D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCell.m; sourceTree = "<group>"; };
+		D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotesViewController.h; sourceTree = "<group>"; };
+		D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotesViewController.m; sourceTree = "<group>"; };
+		D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNotesViewController.xib; sourceTree = "<group>"; };
+		D2FEE1FE18F5E7BC00BD454F /* secureNotes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "secureNotes@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,9 +382,9 @@
 				D27F404518635E7100104F1C /* Accounts.framework in Frameworks */,
 				D27F404318635E6700104F1C /* MessageUI.framework in Frameworks */,
 				D27F40341863310300104F1C /* Social.framework in Frameworks */,
-				D245697B18BFCE6800C5A53C /* libGoogleAnalyticsServices.a in Frameworks */,
 				D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */,
 				D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */,
+				0BCB160CEC97498787646A64 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +422,7 @@
 				D21717D518576B6500D687F8 /* ValtTests */,
 				D21717AF18576B6500D687F8 /* Frameworks */,
 				D21717AE18576B6500D687F8 /* Products */,
+				B92DB3EAA33147A58522CBB3 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -447,6 +461,7 @@
 				D21717B418576B6500D687F8 /* UIKit.framework */,
 				D21717B618576B6500D687F8 /* CoreData.framework */,
 				D21717CE18576B6500D687F8 /* XCTest.framework */,
+				851FF9FD858643BAB534D5B8 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -506,7 +521,6 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				D2DEA87D18BBE94D00DCF073 /* Google Analytics */,
 				D27F407E1868F56500104F1C /* Base64 */,
 				D27F40671868ECC200104F1C /* RNCryptor */,
 				D27F405B18687FFC00104F1C /* MLAlertView */,
@@ -564,6 +578,8 @@
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
 				D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */,
 				D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */,
+				D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */,
+				D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -588,6 +604,8 @@
 				D217183618577A2100D687F8 /* RCPasswordManager.m */,
 				D217183918577B3900D687F8 /* RCPassword.h */,
 				D217183A18577B3900D687F8 /* RCPassword.m */,
+				D263004418FC00E100D04F06 /* RCSecureNoteFiller.h */,
+				D263004518FC00E100D04F06 /* RCSecureNoteFiller.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -644,6 +662,8 @@
 				D2D87C951860C05300FD8FE9 /* RCMainCell.m */,
 				D247E98118A2885900BE719F /* RCSearchGestureManager.h */,
 				D247E98218A2885900BE719F /* RCSearchGestureManager.m */,
+				D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */,
+				D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -665,6 +685,8 @@
 				D267E01718A01B5200339143 /* RCBackupView.m */,
 				D247E97E18A280B800BE719F /* RCTableView.h */,
 				D247E97F18A280B800BE719F /* RCTableView.m */,
+				D2FE849D18FEFCA8008F1A56 /* RCAutofillCollectionView.h */,
+				D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -672,6 +694,7 @@
 		D25569621896BBC900F5525D /* MenuOg */ = {
 			isa = PBXGroup;
 			children = (
+				D2FEE1FE18F5E7BC00BD454F /* secureNotes@2x.png */,
 				D2673A4018B3AFC300AAEBBF /* home@2x.png */,
 				D25569711896C53600F5525D /* lock@2x.png */,
 				D255696B1896BCD800F5525D /* support1@2x.png */,
@@ -685,6 +708,7 @@
 		D2660B6C1884957D00E1B964 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D277406319000A740095BF37 /* dice@2x.png */,
 				D2F92F6418BE82CB002EA5B9 /* valtOpen.png */,
 				D2F92F5A18BE7927002EA5B9 /* backValt@2x.png */,
 				D2F92F6218BE7F17002EA5B9 /* valtClosed.png */,
@@ -719,6 +743,7 @@
 				D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */,
 				D2673A4418B3B99E00AAEBBF /* RCWebViewControllerSmall.xib */,
 				D27F403D186343BF00104F1C /* PurchaseController.xib */,
+				D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -807,20 +832,6 @@
 			name = HTAutocompleteTextField;
 			sourceTree = "<group>";
 		};
-		D2DEA87D18BBE94D00DCF073 /* Google Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				D245697A18BFCE6800C5A53C /* libGoogleAnalyticsServices.a */,
-				D2DEA88018BBEA0A00DCF073 /* GAI.h */,
-				D2DEA88118BBEA0A00DCF073 /* GAIDictionaryBuilder.h */,
-				D2DEA88218BBEA0A00DCF073 /* GAIFields.h */,
-				D2DEA88318BBEA0A00DCF073 /* GAILogger.h */,
-				D2DEA88418BBEA0A00DCF073 /* GAITrackedViewController.h */,
-				D2DEA88518BBEA0A00DCF073 /* GAITracker.h */,
-			);
-			name = "Google Analytics";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -828,9 +839,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Valt" */;
 			buildPhases = (
+				7EE83FE7E3744B9990FE1BE0 /* Check Pods Manifest.lock */,
 				D21717A918576B6500D687F8 /* Sources */,
 				D21717AA18576B6500D687F8 /* Frameworks */,
 				D21717AB18576B6500D687F8 /* Resources */,
+				AE47A91DCFD548408CF69B60 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -912,6 +925,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D25569681896BC7B00F5525D /* tweet@2x.png in Resources */,
+				D277406419000A740095BF37 /* dice@2x.png in Resources */,
 				D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */,
 				D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */,
 				D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */,
@@ -926,6 +940,7 @@
 				D21717BD18576B6500D687F8 /* InfoPlist.strings in Resources */,
 				D26429EE18B80BBD009706D0 /* developer@2x.png in Resources */,
 				D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */,
+				D2FEE1FF18F5E7BC00BD454F /* secureNotes@2x.png in Resources */,
 				D21717C818576B6500D687F8 /* Images.xcassets in Resources */,
 				D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */,
 				D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */,
@@ -942,6 +957,7 @@
 				D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */,
 				D25569661896BC4200F5525D /* about@2x.png in Resources */,
 				D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */,
+				D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */,
 				D255696C1896BCD800F5525D /* support1@2x.png in Resources */,
 				D255696A1896BCA200F5525D /* up@2x.png in Resources */,
 				D27F404A186383EE00104F1C /* RCWebViewController.xib in Resources */,
@@ -963,6 +979,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7EE83FE7E3744B9990FE1BE0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AE47A91DCFD548408CF69B60 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D21717A918576B6500D687F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -970,6 +1019,7 @@
 			files = (
 				D21717C618576B6500D687F8 /* Valt.xcdatamodeld in Sources */,
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
+				D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
 				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
@@ -983,12 +1033,14 @@
 				D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */,
 				D21718271857746400D687F8 /* RCListViewController.m in Sources */,
 				D21718211857738D00D687F8 /* RCViewController.m in Sources */,
+				D263004618FC00E100D04F06 /* RCSecureNoteFiller.m in Sources */,
 				D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */,
 				D217183718577A2100D687F8 /* RCPasswordManager.m in Sources */,
 				D267E01818A01B5200339143 /* RCBackupView.m in Sources */,
 				D21718311857789E00D687F8 /* PDKeychainBindings.m in Sources */,
 				D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */,
 				D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */,
+				D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */,
 				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
@@ -1021,6 +1073,7 @@
 				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
 				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
+				D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
 				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
@@ -1145,6 +1198,7 @@
 		};
 		D21717E018576B6500D687F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B92DB3EAA33147A58522CBB3 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1170,6 +1224,7 @@
 		};
 		D21717E118576B6500D687F8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B92DB3EAA33147A58522CBB3 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1280,6 +1335,7 @@
 		};
 		D22F0D5C18746AA400DCA8AF /* Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B92DB3EAA33147A58522CBB3 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

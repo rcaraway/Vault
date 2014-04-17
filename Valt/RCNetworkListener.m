@@ -10,6 +10,7 @@
 #import "RCNetworking.h"
 #import "RCPasswordManager.h"
 #import "RCInAppPurchaser.h"
+#import "RCSecureNoteFiller.h"
 
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
@@ -115,27 +116,34 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didLockPhone
 {
-    if ([[RCPasswordManager defaultManager] accessGranted])
+    if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] hideAllPasswordData];
+        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
+    }
+    
 }
 
 -(void)didUnlockPhone
 {
-    if ([[RCPasswordManager defaultManager] accessGranted])
+    if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
+        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
+    }
+    
 }
 
 -(void)didBecomeActive
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
          [self loginWithSavedData];
+        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
     }
 }
 
 -(void)didEnterBackground
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
-        
+        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
     }
 }
 
@@ -151,6 +159,8 @@ static RCNetworkListener * sharedQueue;
         [[RCNetworking sharedNetwork] fetchFromServer];
     }
 }
+
+
 
 #pragma mark - Progress Handling
 
@@ -259,7 +269,7 @@ static RCNetworkListener * sharedQueue;
 
 -(void)didLock
 {
-    
+    [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
 }
 
 -(void)didDenyAccess
@@ -289,6 +299,9 @@ static RCNetworkListener * sharedQueue;
 {
     [self showMessage:@"Failed To Purchase" autoDismiss:YES];
 }
+
+
+#pragma mark - Convenience
 
 
 @end
