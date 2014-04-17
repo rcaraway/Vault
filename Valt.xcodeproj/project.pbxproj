@@ -89,6 +89,7 @@
 		D26E1F2B18B406FF00E1D567 /* sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26E1F2A18B406FF00E1D567 /* sync@2x.png */; };
 		D2773721189AB01D0048F641 /* RCMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2773720189AB01D0048F641 /* RCMessageView.m */; };
 		D277406419000A740095BF37 /* dice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D277406319000A740095BF37 /* dice@2x.png */; };
+		D2774066190030190095BF37 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2774065190030190095BF37 /* CoreTelephony.framework */; };
 		D278D3451891BCDF0062AE39 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3411891BCDF0062AE39 /* back@2x.png */; };
 		D278D3461891BCDF0062AE39 /* copyPaste@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3421891BCDF0062AE39 /* copyPaste@2x.png */; };
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
@@ -278,6 +279,7 @@
 		D277371F189AB01D0048F641 /* RCMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMessageView.h; sourceTree = "<group>"; };
 		D2773720189AB01D0048F641 /* RCMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMessageView.m; sourceTree = "<group>"; };
 		D277406319000A740095BF37 /* dice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dice@2x.png"; sourceTree = "<group>"; };
+		D2774065190030190095BF37 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		D278D3411891BCDF0062AE39 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D278D3421891BCDF0062AE39 /* copyPaste@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copyPaste@2x.png"; sourceTree = "<group>"; };
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2774066190030190095BF37 /* CoreTelephony.framework in Frameworks */,
 				D24C94F818BBF34000614333 /* AVFoundation.framework in Frameworks */,
 				D24C94F918BBF34000614333 /* CoreMedia.framework in Frameworks */,
 				D24C94FA18BBF34000614333 /* CoreVideo.framework in Frameworks */,
@@ -438,6 +441,7 @@
 		D21717AF18576B6500D687F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2774065190030190095BF37 /* CoreTelephony.framework */,
 				D24C94F418BBF34000614333 /* AVFoundation.framework */,
 				D24C94F518BBF34000614333 /* CoreMedia.framework */,
 				D24C94F618BBF34000614333 /* CoreVideo.framework */,

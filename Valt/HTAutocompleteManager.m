@@ -466,7 +466,9 @@ static HTAutocompleteManager *sharedManager;
              @"Boost Mobile" : @"http://www.boostmobile.com/",
              @"Sprint" : @"http://www.sprint.com/",
              @"T Mobile" : @"http://www.t-mobile.com/",
-             @"Virgin Mobile" : @"http://www.virgin.com/gateways/mobile"
+             @"Virgin Mobile" : @"http://www.virgin.com/gateways/mobile",
+             @"Mixpanel" : @"https://mixpanel.com/",
+             @"KISSmetrics": @"https://www.kissmetrics.com/"
              };
 }
 

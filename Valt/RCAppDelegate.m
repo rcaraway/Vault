@@ -15,6 +15,7 @@
 #import "RCNetworkListener.h"
 
 #import <Parse/Parse.h>
+#import <Mixpanel/Mixpanel.h>
 
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
@@ -36,6 +37,7 @@
 {
     [Parse setApplicationId:@"HlDWnYtllU4xd5cYbDgyXMFbx1fNzetYwii4WLqB"
                   clientKey:@"JWR7JvgVZETnVcoj27teczJRY0DuF49QTXZl09VG"];
+    [self setupAnalytics];
     [RCNetworkListener beginListening];
     [RCPasswordManager defaultManager];
     if ([[RCNetworking sharedNetwork] loggedIn]){
@@ -89,7 +91,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [self trackEvent:@"App" action:@"Opened"];
+    [self trackEvent:@"App Opened" properties:@{}];
     if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
     }
@@ -204,14 +206,24 @@
 
 -(void)setupAnalytics
 {
-
-
+    [Mixpanel sharedInstanceWithToken:MIXPANEL_ID];
+    [[Mixpanel sharedInstance] identify:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
 }
 
--(void)trackEvent:(NSString *)event action:(NSString *)action
+-(void)trackEvent:(NSString *)event properties:(NSDictionary *)properties
 {
+    [[Mixpanel sharedInstance] track:event properties:properties];
 }
 
+-(void)incrementEvent:(NSString *)event byAmount:(NSInteger)amount
+{
+    [[Mixpanel sharedInstance].people increment:event by:@(amount)];
+}
+
+-(void)setPersonalObject:(NSString *)object forKey:(NSString *)key
+{
+    [[Mixpanel sharedInstance].people setOnce:@{key: object}];
+}
 
 #pragma mark - Convenience
 

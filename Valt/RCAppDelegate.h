@@ -20,7 +20,9 @@
 @property (nonatomic) BOOL swipeRightHint;
 @property (nonatomic) BOOL autofillHints;
 
--(void)trackEvent:(NSString *)event action:(NSString *)action;
+-(void)trackEvent:(NSString *)event properties:(NSDictionary *)properties;
+-(void)incrementEvent:(NSString *)event byAmount:(NSInteger)amount;
+-(void)setPersonalObject:(NSString *)object forKey:(NSString *)key;
 -(BOOL)launchCountTriggered;
 -(BOOL)shouldShowRenew;
 

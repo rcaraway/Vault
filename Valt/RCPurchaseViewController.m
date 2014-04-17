@@ -299,7 +299,7 @@
 -(void)didSignup
 {
     [self.alertView dismissWithSuccess];
-    
+    [APP setPersonalObject:[[RCPasswordManager defaultManager] accountLogin] forKey:@"Email"];
     if (self.wantsFullYear){
         [self payForYear];
     }else{

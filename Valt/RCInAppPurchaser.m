@@ -8,6 +8,7 @@
 
 #import "RCInAppPurchaser.h"
 #import <StoreKit/StoreKit.h>
+#import "RCAppDelegate.h"
 #import "RCNetworking.h"
 
 #define YEARLY_ID @"year699"
@@ -78,6 +79,7 @@ static RCInAppPurchaser * sharedPurchaser;
     if (self.monthlyProduct){
         SKPayment *payment = [SKPayment paymentWithProduct:self.monthlyProduct];
         [[SKPaymentQueue defaultQueue] addPayment:payment];
+        [APP setPersonalObject:@"Paid Month" forKey:@"Payment"];
     }
 }
 
@@ -86,6 +88,7 @@ static RCInAppPurchaser * sharedPurchaser;
     if (self.yearlyProduct){
         SKPayment *payment = [SKPayment paymentWithProduct:self.yearlyProduct];
         [[SKPaymentQueue defaultQueue] addPayment:payment];
+        [APP setPersonalObject:@"Paid Year" forKey:@"Payment"];
     }
 }
 
