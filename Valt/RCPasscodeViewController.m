@@ -65,13 +65,8 @@
     [self setupFieldBackView];
     [self setupValtView];
     [self setupNumberField];
-    if (![[RCPasswordManager defaultManager] canLogin]){
-        [self setupLoginButton];
-    }
     [self addMotionEffects];
     [self addNotifications];
-    if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-        [self fitViewsToBoundsWithNewOrientation:self.interfaceOrientation];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -104,7 +99,6 @@
     self.fieldBackView = nil;
     self.valtView = nil;
     self.passwordField = nil;
-    self.loginButton = nil;
     self.alertView = nil;
     self.view = nil;
 }
@@ -151,8 +145,6 @@
     else
         self.fieldBackView.frame =  CGRectMake(11, bounds.size.height-352-12-50, bounds.size.width-22, 50);
     self.passwordField.frame =  CGRectMake(24, 3, bounds.size.width-60, 44);
-    CGFloat width = [@"Platinum User? Log in here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(bounds.size.height, 44)].width;
-    [self.loginButton setFrame:CGRectMake(bounds.size.width/2.0, CGRectGetMinY(self.fieldBackView.frame)-9-26, bounds.size.width-width-20, 44)];
     self.valtView.frame = CGRectMake(bounds.size.width/2.0-55, CGRectGetMinY(self.fieldBackView.frame)/2.0-(98/2.0), 110, 110);
 }
 
@@ -187,7 +179,6 @@
     [self.hintArrowView removeFromSuperview];
     self.hintArrowView = nil;
     [self.passwordField resignFirstResponder];
-    self.loginButton.alpha = 0;
     self.passwordField.placeholder = @"Master Password";
     self.passwordField.attributedPlaceholder = [[NSAttributedString  alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0 green:.5 blue:.5 alpha:1]}];
     if (loginPassword && ![loginPassword isEqualToString:[[RCPasswordManager defaultManager] masterPassword]]){
@@ -214,7 +205,6 @@
         loginPassword = self.alertView.passwordTextField.text;
         [APP setSwipeRightHint:NO];
         [APP setAutofillHints:NO];
-        self.loginButton.alpha = 0;
         if (isNewUser){
             [self.alertView dismissWithSuccessCompletion:^{
                 [[RCPasswordManager defaultManager] setMasterPassword:loginPassword];
@@ -311,19 +301,6 @@
     [self.fieldBackView addSubview:self.passwordField];
 }
 
--(void)setupLoginButton
-{
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = [@"Platinum User? Tap here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(self.view.frame.size.height, 44)].width;
-    [self.loginButton setFrame:CGRectMake(self.view.frame.size.width/2.0, CGRectGetMinY(self.fieldBackView.frame)-9-26, self.view.frame.size.width-width-20, 44)];
-    [self.loginButton setTitle:@"Platinum User? Tap here." forState:UIControlStateNormal];
-    self.loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
-    [self.loginButton.titleLabel setTextAlignment:NSTextAlignmentRight];
-    [self.loginButton addTarget:self action:@selector(didTapLogin) forControlEvents:UIControlEventTouchUpInside];
-    [self.loginButton setTitleColor:[UIColor passcodeForeground] forState:UIControlStateNormal];
-    [self.view addSubview:self.loginButton];
-}
-
 -(void)addMotionEffects
 {
     UIInterpolatingMotionEffect *verticalMotionEffect =
@@ -394,7 +371,6 @@
     _3Dt.m14 = -0.0015f;
     view.layer.transform =_3Dt;
     self.fieldBackView.alpha = 0;
-    self.loginButton.alpha = 0;
     [self.valtView openNotAnimated];
 }
 

@@ -460,15 +460,7 @@
     JTTransformableTableViewCell * cell = (JTTransformableTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[JTTransformableTableViewCell class]]){
         BOOL isFirstCell = indexPath.section == 0 && indexPath.row == 0;
-        if (isFirstCell && cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT * 3){
-            if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
-                [[RCNetworking sharedNetwork] fetchFromServer];
-            }else{
-                [[APP rootController] segueToPurchaseFromList];
-            }
-            self.addingCellIndex = NSNotFound;
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
-        }else if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT)
+        if (cell.frame.size.height > COMMITING_CREATE_CELL_HEIGHT)
         {
             self.gestureManager.didAddCell = YES;
             RCPassword * password = [[RCPassword alloc] init];

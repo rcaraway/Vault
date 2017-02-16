@@ -16,7 +16,6 @@
 
 #import "NSString+Encryption.h"
 
-#import <Parse/Parse.h>
 
 #define MASTER_PASSWORD_ACCESS @"AbVxHzKQHdLmBsVVJb6yk3Pq" //WARNING: DO NOT CHANGE EVER
 
@@ -217,16 +216,12 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 
 -(void)didLogin:(NSNotification *)notification
 {
-    NSString * string = [PFUser currentUser].username;
-    NSString * password = notification.object;
-    [[PDKeychainBindings sharedKeychainBindings] setString:string forKey:ACCOUNT_LOGIN_KEY];
-    [[PDKeychainBindings sharedKeychainBindings] setString:password forKey:ACCOUNT_PASSWORD_KEY];
+  
 }
 
 -(BOOL)canLogin
 {
-    return [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_LOGIN_KEY].length > 0
-    && [[PDKeychainBindings sharedKeychainBindings] stringForKey:ACCOUNT_PASSWORD_KEY].length > 0;
+    return NO;
 }
 
 -(void)removeLoginInfo
@@ -507,23 +502,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 {
     if (self.accessGranted){
         return [[PDKeychainBindings sharedKeychainBindings] objectForKey:SECURE_NOTES];
-    }
-    return nil;
-}
-
--(PFObject *)passwordFromSecureNotes
-{
-    if (self.accessGranted && [PFUser currentUser]){
-        NSString * secureNotes = self.secureNotes;
-        if (secureNotes && secureNotes.length > 0){
-            PFObject * password = [PFObject objectWithClassName:PASSWORD_CLASS];
-            [password setObject:[PFUser currentUser].username forKey:PASSWORD_OWNER];
-            [password setObject:@(-1) forKey:PASSWORD_INDEX];
-            [password setObject:SECURE_NOTES  forKey:PASSWORD_TITLE];
-            [password setObject:[secureNotes stringByEncryptingWithKey:self.accountPassword] forKey:PASSWORD_EXTRA_FRIELD];
-            [password setACL:[PFACL ACLWithUser:[PFUser currentUser]]];
-            return password;
-        }
     }
     return nil;
 }

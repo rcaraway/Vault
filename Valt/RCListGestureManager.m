@@ -560,7 +560,7 @@ typedef enum {
 -(void)determinePanStateForIndexPath:(NSIndexPath *)indexPath
 {
     CGPoint translation = [self.panGesture translationInView:self.tableView];
-    RCListGestureManagerPanState currentState = self.panState;
+   RCListGestureManagerPanState currentState = self.panState;
     if (fabsf(translation.x) >= PAN_COMMIT_LENGTH){
         if (self.panState == RCListGestureManagerPanStateMiddle){
             self.panState = translation.x > 0 ? RCListGestureManagerPanStateRight : RCListGestureManagerPanStateLeft;

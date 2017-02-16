@@ -43,9 +43,6 @@ static UIView * passDimView;
 -(void)returnToPasscodeFromList
 {
     [[RCNetworking sharedNetwork] logOut];
-    if ([[RCPasswordManager defaultManager] canLogin]){
-        self.passcodeController.loginButton.alpha = 0;
-    }
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];
@@ -78,9 +75,6 @@ static UIView * passDimView;
         [UIView animateWithDuration:.23 animations:^{
             [[[self passcodeController] fieldBackView] setAlpha:1];
             [[[self passcodeController] passwordField] becomeFirstResponder];
-            if (![[RCNetworking sharedNetwork] loggedIn]){
-                [[[self passcodeController] loginButton] setAlpha:1];
-            }
             [[[self passcodeController] valtView] lockWithCompletionBlock:^{
             }];;
             if (completion)

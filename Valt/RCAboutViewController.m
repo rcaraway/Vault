@@ -52,11 +52,6 @@
         }else{
               self = [super initWithNibName:@"AboutControllerSmall" bundle:nil];
         }
-    }else{
-         self = [super initWithNibName:@"AboutControllerIpad" bundle:nil];
-    }
-    if (self){
-        
     }
     return self;
 }
@@ -182,13 +177,13 @@
 
 - (IBAction)tappedWebsite:(id)sender
 {
-    NSString * url = @"http://getvalt.com";
+    NSString * url = @"https://robcaraway.com";
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
 }
 
 - (IBAction)tappedBlog:(id)sender
 {
-    NSString * url = @"http://robcaraway.com";
+    NSString * url = @"https://robcaraway.com/blog";
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
 }
 
@@ -200,37 +195,4 @@
 
 
 #pragma mark - Twitter Follow
-
--(void)followRobOnTwitter
-{
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    [accountStore requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error) {
-        if(granted) {
-            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-            if ([accountsArray count] > 0) {
-                ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
-                NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
-                [tempDict setValue:@"GetValt" forKey:@"screen_name"];
-                [tempDict setValue:@"true" forKey:@"follow"];
-                SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"https://api.twitter.com/1/friendships/create.json"] parameters:tempDict];
-                [postRequest setAccount:twitterAccount];
-                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    if (!error){
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [[APP rootController].view bringSubviewToFront:[APP rootController].messageView];
-                            [[[APP rootController] messageView] showMessage:@"Followed Valt" autoDismiss:YES];
-                        });
-                    }else{
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [[APP rootController].view bringSubviewToFront:[APP rootController].messageView];
-                            [[[APP rootController] messageView] showMessage:@"Could Not Follow Valt" autoDismiss:YES];
-                        });
-                    }
-                }];
-            }
-            
-        }
-    }];
-}
 @end

@@ -35,7 +35,6 @@
 -(void)decrypt;
 -(NSArray *)allFields;
 -(PFObject *)convertedObject;
-+(RCPassword *)passwordFromPFObject:(PFObject *)object;
 -(BOOL)hasValidURL;
 
 @end

@@ -33,7 +33,6 @@
 #define FEEDBACK @"Contact Support"
 #define UPGRADE @"Go Platinum"
 #define RENEW @"Renew Platinum"
-#define SPREAD_VALT @"Tweet about Valt"
 #define NOTES @"Secure Notes"
 
 
@@ -86,8 +85,6 @@
             self.imageView.image = [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]];
         }else if ([self.textLabel.text isEqualToString:UPGRADE] || [self.textLabel.text isEqualToString:RENEW]){
             self.imageView.image = [[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]];
-        }else{
-            self.imageView.image = [[UIImage imageNamed:@"tweet"] tintedIconWithColor:[UIColor tweetColor]];
         }
     }
 }
@@ -255,8 +252,6 @@
         [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Renew Platinum" color:[UIColor goPlatinumColor]];
     }else if ([text isEqualToString:NOTES]){
         [[APP rootController] closeToNewViewController:(UIViewController *)[[APP rootController] notesController] title:@"Secure Notes" color:[UIColor darkGrayColor]];
-    }else if ([text isEqualToString:SPREAD_VALT]){
-        [self launchTweetMessenger];
     }else if ([text isEqualToString:FEEDBACK]){
         [[APP rootController] launchFeedback];
     }
@@ -273,9 +268,6 @@
     }else if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
         [self.cellNames insertObject:RENEW atIndex:2];
     }
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-        [self.cellNames addObject:SPREAD_VALT];
-    }
     if ([[APP rootController] canSendFeedback]){
         [self.cellNames addObject:FEEDBACK];
     }
@@ -286,9 +278,6 @@
     self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
     if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
         [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:2];
-    }
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-        [self.cellImages addObject:[[UIImage imageNamed:@"tweet"] tintedIconWithColor:[UIColor tweetColor]]];
     }
     if ([[APP rootController] canSendFeedback]){
         [self.cellImages addObject:[[UIImage imageNamed:@"support1"] tintedIconWithColor:[UIColor contactSupportColor]]];

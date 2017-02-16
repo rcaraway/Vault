@@ -1,13 +1,12 @@
 PODS:
-  - Mixpanel (2.3.4)
-  - SAMTextView (0.2.1)
+  - SAMTextView (0.2.2)
 
 DEPENDENCIES:
-  - Mixpanel (~> 2.2)
-  - SAMTextView (~> 0.2.1)
+  - SAMTextView
 
 SPEC CHECKSUMS:
-  Mixpanel: 16e6f1d5f8aeb9282ee864e169557de0bd9549df
-  SAMTextView: f0dae9662a7cc45e890eb2b24aa1769148ea2933
+  SAMTextView: 979c43bb1fa5859ddfbfeb35e9c296a2b0ec55fd
 
-COCOAPODS: 0.32.1
+PODFILE CHECKSUM: cd618e7a4b091b9d1c7e3249d6dec8f294d4db2e
+
+COCOAPODS: 1.2.0

@@ -11,7 +11,6 @@
 
 #import "NSString+Encryption.h"
 
-#import <Parse/Parse.h>
 
 NSString * const passwordDidGrabWebColor = @"passwordDidGrabWebColor";
 
@@ -23,71 +22,6 @@ NSString * const passwordDidGrabWebColor = @"passwordDidGrabWebColor";
 
 @implementation RCPassword
 
--(PFObject *)convertedObject
-{
-    if ([PFUser currentUser]){
-        NSInteger index = [[[RCPasswordManager defaultManager] passwords] indexOfObject:self];
-        if (index == NSNotFound){
-            return nil;
-        }
-        PFObject * pfObject = [PFObject objectWithClassName:PASSWORD_CLASS];
-        NSString * ownerId = [PFUser currentUser].username;
-        [pfObject setObject:ownerId forKey:PASSWORD_OWNER];
-        [pfObject setObject:[NSNumber numberWithInt:index] forKey:PASSWORD_INDEX];
-        [pfObject setObject:self.title forKey:PASSWORD_TITLE];
-        if (self.username.length > 0){
-             [pfObject setObject:[self.username stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_USERNAME];
-        }else{
-             [pfObject setObject:@"" forKey:PASSWORD_USERNAME];
-        }
-        if (self.password.length > 0){
-             [pfObject setObject:[self.password stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_PASSWORD];
-        }else{
-             [pfObject setObject:@"" forKey:PASSWORD_PASSWORD];
-        }
-        if (self.notes.length > 0) {
-            [pfObject setObject:[self.notes stringByEncryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]] forKey:PASSWORD_EXTRA_FRIELD];
-        }else{
-            [pfObject setObject:@"" forKey:PASSWORD_EXTRA_FRIELD];
-        }
-        [pfObject setObject:self.urlName forKey:PASSWORD_URLNAME];
-        [pfObject setACL:[PFACL ACLWithUser:[PFUser currentUser]]];
-        return pfObject;
-    }
-    return nil;
-}
-
-+(RCPassword *)passwordFromPFObject:(PFObject *)object
-{
-    RCPassword * password = [[RCPassword alloc] init];
-    NSString * username = [object objectForKey:PASSWORD_USERNAME];
-    NSString * passwordField = [object objectForKey:PASSWORD_PASSWORD];
-    NSString * notes =[object objectForKey:PASSWORD_EXTRA_FRIELD];
-    password.title = [object objectForKey:PASSWORD_TITLE];
-    if (passwordField.length > 0){
-        if ([[RCPasswordManager defaultManager] accessGranted]){
-              password.password = [passwordField stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
-        }else return nil;
-    }else{
-         password.password = @"";
-    }
-    if (username.length > 0){
-        if ([[RCPasswordManager defaultManager] accessGranted]){
-            password.username = [username stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
-        }else return nil;
-    }else{
-        password.username = @"";
-    }
-    if (notes.length > 0){
-        if ([[RCPasswordManager defaultManager] accessGranted]){
-            password.notes = [notes stringByDecryptingWithKey:[[RCPasswordManager defaultManager] accountPassword]];
-        }else return nil;
-    }else{
-        password.notes = @"";
-    }
-    password.urlName = [object objectForKey:PASSWORD_URLNAME];
-    return password;
-}
 
 -(id)init
 {
