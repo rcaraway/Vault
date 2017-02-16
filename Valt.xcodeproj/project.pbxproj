@@ -1259,7 +1259,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1285,7 +1285,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1400,7 +1400,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Testing;

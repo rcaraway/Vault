@@ -67,6 +67,8 @@
     [self setupNumberField];
     [self addMotionEffects];
     [self addNotifications];
+    if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+        [self fitViewsToBoundsWithNewOrientation:self.interfaceOrientation];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -145,6 +147,7 @@
     else
         self.fieldBackView.frame =  CGRectMake(11, bounds.size.height-352-12-50, bounds.size.width-22, 50);
     self.passwordField.frame =  CGRectMake(24, 3, bounds.size.width-60, 44);
+    CGFloat width = [@"Platinum User? Log in here." sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12] constrainedToSize:CGSizeMake(bounds.size.height, 44)].width;
     self.valtView.frame = CGRectMake(bounds.size.width/2.0-55, CGRectGetMinY(self.fieldBackView.frame)/2.0-(98/2.0), 110, 110);
 }
 
@@ -300,6 +303,8 @@
     }
     [self.fieldBackView addSubview:self.passwordField];
 }
+
+
 
 -(void)addMotionEffects
 {
