@@ -14,8 +14,6 @@
 #import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.m"
 
-#import "RCNetworking.h"
-
 #define FONT_NAME @"HelveticaNeue"
 #define NORMAL_CELL_FINISHING_HEIGHT 60
 #define COMMITING_CREATE_CELL_HEIGHT 60
@@ -158,11 +156,6 @@
     }
     else
     if (self.frame.size.height >= COMMITING_CREATE_CELL_HEIGHT*3){
-        if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
-             self.customLabel.text = @"Release to Sync";
-        }else{
-             self.customLabel.text = @"Upgrade to Sync";
-        }
         self.imageView.image = [[UIImage imageNamed:@"sync"] tintedIconWithColor:[UIColor whiteColor]];
         self.contentView.frame = CGRectMake(0, (self.frame.size.height - COMMITING_CREATE_CELL_HEIGHT) , self.frame.size.width, COMMITING_CREATE_CELL_HEIGHT);
     }

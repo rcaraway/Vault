@@ -21,7 +21,6 @@
 
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
-#import "RCNetworking.h"
 #import "RCSecureNoteFiller.h"
 
 
@@ -220,15 +219,11 @@
             [[[APP rootController] messageView] showMessage:@"Updated URL" autoDismiss:YES];
             self.password.urlName = self.urlLabel.text;
             [[RCPasswordManager defaultManager] updatePassword:self.password];
-            [[RCNetworking sharedNetwork] saveToCloud];
         }
     }
 }
 
-
-
 #pragma mark - State Handling
-
 
 -(void)deleteAllCookies
 {

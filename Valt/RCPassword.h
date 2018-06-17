@@ -18,8 +18,6 @@
 #define PASSWORD_PASSWORD @"PASSWORD_PASSWORD"
 #define PASSWORD_EXTRA_FRIELD @"PASSWORD_EXTRA_FRIELD"
 
-@class PFObject;
-
 @interface RCPassword : NSObject <NSCopying, NSCoding>
 
 @property(nonatomic, copy) NSString * title;
@@ -34,7 +32,6 @@
 -(void)encrypt;
 -(void)decrypt;
 -(NSArray *)allFields;
--(PFObject *)convertedObject;
 -(BOOL)hasValidURL;
 
 @end

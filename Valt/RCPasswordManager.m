@@ -12,7 +12,6 @@
 
 #import "RCPasswordManager.h"
 #import "PDKeychainBindings.h"
-#import "RCNetworking.h"
 
 #import "NSString+Encryption.h"
 
@@ -208,8 +207,6 @@ static inline __attribute__ ((always_inline)) void updateKeychain(RCPassword * p
 #ifdef LOGGED_OUT_MODE
         [self removeLoginInfo];
 #endif
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidLogin object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:networkingDidSignup object:nil];
     }
     return self;
 }

@@ -12,7 +12,6 @@
 #import "RCRootViewController.h"
 
 //Model
-#import "RCNetworking.h"
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "RCSearchGestureManager.h"

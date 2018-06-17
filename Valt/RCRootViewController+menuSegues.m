@@ -14,13 +14,10 @@
 
 #import "RCListViewController.h"
 #import "RCMenuViewController.h"
-#import "RCPurchaseViewController.h"
-#import "RCAboutViewController.h"
-#import "RCNotesViewController.h"
 
 #import "RCMessageView.h"
 
-#import <SAMTextView/SAMTextView.h>
+#import "SAMTextView.h"
 #import <objc/runtime.h>
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -94,11 +91,6 @@ static void * LatestPointKey;
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
         [self.menuController.view removeFromSuperview];
-        if (self.currentSideController == self.notesController){
-            [UIView setAnimationsEnabled:NO];
-            [self.notesController reshowKeyboard];
-            [UIView setAnimationsEnabled:YES];
-        }
     }];
 
    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -115,7 +107,6 @@ static void * LatestPointKey;
         if (!self.messageView.messageShowing){
             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         }
-
         [self.view addSubview:self.messageView];
         [self.view addSubview:self.navBar];
         [self.snapshotView removeFromSuperview];
@@ -173,17 +164,7 @@ static void * LatestPointKey;
 -(void)goHome
 {
     [self.view endEditing:YES];
-    if (self.childViewControllers[0] == self.notesController){
-        [self goHomeWithForce];
-    }else{
-        [self goHomeWithNaturalGravity];
-    }
-}
-
-
--(void)didFinishGravityAnimation:(UIViewController *)controller
-{
-   
+    [self goHomeWithNaturalGravity];
 }
 
 -(void)closeToNewViewController:(UIViewController *)controller title:(NSString *)title color:(UIColor *)color
@@ -192,9 +173,6 @@ static void * LatestPointKey;
         [self finishDragWithClose];
     }else{
         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-        if ([controller isMemberOfClass:[RCNotesViewController class]]){
-            [controller.view setFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20)];
-        }
         self.currentSideController = controller;
         UIView * subSnapView = [controller.view snapshotViewAfterScreenUpdates:YES];
         [subSnapView setFrame:controller.view.frame];
@@ -218,9 +196,6 @@ static void * LatestPointKey;
             self.snapshotView = nil;
             [self.menuController changeFeelgoodMessage];
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-            if (controller == self.notesController){
-                [self.notesController.notesView becomeFirstResponder];
-            }
         }];
 
     }
@@ -274,31 +249,6 @@ static void * LatestPointKey;
     }];
 }
 
--(void)goHomeWithForce
-{
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    RCNotesViewController * current = self.childViewControllers[0];
-    [current removeFromParentViewController];
-    [self addChildViewController:self.listController];
-    CGRect rect = current.view.frame;
-    [self.view insertSubview:self.listController.view belowSubview:current.view];
-    self.listController.view.transform = CGAffineTransformMakeTranslation(-[UIScreen mainScreen].bounds.size.width, 0);
-    [self setNavBarMain];
-    [self.view bringSubviewToFront:self.navBar];
-    [UIView animateWithDuration:.42 animations:^{
-        current.autofillView.alpha = 0;
-        [current.view setFrame:CGRectOffset(current.view.frame, [UIScreen mainScreen].bounds.size.width, 0)];
-        self.listController.view.transform = CGAffineTransformIdentity;
-    }completion:^(BOOL finished) {
-        current.view.transform = CGAffineTransformIdentity;
-        [current.view removeFromSuperview];
-        current.view.frame = rect;
-        current.autofillView.alpha = 1;
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    }];
-
-}
-
 #pragma mark - Snapshot
 
 -(void)setupSnapshot
@@ -324,14 +274,6 @@ static void * LatestPointKey;
 -(void)closeToSideScreen
 {
     [self finishDragWithClose];
-//    if (self.currentSideController == self.purchaseController)
-//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor goPlatinumColor]];
-//    else if (self.currentSideController == self.aboutController){
-//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor aboutColor]];
-//    }else{
-//        [self closeToNewViewController:self.currentSideController title:self.navBar.topItem.title color:[UIColor darkGrayColor]];
-//    }
-    
 }
 
 -(void)snapShotPanned

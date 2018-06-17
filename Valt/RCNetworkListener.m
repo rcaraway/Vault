@@ -7,10 +7,7 @@
 //
 
 #import "RCNetworkListener.h"
-#import "RCNetworking.h"
 #import "RCPasswordManager.h"
-#import "RCInAppPurchaser.h"
-#import "RCSecureNoteFiller.h"
 
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
@@ -20,7 +17,6 @@
 #import "RCTableView.h"
 
 #import "NSIndexPath+VaultPaths.h"
-#import "RCRootViewController+purchaseSegues.h"
 
 @interface RCNetworkListener ()
 
@@ -86,24 +82,9 @@ static RCNetworkListener * sharedQueue;
 
 -(void)addNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginExtendingPremium) name:networkingDidBeginExtendingPremium object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGoPremium) name:networkingDidGoPremium object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginLoggingIn) name:networkingDidBeginLoggingIn object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginSyncing) name:networkingDidBeginSyncing object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginFetching) name:networkingDidBeginFetching object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin) name:networkingDidLogin object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetch:) name:networkingDidFetchCredentials object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSync) name:networkingDidSync object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGrantPasswordAccess) name:passwordManagerAccessGranted object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLockPhone) name:UIApplicationProtectedDataWillBecomeUnavailable object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUnlockPhone) name:UIApplicationProtectedDataDidBecomeAvailable object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToLogin) name:networkingDidFailToLogin object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPayForMonth) name:purchaserDidPayMonthly object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPayForYear) name:purchaserDidPayYearly object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginUpgrading) name:purchaserDidBeginUpgrading object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailUpgrading) name:purchaserDidFail object:nil];
 }
 
 -(void)removeNotifications
@@ -118,49 +99,20 @@ static RCNetworkListener * sharedQueue;
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] hideAllPasswordData];
-        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
     }
-    
 }
 
 -(void)didUnlockPhone
 {
     if ([[RCPasswordManager defaultManager] accessGranted]){
         [[RCPasswordManager defaultManager] reshowPasswordData];
-        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
     }
     
 }
 
 -(void)didBecomeActive
 {
-    if ([[RCPasswordManager defaultManager] accessGranted]){
-         [self loginWithSavedData];
-        [[RCSecureNoteFiller sharedFiller] updateSecureNotesFill];
-    }
 }
-
--(void)didEnterBackground
-{
-    if ([[RCPasswordManager defaultManager] accessGranted]){
-        [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
-    }
-}
-
--(void)didGrantPasswordAccess
-{
-    if ([[RCPasswordManager defaultManager] canLogin] && ![[RCNetworking sharedNetwork] loggedIn]){
-        NSString * email = [[RCPasswordManager defaultManager] accountLogin];
-        NSString * password = [[RCPasswordManager defaultManager] accountPassword];
-        [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
-        [self showMessage:@"Connecting..." autoDismiss:NO];
-        self.shouldMerge = NO;
-    }else{
-        [[RCNetworking sharedNetwork] fetchFromServer];
-    }
-}
-
-
 
 #pragma mark - Progress Handling
 
@@ -177,11 +129,6 @@ static RCNetworkListener * sharedQueue;
 -(void)showMessage:(NSString *)message autoDismiss:(BOOL)autoDismiss
 {
     [[[APP rootController] messageView] showMessage:message autoDismiss:autoDismiss];
-}
-
--(void)didGoPremium
-{
-    [[RCNetworking sharedNetwork] saveToCloud];
 }
 
 -(void)didBeginLoggingIn
@@ -217,23 +164,11 @@ static RCNetworkListener * sharedQueue;
     [APP trackEvent:@"Purchased Year " properties:@{}];
 }
 
--(void)didUpdatePasswords
-{
-    [[RCNetworking sharedNetwork] saveToCloud];
-}
-
 -(void)didLogin
 {
     if (![[RCPasswordManager defaultManager] accessGranted]){
         self.shouldMerge = YES;
     }
-    if ([[RCNetworking sharedNetwork] premiumState] == RCPremiumStateExpired){
-        [self showMessage:@"Premium Expired" autoDismiss:YES];
-        if ([APP shouldShowRenew] && [[APP rootController].childViewControllers containsObject:[APP rootController].listController]){
-            [[APP rootController] segueToPurchaseFromList];
-        }
-    }
-    [[RCNetworking sharedNetwork] fetchFromServer];
 }
 
 -(void)didFetch:(NSNotification *)notification
@@ -241,12 +176,8 @@ static RCNetworkListener * sharedQueue;
     NSArray * passwords = notification.object;
     [self showMessage:@"Synced" autoDismiss:YES];
     if (self.shouldMerge){
-        NSInteger count = [RCPasswordManager defaultManager].passwords.count;
         [[RCPasswordManager defaultManager] addPasswords:passwords];
         self.shouldMerge = NO;
-        if (count > 0){
-             [[RCNetworking sharedNetwork] saveToCloud];
-        }
     }else{
         [[RCPasswordManager defaultManager] replaceAllPasswordsWithPasswords:passwords];
     }
@@ -258,50 +189,9 @@ static RCNetworkListener * sharedQueue;
     [self showMessage:@"Saved to Cloud" autoDismiss:YES];
 }
 
--(void)didGrantAccess
-{
-    if (![[RCNetworking sharedNetwork] loggedIn]){
-         [self loginWithSavedData];
-    }else{
-        [[RCNetworking sharedNetwork] fetchFromServer];
-    }
-}
-
--(void)didLock
-{
-    [[RCSecureNoteFiller sharedFiller] hideNotesFilling];
-}
-
 -(void)didDenyAccess
 {
     [self showMessage:@"Access Denied" autoDismiss:YES];
 }
-
--(void)loginWithSavedData
-{
-    self.shouldMerge = NO;
-    NSString * username = [RCPasswordManager defaultManager].accountLogin;
-    NSString * password = [RCPasswordManager defaultManager].accountPassword;
-    if (username && password){
-        [[RCNetworking sharedNetwork] loginWithEmail:username password:password];
-    }
-}
-
-
-#pragma mark - Failure Handling
-
--(void)failedToLogin
-{
-    [self showMessage:@"Connection Failed" autoDismiss:YES];
-}
-
--(void)didFailUpgrading
-{
-    [self showMessage:@"Failed To Purchase" autoDismiss:YES];
-}
-
-
-#pragma mark - Convenience
-
 
 @end

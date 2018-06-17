@@ -11,7 +11,6 @@
 #import "RCRootViewController.h"
 
 #import "RCPasswordManager.h"
-#import "RCNetworking.h"
 #import "RCNetworkListener.h"
 
 #import "UIColor+RCColors.h"
@@ -156,16 +155,12 @@
 
 -(void)addNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToLogIn:) name:networkingDidFailToLogin object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogIn:) name:networkingDidLogin object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSucceedEnteringPassword) name:passwordManagerAccessGranted object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDenyAccess) name:passwordManagerAccessFailedToGrant object:nil];
 }
 
 -(void)removeNotifications
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidLogin object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFailToLogin object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:passwordManagerAccessGranted object:nil];
     [[NSNotificationCenter defaultCenter ]removeObserver:self name:passwordManagerAccessFailedToGrant object:nil];
 }
@@ -173,9 +168,6 @@
 -(void)didSucceedEnteringPassword
 {
     self.fieldBackView.alpha = 0;
-    if (isNewUser && [[RCNetworking sharedNetwork] loggedIn]){
-        [[RCNetworking sharedNetwork] fetchFromServer];
-    }
     isNewUser = NO;
     self.valtLogin = NO;
     self.hintArrowView.alpha = 0;
@@ -190,34 +182,6 @@
         [self.valtView openWithCompletionBlock:^{
             [[APP rootController] seguePasscodeToList];
         }];
-    }
-}
-
--(void)didFailToLogIn:(NSNotification *)notification
-{
-    self.platinumLogin = NO;
-    NSString * message = notification.object;
-    [self.alertView showFailWithTitle:[message capitalizedString]];
-    [self.alertView.loginTextField becomeFirstResponder];
-}
-
--(void)didLogIn:(NSNotification *)notification
-{
-    if (self.platinumLogin){
-        self.platinumLogin = NO;
-        loginPassword = self.alertView.passwordTextField.text;
-        [APP setSwipeRightHint:NO];
-        [APP setAutofillHints:NO];
-        if (isNewUser){
-            [self.alertView dismissWithSuccessCompletion:^{
-                [[RCPasswordManager defaultManager] setMasterPassword:loginPassword];
-                [self didSucceedEnteringPassword];
-            }];
-        }else{
-             [self.passwordField becomeFirstResponder];
-            [self.alertView dismissWithSuccess];
-            [[[APP rootController] messageView] showMessage:@"You are now Logged In." autoDismiss:YES];
-        }
     }
 }
 
@@ -337,16 +301,6 @@
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.passwordField becomeFirstResponder];
-}
-
--(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withEmail:(NSString *)email password:(NSString *)password
-{
-    if (buttonIndex ==1){
-        self.platinumLogin = YES;
-        [alertView loadWithText:@"Logging in"];
-        [[RCNetworking sharedNetwork] loginWithEmail:email password:password];
-        [RCNetworkListener setShouldMerge];
-    }
 }
 
 -(void)alertView:(MLAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex withText:(NSString *)text

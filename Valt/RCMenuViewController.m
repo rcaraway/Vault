@@ -10,9 +10,6 @@
 
 #import "RCMenuViewController.h"
 #import "RCRootViewController.h"
-#import "RCAboutViewController.h"
-#import "RCPurchaseViewController.h"
-
 
 #import "RCRootViewController+passcodeSegues.h"
 #import "RCRootViewController+menuSegues.h"
@@ -21,8 +18,6 @@
 
 #import "RCSearchBar.h"
 #import "MLAlertView.h"
-
-#import "RCNetworking.h"
 
 #import <Social/Social.h>
 
@@ -130,22 +125,6 @@
     [self setupSwitchLabel];
     [self setupCloseSwitch];
     [self setupHiddenLabel];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateCurrent){
-        NSInteger index = [self.cellNames indexOfObject:RENEW];
-        if (index == NSNotFound){
-            index = [self.cellNames indexOfObject:UPGRADE];
-        }
-        if (index != NSNotFound){
-            [self.cellNames removeObjectAtIndex:index];
-            [self.cellImages removeObjectAtIndex:index];
-            [self.tableView reloadData];
-        }
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -263,11 +242,6 @@
 -(void)setupCellNames
 {
     self.cellNames = [@[HOME, NOTES, ABOUT_NAME] mutableCopy];
-    if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateNone){
-        [self.cellNames insertObject:UPGRADE atIndex:2];
-    }else if ([RCNetworking sharedNetwork].premiumState == RCPremiumStateExpired){
-        [self.cellNames insertObject:RENEW atIndex:2];
-    }
     if ([[APP rootController] canSendFeedback]){
         [self.cellNames addObject:FEEDBACK];
     }
@@ -276,9 +250,7 @@
 -(void)setupCellImages
 {
     self.cellImages = [@[[[UIImage imageNamed:@"home"] tintedIconWithColor:[UIColor myValtColor]], [[UIImage imageNamed:@"secureNotes"] tintedIconWithColor:[UIColor colorWithWhite:.6 alpha:1]], [[UIImage imageNamed:@"about"] tintedIconWithColor:[UIColor aboutColor]]] mutableCopy];
-    if ([RCNetworking sharedNetwork].premiumState != RCPremiumStateCurrent){
-        [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:2];
-    }
+   [self.cellImages insertObject:[[UIImage imageNamed:@"up"] tintedIconWithColor:[UIColor goPlatinumColor]] atIndex:2];
     if ([[APP rootController] canSendFeedback]){
         [self.cellImages addObject:[[UIImage imageNamed:@"support1"] tintedIconWithColor:[UIColor contactSupportColor]]];
     }

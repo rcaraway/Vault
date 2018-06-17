@@ -12,11 +12,8 @@
 #import "RCListViewController.h"
 #import "RCSingleViewController.h"
 #import "RCSearchViewController.h"
-#import "RCAboutViewController.h"
-#import "RCPurchaseViewController.h"
 #import "RCWebViewController.h"
 #import "RCMenuViewController.h"
-#import "RCNotesViewController.h"
 
 //Model
 #import "RCPasswordManager.h"
@@ -360,39 +357,6 @@
 
 
 #pragma mark - Properties
-
--(RCNotesViewController *)notesController
-{
-    if (!_notesController){
-        _notesController = [[RCNotesViewController alloc] init];
-    }
-    return _notesController;
-}
-
-
--(RCAboutViewController *)aboutController
-{
-    if (!_aboutController){
-        _aboutController = [[RCAboutViewController alloc] init];
-    }
-    return _aboutController;
-}
-
--(RCPurchaseViewController *)purchaseController
-{
-    if (!_purchaseController){
-        if (IS_IPHONE){
-            if (IS_IPHONE_5){
-                  _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseController" bundle:nil];
-            }else{
-                  _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseControllerSmall" bundle:nil];
-            }
-        }else{
-            _purchaseController = [[RCPurchaseViewController alloc] initWithNibName:@"PurchaseControllerIpad" bundle:nil];
-        }
-    }
-    return _purchaseController;
-}
 
 -(RCWebViewController *)webController
 {

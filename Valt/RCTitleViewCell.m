@@ -51,28 +51,10 @@
     [self.textField setTextColor:[UIColor whiteColor]];
 }
 
--(void)setFocused
-{
-//    [UIView animateWithDuration:.23 animations:^{
-//        self.contentView.backgroundColor = [UIColor cellSelectedForeground];
-//        self.textLabel.backgroundColor = [UIColor cellSelectedForeground];
-//        self.textLabel.textColor = [UIColor whiteColor];
-//    } completion:nil];
-}
-
--(void)removeFocus
-{
-//    [UIView animateWithDuration:.23 animations:^{
-//        self.contentView.backgroundColor = [UIColor cellUnselectedForeground];
-//        self.textLabel.backgroundColor = [UIColor cellUnselectedForeground];
-//        self.textLabel.textColor = [UIColor blackColor];
-//    } completion:nil];
-}
-
 -(void)prepareForReuse
 {
     [self layoutSubviews];
-    [self removeFocus];
+    [super prepareForReuse];
 }
 
 -(void)setupTextField

@@ -13,7 +13,6 @@
 #import "RCSearchViewController.h"
 
 #import "RCPasswordManager.h"
-#import "RCNetworking.h"
 #import "RCAppDelegate.h"
 
 #import "RCValtView.h"
@@ -42,7 +41,6 @@ static UIView * passDimView;
 
 -(void)returnToPasscodeFromList
 {
-    [[RCNetworking sharedNetwork] logOut];
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [self addChildViewController:self.passcodeController];
     [self.listController removeFromParentViewController];

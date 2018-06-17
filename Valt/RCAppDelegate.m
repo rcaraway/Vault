@@ -9,12 +9,8 @@
 #import "RCAppDelegate.h"
 
 #import "RCRootViewController.h"
-
-#import "RCNetworking.h"
 #import "RCPasswordManager.h"
 #import "RCNetworkListener.h"
-
-
 
 #define LAUNCH_COUNT_KEY @"LAUNCH_COUNT_KEY"
 #define FIRST_LAUNCH_COUNT_KEY @"FIRST_LAUNCH_COUNT_KEY"
@@ -59,8 +55,6 @@
     [self.hideView setBackgroundColor:[UIColor whiteColor]];
     [[[UIApplication sharedApplication] keyWindow] addSubview:self.hideView];
 }
-
-
 
 -(void)applicationDidBecomeActive:(UIApplication *)application
 {

@@ -32,7 +32,6 @@
 -(void)movePasswordAtIndex:(NSInteger)passwordIndex toNewIndex:(NSInteger)newIndex;
 -(void)updatePassword:(RCPassword *)password;
 -(void)saveSecureNotes:(NSString *)notes;
--(PFObject *)passwordFromSecureNotes;
 -(RCPassword *)passwordForTitle:(NSString *)title;
 
 -(void)hideAllPasswordData;

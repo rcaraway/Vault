@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		354B82F820D6D67A00E781A1 /* SAMTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 354B82F620D6D67A00E781A1 /* SAMTextView.m */; };
+		35E42A1920D6D25B00E046A5 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 35E42A1120D6D25A00E046A5 /* RNCryptorEngine.m */; };
+		35E42A1A20D6D25B00E046A5 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 35E42A1420D6D25B00E046A5 /* RNEncryptor.m */; };
+		35E42A1B20D6D25B00E046A5 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 35E42A1520D6D25B00E046A5 /* RNCryptor.m */; };
+		35E42A1C20D6D25B00E046A5 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 35E42A1720D6D25B00E046A5 /* RNDecryptor.m */; };
 		D20BBB7718B262BE00155145 /* Swipe_Down.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7618B262BE00155145 /* Swipe_Down.png */; };
 		D20BBB7918B2716800155145 /* Swipe_Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D20BBB7818B2716800155145 /* Swipe_Right.png */; };
 		D20E9AB9185B4E4E00F56013 /* RCCredentialGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D20E9AB8185B4E4E00F56013 /* RCCredentialGestureManager.m */; };
@@ -76,8 +81,6 @@
 		D2673A4318B3B75600AAEBBF /* AboutControllerSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2673A4218B3B75600AAEBBF /* AboutControllerSmall.xib */; };
 		D2673A4518B3B99E00AAEBBF /* RCWebViewControllerSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2673A4418B3B99E00AAEBBF /* RCWebViewControllerSmall.xib */; };
 		D267E01818A01B5200339143 /* RCBackupView.m in Sources */ = {isa = PBXBuildFile; fileRef = D267E01718A01B5200339143 /* RCBackupView.m */; };
-		D267E01B18A0380D00339143 /* RCRootViewController+purchaseSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */; };
-		D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2699CF31877186100759C69 /* RCInAppPurchaser.m */; };
 		D26D34A91892BE4200B6A6F0 /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A51892BE4200B6A6F0 /* key@2x.png */; };
 		D26D34AB1892BE4200B6A6F0 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A71892BE4200B6A6F0 /* search@2x.png */; };
 		D26D34AC1892BE4200B6A6F0 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D26D34A81892BE4200B6A6F0 /* list@2x.png */; };
@@ -94,8 +97,6 @@
 		D278D3471891BCDF0062AE39 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3431891BCDF0062AE39 /* forward@2x.png */; };
 		D278D3481891BCDF0062AE39 /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D278D3441891BCDF0062AE39 /* refresh@2x.png */; };
 		D27F40341863310300104F1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40331863310300104F1C /* Social.framework */; };
-		D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4036186333DD00104F1C /* RCAboutViewController.m */; };
-		D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4039186334B100104F1C /* RCPurchaseViewController.m */; };
 		D27F403C186341EA00104F1C /* RCStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27F403B186341EA00104F1C /* RCStoryboard.storyboard */; };
 		D27F403E186343BF00104F1C /* PurchaseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27F403D186343BF00104F1C /* PurchaseController.xib */; };
 		D27F4040186343CB00104F1C /* AboutController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27F403F186343CB00104F1C /* AboutController.xib */; };
@@ -111,11 +112,6 @@
 		D27F40591868791400104F1C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40521868791400104F1C /* Security.framework */; };
 		D27F405A1868791400104F1C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F40531868791400104F1C /* SystemConfiguration.framework */; };
 		D27F405E1868805D00104F1C /* MLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F405D1868805D00104F1C /* MLAlertView.m */; };
-		D27F4061186887A900104F1C /* RCNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F4060186887A900104F1C /* RCNetworking.m */; };
-		D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40691868ED3F00104F1C /* RNCryptor.m */; };
-		D27F40781868ED3F00104F1C /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406C1868ED3F00104F1C /* RNCryptorEngine.m */; };
-		D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F406E1868ED3F00104F1C /* RNDecryptor.m */; };
-		D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40701868ED3F00104F1C /* RNEncryptor.m */; };
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D29D662618B2543D0029179A /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D29D662518B2543D0029179A /* down@2x.png */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
@@ -139,10 +135,8 @@
 		D2F92F6518BE82CB002EA5B9 /* valtOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F92F6418BE82CB002EA5B9 /* valtOpen.png */; };
 		D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */; };
 		D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */; };
-		D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */; };
 		D2FEE1FD18F5DFC700BD454F /* RCNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */; };
 		D2FEE1FF18F5E7BC00BD454F /* secureNotes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FEE1FE18F5E7BC00BD454F /* secureNotes@2x.png */; };
-		ED04FCB657AE0B286F57A29A /* libPods-Valt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA27AF97811E5411F70D50D /* libPods-Valt.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +152,18 @@
 /* Begin PBXFileReference section */
 		13CCB919BEFE90D5B5149C32 /* Pods-Valt.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Valt.testing.xcconfig"; path = "Pods/Target Support Files/Pods-Valt/Pods-Valt.testing.xcconfig"; sourceTree = "<group>"; };
 		2809EBE106DE7747A7FEDFD9 /* Pods-Valt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Valt.release.xcconfig"; path = "Pods/Target Support Files/Pods-Valt/Pods-Valt.release.xcconfig"; sourceTree = "<group>"; };
+		354B82F620D6D67A00E781A1 /* SAMTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMTextView.m; sourceTree = "<group>"; };
+		354B82F720D6D67A00E781A1 /* SAMTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMTextView.h; sourceTree = "<group>"; };
+		35E42A0F20D6D25A00E046A5 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
+		35E42A1020D6D25A00E046A5 /* RNCryptorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptorEngine.h; sourceTree = "<group>"; };
+		35E42A1120D6D25A00E046A5 /* RNCryptorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptorEngine.m; sourceTree = "<group>"; };
+		35E42A1220D6D25A00E046A5 /* RNDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDecryptor.h; sourceTree = "<group>"; };
+		35E42A1320D6D25A00E046A5 /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
+		35E42A1420D6D25B00E046A5 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
+		35E42A1520D6D25B00E046A5 /* RNCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptor.m; sourceTree = "<group>"; };
+		35E42A1620D6D25B00E046A5 /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
+		35E42A1720D6D25B00E046A5 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
+		35E42A1820D6D25B00E046A5 /* RNCryptor-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor-Prefix.pch"; sourceTree = "<group>"; };
 		62D133F8D6EA2DF518948C55 /* Pods-Valt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Valt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Valt/Pods-Valt.debug.xcconfig"; sourceTree = "<group>"; };
 		D20BBB7618B262BE00155145 /* Swipe_Down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Down.png; sourceTree = "<group>"; };
 		D20BBB7818B2716800155145 /* Swipe_Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swipe_Right.png; sourceTree = "<group>"; };
@@ -263,10 +269,6 @@
 		D2673A4418B3B99E00AAEBBF /* RCWebViewControllerSmall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCWebViewControllerSmall.xib; sourceTree = "<group>"; };
 		D267E01618A01B5100339143 /* RCBackupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBackupView.h; sourceTree = "<group>"; };
 		D267E01718A01B5200339143 /* RCBackupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBackupView.m; sourceTree = "<group>"; };
-		D267E01918A0380D00339143 /* RCRootViewController+purchaseSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+purchaseSegues.h"; sourceTree = "<group>"; };
-		D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+purchaseSegues.m"; sourceTree = "<group>"; };
-		D2699CF21877186100759C69 /* RCInAppPurchaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInAppPurchaser.h; sourceTree = "<group>"; };
-		D2699CF31877186100759C69 /* RCInAppPurchaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCInAppPurchaser.m; sourceTree = "<group>"; };
 		D26D34A51892BE4200B6A6F0 /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
 		D26D34A71892BE4200B6A6F0 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		D26D34A81892BE4200B6A6F0 /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
@@ -286,10 +288,6 @@
 		D278D3431891BCDF0062AE39 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
 		D278D3441891BCDF0062AE39 /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
 		D27F40331863310300104F1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		D27F4035186333DD00104F1C /* RCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutViewController.h; sourceTree = "<group>"; };
-		D27F4036186333DD00104F1C /* RCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutViewController.m; sourceTree = "<group>"; };
-		D27F4038186334B100104F1C /* RCPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPurchaseViewController.h; sourceTree = "<group>"; };
-		D27F4039186334B100104F1C /* RCPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPurchaseViewController.m; sourceTree = "<group>"; };
 		D27F403B186341EA00104F1C /* RCStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RCStoryboard.storyboard; sourceTree = "<group>"; };
 		D27F403D186343BF00104F1C /* PurchaseController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseController.xib; path = ../PurchaseController.xib; sourceTree = "<group>"; };
 		D27F403F186343CB00104F1C /* AboutController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutController.xib; path = ../AboutController.xib; sourceTree = "<group>"; };
@@ -307,17 +305,6 @@
 		D27F40531868791400104F1C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D27F405C1868805D00104F1C /* MLAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAlertView.h; sourceTree = "<group>"; };
 		D27F405D1868805D00104F1C /* MLAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAlertView.m; sourceTree = "<group>"; };
-		D27F405F186887A900104F1C /* RCNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNetworking.h; sourceTree = "<group>"; };
-		D27F4060186887A900104F1C /* RCNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworking.m; sourceTree = "<group>"; };
-		D27F40681868ED3F00104F1C /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
-		D27F40691868ED3F00104F1C /* RNCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptor.m; sourceTree = "<group>"; };
-		D27F406A1868ED3F00104F1C /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
-		D27F406B1868ED3F00104F1C /* RNCryptorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptorEngine.h; sourceTree = "<group>"; };
-		D27F406C1868ED3F00104F1C /* RNCryptorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptorEngine.m; sourceTree = "<group>"; };
-		D27F406D1868ED3F00104F1C /* RNDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDecryptor.h; sourceTree = "<group>"; };
-		D27F406E1868ED3F00104F1C /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
-		D27F406F1868ED3F00104F1C /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
-		D27F40701868ED3F00104F1C /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
 		D27F407F1868F57300104F1C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		D27F40801868F57300104F1C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		D29D662518B2543D0029179A /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
@@ -354,8 +341,6 @@
 		D2FE849E18FEFCA8008F1A56 /* RCAutofillCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCollectionView.m; sourceTree = "<group>"; };
 		D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAutofillCell.h; sourceTree = "<group>"; };
 		D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAutofillCell.m; sourceTree = "<group>"; };
-		D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotesViewController.h; sourceTree = "<group>"; };
-		D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotesViewController.m; sourceTree = "<group>"; };
 		D2FEE1FB18F5DFC700BD454F /* RCNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNotesViewController.xib; sourceTree = "<group>"; };
 		D2FEE1FE18F5E7BC00BD454F /* secureNotes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "secureNotes@2x.png"; sourceTree = "<group>"; };
 		DFA27AF97811E5411F70D50D /* libPods-Valt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Valt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -388,7 +373,6 @@
 				D27F40341863310300104F1C /* Social.framework in Frameworks */,
 				D21717B518576B6500D687F8 /* UIKit.framework in Frameworks */,
 				D21717B118576B6500D687F8 /* Foundation.framework in Frameworks */,
-				ED04FCB657AE0B286F57A29A /* libPods-Valt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,15 +400,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		354B82F520D6D66F00E781A1 /* SAMTextView */ = {
+			isa = PBXGroup;
+			children = (
+				354B82F720D6D67A00E781A1 /* SAMTextView.h */,
+				354B82F620D6D67A00E781A1 /* SAMTextView.m */,
+			);
+			name = SAMTextView;
+			sourceTree = "<group>";
+		};
 		D2111059187334540029D21D /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				D27F405F186887A900104F1C /* RCNetworking.h */,
-				D27F4060186887A900104F1C /* RCNetworking.m */,
 				D211105A187334790029D21D /* RCNetworkListener.h */,
 				D211105B187334790029D21D /* RCNetworkListener.m */,
-				D2699CF21877186100759C69 /* RCInAppPurchaser.h */,
-				D2699CF31877186100759C69 /* RCInAppPurchaser.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -536,6 +525,7 @@
 		D21717E518576F7200D687F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				354B82F520D6D66F00E781A1 /* SAMTextView */,
 				D27F407E1868F56500104F1C /* Base64 */,
 				D27F40671868ECC200104F1C /* RNCryptor */,
 				D27F405B18687FFC00104F1C /* MLAlertView */,
@@ -585,16 +575,10 @@
 				D217182C1857750100D687F8 /* RCSingleViewController.m */,
 				D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */,
 				D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */,
-				D27F4035186333DD00104F1C /* RCAboutViewController.h */,
-				D27F4036186333DD00104F1C /* RCAboutViewController.m */,
-				D27F4038186334B100104F1C /* RCPurchaseViewController.h */,
-				D27F4039186334B100104F1C /* RCPurchaseViewController.m */,
 				D27F4046186383EE00104F1C /* RCWebViewController.h */,
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
 				D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */,
 				D26D34AE1892C05400B6A6F0 /* RCMenuViewController.m */,
-				D2FEE1F918F5DFC700BD454F /* RCNotesViewController.h */,
-				D2FEE1FA18F5DFC700BD454F /* RCNotesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -775,15 +759,16 @@
 		D27F40671868ECC200104F1C /* RNCryptor */ = {
 			isa = PBXGroup;
 			children = (
-				D27F40681868ED3F00104F1C /* RNCryptor.h */,
-				D27F40691868ED3F00104F1C /* RNCryptor.m */,
-				D27F406A1868ED3F00104F1C /* RNCryptor+Private.h */,
-				D27F406B1868ED3F00104F1C /* RNCryptorEngine.h */,
-				D27F406C1868ED3F00104F1C /* RNCryptorEngine.m */,
-				D27F406D1868ED3F00104F1C /* RNDecryptor.h */,
-				D27F406E1868ED3F00104F1C /* RNDecryptor.m */,
-				D27F406F1868ED3F00104F1C /* RNEncryptor.h */,
-				D27F40701868ED3F00104F1C /* RNEncryptor.m */,
+				35E42A1820D6D25B00E046A5 /* RNCryptor-Prefix.pch */,
+				35E42A1320D6D25A00E046A5 /* RNCryptor.h */,
+				35E42A1520D6D25B00E046A5 /* RNCryptor.m */,
+				35E42A1620D6D25B00E046A5 /* RNCryptor+Private.h */,
+				35E42A1020D6D25A00E046A5 /* RNCryptorEngine.h */,
+				35E42A1120D6D25A00E046A5 /* RNCryptorEngine.m */,
+				35E42A1220D6D25A00E046A5 /* RNDecryptor.h */,
+				35E42A1720D6D25B00E046A5 /* RNDecryptor.m */,
+				35E42A0F20D6D25A00E046A5 /* RNEncryptor.h */,
+				35E42A1420D6D25B00E046A5 /* RNEncryptor.m */,
 			);
 			name = RNCryptor;
 			sourceTree = "<group>";
@@ -830,8 +815,6 @@
 				D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */,
 				D26D34B01892C18B00B6A6F0 /* RCRootViewController+menuSegues.h */,
 				D26D34B11892C18B00B6A6F0 /* RCRootViewController+menuSegues.m */,
-				D267E01918A0380D00339143 /* RCRootViewController+purchaseSegues.h */,
-				D267E01A18A0380D00339143 /* RCRootViewController+purchaseSegues.m */,
 			);
 			name = "Segue Categories";
 			sourceTree = "<group>";
@@ -854,12 +837,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D21717DF18576B6500D687F8 /* Build configuration list for PBXNativeTarget "Valt" */;
 			buildPhases = (
-				DCD9A61357E6ABFF9E2593A5 /* [CP] Check Pods Manifest.lock */,
 				D21717A918576B6500D687F8 /* Sources */,
 				D21717AA18576B6500D687F8 /* Frameworks */,
 				D21717AB18576B6500D687F8 /* Resources */,
-				2B3FB8B6B5C488B185C24D95 /* [CP] Embed Pods Frameworks */,
-				D83E39F099D48EB211974D78 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -996,54 +976,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		2B3FB8B6B5C488B185C24D95 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Valt/Pods-Valt-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D83E39F099D48EB211974D78 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Valt/Pods-Valt-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DCD9A61357E6ABFF9E2593A5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		D21717A918576B6500D687F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1059,10 +991,8 @@
 				D2774069190039310095BF37 /* RCFacebookWorkaround.m in Sources */,
 				D217182A1857748800D687F8 /* RCRootViewController.m in Sources */,
 				D26D34AF1892C05400B6A6F0 /* RCMenuViewController.m in Sources */,
-				D27F4037186333DD00104F1C /* RCAboutViewController.m in Sources */,
 				D27F4049186383EE00104F1C /* RCWebViewController.m in Sources */,
 				D27F405E1868805D00104F1C /* MLAlertView.m in Sources */,
-				D27F40781868ED3F00104F1C /* RNCryptorEngine.m in Sources */,
 				D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */,
 				D21718271857746400D687F8 /* RCListViewController.m in Sources */,
 				D21718211857738D00D687F8 /* RCViewController.m in Sources */,
@@ -1071,29 +1001,30 @@
 				D217183718577A2100D687F8 /* RCPasswordManager.m in Sources */,
 				D267E01818A01B5200339143 /* RCBackupView.m in Sources */,
 				D21718311857789E00D687F8 /* PDKeychainBindings.m in Sources */,
-				D27F40791868ED3F00104F1C /* RNDecryptor.m in Sources */,
 				D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */,
+				35E42A1A20D6D25B00E046A5 /* RNEncryptor.m in Sources */,
 				D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */,
 				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
-				D2699CF41877186100759C69 /* RCInAppPurchaser.m in Sources */,
 				D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */,
 				D27F40811868F57300104F1C /* NSData+Base64.m in Sources */,
+				35E42A1B20D6D25B00E046A5 /* RNCryptor.m in Sources */,
 				D21717EE1857710700D687F8 /* JTTransformableTableViewCell.m in Sources */,
 				D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */,
 				D2660B711884964300E1B964 /* RCValtView.m in Sources */,
 				D2171824185773DA00D687F8 /* RCPasscodeViewController.m in Sources */,
 				D21B80491868DE0100AA818D /* NSString+Encryption.m in Sources */,
-				D267E01B18A0380D00339143 /* RCRootViewController+purchaseSegues.m in Sources */,
 				D217184318577F9100D687F8 /* AutoCoding.m in Sources */,
 				D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */,
 				D26D34B21892C18B00B6A6F0 /* RCRootViewController+menuSegues.m in Sources */,
 				D247E98018A280B800BE719F /* RCTableView.m in Sources */,
+				35E42A1C20D6D25B00E046A5 /* RNDecryptor.m in Sources */,
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
 				D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */,
 				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
+				354B82F820D6D67A00E781A1 /* SAMTextView.m in Sources */,
 				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,
 				D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */,
@@ -1101,15 +1032,11 @@
 				D21C000D1858F8A70017F0F9 /* RCTitleViewCell.m in Sources */,
 				D21C00061858A2CC0017F0F9 /* UITextField+RCTextFields.m in Sources */,
 				D21C00091858EA430017F0F9 /* UIColor+RCColors.m in Sources */,
-				D27F4061186887A900104F1C /* RCNetworking.m in Sources */,
+				35E42A1920D6D25B00E046A5 /* RNCryptorEngine.m in Sources */,
 				D211105C187334790029D21D /* RCNetworkListener.m in Sources */,
-				D27F407A1868ED3F00104F1C /* RNEncryptor.m in Sources */,
 				D217183B18577B3900D687F8 /* RCPassword.m in Sources */,
-				D27F40771868ED3F00104F1C /* RNCryptor.m in Sources */,
-				D2FEE1FC18F5DFC700BD454F /* RCNotesViewController.m in Sources */,
 				D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */,
 				D21718341857794300D687F8 /* PDKeychainBindingsController.m in Sources */,
-				D27F403A186334B100104F1C /* RCPurchaseViewController.m in Sources */,
 				D21C00031858A25F0017F0F9 /* UILabel+RCLabels.m in Sources */,
 				D21717EF1857710700D687F8 /* UIColor+JTGestureBasedTableViewHelper.m in Sources */,
 			);
@@ -1246,20 +1173,17 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1272,20 +1196,17 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1387,20 +1308,17 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Valt/Valt-Prefix.pch";
 				INFOPLIST_FILE = "Valt/Valt-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shway.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Valt;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Testing;

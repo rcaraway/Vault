@@ -14,8 +14,7 @@
 #import "RCAppDelegate.h"
 #import "RCRootViewController.h"
 #import "RCListGestureManager.h"
-#import "RCNetworking.h"
-#import "RCInAppPurchaser.h"
+
 #import "HTAutocompleteManager.h"
 
 //Views
@@ -37,7 +36,6 @@
 #import "RCRootViewController+passwordSegues.h"
 #import "RCRootViewController+menuSegues.h"
 #import "RCRootViewController+WebSegues.h"
-#import "RCRootViewController+purchaseSegues.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -85,7 +83,6 @@
     [self setupTableView];
     self.gestureManager = [[RCListGestureManager alloc] initWithTableView:self.tableView delegate:self];
     self.view.backgroundColor = [UIColor listBackground];
-    [self addNotifications];
     if ([RCPasswordManager defaultManager].passwords.count == 0){
         [self showPullDownViews];
     }
@@ -115,7 +112,7 @@
 -(void)showBackupViewIfNeeded
 {
     static BOOL backupShown = NO;
-    if ([APP launchCountTriggered] &&  [RCNetworking sharedNetwork].premiumState == RCPremiumStateNone && ![[RCPasswordManager defaultManager] canLogin] && !backupShown)
+    if ([APP launchCountTriggered])
     {
         [self setupBackupView];
         [self performSelector:@selector(showBackup) withObject:nil afterDelay:.6];
@@ -133,7 +130,6 @@
 
 -(void)freeAllMemory
 {
-    [self removeNotifications];
     self.tableView = nil;
     self.gestureManager = nil;
     self.view = nil;
@@ -172,28 +168,6 @@
     self.backupView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, 60);
     [self.hintImageView setFrame:CGRectMake(0, 0, 128, 128)];
 }
-
-
-
-#pragma mark - NSNotifications Event Handling
-
--(void)addNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPurchaseSubscription) name:purchaserDidPayMonthly object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPurchaseSubscription) name:purchaserDidPayYearly object:nil];
-}
-
--(void)removeNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayYearly object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:purchaserDidPayMonthly object:nil];
-}
-
--(void)didPurchaseSubscription
-{
-    
-}
-
 
 #pragma mark - State Handling
 
@@ -564,13 +538,9 @@
 
 -(void)gestureManager:(RCListGestureManager *)manager needsReplacePlaceholderForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.dummyCellIndex != indexPath.row){
-        [[RCNetworking sharedNetwork] saveToCloud];
-    }
     self.dummyCellIndex = NSNotFound;
     self.grabbedObject = nil;
 }
-
 
 #pragma mark - Alert View
 
@@ -581,9 +551,6 @@
         password.urlName = text;
         if (password.hasValidURL){
             [[RCPasswordManager defaultManager] updatePassword:password];
-            if ([[RCNetworking sharedNetwork] loggedIn]){
-                [[RCNetworking sharedNetwork] saveToCloud];
-            }
             [self.alertView dismissWithSuccessCompletion:^{
                    [[APP rootController] segueToWebWithPassword:password];
             }];
@@ -638,7 +605,6 @@
 
 -(void)backupViewDidTapYes:(RCBackupView *)backupView
 {
-    [[APP rootController] segueToPurchaseFromList];
     [self hideBackup];
 }
 
@@ -650,7 +616,6 @@
     if (buttonIndex == 0){
         [[RCPasswordManager defaultManager] removePasswordAtIndex:self.deletionPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[self.deletionPath] withRowAnimation:UITableViewRowAnimationMiddle];
-        [[RCNetworking sharedNetwork] saveToCloud];
         if (self.hintImageView){
             [self hideHintLabels];
         }

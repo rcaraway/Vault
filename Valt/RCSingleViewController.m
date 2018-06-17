@@ -15,7 +15,7 @@
 
 #import "RCCredentialGestureManager.h"
 #import "HTAutocompleteManager.h"
-#import "RCNetworking.h"
+
 #import "RCPassword.h"
 #import "RCPasswordManager.h"
 #import "JTTableViewGestureRecognizer.h"
@@ -135,13 +135,11 @@
 -(void)addNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didType:) name:htAutoCompleteLabelDidUpdate object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFetchPasswords) name:networkingDidFetchCredentials object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:htAutoCompleteLabelDidUpdate object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:networkingDidFetchCredentials object:nil];
 }
 
 -(void)didFetchPasswords
@@ -421,9 +419,6 @@
         }
     }
     [[RCPasswordManager defaultManager] updatePassword:self.password];
-    if (dataChanged && ![self textfieldsEmpty]){
-        [[RCNetworking sharedNetwork] saveToCloud];
-    }
 }
 
 -(void)setAllTextFieldDelegates
