@@ -221,9 +221,13 @@
     NSString * text = self.cellNames[indexPath.row];
     if ([text isEqualToString:HOME]){
         [[APP rootController] closeMenu];
+    } else if ([text isEqualToString:@"Licenses"]) {
+        NSURL * licenses = [NSURL URLWithString:@"http://robcaraway.com/valtLicenses"];
+        [[UIApplication sharedApplication] openURL:licenses];
+    } else {
+        [[APP rootController] launchFeedback];
     }
 }
-
 
 #pragma mark - Setup
 

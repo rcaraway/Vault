@@ -367,8 +367,8 @@
 {
     if ([MFMailComposeViewController canSendMail]) {
         self.mailController = [[MFMailComposeViewController alloc] init];
-        [self.mailController setSubject:@"Valt Feedback"];
-        [self.mailController setToRecipients:@[@"rob@getvalt.com"]];
+        [self.mailController setSubject:@"Hi from Valt"];
+        [self.mailController setToRecipients:@[@"robbor911@gmail.com"]];
         self.mailController.mailComposeDelegate = self;
         [self presentViewController:self.mailController animated:YES completion:nil];
     }
