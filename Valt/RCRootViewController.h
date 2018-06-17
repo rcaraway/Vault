@@ -11,7 +11,6 @@
 @class RCListViewController;
 @class RCSingleViewController;
 @class RCPassword;
-@class RCSearchViewController;
 @class RCMenuViewController;
 @class MFMailComposeViewController;
 @class RCAboutViewController;
@@ -25,12 +24,10 @@
 @property(nonatomic, strong) RCPasscodeViewController * passcodeController;
 @property(nonatomic, strong) RCListViewController * listController;
 @property(nonatomic, strong) RCSingleViewController * singleController;
-@property(nonatomic, strong) RCSearchViewController * searchController;
 
 @property(nonatomic, strong) RCMenuViewController * menuController;
 @property(nonatomic, strong) MFMailComposeViewController * mailController;
-@property(nonatomic, strong) RCAboutViewController * aboutController;
-@property(nonatomic, strong) RCPurchaseViewController * purchaseController;
+
 @property(nonatomic, strong) RCWebViewController * webController;
 @property(nonatomic, strong) RCNotesViewController * notesController;
 @property(nonatomic, strong) UINavigationBar * navBar;

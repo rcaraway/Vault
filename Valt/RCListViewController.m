@@ -21,7 +21,6 @@
 #import "JTTransformableTableViewCell.h"
 #import "HTAutocompleteTextField.h"
 #import "LBActionSheet.h"
-#import "RCSearchBar.h"
 #import "RCBackupView.h"
 #import "RCDropDownCell.h"
 #import "RCMainCell.h"

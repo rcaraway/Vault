@@ -16,7 +16,6 @@
 #import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.h"
 
-#import "RCSearchBar.h"
 #import "MLAlertView.h"
 
 #import <Social/Social.h>
@@ -25,7 +24,7 @@
 #define CELL_HEIGHT 44;
 #define HOME @"My Valt"
 #define ABOUT_NAME @"About"
-#define FEEDBACK @"Contact Support"
+#define FEEDBACK @"Email Developer"
 #define UPGRADE @"Go Platinum"
 #define RENEW @"Renew Platinum"
 #define NOTES @"Secure Notes"
@@ -223,17 +222,6 @@
     if ([text isEqualToString:HOME]){
         [[APP rootController] closeMenu];
     }
-    else if ([text isEqualToString:ABOUT_NAME]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] aboutController] title:@"About" color:[UIColor aboutColor]];
-    }else if ([text isEqualToString:UPGRADE]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Go Platinum" color:[UIColor goPlatinumColor]];
-    }else if ([text isEqualToString:RENEW]){
-        [[APP rootController] closeToNewViewController:[[APP rootController] purchaseController] title:@"Renew Platinum" color:[UIColor goPlatinumColor]];
-    }else if ([text isEqualToString:NOTES]){
-        [[APP rootController] closeToNewViewController:(UIViewController *)[[APP rootController] notesController] title:@"Secure Notes" color:[UIColor darkGrayColor]];
-    }else if ([text isEqualToString:FEEDBACK]){
-        [[APP rootController] launchFeedback];
-    }
 }
 
 
@@ -241,7 +229,7 @@
 
 -(void)setupCellNames
 {
-    self.cellNames = [@[HOME, NOTES, ABOUT_NAME] mutableCopy];
+    self.cellNames = [@[HOME, @"Licenses"] mutableCopy];
     if ([[APP rootController] canSendFeedback]){
         [self.cellNames addObject:FEEDBACK];
     }

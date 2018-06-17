@@ -9,7 +9,6 @@
 #import "RCSingleViewController.h"
 #import "RCRootViewController.h"
 #import "RCListViewController.h"
-#import "RCSearchViewController.h"
 
 #import "RCAppDelegate.h"
 
@@ -26,12 +25,10 @@
 #import "RCTitleViewCell.h"
 #import "RCTableView.h"
 #import "RCMessageView.h"
-#import "RCSearchBar.h"
 
 #import "UIImage+memoIcons.h"
 #import "UIColor+RCColors.h"
 #import "RCRootViewController+passwordSegues.h"
-#import "RCRootViewController+searchSegue.h"
 
 #define ADDING_CELL @"Continue..."
 #define DONE_CELL @"Done"
@@ -215,11 +212,7 @@
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (!self.cameFromSearch){
-         listOffset = [APP rootController].listController.tableView.contentOffset;
-    }else{
-        listOffset = [APP rootController].searchController.tableView.contentOffset;
-    }
+   listOffset = [APP rootController].listController.tableView.contentOffset;
     singleOffset = scrollView.contentOffset;
 }
 
@@ -228,8 +221,6 @@
     [self.view endEditing:YES];
     if (!self.isTransitioningTo && !self.cameFromSearch){
         [self scrollListView:scrollView];
-    }else if (!self.isTransitioningTo && self.cameFromSearch){
-        [self scrollSearchView:scrollView];
     }
 }
 
@@ -261,38 +252,12 @@
     singleOffset = scrollView.contentOffset;
 }
 
--(void)scrollSearchView:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y < 0){
-        CGFloat magnitude = fabsf(scrollView.contentOffset.y / 60.0) ;
-        if (magnitude > 1)
-            magnitude = 1;
-        self.view.backgroundColor = [UIColor colorWithWhite:.1 alpha:(1- magnitude)*.75];
-    }else{
-    }
-    [[APP rootController].searchController.tableView setShouldAllowMovement:YES];
-    CGPoint difPoint = CGPointMake(singleOffset.x-scrollView.contentOffset.x, singleOffset.y-scrollView.contentOffset.y);
-    [[APP rootController].searchController.tableView setContentOffset:CGPointMake(listOffset.x-difPoint.x, listOffset.y-difPoint.y)];
-    CGFloat updatedOffset =[[APP rootController].searchController.tableView contentOffset].y;
-    if (updatedOffset <= -20 && updatedOffset >= -64){
-        [APP rootController].searchController.searchBar.transform = CGAffineTransformMakeTranslation(0, (-64 + fabsf(updatedOffset)));
-    }else if (updatedOffset < -44){
-        [APP rootController].searchController.searchBar.transform = CGAffineTransformIdentity;
-    }else{
-        [APP rootController].searchController.searchBar.transform = CGAffineTransformMakeTranslation(0, -64);
-    }
-    listOffset = [APP rootController].searchController.tableView.contentOffset;
-    singleOffset = scrollView.contentOffset;
-}
-
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView.contentOffset.y <= - 60){
         [self publishChangesToPassword];
         if (!self.cameFromSearch){
           [[APP rootController] segueSingleToList];
-        }else{
-            [[APP rootController] segueSingleToSearch];
         }
     }
 }
@@ -364,12 +329,7 @@
 
 -(void)gestureManagerDidTapOutsideRows:(RCCredentialGestureManager *)manager
 {
-    if (!self.cameFromSearch){
-        [self goBackToList];
-    }
-    else{
-        [self goBackToSearch];
-    }
+    [self goBackToList];
 }
 
 -(BOOL)gestureManagerShouldAllowNewCellAtBottom:(RCCredentialGestureManager *)gestureManager
@@ -446,14 +406,6 @@
     [self.view endEditing:YES];
     [self publishChangesToPassword];
     [[APP rootController] segueSingleToList];
-}
-
--(void)goBackToSearch
-{
-    [self.view endEditing:YES];
-    [self publishChangesToPassword];
-    self.cameFromSearch = NO;
-    [[APP rootController] segueSingleToSearch];
 }
 
 -(BOOL)passwordContainsNoData

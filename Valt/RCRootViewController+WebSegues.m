@@ -10,18 +10,15 @@
 
 #import "RCListViewController.h"
 #import "RCWebViewController.h"
-#import "RCSearchViewController.h"
 
 #import "RCMessageView.h"
 #import "RCMainCell.h"
 #import "RCTableView.h"
-#import "RCSearchBar.h"
 
 #import "RCPasswordManager.h"
 #import "RCPassword.h"
 #import "RCAppDelegate.h"
 #import "RCListGestureManager.h"
-#import "RCSearchGestureManager.h"
 
 #import "UIColor+RCColors.h"
 
@@ -50,7 +47,6 @@ static UIColor * ogColor;
     if (self.currentSideController == self.listController){
         self.navBar.alpha = 0;
     }else{
-        self.searchController.searchBar.alpha = 0;
     }
     self.webController.view.alpha = 0;
     [self.webController.topView setFrame:CGRectOffset(self.webController.topView.frame, 0, -64)];
@@ -94,20 +90,13 @@ static UIColor * ogColor;
             self.navBar.alpha = 1;
             [self.view bringSubviewToFront:self.navBar];
         }else{
-            self.searchController.searchBar.alpha = 1;
-            [self.view bringSubviewToFront:self.searchController.searchBar];
         }
         [self.view bringSubviewToFront:self.messageView];
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         [self.webController.webView stopLoading];
         [self.webController.view removeFromSuperview];
-        if (self.currentSideController == self.searchController){
-            [self.searchController.gestureManager resetCellToCenterAtIndexPath:self.searchController.gestureManager.webPath];
-            self.searchController.gestureManager.webPath = nil;
-        }else{
-            [self.listController.gestureManager resetCellToCenterAtIndexPath:self.listController.gestureManager.webPath];
-        }
+        [self.listController.gestureManager resetCellToCenterAtIndexPath:self.listController.gestureManager.webPath];
         [self.webController freeAllMemory];
         self.webController = nil;
         self.currentSideController = nil;

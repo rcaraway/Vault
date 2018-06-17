@@ -60,7 +60,6 @@
 		D22D30A218A1870C00C2285D /* checker@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A118A1870C00C2285D /* checker@2x.jpg */; };
 		D22D30A818A199C200C2285D /* AboutControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22D30A718A199C200C2285D /* AboutControllerIpad.xib */; };
 		D247E98018A280B800BE719F /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E97F18A280B800BE719F /* RCTableView.m */; };
-		D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D247E98218A2885900BE719F /* RCSearchGestureManager.m */; };
 		D247E98518A2E55700BE719F /* PurchaseControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */; };
 		D247E98718A2EB0D00BE719F /* RCWebViewControllerIpad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */; };
 		D24C94F818BBF34000614333 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24C94F418BBF34000614333 /* AVFoundation.framework */; };
@@ -115,15 +114,12 @@
 		D27F40811868F57300104F1C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D27F40801868F57300104F1C /* NSData+Base64.m */; };
 		D29D662618B2543D0029179A /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D29D662518B2543D0029179A /* down@2x.png */; };
 		D2A307621891589200DB1A15 /* RCRootViewController+WebSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */; };
-		D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B5EF981885E533002A50A3 /* RCSearchBar.m */; };
-		D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */; };
 		D2C65E2918885FEF00649610 /* RCRootViewController+passcodeSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */; };
 		D2C65E2C1888600900649610 /* RCRootViewController+passwordSegues.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C65E2B1888600900649610 /* RCRootViewController+passwordSegues.m */; };
 		D2C85EF9189BE7F700D4DFB1 /* backup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EF8189BE7F700D4DFB1 /* backup@2x.png */; };
 		D2C85EFB189BE81100D4DFB1 /* multiDevice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */; };
 		D2C85F01189C41CD00D4DFB1 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F00189C41CD00D4DFB1 /* cross@2x.png */; };
 		D2C85F03189C41F600D4DFB1 /* login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C85F02189C41F600D4DFB1 /* login@2x.png */; };
-		D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */; };
 		D2D87C961860C05300FD8FE9 /* RCMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C951860C05300FD8FE9 /* RCMainCell.m */; };
 		D2D87C9A18620EED00FD8FE9 /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9918620EED00FD8FE9 /* HTAutocompleteTextField.m */; };
 		D2D87C9D18620F0000FD8FE9 /* HTAutocompleteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D87C9C18620F0000FD8FE9 /* HTAutocompleteManager.m */; };
@@ -242,8 +238,6 @@
 		D22D30A718A199C200C2285D /* AboutControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutControllerIpad.xib; sourceTree = "<group>"; };
 		D247E97E18A280B800BE719F /* RCTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableView.h; sourceTree = "<group>"; };
 		D247E97F18A280B800BE719F /* RCTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableView.m; sourceTree = "<group>"; };
-		D247E98118A2885900BE719F /* RCSearchGestureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchGestureManager.h; sourceTree = "<group>"; };
-		D247E98218A2885900BE719F /* RCSearchGestureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchGestureManager.m; sourceTree = "<group>"; };
 		D247E98418A2E55700BE719F /* PurchaseControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurchaseControllerIpad.xib; sourceTree = "<group>"; };
 		D247E98618A2EB0D00BE719F /* RCWebViewControllerIpad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCWebViewControllerIpad.xib; sourceTree = "<group>"; };
 		D24C94F418BBF34000614333 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -310,10 +304,6 @@
 		D29D662518B2543D0029179A /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
 		D2A307601891589200DB1A15 /* RCRootViewController+WebSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+WebSegues.h"; sourceTree = "<group>"; };
 		D2A307611891589200DB1A15 /* RCRootViewController+WebSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+WebSegues.m"; sourceTree = "<group>"; };
-		D2B5EF971885E533002A50A3 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
-		D2B5EF981885E533002A50A3 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
-		D2C65E2418885FC900649610 /* RCRootViewController+searchSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+searchSegue.h"; sourceTree = "<group>"; };
-		D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+searchSegue.m"; sourceTree = "<group>"; };
 		D2C65E2718885FEF00649610 /* RCRootViewController+passcodeSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+passcodeSegues.h"; sourceTree = "<group>"; };
 		D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCRootViewController+passcodeSegues.m"; sourceTree = "<group>"; };
 		D2C65E2A1888600900649610 /* RCRootViewController+passwordSegues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCRootViewController+passwordSegues.h"; sourceTree = "<group>"; };
@@ -322,8 +312,6 @@
 		D2C85EFA189BE81100D4DFB1 /* multiDevice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multiDevice@2x.png"; sourceTree = "<group>"; };
 		D2C85F00189C41CD00D4DFB1 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
 		D2C85F02189C41F600D4DFB1 /* login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login@2x.png"; sourceTree = "<group>"; };
-		D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchViewController.h; sourceTree = "<group>"; };
-		D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchViewController.m; sourceTree = "<group>"; };
 		D2D87C941860C05300FD8FE9 /* RCMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainCell.h; sourceTree = "<group>"; };
 		D2D87C951860C05300FD8FE9 /* RCMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainCell.m; sourceTree = "<group>"; };
 		D2D87C9818620EED00FD8FE9 /* HTAutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteTextField.h; sourceTree = "<group>"; };
@@ -573,8 +561,6 @@
 				D21718291857748800D687F8 /* RCRootViewController.m */,
 				D217182B1857750100D687F8 /* RCSingleViewController.h */,
 				D217182C1857750100D687F8 /* RCSingleViewController.m */,
-				D2D87C911860B9B200FD8FE9 /* RCSearchViewController.h */,
-				D2D87C921860B9B200FD8FE9 /* RCSearchViewController.m */,
 				D27F4046186383EE00104F1C /* RCWebViewController.h */,
 				D27F4047186383EE00104F1C /* RCWebViewController.m */,
 				D26D34AD1892C05400B6A6F0 /* RCMenuViewController.h */,
@@ -659,8 +645,6 @@
 				D20E9ABB185B9C0100F56013 /* RCListGestureManager.m */,
 				D2D87C941860C05300FD8FE9 /* RCMainCell.h */,
 				D2D87C951860C05300FD8FE9 /* RCMainCell.m */,
-				D247E98118A2885900BE719F /* RCSearchGestureManager.h */,
-				D247E98218A2885900BE719F /* RCSearchGestureManager.m */,
 				D2FE84A018FEFCBC008F1A56 /* RCAutofillCell.h */,
 				D2FE84A118FEFCBC008F1A56 /* RCAutofillCell.m */,
 			);
@@ -676,8 +660,6 @@
 				D24CD6DE186A343A00A47F1B /* RCSyncView.m */,
 				D2660B6F1884964300E1B964 /* RCValtView.h */,
 				D2660B701884964300E1B964 /* RCValtView.m */,
-				D2B5EF971885E533002A50A3 /* RCSearchBar.h */,
-				D2B5EF981885E533002A50A3 /* RCSearchBar.m */,
 				D277371F189AB01D0048F641 /* RCMessageView.h */,
 				D2773720189AB01D0048F641 /* RCMessageView.m */,
 				D267E01618A01B5100339143 /* RCBackupView.h */,
@@ -805,8 +787,6 @@
 		D2CEE434188823AA0094F321 /* Segue Categories */ = {
 			isa = PBXGroup;
 			children = (
-				D2C65E2418885FC900649610 /* RCRootViewController+searchSegue.h */,
-				D2C65E2518885FC900649610 /* RCRootViewController+searchSegue.m */,
 				D2C65E2718885FEF00649610 /* RCRootViewController+passcodeSegues.h */,
 				D2C65E2818885FEF00649610 /* RCRootViewController+passcodeSegues.m */,
 				D2C65E2A1888600900649610 /* RCRootViewController+passwordSegues.h */,
@@ -985,7 +965,6 @@
 				D20E9ABC185B9C0100F56013 /* RCListGestureManager.m in Sources */,
 				D2FE84A218FEFCBC008F1A56 /* RCAutofillCell.m in Sources */,
 				D24CD6DF186A343A00A47F1B /* RCSyncView.m in Sources */,
-				D2C65E2618885FC900649610 /* RCRootViewController+searchSegue.m in Sources */,
 				D21C0014185A00D30017F0F9 /* UIImage+memoIcons.m in Sources */,
 				D2773721189AB01D0048F641 /* RCMessageView.m in Sources */,
 				D2774069190039310095BF37 /* RCFacebookWorkaround.m in Sources */,
@@ -1004,7 +983,6 @@
 				D211105F1873383C0029D21D /* NSIndexPath+VaultPaths.m in Sources */,
 				35E42A1A20D6D25B00E046A5 /* RNEncryptor.m in Sources */,
 				D2FE849F18FEFCA8008F1A56 /* RCAutofillCollectionView.m in Sources */,
-				D247E98318A2885900BE719F /* RCSearchGestureManager.m in Sources */,
 				D21717ED1857710700D687F8 /* JTTableViewGestureRecognizer.m in Sources */,
 				D21717BF18576B6500D687F8 /* main.m in Sources */,
 				D2660B6B18847FA500E1B964 /* UIView+QuartzEffects.m in Sources */,
@@ -1022,8 +1000,6 @@
 				35E42A1C20D6D25B00E046A5 /* RNDecryptor.m in Sources */,
 				D217182D1857750100D687F8 /* RCSingleViewController.m in Sources */,
 				D21717C318576B6500D687F8 /* RCAppDelegate.m in Sources */,
-				D2B5EF991885E533002A50A3 /* RCSearchBar.m in Sources */,
-				D2D87C931860B9B200FD8FE9 /* RCSearchViewController.m in Sources */,
 				354B82F820D6D67A00E781A1 /* SAMTextView.m in Sources */,
 				D2E91E10187AFC90004D3558 /* LBActionSheet.m in Sources */,
 				D21C00101858F8B90017F0F9 /* RCDropDownCell.m in Sources */,

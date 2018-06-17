@@ -10,7 +10,6 @@
 
 #import "RCListViewController.h"
 #import "RCPasscodeViewController.h"
-#import "RCSearchViewController.h"
 
 #import "RCPasswordManager.h"
 #import "RCAppDelegate.h"

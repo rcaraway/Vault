@@ -148,8 +148,6 @@ static RCNetworkListener * sharedQueue;
     [self showMessage:@"Syncing..." autoDismiss:NO];
 }
 
-
-
 #pragma mark - Success Handling
 
 -(void)didPayForMonth

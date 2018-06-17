@@ -11,7 +11,6 @@
 #import "RCPasscodeViewController.h"
 #import "RCListViewController.h"
 #import "RCSingleViewController.h"
-#import "RCSearchViewController.h"
 #import "RCWebViewController.h"
 #import "RCMenuViewController.h"
 
@@ -22,7 +21,6 @@
 #import "UIColor+RCColors.h"
 #import "RCRootViewController+menuSegues.h"
 #import "RCRootViewController+passcodeSegues.h"
-#import "RCRootViewController+searchSegue.h"
 #import "UIImage+memoIcons.h"
 
 //View
@@ -35,8 +33,6 @@
 
 @interface RCRootViewController () <MFMailComposeViewControllerDelegate>
 
-
-@property(nonatomic, strong) UIButton * searchButton;
 @property(nonatomic, strong) UIButton * menuButton;
 @property(nonatomic, strong) UIButton * menuButton2;
 @property(nonatomic, strong) UIButton * lockButton;
@@ -240,7 +236,6 @@
 -(void)setupViewControllers
 {
     self.listController = [[RCListViewController  alloc] initWithNibName:nil bundle:nil];
-    self.searchController = [[RCSearchViewController  alloc] initWithNibName:nil bundle:nil];
 }
 
 
@@ -252,7 +247,7 @@
     UINavigationItem * item = [[UINavigationItem  alloc] initWithTitle:@"Valt"];
     [self setupNavButtons];
     
-    [item setRightBarButtonItems:@[[[UIBarButtonItem  alloc] initWithCustomView:self.menuButton], [[UIBarButtonItem  alloc] initWithCustomView:self.searchButton]]];
+    [item setRightBarButtonItems:@[[[UIBarButtonItem  alloc] initWithCustomView:self.menuButton]]];
     [item setLeftBarButtonItem:[[UIBarButtonItem  alloc] initWithCustomView:self.lockButton]];
     [item setTitleView:[self navLabelWithTitle:@"Logins" color:[UIColor valtPurple]]];
     CALayer *bottomBorder = [CALayer layer];
@@ -267,21 +262,16 @@
 
 -(void)setupNavButtons
 {
-    self.searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.menuButton setImage:[[UIImage imageNamed:@"list"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
     self.lockButton= [UIButton buttonWithType:UIButtonTypeCustom];
     [self.lockButton setImage:[[UIImage imageNamed:@"lock"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
-    [self.searchButton setImage:[[UIImage imageNamed:@"search"] tintedIconWithColor:[UIColor valtPurple]] forState:UIControlStateNormal];
-    [self.searchButton setFrame:CGRectMake(0, 0, 35, 44)];
     [self.lockButton setFrame:CGRectMake(0, 0, 44, 44)];
     [self.menuButton setFrame:CGRectMake(50, 0, 35, 44)];
     [self.menuButton setImageEdgeInsets:UIEdgeInsetsMake(0, 14, 0, 0)];
-    [self.searchButton setImageEdgeInsets:UIEdgeInsetsMake(11, 13, 11, 0)];
     [self.lockButton setImageEdgeInsets:UIEdgeInsetsMake(11, 0, 11, 22)];
     [self.menuButton addTarget:self action:@selector(listTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.lockButton addTarget:self action:@selector(lockTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.searchButton addTarget:self action:@selector(searchTapped) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(UILabel *)navLabelWithTitle:(NSString *)title color:(UIColor *)color
@@ -348,11 +338,6 @@
 -(void)listTapped
 {
     [self segueToMenu];
-}
-
--(void)searchTapped
-{
-    [self segueListToSearch];
 }
 
 
